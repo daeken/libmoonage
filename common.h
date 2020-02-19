@@ -1,0 +1,215 @@
+#pragma once
+#include <atomic>
+#include <cmath>
+#include <cstdint>
+#include <tuple>
+#include <boost/format.hpp>
+using std::tuple;
+using std::get;
+
+typedef uint64_t ulong;
+typedef uint32_t uint;
+typedef uint16_t ushort;
+typedef uint8_t byte;
+typedef int8_t sbyte;
+typedef __uint128_t UInt128;
+typedef __int128_t Int128;
+typedef sbyte vector128_sbyte __attribute__((ext_vector_type(16)));
+typedef short vector128_short __attribute__((ext_vector_type(8)));
+typedef int vector128_int __attribute__((ext_vector_type(4)));
+typedef long vector128_long __attribute__((ext_vector_type(2)));
+typedef byte vector128_byte __attribute__((ext_vector_type(16)));
+typedef ushort vector128_ushort __attribute__((ext_vector_type(8)));
+typedef uint vector128_uint __attribute__((ext_vector_type(4)));
+typedef ulong vector128_ulong __attribute__((ext_vector_type(2)));
+typedef float vector128_float __attribute__((ext_vector_type(4)));
+typedef double vector128_double __attribute__((ext_vector_type(2)));
+
+const char* disassemble(uint inst, ulong pc);
+
+template<class T>
+inline T SignExt(ulong value, const int size) {
+    return ((value & (1UL << (size - 1))) != 0 ? (T) value - (1L << size) : (T) value);
+}
+
+template <class Source, class Dest>
+inline Dest Bitcast(const Source& source) {
+    static_assert(sizeof(Dest) == sizeof(Source), "Source and destination sizes must be equal");
+    Dest dest;
+    memcpy(&dest, &source, sizeof(dest));
+    return dest;
+}
+
+inline ulong Ones(uint bits) {
+    return bits == 64 ? (ulong) -1LL : (1ULL << (bits + 1)) - 1;
+}
+
+inline ulong ZeroExtend(ulong v, int bits) {
+    return v & Ones(bits);
+}
+
+inline int HighestSetBit(ulong v, int bits) {
+    for(auto i = bits - 1; i >= 0; --i)
+        if((v & (1UL << i)) != 0)
+            return i;
+    return -1;
+}
+
+inline ulong Replicate(ulong v, int bits, int start, int rep, int ext) {
+    auto repval = (v >> start) & Ones(rep);
+    auto times = ext / rep;
+    auto val = 0UL;
+    for(auto i = 0; i < times; ++i)
+        val = (val << rep) | repval;
+    return v | (val << start);
+}
+
+inline ulong RollRight(ulong v, int size, int rotate) {
+    return ((v << (size - rotate)) | (v >> rotate)) & Ones(size);
+}
+
+inline tuple<ulong, ulong> MakeMasks(uint n, uint imms, uint immr, int m, bool immediate) {
+    auto len = HighestSetBit((n << 6) | (imms ^ 0b111111U), 7);
+    auto levels = ZeroExtend(Ones(len), 6);
+
+    auto S = imms & levels;
+    auto R = immr & levels;
+
+    auto diff = (S - R) & 0b111111;
+    auto esize = 1 << len;
+    auto d = diff & Ones(len);
+
+    auto welem = ZeroExtend(Ones((int) (S + 1)), esize);
+    auto telem = ZeroExtend(Ones((int) (d + 1)), esize);
+
+    auto wmask = Replicate(RollRight(welem, esize, (int) R), esize, 0, esize, m);
+    auto tmask = Replicate(telem, esize, 0, esize, m);
+    return { wmask, tmask };
+}
+
+inline ulong MakeWMask(uint n, uint imms, uint immr, long m, int immediate) {
+    return get<0>(MakeMasks(n, imms, immr, (int) m, immediate != 0));
+}
+inline ulong MakeTMask(uint n, uint imms, uint immr, long m, int immediate) {
+    return get<1>(MakeMasks(n, imms, immr, (int) m, immediate != 0));
+}
+
+inline float FastInvsqrt(float number) {
+    auto i = *(uint*) &number;
+    i = 0x5f3759df - (i >> 1);
+    auto f = *(float*) &i;
+    f *= 1.5f - 0.5f * f * f;
+    return f;
+}
+
+inline double FastInvsqrt(double number) {
+    auto x2 = number * 0.5;
+    auto i = *(long*) &number;
+    i = 0x5fe6eb50c7b537a9 - (i >> 1);
+    auto y = *(double*) &i;
+    y *= 1.5 - x2 * y * y;
+    return y;
+}
+
+inline uint ReverseBits(uint v) {
+    auto x = 0U;
+    for(auto i = 0; i < 32; ++i)
+        x |= ((v >> i) & 1) << (31 - i);
+    return x;
+}
+inline ulong ReverseBits(ulong v) {
+    auto x = 0UL;
+    for(auto i = 0; i < 64; ++i)
+        x |= ((v >> i) & 1) << (63 - i);
+    return x;
+}
+
+inline uint CountLeadingZeros(uint v) {
+    for(auto i = 0; i < 32; ++i)
+        if(((v >> (31 - i)) & 1) == 1)
+            return (uint) i;
+    return 32;
+}
+inline ulong CountLeadingZeros(ulong v) {
+    for(auto i = 0; i < 64; ++i)
+        if(((v >> (63 - i)) & 1) == 1)
+            return (uint) i;
+    return 64;
+}
+
+inline vector128_float VectorCountBits(vector128_float vec, long elems) {
+    auto ret = (vector128_byte) {};
+    auto ivec = reinterpret_cast<vector128_byte>(vec);
+    for(auto i = 0; i < elems; ++i)
+        ret[i] = __builtin_popcount(ivec[i]);
+    return reinterpret_cast<vector128_float>(ret);
+}
+
+inline vector128_float VectorExtract(vector128_float _a, vector128_float _b, uint Q, uint _index) {
+    auto index = (int) _index;
+    auto a = reinterpret_cast<vector128_byte>(_a);
+    auto b = reinterpret_cast<vector128_byte>(_b);
+
+    auto r = (vector128_byte) {};
+    auto count = Q == 0 ? 8 : 16;
+
+    if(count == 8) {
+        for(auto i = index; i < 8; ++i)
+            r[i - index] = a[i];
+        auto offset = 8 - index;
+        for(auto i = offset; i < 8; ++i)
+            r[i] = b[i - offset];
+    } else {
+        for(auto i = index; i < 16; ++i)
+            r[i - index] = a[i];
+        auto offset = 16 - index;
+        for(auto i = offset; i < 16; ++i)
+            r[i] = b[i - offset];
+    }
+
+    return reinterpret_cast<vector128_float>(r);
+}
+
+inline vector128_float VectorFrsqrte(vector128_float input, int bits, int elements) {
+    if(bits == 64) {
+        auto vec = reinterpret_cast<vector128_double>(input);
+        vec[0] = FastInvsqrt(vec[0]);
+        vec[1] = FastInvsqrt(vec[1]);
+        return reinterpret_cast<vector128_float>(vec);
+    }
+    for(auto i = 0; i < elements; ++i)
+        input[i] = FastInvsqrt(input[i]);
+    return input;
+}
+
+inline ulong VectorSumUnsigned(vector128_float vec, long esize, long count) {
+    switch(esize) {
+        case 8: {
+            auto bvec = reinterpret_cast<vector128_byte>(vec);
+            auto sum = 0UL;
+            for(auto i = 0; i < count; ++i)
+                sum += bvec[i];
+            return sum;
+        }
+        default: throw (boost::format("Unknown size for VectorSumUnsigned: %1%") % esize).str().c_str();
+    }
+}
+
+inline uint FloatToFixed32(float fvalue, int fbits) {
+    return (uint) (int) roundf(fvalue * (1 << fbits));
+}
+inline ulong FloatToFixed64(float fvalue, int fbits) {
+    return (ulong) (long) roundf(fvalue * (1 << fbits));
+}
+inline uint FloatToFixed32(double fvalue, int fbits) {
+    return (uint) (int) round(fvalue * (1 << fbits));
+}
+inline ulong FloatToFixed64(double fvalue, int fbits) {
+    return (ulong) (long) round(fvalue * (1 << fbits));
+}
+
+template <class T>
+inline byte CompareAndSwap(T* ptr, T value, T comparand) {
+    auto atomic = std::atomic(*ptr);
+    return std::atomic_compare_exchange_strong(&atomic, &value, comparand) ? 1 : 0;
+}

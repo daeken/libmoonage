@@ -1,0 +1,3464 @@
+(defm u1  (v) (cast v u1))
+(defm u8  (v) (cast v u8))
+(defm u16 (v) (cast v u16))
+(defm u32 (v) (cast v u32))
+(defm u64 (v) (cast v u64))
+(defm u128 (v) (cast v u128))
+
+(defm i8  (v) (cast v i8))
+(defm i16 (v) (cast v i16))
+(defm i32 (v) (cast v i32))
+(defm i64 (v) (cast v i64))
+(defm i128 (v) (cast v i128))
+
+(defm f32 (v) (cast v f32))
+(defm f64 (v) (cast v f64))
+
+(defm shift-string (shift) (match shift
+    0b00 "LSL"
+    0b01 "LSR"
+    0b10 "ASR"
+    "ROR"))
+
+(defm do-shift32 (value shift-type amount) (do-shift-common value shift-type amount u32 i32))
+(defm do-shift64 (value shift-type amount) (do-shift-common value shift-type amount u64 i64))
+(defm do-shift-common (value shift-type amount utype itype)
+    (match shift-type
+        0b00 (<< (utype value) amount)
+        0b01 (>> value amount)
+        0b10 (utype (>> (itype value) amount))
+        (>>> value amount)))
+
+(defm add-with-carry-set-nzcv32 (operand1 operand2 carryIn)
+    (add-with-carry-set-nzcv-common operand1 operand2 carryIn i32 u32 u64))
+(defm add-with-carry-set-nzcv64 (operand1 operand2 carryIn)
+    (add-with-carry-set-nzcv-common operand1 operand2 carryIn i64 u64 u128))
+(defm add-with-carry-set-nzcv-common (operand1 operand2 carryIn stype utype butype)
+    (block
+        (let $operand1 (utype operand1)) (let $operand2 (utype operand2)) (let $carryIn (utype carryIn))
+        (let bits (bitwidth utype)) (let bits1 (- bits 1))
+        
+        (let usum (+ (+ $operand1 $operand2) $carryIn))
+        (let ssum (+ (+ (stype $operand1) (stype $operand2)) (stype $carryIn)))
+        (= (nzcv n) (>> usum bits1))
+        (= (nzcv z) (== usum 0))
+        (= (nzcv c) (& (u32 (>> (+ (+ (butype $operand1) (butype $operand2)) (butype $carryIn)) bits)) 1))
+        (= (nzcv v) (& (== (>> $operand1 bits1) (>> $operand2 bits1)) (!= (>> usum bits1) (>> $operand1 bits1))))
+        usum))
+
+(defm fcmp (_a _b)
+    (let $a _a (let $b _b)
+        (= (nzcv) (u32 (<<
+            (if (| (NaN? $a) (NaN? $b)) 0b0011
+            (if (== $a $b) 0b0110
+            (if (< $a $b) 0b1000
+            0b0010))) 28)))))
+    
+(def ADCS
+    "s 0 1 11010000 mmmmm 000000 nnnnn ddddd"
+    "adcs $r$rd, $r$rn, $r$rm"
+    (names (size s) (rm m) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (= (gpr32 rd) (add-with-carry-set-nzcv32 (gpr32 rn) (gpr32 rm) (nzcv c)))
+        (= (gpr64 rd) (add-with-carry-set-nzcv64 (gpr64 rn) (gpr64 rm) (nzcv c)))))
+
+(def ADD-extended-register
+    "s 0 0 01011 00 1 mmmmm ooo iii nnnnn ddddd"
+    "add $r1$rd, $r1$rn, $r2$rm, $extend #$imm"
+    (names (size s) (rm m) (option o) (imm i) (rn n) (rd d))
+    (block
+        (let r1 (if (== size 0) "W" "X"))
+        (let r2 (if (== (& option 0b011) 0b011) "X" "W"))
+        (let extend (if (== size 0)
+            (match option
+                0b000 "UXTB"
+                0b001 "UXTH"
+                0b010 "LSL"
+                0b011 "UXTX"
+                0b100 "SXTB"
+                0b101 "SXTH"
+                0b110 "SXTW"
+                "SXTX")
+            (match option
+                0b000 "UXTB"
+                0b001 "UXTH"
+                0b010 "UXTW"
+                0b011 "LSL"
+                0b100 "SXTB"
+                0b101 "SXTH"
+                0b110 "SXTW"
+                "SXTX"))))
+    (if (== size 0)
+        (let m (gpr32 rm)
+            (= (gpr-or-sp32 rd) (+ (gpr-or-sp32 rn) (<< (match option
+                0b000 (& m 0xFF)
+                0b001 (& m 0xFFFF)
+                0b100 (u32 (signext (u8 m) i32))
+                0b101 (u32 (signext (u16 m) i32))
+                m) imm))))
+        (if (== (& option 0b011) 0b011)
+            (= (gpr-or-sp64 rd) (+ (gpr-or-sp64 rn) (<< (gpr64 rm) imm)))
+            (let m (u64 (gpr32 rm))
+                (= (gpr-or-sp64 rd) (+ (gpr-or-sp64 rn) (<< (match option
+                    0b000 (& m 0xFF)
+                    0b001 (& m 0xFFFF)
+                    0b010 (& m 0xFFFFFFFF)
+                    0b100 (u64 (signext (u8 m) i64))
+                    0b101 (u64 (signext (u16 m) i64))
+                    0b110 (u64 (signext (u32 m) i64))
+                    m) imm)))))))
+
+(def ADD-immediate
+    "f 0 0 10001 0s iiiiiiiiiiii nnnnn ddddd"
+    "add $r$rd, $r$rn, #$imm, LSL #$shift"
+    (names (size f) (sh s) (imm i) (rd d) (rn n))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shift (if (== sh 0) 0 12))
+        (let simm (<< (u32 imm) shift)))
+    (if (== size 0)
+        (= (gpr-or-sp32 rd) (+ (gpr-or-sp32 rn) simm))
+        (= (gpr-or-sp64 rd) (+ (gpr-or-sp64 rn) simm))))
+
+(def ADD-shifted-register
+    "f 0 0 01011 ss 0 mmmmm iiiiii nnnnn ddddd"
+    "add $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
+    (names (size f) (shift s) (imm i) (rd d) (rn n) (rm m))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shiftstr (shift-string shift)))
+    (if (== size 0)
+        (= (gpr-or-sp32 rd) (+ (gpr-or-sp32 rn) (do-shift32 (gpr-or-sp32 rm) shift imm)))
+        (= (gpr-or-sp64 rd) (+ (gpr-or-sp64 rn) (do-shift64 (gpr-or-sp64 rm) shift imm)))))
+
+(def ADD-vector
+    "0 Q 0 01110 ss 1 mmmmm 10000 1 nnnnn ddddd"
+    "add V$rd.$ts, V$rn.$ts, V$rm.$ts"
+    (names (Q Q) (size s) (rm m) (rn n) (rd d))
+    (let ts (match (: size Q)
+        0b00_0 "8B"
+        0b00_1 "16B"
+        0b01_0 "4H"
+        0b01_1 "8H"
+        0b10_0 "2S"
+        0b10_1 "4S"
+        0b11_1 "2D"
+        (unimplemented)))
+    (let v (match size
+            0b00 (vec-uint+ (vec rn) (vec rm) 8)
+            0b01 (vec-uint+ (vec rn) (vec rm) 16)
+            0b10 (vec-uint+ (vec rn) (vec rm) 32)
+            0b11 (vec-uint+ (vec rn) (vec rm) 64)
+            (unimplemented))
+        (= (vec rd) (if Q v (vector-zero-top v)))))
+
+(def ADDS-immediate
+    "f 0 1 10001 0s iiiiiiiiiiii nnnnn ddddd"
+    "adds $r$rd, $r$rn, #$imm, LSL #$shift"
+    (names (size f) (sh s) (imm i) (rd d) (rn n))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shift (if (== sh 0) 0 12))
+        (let simm (<< (u32 imm) shift)))
+    (if (== size 0)
+        (= (gpr32 rd) (add-with-carry-set-nzcv32 (gpr-or-sp32 rn) simm 0))
+        (= (gpr64 rd) (add-with-carry-set-nzcv64 (gpr-or-sp64 rn) simm 0))))
+
+(def ADDS-shifted-register
+    "f 0 1 01011 ss 0 mmmmm iiiiii nnnnn ddddd"
+    "adds $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
+    (names (size f) (shift s) (rm m) (imm i) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shiftstr (shift-string shift)))
+    (if (== size 0)
+        (= (gpr32 rd) (add-with-carry-set-nzcv32 (gpr32 rn) (do-shift32 (gpr32 rm) shift imm) 0))
+        (= (gpr64 rd) (add-with-carry-set-nzcv64 (gpr64 rn) (do-shift64 (gpr64 rm) shift imm) 0))))
+
+(def ADRP
+    "1 ll 10000 iiiiiiiiiiiiiiiiiii ddddd"
+    "adrp X$rd, #$addr"
+    (names (immlo l) (immhi i) (rd d))
+    (block
+        (let imm (signext (: immhi immlo (cast 0b0000_0000_0000 u12)) i64))
+        (let addr (+ (: (cast (>> (pc) 12) u52) (cast 0b0000_0000_0000 u12)) imm)))
+    (= (gpr64 rd) addr))
+
+(def AND-immediate
+    "f 00 100100 u iiiiii ssssss nnnnn ddddd"
+    "and $r$rd, $r$rn, #$imm"
+    (names (size f) (up u) (immr i) (imms s) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let imm (make-wmask up imms immr 1 (if (== size 0) 32 64))))
+    (if (== size 0)
+        (= (gpr-or-sp32 rd) (& (gpr32 rn) (u32 imm)))
+        (= (gpr-or-sp64 rd) (& (gpr64 rn) imm))))
+
+(def AND-shifted-register
+    "f 00 01010 ss 0 mmmmm iiiiii nnnnn ddddd"
+    "and $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
+    (names (size f) (shift s) (rm m) (imm i) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shiftstr (shift-string shift)))
+    (if (== size 0)
+        (= (gpr32 rd) (& (gpr32 rn) (do-shift32 (gpr32 rm) shift imm)))
+        (= (gpr64 rd) (& (gpr64 rn) (do-shift64 (gpr64 rm) shift imm)))))
+
+(def ANDS-shifted-register
+    "f 11 01010 ss 0 mmmmm iiiiii nnnnn ddddd"
+    "ands $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
+    (names (size f) (shift s) (imm i) (rm m) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shiftstr (shift-string shift)))
+    (if (== size 0)
+        (let result (& (gpr32 rn) (do-shift32 (gpr32 rm) shift imm))
+            (= (gpr32 rd) result)
+            (= (nzcv n) (>> result 31))
+            (= (nzcv z) (== result 0))
+            (= (nzcv c) 0)
+            (= (nzcv v) 0))
+        (let result (& (gpr64 rn) (do-shift64 (gpr64 rm) shift imm))
+            (= (gpr64 rd) result)
+            (= (nzcv n) (>> result 63))
+            (= (nzcv z) (== result 0))
+            (= (nzcv c) 0)
+            (= (nzcv v) 0))))
+
+(def ANDS-immediate
+    "f 11 100100 u rrrrrr ssssss nnnnn ddddd"
+    "ands $r$rd, $r$rn, #$imm"
+    (names (size f) (up u) (immr r) (imms s) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let imm (make-wmask up imms immr 1 (if (== size 0) 32 64))))
+    (if (== size 0)
+        (let result (& (gpr32 rn) imm)
+            (= (gpr32 rd) result)
+            (= (nzcv n) (>> result 31))
+            (= (nzcv z) (== result 0))
+            (= (nzcv c) 0)
+            (= (nzcv v) 0))
+        (let result (& (gpr64 rn) imm)
+            (= (gpr64 rd) result)
+            (= (nzcv n) (>> result 63))
+            (= (nzcv z) (== result 0))
+            (= (nzcv c) 0)
+            (= (nzcv v) 0))))
+
+(def ASRV
+    "s 0 0 11010110 mmmmm 0010 10 nnnnn ddddd"
+    "asrv $r$rd, $r$rn, $r$rm"
+    (names (size s) (rd d) (rn n) (rm m))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (= (gpr32 rd) (u32 (>> (i32 (gpr32 rn)) (% (gpr32 rm) 32))))
+        (= (gpr64 rd) (u64 (>> (i64 (gpr64 rn)) (% (gpr64 rm) 64))))))
+
+(def B
+    "0 00101 iiiiiiiiiiiiiiiiiiiiiiiiii"
+    "b #$addr"
+    (names (imm i))
+    (let addr (+ (pc) (signext (<< (cast imm u28) 2) i64)))
+    (branch addr))
+
+(def B.cond
+    "0101010 0 iiiiiiiiiiiiiiiiiii 0 cccc"
+    "b.$condstr #$addr"
+    (names (imm i) (cond c))
+    (block
+        (let addr (+ (pc) (signext (<< (cast imm u21) 2) i64)))
+        (let condstr (match cond
+            0b0000 "EQ" 0b0001 "NE"
+            0b0010 "CS" 0b0011 "CC"
+            0b0100 "MI" 0b0101 "PL"
+            0b0110 "VS" 0b0111 "VC"
+            0b1000 "HI" 0b1001 "LS"
+            0b1010 "GE" 0b1011 "LT"
+            0b1100 "GT" 0b1101 "LE"
+            "AL")))
+    (block
+        (let result (match (>> cond 1)
+            0b000 (nzcv z)
+            0b001 (nzcv c)
+            0b010 (nzcv n)
+            0b011 (nzcv v)
+            0b100 (& (nzcv c) (! (nzcv z)))
+            0b101 (== (nzcv n) (nzcv v))
+            0b110 (& (== (nzcv n) (nzcv v)) (! (nzcv z)))
+            1))
+        (if (if (& (& cond 1) (!= cond 0b1111)) (! result) result)
+            (branch addr)
+            (branch-default))))
+
+(def BFM
+    "f 01 100110 o pppppp ssssss nnnnn ddddd"
+    "bfm $r$rd, $r$rn, #$immr, #$imms"
+    (names (N o) (size f) (immr p) (imms s) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (block
+            (let dst (gpr32 rd))
+            (let src (gpr32 rn))
+            (let wmask (u32 (make-wmask N imms immr 0 32)))
+            (let tmask (u32 (make-tmask N imms immr 0 32)))
+            (let bot (| (& dst (~ wmask)) (& (>>> src immr) wmask)))
+            (= (gpr32 rd) (| (& dst (~ tmask)) (& bot tmask))))
+        (block
+            (let dst (gpr64 rd))
+            (let src (gpr64 rn))
+            (let wmask (make-wmask N imms immr 0 64))
+            (let tmask (make-tmask N imms immr 0 64))
+            (let bot (| (& dst (~ wmask)) (& (>>> src immr) wmask)))
+            (= (gpr64 rd) (| (& dst (~ tmask)) (& bot tmask))))))
+
+(def BIC
+    "f 00 01010 ss 1 mmmmm iiiiii nnnnn ddddd"
+    "bic $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
+    (names (size f) (shift s) (rm m) (imm i) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shiftstr (shift-string shift)))
+    (if (== size 0)
+        (= (gpr32 rd) (& (gpr32 rn) (~ (do-shift32 (gpr32 rm) shift imm))))
+        (= (gpr64 rd) (& (gpr64 rn) (~ (do-shift64 (gpr64 rm) shift imm))))))
+
+(def BIC-vector-register
+    "0 Q 0 01110 01 1 mmmmm 00011 1 nnnnn ddddd"
+    "bic V$rd.$t, V$rn.$t, V$rm.$t"
+    (names (Q Q) (rm m) (rn n) (rd d))
+    (let t (if (== Q 1) "16B" "8B"))
+    (let v (vec&~ (vec rn) (vec rm))
+        (if (== Q 1)
+            (= (vec rd) v)
+            (= (vec rd) (vector-zero-top v)))))
+
+(def BL
+    "1 00101 iiiiiiiiiiiiiiiiiiiiiiiiii"
+    "bl #$addr"
+    (names (imm i))
+    (block
+        (let offset (signext (<< (cast imm u28) 2) i64))
+        (let addr (+ (pc) offset)))
+    (branch-linked addr))
+
+(def BLR
+    "1101011 0 0 01 11111 0000 0 0 nnnnn 00000"
+    "blr X$rn"
+    (names (rn n))
+    (block)
+    (branch-linked-register rn))
+
+(def BR
+    "1101011 0 0 00 11111 0000 0 0 nnnnn 00000"
+    "br X$rn"
+    (names (rn n))
+    (block)
+    (branch-register rn))
+
+(def CASP
+    "0 f 001000 0 0 1 sssss 0 11111 nnnnn ttttt"
+    "casp $r$rs, $r$rs2, $r$rt, $r$rt2, [X$rn]"
+    (names (size f) (rs s) (rn n) (rt t))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let rs2 (+ rs 1))
+        (let rt2 (+ rt 1)))
+    (unimplemented))
+
+(def CASPA
+    "0 f 001000 0 1 1 sssss 0 11111 nnnnn ttttt"
+    "caspa $r$rs, $r$rs2, $r$rt, $r$rt2, [X$rn]"
+    (names (size f) (rs s) (rn n) (rt t))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let rs2 (+ rs 1))
+        (let rt2 (+ rt 1)))
+    (unimplemented))
+
+(def CASPAL
+    "0 f 001000 0 1 1 sssss 1 11111 nnnnn ttttt"
+    "caspal $r$rs, $r$rs2, $r$rt, $r$rt2, [X$rn]"
+    (names (size f) (rs s) (rn n) (rt t))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let rs2 (+ rs 1))
+        (let rt2 (+ rt 1)))
+    (if (== size 0)
+        (block
+            (let cl (gpr32 rs))
+            (let ch (gpr32 (+ rs 1)))
+            (let nl (gpr32 rt))
+            (let nh (gpr32 (+ rt 1)))
+            (let address (gpr-or-sp64 rn))
+            (let data (load address u64))
+            (if (== data (| (<< (u64 ch) 32) (u64 cl)))
+                (store address (| (<< (u64 nh) 32) (u64 nl)))
+                (block))
+            (= (gpr32 rs) (u32 data))
+            (= (gpr32 (+ rs 1)) (u32 (>> data 32))))
+        (block
+            (let cl (gpr64 rs))
+            (let ch (gpr64 (+ rs 1)))
+            (let nl (gpr64 rt))
+            (let nh (gpr64 (+ rt 1)))
+            (let address (gpr-or-sp64 rn))
+            (let dl (load address u64))
+            (let dh (load (+ address 8) u64))
+            (if (& (== dl cl) (== dh ch))
+                (block
+                    (store address nl)
+                    (store (+ address 8) nh))
+                (block))
+            (= (gpr64 rs) dl)
+            (= (gpr64 (+ rs 1)) dh))))
+
+(def CASPL
+    "0 f 001000 0 0 1 sssss 1 11111 nnnnn ttttt"
+    "caspl $r$rs, $r$rs2, $r$rt, $r$rt2, [X$rn]"
+    (names (size f) (rs s) (rn n) (rt t))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let rs2 (+ rs 1))
+        (let rt2 (+ rt 1)))
+    (unimplemented))
+
+(def CBNZ
+    "s 011010 1 iiiiiiiiiiiiiiiiiii ttttt"
+    "cbnz $r$rs, #$addr"
+    (names (size s) (imm i) (rs t))
+    (block
+         (let r (if (== size 0) "W" "X"))
+         (let addr (+ (pc) (signext (cast (<< imm 2) u21) i64))))
+    (if (== size 0)
+        (if (!= (gpr32 rs) (u32 0))
+            (branch addr)
+            (branch-default))
+        (if (!= (gpr64 rs) (u64 0))
+            (branch addr)
+            (branch-default))))
+
+(def CBZ
+    "s 011010 0 iiiiiiiiiiiiiiiiiii ttttt"
+    "cbz $r$rs, #$addr"
+    (names (size s) (imm i) (rs t))
+    (block
+         (let r (if (== size 0) "W" "X"))
+         (let addr (+ (pc) (signext (cast (<< imm 2) u21) i64))))
+    (if (== size 0)
+        (if (== (gpr32 rs) (u32 0))
+            (branch addr)
+            (branch-default))
+        (if (== (gpr64 rs) (u64 0))
+            (branch addr)
+            (branch-default))))
+
+(def CCMN-immediate
+    "s 0 1 11010010 iiiii cccc 1 0 nnnnn 0 zzzz"
+    "ccmn $r$rn, #$imm, #$nzcv, $condstr"
+    (names (size s) (imm i) (cond c) (rn n) (nzcv z))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let condstr (match cond
+            0b0000 "EQ" 0b0001 "NE"
+            0b0010 "CS" 0b0011 "CC"
+            0b0100 "MI" 0b0101 "PL"
+            0b0110 "VS" 0b0111 "VC"
+            0b1000 "HI" 0b1001 "LS"
+            0b1010 "GE" 0b1011 "LT"
+            0b1100 "GT" 0b1101 "LE"
+            "AL")))
+    (let result (match (>> cond 1)
+            0b000 (nzcv z)
+            0b001 (nzcv c)
+            0b010 (nzcv n)
+            0b011 (nzcv v)
+            0b100 (& (nzcv c) (! (nzcv z)))
+            0b101 (== (nzcv n) (nzcv v))
+            0b110 (& (== (nzcv n) (nzcv v)) (! (nzcv z)))
+            1)
+        (if (if (& (& cond 1) (!= cond 0b1111)) (! result) result)
+            (if (== size 0)
+                (= (gpr32 31) (add-with-carry-set-nzcv32 (gpr32 rn) (u32 imm) 0))
+                (= (gpr64 31) (add-with-carry-set-nzcv64 (gpr64 rn) (u64 imm) 0)))
+            (= (nzcv) (<< (u64 nzcv) 28)))))
+
+(def CCMP-immediate
+    "s 1 1 11010010 iiiii cccc 1 0 nnnnn 0 zzzz"
+    "ccmp $r$rn, #$imm, #$nzcv, $condstr"
+    (names (size s) (imm i) (cond c) (rn n) (nzcv z))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let condstr (match cond
+            0b0000 "EQ" 0b0001 "NE"
+            0b0010 "CS" 0b0011 "CC"
+            0b0100 "MI" 0b0101 "PL"
+            0b0110 "VS" 0b0111 "VC"
+            0b1000 "HI" 0b1001 "LS"
+            0b1010 "GE" 0b1011 "LT"
+            0b1100 "GT" 0b1101 "LE"
+            "AL")))
+    (let result (match (>> cond 1)
+            0b000 (nzcv z)
+            0b001 (nzcv c)
+            0b010 (nzcv n)
+            0b011 (nzcv v)
+            0b100 (& (nzcv c) (! (nzcv z)))
+            0b101 (== (nzcv n) (nzcv v))
+            0b110 (& (== (nzcv n) (nzcv v)) (! (nzcv z)))
+            1)
+        (if (if (& (& cond 1) (!= cond 0b1111)) (! result) result)
+            (if (== size 0)
+                (= (gpr32 31) (add-with-carry-set-nzcv32 (gpr32 rn) (~ (u32 imm)) 1))
+                (= (gpr64 31) (add-with-carry-set-nzcv64 (gpr64 rn) (~ (u64 imm)) 1)))
+            (= (nzcv) (<< (u64 nzcv) 28)))))
+
+(def CCMP-register
+    "s 1 1 11010010 mmmmm cccc 0 0 nnnnn 0 zzzz"
+    "ccmp $r$rn, $r$rm, #$nzcv, $condstr"
+    (names (size s) (rm m) (cond c) (rn n) (nzcv z))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let condstr (match cond
+            0b0000 "EQ" 0b0001 "NE"
+            0b0010 "CS" 0b0011 "CC"
+            0b0100 "MI" 0b0101 "PL"
+            0b0110 "VS" 0b0111 "VC"
+            0b1000 "HI" 0b1001 "LS"
+            0b1010 "GE" 0b1011 "LT"
+            0b1100 "GT" 0b1101 "LE"
+            "AL")))
+    (let result (match (>> cond 1)
+            0b000 (nzcv z)
+            0b001 (nzcv c)
+            0b010 (nzcv n)
+            0b011 (nzcv v)
+            0b100 (& (nzcv c) (! (nzcv z)))
+            0b101 (== (nzcv n) (nzcv v))
+            0b110 (& (== (nzcv n) (nzcv v)) (! (nzcv z)))
+            1)
+        (if (if (& (& cond 1) (!= cond 0b1111)) (! result) result)
+            (if (== size 0)
+                (= (gpr32 31) (add-with-carry-set-nzcv32 (gpr32 rn) (~ (gpr32 rm)) 1))
+                (= (gpr64 31) (add-with-carry-set-nzcv64 (gpr64 rn) (~ (gpr64 rm)) 1)))
+            (= (nzcv) (<< (u64 nzcv) 28)))))
+
+(def CLREX
+    "1101010100 0 00 011 0011 mmmm 010 11111"
+    "clrex"
+    (names (crm m))
+    (block)
+    (block))
+
+(def CLZ
+    "s 1 0 11010110 00000 00010 0 nnnnn ddddd"
+    "clz $r$rd, $r$rn"
+    (names (size s) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (= (gpr32 rd) (count-leading-zeros (gpr32 rn)))
+        (= (gpr64 rd) (count-leading-zeros (gpr64 rn)))))
+
+(def CNT
+    "0 q 0 01110 ss 10000 00101 10 nnnnn ddddd"
+    "cnt V$rd.$t, V$rn.$t"
+    (names (Q q) (size s) (rn n) (rd d))
+    (let t (match (: size Q)
+        0b00_0 "8B"
+        0b00_1 "16B"
+        (unimplemented)))
+    (= (vec rd) (vector-count-bits (vec rn) (match (: size Q) 0b00_0 8 16))))
+
+(def CSEL
+    "s 0 0 11010100 mmmmm cccc 0 0 nnnnn ddddd"
+    "csel $r$rd, $r$rn, $r$rm, $condstr"
+    (names (size s) (rm m) (cond c) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let condstr (match cond
+            0b0000 "EQ" 0b0001 "NE"
+            0b0010 "CS" 0b0011 "CC"
+            0b0100 "MI" 0b0101 "PL"
+            0b0110 "VS" 0b0111 "VC"
+            0b1000 "HI" 0b1001 "LS"
+            0b1010 "GE" 0b1011 "LT"
+            0b1100 "GT" 0b1101 "LE"
+            "AL")))
+    (let result (match (>> cond 1)
+            0b000 (nzcv z)
+            0b001 (nzcv c)
+            0b010 (nzcv n)
+            0b011 (nzcv v)
+            0b100 (& (nzcv c) (! (nzcv z)))
+            0b101 (== (nzcv n) (nzcv v))
+            0b110 (& (== (nzcv n) (nzcv v)) (! (nzcv z)))
+            1)
+        (if (if (& (& cond 1) (!= cond 0b1111)) (! result) result)
+            (if (== size 0)
+                (= (gpr32 rd) (gpr32 rn))
+                (= (gpr64 rd) (gpr64 rn)))
+            (if (== size 0)
+                (= (gpr32 rd) (gpr32 rm))
+                (= (gpr64 rd) (gpr64 rm))))))
+
+(def CSINC
+    "s 0 0 11010100 mmmmm cccc 0 1 nnnnn ddddd"
+    "csinc $r$rd, $r$rn, $r$rm, $condstr"
+    (names (size s) (rm m) (cond c) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let condstr (match cond
+            0b0000 "EQ" 0b0001 "NE"
+            0b0010 "CS" 0b0011 "CC"
+            0b0100 "MI" 0b0101 "PL"
+            0b0110 "VS" 0b0111 "VC"
+            0b1000 "HI" 0b1001 "LS"
+            0b1010 "GE" 0b1011 "LT"
+            0b1100 "GT" 0b1101 "LE"
+            "AL")))
+    (let result (match (>> cond 1)
+            0b000 (nzcv z)
+            0b001 (nzcv c)
+            0b010 (nzcv n)
+            0b011 (nzcv v)
+            0b100 (& (nzcv c) (! (nzcv z)))
+            0b101 (== (nzcv n) (nzcv v))
+            0b110 (& (== (nzcv n) (nzcv v)) (! (nzcv z)))
+            1)
+        (if (if (& (& cond 1) (!= cond 0b1111)) (! result) result)
+            (if (== size 0)
+                (= (gpr32 rd) (gpr32 rn))
+                (= (gpr64 rd) (gpr64 rn)))
+            (if (== size 0)
+                (= (gpr32 rd) (+ (gpr32 rm) (u32 1)))
+                (= (gpr64 rd) (+ (gpr64 rm) 1))))))
+
+(def CSINV
+    "s 1 0 11010100 mmmmm cccc 0 0 nnnnn ddddd"
+    "csinv $r$rd, $r$rn, $r$rm, $condstr"
+    (names (size s) (rm m) (cond c) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let condstr (match cond
+            0b0000 "EQ" 0b0001 "NE"
+            0b0010 "CS" 0b0011 "CC"
+            0b0100 "MI" 0b0101 "PL"
+            0b0110 "VS" 0b0111 "VC"
+            0b1000 "HI" 0b1001 "LS"
+            0b1010 "GE" 0b1011 "LT"
+            0b1100 "GT" 0b1101 "LE"
+            "AL")))
+    (let result (match (>> cond 1)
+            0b000 (nzcv z)
+            0b001 (nzcv c)
+            0b010 (nzcv n)
+            0b011 (nzcv v)
+            0b100 (& (nzcv c) (! (nzcv z)))
+            0b101 (== (nzcv n) (nzcv v))
+            0b110 (& (== (nzcv n) (nzcv v)) (! (nzcv z)))
+            1)
+        (if (if (& (& cond 1) (!= cond 0b1111)) (! result) result)
+            (if (== size 0)
+                (= (gpr32 rd) (gpr32 rn))
+                (= (gpr64 rd) (gpr64 rn)))
+            (if (== size 0)
+                (= (gpr32 rd) (~ (gpr32 rm)))
+                (= (gpr64 rd) (~ (gpr64 rm)))))))
+
+(def CSNEG
+    "s 1 0 11010100 mmmmm cccc 0 1 nnnnn ddddd"
+    "csneg $r$rd, $r$rn, $r$rm, $condstr"
+    (names (size s) (rm m) (cond c) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let condstr (match cond
+            0b0000 "EQ" 0b0001 "NE"
+            0b0010 "CS" 0b0011 "CC"
+            0b0100 "MI" 0b0101 "PL"
+            0b0110 "VS" 0b0111 "VC"
+            0b1000 "HI" 0b1001 "LS"
+            0b1010 "GE" 0b1011 "LT"
+            0b1100 "GT" 0b1101 "LE"
+            "AL")))
+    (let result (match (>> cond 1)
+            0b000 (nzcv z)
+            0b001 (nzcv c)
+            0b010 (nzcv n)
+            0b011 (nzcv v)
+            0b100 (& (nzcv c) (! (nzcv z)))
+            0b101 (== (nzcv n) (nzcv v))
+            0b110 (& (== (nzcv n) (nzcv v)) (! (nzcv z)))
+            1)
+        (if (if (& (& cond 1) (!= cond 0b1111)) (! result) result)
+            (if (== size 0)
+                (= (gpr32 rd) (gpr32 rn))
+                (= (gpr64 rd) (gpr64 rn)))
+            (if (== size 0)
+                (= (gpr32 rd) (u32 (-! (i32 (gpr32 rm)))))
+                (= (gpr64 rd) (u64 (-! (i64 (gpr64 rm)))))))))
+
+(def DMB
+    "1101010100 0 00 011 0011 mmmm 1 01 11111"
+    "DMB $option"
+    (names (m m))
+    (let option (match m
+        0b1111 "SY"
+        0b1110 "ST"
+        0b1101 "LD"
+        0b1011 "ISH"
+        0b1010 "ISHST"
+        0b1001 "ISHLD"
+        0b0111 "NSH"
+        0b0110 "NSHST"
+        0b0101 "NSHLD"
+        0b0011 "OSH"
+        0b0010 "OSHST"
+        "OSHLD"))
+    (block))
+
+(def DSB
+    "1101010100 0 00 011 0011 mmmm 1 00 11111"
+    "DSB $option"
+    (names (crm m))
+    (let option (match crm
+        0b1111 "SY"
+        0b1110 "ST"
+        0b1101 "LD"
+        0b1011 "ISH"
+        0b1010 "ISHST"
+        0b1001 "ISHLD"
+        0b0111 "NSH"
+        0b0110 "NSHST"
+        0b0101 "NSHLD"
+        0b0011 "OSH"
+        0b0010 "OSHST"
+        "OSHLD"))
+    (block))
+
+(def DUP-general
+    "0 p 0 01110000 iiiii 0 0001 1 nnnnn ddddd"
+    "dup V$rd.$T, $r$rn"
+    (names (Q p) (imm i) (rn n) (rd d))
+    (block
+        (let size (if (== (& imm 0b01111) 0) (unimplemented) (if (== (& imm 0b01111) 0b01000) 64 32)))
+        (let r (if (== size 64) "X" "W"))
+        (let T
+            (if (== (& imm 0b01111) 0) (unimplemented)
+            (if (== (& imm 0b00001) 0b0001) (if Q "16B" "8B")
+            (if (== (& imm 0b00011) 0b0010) (if Q "8H" "4H")
+            (if (== (& imm 0b00111) 0b0100) (if Q "4S" "2S")
+            (if Q "2D" (unimplemented))))))))
+    (let src (gpr64 rn)
+        (= (vec rd)
+            (if (== (& imm 0b00001) 0b0001) (if Q
+                (vector-all (u8 src))
+                (vector-zero-top (vector-all (u8 src))))
+            (if (== (& imm 0b00011) 0b0010) (if Q
+                (vector-all (u16 src))
+                (vector-zero-top (vector-all (u16 src))))
+            (if (== (& imm 0b00111) 0b0100) (if Q
+                (vector-all (u32 src))
+                (vector-zero-top (vector-all (u32 src))))
+            (if Q (vector-all src) (unimplemented))))))))
+
+(def DUP-element-scalar
+    "01 0 11110000 iiiii 0 0000 1 nnnnn ddddd"
+    "dup $r$rd, V$rn.$r[$index]"
+    (names (imm i) (rn n) (rd d))
+    (block
+        (let r "") (let size 0) (let index (u32 0))
+        (if (== (& imm 0b01111) 0) (unimplemented)
+        (if (== (& imm 0b00001) 0b0001) (block (= r "B") (= size 8) (= index (>> imm 1)))
+        (if (== (& imm 0b00011) 0b0010) (block (= r "H") (= size 16) (= index (>> imm 2)))
+        (if (== (& imm 0b00111) 0b0100) (block (= r "S") (= size 32) (= index (>> imm 3)))
+        (block (= r "D") (= size 64) (= index (>> imm 4))))))))
+    (match size
+        8 (= (vec-b rd) (vector-element (vec rn) index u8))
+        16 (= (vec-h rd) (vector-element (vec rn) index u16))
+        32 (= (vec-s rd) (vector-element (vec rn) index f32))
+        64 (= (vec-d rd) (vector-element (vec rn) index f64))
+        (unimplemented)))
+
+(def EON-shifted-register
+    "f 10 01010 ss 1 mmmmm iiiiii nnnnn ddddd"
+    "eon $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
+    (names (size f) (shift s) (rm m) (imm i) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shiftstr (shift-string shift)))
+    (if (== size 0)
+        (= (gpr32 rd) (^ (gpr32 rn) (~ (do-shift32 (gpr32 rm) shift imm))))
+        (= (gpr64 rd) (^ (gpr64 rn) (~ (do-shift64 (gpr64 rm) shift imm))))))
+
+(def EOR-immediate
+    "f 10 100100 u iiiiii ssssss nnnnn ddddd"
+    "and $r$rd, $r$rn, #$imm"
+    (names (size f) (up u) (immr i) (imms s) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let imm (make-wmask up imms immr 1 (if (== size 0) 32 64))))
+    (if (== size 0)
+        (= (gpr-or-sp32 rd) (^ (gpr32 rn) (u32 imm)))
+        (= (gpr-or-sp64 rd) (^ (gpr64 rn) imm))))
+
+(def EOR-shifted-register
+    "f 10 01010 ss 0 mmmmm iiiiii nnnnn ddddd"
+    "eor $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
+    (names (size f) (shift s) (rm m) (imm i) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shiftstr (shift-string shift)))
+    (if (== size 0)
+        (= (gpr32 rd) (^ (gpr32 rn) (do-shift32 (gpr32 rm) shift imm)))
+        (= (gpr64 rd) (^ (gpr64 rn) (do-shift64 (gpr64 rm) shift imm)))))
+
+(def EXT
+    "0 Q 101110 00 0 mmmmm 0 iiii 0 nnnnn ddddd"
+    "ext V$rd.$ts, V$rn.$ts, V$rm.$ts, #$index"
+    (names (Q Q) (rm m) (index i) (rn n) (rd d))
+    (let ts (if Q "16B" "8B"))
+    (= (vec rd) (vector-extract (vec rn) (vec rm) Q index)))
+
+(def EXTR
+    "f 00 100111 o 0 mmmmm ssssss nnnnn ddddd"
+    "extr $r$rd, $r$rn, $r$rm, #$lsb"
+    (names (size f) (o o) (rm m) (lsb s) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (= (gpr32 rd) (| (<< (gpr32 rn) (- 32 lsb)) (>> (gpr32 rm) lsb)))
+        (= (gpr64 rd) (| (<< (gpr64 rn) (- 64 lsb)) (>> (gpr64 rm) lsb)))))
+
+(def FABS-scalar
+    "0 0 0 11110 tt 1 0000 01 10000 nnnnn ddddd"
+    "fabs $r$rd, $r$rn"
+    (names (type t) (rn n) (rd d))
+    (let r (match type
+        0b00 "S"
+        0b01 "D"
+        (unimplemented)))
+    (match type
+        0b00 (= (vec-s rd) (abs (vec-s rn)))
+        0b01 (= (vec-d rd) (abs (vec-d rn)))
+        (unimplemented)))
+
+(def FABS-vector
+    "0 Q 0 01110 1 s 10000 01111 10 nnnnn ddddd"
+    "fabs V$rd.$t, V$rn.$t"
+    (names (Q Q) (size s) (rn n) (rd d))
+    (let t (match (: size Q)
+        0b00 "2S"
+        0b01 "4S"
+        0b11 "2D"
+        (unimplemented)))
+    (match (: size Q)
+        0b00 (mlet (a (vector-element (vec rn) 0 f32) b (vector-element (vec rn) 1 f32))
+            (= (vec rd) (vector-all (f32 0)))
+            (vector-insert rd 0 (abs a))
+            (vector-insert rd 1 (abs b)))
+        0b01 (mlet (
+                a (vector-element (vec rn) 0 f32) b (vector-element (vec rn) 1 f32)
+                c (vector-element (vec rn) 2 f32) d (vector-element (vec rn) 3 f32))
+            (= (vec rd) (vector-all (f32 0)))
+            (vector-insert rd 0 (abs a))
+            (vector-insert rd 1 (abs b))
+            (vector-insert rd 2 (abs c))
+            (vector-insert rd 3 (abs d)))
+        0b11 (mlet (a (vector-element (vec rn) 0 f64) b (vector-element (vec rn) 1 f64))
+            (= (vec rd) (vector-all (f64 0)))
+            (vector-insert rd 0 (abs a))
+            (vector-insert rd 1 (abs b)))
+        (unimplemented)))
+
+(def FADD-scalar
+    "0 0 0 11110 tt 1 mmmmm 001 0 10 nnnnn ddddd"
+    "fadd $r$rd, $r$rn, $r$rm"
+    (names (type t) (rm m) (rn n) (rd d))
+    (let r (match type
+        0b11 "H"
+        0b00 "S"
+        0b01 "D"
+        (unimplemented)))
+    (match type
+        0b11 (= (vec-h rd) (u16 (+ (vec-h rn) (vec-h rm))))
+        0b00 (= (vec-s rd) (+ (vec-s rn) (vec-s rm)))
+        0b01 (= (vec-d rd) (+ (vec-d rn) (vec-d rm)))
+        (unimplemented)))
+
+(def FADD-vector
+    "0 Q 0 01110 0 s 1 mmmmm 11010 1 nnnnn ddddd"
+    "fadd V$rd.$ts, V$rn.$ts, V$rm.$ts"
+    (names (Q Q) (size s) (rm m) (rn n) (rd d))
+    (let ts (match (: size Q)
+        0b00 "2S"
+        0b01 "4S"
+        0b11 "2D"
+        (unimplemented)))
+    (match (: size Q)
+        0b00 (= (vec rd) (vector-zero-top (vec+ (vec rn) (vec rm) 32)))
+        0b01 (= (vec rd) (vec+ (vec rn) (vec rm) 32))
+        0b11 (= (vec rd) (vec+ (vec rn) (vec rm) 64))
+        (unimplemented)))
+
+(def FADDP-scalar
+    "01 1 11110 0 s 11000 01101 10 nnnnn ddddd"
+    "faddp $r$rd, V$rn.2$r"
+    (names (size s) (rn n) (rd d))
+    (let r (if (== size 0) "S" "D"))
+    (if (== size 0)
+        (= (vec-s rd) (+ (vector-element (vec rn) 0 f32) (vector-element (vec rn) 1 f32)))
+        (= (vec-d rd) (+ (vector-element (vec rn) 0 f64) (vector-element (vec rn) 1 f64)))))
+
+(def FADDP-vector
+    "0 Q 1 01110 0 s 1 mmmmm 11010 1 nnnnn ddddd"
+    "faddp V$rd.$t, V$rn.$t, V$rm.$t"
+    (names (Q Q) (size s) (rm m) (rn n) (rd d))
+    (let t (match (: size Q)
+        0b00 "2S"
+        0b01 "4S"
+        0b11 "2D"
+        (unimplemented)))
+    (block
+        (match (: size Q)
+            0b00 (mlet (
+                    a (vector-element (vec rn) 0 f32) b (vector-element (vec rn) 1 f32) 
+                    c (vector-element (vec rm) 0 f32) d (vector-element (vec rm) 1 f32))
+                (= (vec rd) (vector-all (f32 0))) 
+                (vector-insert rd 0 (+ a b))
+                (vector-insert rd 1 (+ c d)))
+            0b01 (mlet (
+                    a (vector-element (vec rn) 0 f32) b (vector-element (vec rn) 1 f32)
+                    c (vector-element (vec rn) 2 f32) d (vector-element (vec rn) 3 f32)
+                    e (vector-element (vec rm) 0 f32) f (vector-element (vec rm) 1 f32)
+                    g (vector-element (vec rm) 2 f32) h (vector-element (vec rm) 3 f32))
+                (= (vec rd) (vector-all (f32 0))) 
+                (vector-insert rd 0 (+ a b))
+                (vector-insert rd 1 (+ c d))
+                (vector-insert rd 2 (+ e f))
+                (vector-insert rd 3 (+ g h)))
+            0b11 (mlet (
+                    a (vector-element (vec rn) 0 f64) b (vector-element (vec rn) 1 f64) 
+                    c (vector-element (vec rm) 0 f64) d (vector-element (vec rm) 1 f64))
+                (= (vec rd) (vector-all (f32 0))) 
+                (vector-insert rd 0 (+ a b))
+                (vector-insert rd 1 (+ c d)))
+            (unimplemented))))
+
+(def FCCMP
+    "0 0 0 11110 tt 1 mmmmm cccc 01 nnnnn 0 vvvv"
+    "fccmp $r$rn, $r$rm, #$nzcv, $condstr"
+    (names (type t) (rm m) (rn n) (nzcv v) (cond c))
+    (block
+        (let r (match type
+            0b11 "H"
+            0b00 "S"
+            0b01 "D"
+            (unimplemented)))
+        (let condstr (match cond
+            0b0000 "EQ" 0b0001 "NE"
+            0b0010 "CS" 0b0011 "CC"
+            0b0100 "MI" 0b0101 "PL"
+            0b0110 "VS" 0b0111 "VC"
+            0b1000 "HI" 0b1001 "LS"
+            0b1010 "GE" 0b1011 "LT"
+            0b1100 "GT" 0b1101 "LE"
+            "AL")))
+    (let result (match (>> cond 1)
+            0b000 (nzcv z)
+            0b001 (nzcv c)
+            0b010 (nzcv n)
+            0b011 (nzcv v)
+            0b100 (& (nzcv c) (! (nzcv z)))
+            0b101 (== (nzcv n) (nzcv v))
+            0b110 (& (== (nzcv n) (nzcv v)) (! (nzcv z)))
+            1)
+        (if (if (& (& cond 1) (!= cond 0b1111)) (! result) result)
+            (match type
+                0b00 (fcmp (vec-s rn) (vec-s rm))
+                0b01 (fcmp (vec-d rn) (vec-d rm))
+                (unimplemented))
+            (= (nzcv) (<< (u64 nzcv) 28)))))
+
+(defm fcm-reg (a b itype ftype)
+    (match (: E U ac)
+        0b000 (if (== a b) (bitcast (itype -1) ftype) (bitcast (itype 0) ftype))
+        0b010 (if (>= a b) (bitcast (itype -1) ftype) (bitcast (itype 0) ftype))
+        0b011 (if (>= (abs a) (abs b)) (bitcast (itype -1) ftype) (bitcast (itype 0) ftype))
+        0b110 (if (>  a b) (bitcast (itype -1) ftype) (bitcast (itype 0) ftype))
+        0b111 (if (>  (abs a) (abs b)) (bitcast (itype -1) ftype) (bitcast (itype 0) ftype))
+        (unimplemented)))
+
+(def FCMxx-register-vector
+    "0 Q U 01110 E s 1 mmmmm 1110 a 1 nnnnn ddddd"
+    "FCM$top V$rd.$t, V$rn.$t, V$rm.$t"
+    (names (Q Q) (U U) (E E) (size s) (rm m) (ac a) (rn n) (rd d))
+    (block
+        (let top (match (: E U ac)
+            0b000 "EQ"
+            0b010 "GE"
+            0b011 "GE"
+            0b110 "GT"
+            0b111 "GT"
+            (unimplemented)))
+        (let t (match (: size Q)
+            0b00 "2S"
+            0b01 "4S"
+            0b11 "2D"
+            (unimplemented))))
+    (match (: size Q)
+        0b00 (let a1 (vector-element (vec rn) 0 f32) (let a2 (vector-element (vec rn) 1 f32)
+            (let b1 (vector-element (vec rm) 0 f32) (let b2 (vector-element (vec rm) 1 f32)
+                (= (vec rd) (vector-all (i32 0)))
+                (vector-insert rd 0 (fcm-reg a1 b1 i32 f32))
+                (vector-insert rd 1 (fcm-reg a2 b2 i32 f32))))))
+        0b01 (let a1 (vector-element (vec rn) 0 f32) (let a2 (vector-element (vec rn) 1 f32)
+            (let a3 (vector-element (vec rn) 2 f32) (let a4 (vector-element (vec rn) 3 f32)
+            (let b1 (vector-element (vec rm) 0 f32) (let b2 (vector-element (vec rm) 1 f32)
+            (let b3 (vector-element (vec rm) 2 f32) (let b4 (vector-element (vec rm) 3 f32)
+                (= (vec rd) (vector-all (i32 0)))
+                (vector-insert rd 0 (fcm-reg a1 b1 i32 f32))
+                (vector-insert rd 1 (fcm-reg a2 b2 i32 f32))
+                (vector-insert rd 2 (fcm-reg a3 b3 i32 f32))
+                (vector-insert rd 3 (fcm-reg a4 b4 i32 f32))))))))))
+        0b11 (let a1 (vector-element (vec rn) 0 f64) (let a2 (vector-element (vec rn) 1 f64)
+             (let b1 (vector-element (vec rm) 0 f64) (let b2 (vector-element (vec rm) 1 f64)
+                 (= (vec rd) (vector-all (i32 0)))
+                 (vector-insert rd 0 (fcm-reg a1 b1 i64 f64))
+                 (vector-insert rd 1 (fcm-reg a2 b2 i64 f64))))))
+        (unimplemented)))
+
+(defm fcm-zero (a b itype ftype)
+    (match (: op U)
+        0b00 (if (>  a b) (bitcast (itype -1) ftype) (bitcast (itype 0) ftype))
+        0b01 (if (>= a b) (bitcast (itype -1) ftype) (bitcast (itype 0) ftype))
+        0b10 (if (== a b) (bitcast (itype -1) ftype) (bitcast (itype 0) ftype))
+             (if (<= a b) (bitcast (itype -1) ftype) (bitcast (itype 0) ftype))))
+
+(def FCMxx-zero-vector
+    "0 Q U 01110 1 s 10000 0110 o 10 nnnnn ddddd"
+    "FCM$top V$rd.$t, V$rn.$t, #0.0"
+    (names (Q Q) (U U) (size s) (op o) (rn n) (rd d))
+    (block
+        (let top (match (: op U)
+            0b00 "GT"
+            0b01 "GE"
+            0b10 "EQ"
+            "LE"))
+        (let t (match (: size Q)
+            0b00 "2S"
+            0b01 "4S"
+            0b11 "2D"
+            (unimplemented))))
+    (match (: size Q)
+        0b00 (let v1 (vector-element (vec rn) 0 f32) (let v2 (vector-element (vec rn) 1 f32)
+            (= (vec rd) (vector-all (i32 0)))
+            (vector-insert rd 0 (fcm-zero v1 (f32 0) i32 f32))
+            (vector-insert rd 1 (fcm-zero v2 (f32 0) i32 f32))))
+        0b01 (let v1 (vector-element (vec rn) 0 f32) (let v2 (vector-element (vec rn) 1 f32)
+            (let v3 (vector-element (vec rn) 2 f32) (let v4 (vector-element (vec rn) 3 f32)
+                (= (vec rd) (vector-all (i32 0)))
+                (vector-insert rd 0 (fcm-zero v1 (f32 0) i32 f32))
+                (vector-insert rd 1 (fcm-zero v2 (f32 0) i32 f32))
+                (vector-insert rd 2 (fcm-zero v3 (f32 0) i32 f32))
+                (vector-insert rd 3 (fcm-zero v4 (f32 0) i32 f32))))))
+        0b11 (let v1 (vector-element (vec rn) 0 f64) (let v2 (vector-element (vec rn) 1 f64)
+            (= (vec rd) (vector-all (i32 0)))
+            (vector-insert rd 0 (fcm-zero v1 (f64 0) i64 f64))
+            (vector-insert rd 1 (fcm-zero v2 (f64 0) i64 f64))))
+        (unimplemented)))
+
+(defm fcmlt-zero (a b itype ftype)
+    (if (< a b) (bitcast (itype -1) ftype) (bitcast (itype 0) ftype)))
+
+(def FCMLT-zero-vector
+    "0 Q 0 01110 1 s 10000 01110 10 nnnnn ddddd"
+    "FCMLT V$rd.$t, V$rn.$t, #0.0"
+    (names (Q Q) (size s) (rn n) (rd d))
+    (let t (match (: size Q)
+        0b00 "2S"
+        0b01 "4S"
+        0b11 "2D"
+        (unimplemented)))
+    (match (: size Q)
+        0b00 (let v1 (vector-element (vec rn) 0 f32) (let v2 (vector-element (vec rn) 1 f32)
+            (= (vec rd) (vector-all (i32 0)))
+            (vector-insert rd 0 (fcmlt-zero v1 (f32 0) i32 f32))
+            (vector-insert rd 1 (fcmlt-zero v2 (f32 0) i32 f32))))
+        0b01 (let v1 (vector-element (vec rn) 0 f32) (let v2 (vector-element (vec rn) 1 f32)
+            (let v3 (vector-element (vec rn) 2 f32) (let v4 (vector-element (vec rn) 3 f32)
+                (= (vec rd) (vector-all (i32 0)))
+                (vector-insert rd 0 (fcmlt-zero v1 (f32 0) i32 f32))
+                (vector-insert rd 1 (fcmlt-zero v2 (f32 0) i32 f32))
+                (vector-insert rd 2 (fcmlt-zero v3 (f32 0) i32 f32))
+                (vector-insert rd 3 (fcmlt-zero v4 (f32 0) i32 f32))))))
+        0b11 (let v1 (vector-element (vec rn) 0 f64) (let v2 (vector-element (vec rn) 1 f64)
+            (= (vec rd) (vector-all (i32 0)))
+            (vector-insert rd 0 (fcmlt-zero v1 (f64 0) i64 f64))
+            (vector-insert rd 1 (fcmlt-zero v2 (f64 0) i64 f64))))
+        (unimplemented)))
+
+(def FCMP
+    "0 0 0 11110 tt 1 mmmmm 00 1000 nnnnn 0o 000"
+    "fcmp $r$rn, $r$rm $zero"
+    (names (type t) (rm m) (rn n) (opc o))
+    (block
+        (let r (match type
+            0b11 "H"
+            0b00 "S"
+            0b01 "D"
+            (unimplemented)))
+        (let zero (if (== opc 1) "/0" "")))
+    (match type
+        0b00 (fcmp (vec-s rn) (if (== opc 1) (f32 0) (vec-s rm)))
+        0b01 (fcmp (vec-d rn) (if (== opc 1) (f64 0) (vec-d rm)))
+        (unimplemented)))
+
+(def FCSEL
+    "0 0 0 11110 tt 1 mmmmm cccc 11 nnnnn ddddd"
+    "fcsel $r$rd, $r$rn, $r$rm, $condstr"
+    (names (type t) (rm m) (cond c) (rn n) (rd d))
+    (block
+        (let r (match type
+            0b00 "S"
+            0b01 "D"
+            (unimplemented)))
+        (let condstr (match cond
+            0b0000 "EQ" 0b0001 "NE"
+            0b0010 "CS" 0b0011 "CC"
+            0b0100 "MI" 0b0101 "PL"
+            0b0110 "VS" 0b0111 "VC"
+            0b1000 "HI" 0b1001 "LS"
+            0b1010 "GE" 0b1011 "LT"
+            0b1100 "GT" 0b1101 "LE"
+            "AL")))
+    (let result (match (>> cond 1)
+            0b000 (nzcv z)
+            0b001 (nzcv c)
+            0b010 (nzcv n)
+            0b011 (nzcv v)
+            0b100 (& (nzcv c) (! (nzcv z)))
+            0b101 (== (nzcv n) (nzcv v))
+            0b110 (& (== (nzcv n) (nzcv v)) (! (nzcv z)))
+            1)
+        (if (if (& (& cond 1) (!= cond 0b1111)) (! result) result)
+            (match type
+                0b00 (= (vec-s rd) (vec-s rn))
+                0b01 (= (vec-d rd) (vec-d rn))
+                (unimplemented))
+            (match type
+                0b00 (= (vec-s rd) (vec-s rm))
+                0b01 (= (vec-d rd) (vec-d rm))
+                (unimplemented)))))
+
+(def FCVT
+    "0 0 0 11110 tt 1 0001 oo 10000 nnnnn ddddd"
+    "fcvt $r1$rd, $r2$rn"
+    (names (type t) (opc o) (rn n) (rd d))
+    (block
+        (let r1 "") (let r2 "")
+        (let tf (: type opc))
+        (match tf
+            0b1100 (block (= r1 "S") (= r2 "H"))
+            0b1101 (block (= r1 "D") (= r2 "H"))
+            0b0011 (block (= r1 "H") (= r2 "S"))
+            0b0001 (block (= r1 "D") (= r2 "S"))
+            0b0111 (block (= r1 "H") (= r2 "D"))
+            0b0100 (block (= r1 "S") (= r2 "D"))
+            (unimplemented)))
+    (match tf
+        0b1100 (= (vec-s rd) (f32 (vec-h rn)))
+        0b1101 (= (vec-d rd) (f64 (vec-h rn)))
+        0b0011 (= (vec-h rd) (u16 (vec-s rn)))
+        0b0001 (= (vec-d rd) (f64 (vec-s rn)))
+        0b0111 (= (vec-h rd) (u16 (vec-d rn)))
+        0b0100 (= (vec-s rd) (f32 (vec-d rn)))
+        (unimplemented)))
+
+(def FCVTZS-scalar-fixedpoint
+    "f 0 0 11110 tt 0 11 000 ssssss nnnnn ddddd"
+    "fcvtzs $r1$rd, $r2$rn, #$fbits"
+    (names (size f) (type t) (scale s) (rn n) (rd d))
+    (block
+        (let fbits (- 64 scale))
+        (let r1 (if (== size 0) "W" "X"))
+        (let r2 (match type
+            0b11 "H"
+            0b00 "S"
+            0b01 "D"
+            (unimplemented))))
+    (match (: size type)
+        0b0_00 (= (gpr32 rd) (float-to-fixed-point (vec-s rn) u32 fbits))
+        0b1_00 (= (gpr64 rd) (float-to-fixed-point (vec-s rn) u64 fbits))
+        0b0_01 (= (gpr32 rd) (float-to-fixed-point (vec-d rn) u32 fbits))
+        0b1_01 (= (gpr64 rd) (float-to-fixed-point (vec-d rn) u64 fbits))
+        (unimplemented)))
+
+(def FCVTZS-scalar-integer
+    "s 0 0 11110 tt 1 11 000 000000 nnnnn ddddd"
+    "fcvtzs $r1$rd, $r2$rn"
+    (names (size s) (type t) (rn n) (rd d))
+    (block
+        (let st (: size type))
+        (let r1 "") (let r2 "")
+        (match st
+            0b0_11 (block (= r1 "W") (= r2 "H"))
+            0b1_11 (block (= r1 "X") (= r2 "H"))
+            0b0_00 (block (= r1 "W") (= r2 "S"))
+            0b1_00 (block (= r1 "X") (= r2 "S"))
+            0b0_01 (block (= r1 "W") (= r2 "D"))
+            0b1_01 (block (= r1 "X") (= r2 "D"))
+            (unimplemented)))
+    (match st
+        0b0_00 (= (gpr32 rd) (u32 (i32 (vec-s rn))))
+        0b1_00 (= (gpr64 rd) (u64 (i64 (vec-s rn))))
+        0b0_01 (= (gpr32 rd) (u32 (i32 (vec-d rn))))
+        0b1_01 (= (gpr64 rd) (u64 (i64 (vec-d rn))))
+        (unimplemented)))
+
+(def FCVTZU-scalar-fixedpoint
+    "f 0 0 11110 tt 0 11 001 ssssss nnnnn ddddd"
+    "fcvtzu $r1$rd, $r2$rn, #$fbits"
+    (names (size f) (type t) (scale s) (rn n) (rd d))
+    (block
+        (let fbits (- 64 scale))
+        (let r1 (if (== size 0) "W" "X"))
+        (let r2 (match type
+            0b11 "H"
+            0b00 "S"
+            0b01 "D"
+            (unimplemented))))
+    (match (: size type)
+        0b0_00 (= (gpr32 rd) (float-to-fixed-point (vec-s rn) u32 fbits))
+        0b1_00 (= (gpr64 rd) (float-to-fixed-point (vec-s rn) u64 fbits))
+        0b0_01 (= (gpr32 rd) (float-to-fixed-point (vec-d rn) u32 fbits))
+        0b1_01 (= (gpr64 rd) (float-to-fixed-point (vec-d rn) u64 fbits))
+        (unimplemented)))
+
+(def FCVTZU-scalar-integer
+    "s 0 0 11110 tt 1 11 001 000000 nnnnn ddddd"
+    "fcvtzu $r1$rd, $r2$rn"
+    (names (size s) (type t) (rn n) (rd d))
+    (block
+        (let st (: size type))
+        (let r1 "") (let r2 "")
+        (match st
+            0b0_11 (block (= r1 "W") (= r2 "H"))
+            0b1_11 (block (= r1 "X") (= r2 "H"))
+            0b0_00 (block (= r1 "W") (= r2 "S"))
+            0b1_00 (block (= r1 "X") (= r2 "S"))
+            0b0_01 (block (= r1 "W") (= r2 "D"))
+            0b1_01 (block (= r1 "X") (= r2 "D"))
+            (unimplemented)))
+    (match st
+        0b0_00 (= (gpr32 rd) (u32 (vec-s rn)))
+        0b1_00 (= (gpr64 rd) (u64 (vec-s rn)))
+        0b0_01 (= (gpr32 rd) (u32 (vec-d rn)))
+        0b1_01 (= (gpr64 rd) (u64 (vec-d rn)))
+        (unimplemented)))
+
+(def FDIV-scalar
+    "0 0 0 11110 tt 1 mmmmm 0001 10 nnnnn ddddd"
+    "fdiv $r$rd, $r$rn, $r$rm"
+    (names (type t) (rm m) (rn n) (rd d))
+    (let r (match type
+        0b11 "H"
+        0b00 "S"
+        0b01 "D"
+        (unimplemented)))
+    (match type
+        0b11 (unimplemented)
+        0b00 (= (vec-s rd) (/ (vec-s rn) (vec-s rm)))
+        0b01 (= (vec-d rd) (/ (vec-d rn) (vec-d rm)))
+        (unimplemented)))
+
+(def FMAX-scalar
+    "0 0 0 11110 tt 1 mmmmm 01 00 10 nnnnn ddddd"
+    "fmax $r$rd, $r$rn, $r$rm"
+    (names (type t) (rm m) (rn n) (rd d))
+    (let r (match type
+        0b00 "S"
+        0b01 "D"
+        (unimplemented)))
+    (match type
+        0b00 (mlet (a (vec-s rn) b (vec-s rm)) (= (vec-s rd) (if (> a b) a b)))
+        0b01 (mlet (a (vec-d rn) b (vec-d rm)) (= (vec-d rd) (if (> a b) a b)))
+        (unimplemented)))
+
+(def FMAXNM-scalar
+    "0 0 0 11110 tt 1 mmmmm 01 10 10 nnnnn ddddd"
+    "fmaxnm $r$rd, $r$rn, $r$rm"
+    (names (type t) (rm m) (rn n) (rd d))
+    (let r (match type
+        0b11 "H"
+        0b00 "S"
+        0b01 "D"
+        (unimplemented)))
+    (match type
+        0b00 (let a (vec-s rn) (let b (vec-s rm) (= (vec-s rd) (if (> a b) a b))))
+        0b01 (let a (vec-d rn) (let b (vec-d rm) (= (vec-d rd) (if (> a b) a b))))
+        (unimplemented)))
+
+(def FMIN-scalar
+    "0 0 0 11110 tt 1 mmmmm 01 01 10 nnnnn ddddd"
+    "fmin $r$rd, $r$rn, $r$rm"
+    (names (type t) (rm m) (rn n) (rd d))
+    (let r (match type
+        0b00 "S"
+        0b01 "D"
+        (unimplemented)))
+    (match type
+        0b00 (mlet (a (vec-s rn) b (vec-s rm)) (= (vec-s rd) (if (< a b) a b)))
+        0b01 (mlet (a (vec-d rn) b (vec-d rm)) (= (vec-d rd) (if (< a b) a b)))
+        (unimplemented)))
+
+(def FMINNM-scalar
+    "0 0 0 11110 tt 1 mmmmm 01 11 10 nnnnn ddddd"
+    "fminnm $r$rd, $r$rn, $r$rm"
+    (names (type t) (rm m) (rn n) (rd d))
+    (let r (match type
+        0b11 "H"
+        0b00 "S"
+        0b01 "D"
+        (unimplemented)))
+    (match type
+        0b00 (let a (vec-s rn) (let b (vec-s rm) (= (vec-s rd) (if (< a b) a b))))
+        0b01 (let a (vec-d rn) (let b (vec-d rm) (= (vec-d rd) (if (< a b) a b))))
+        (unimplemented)))
+
+(def FMLA-by-element-vector-spdp
+    "0 Q 0 01111 1 s L mmmmm 0 0 01 H 0 nnnnn ddddd"
+    "fmla V$rd.$T, V$rn.$T, V$rm.$Ts[$index]"
+    (names (Q Q) (sz s) (L L) (rm m) (H H) (rn n) (rd d))
+    (block
+        (let T (match (: Q sz)
+            0b00 "2S"
+            0b10 "4S"
+            0b11 "2D"
+            (unimplemented)))
+        (let Ts (if sz "D" "S"))
+        (let index (match (: sz L)
+            0b10 (u32 H)
+            0b11 (unimplemented)
+            (u32 (: H L)))))
+    (if sz
+        (= (vec rd) (vec+ (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f64)) 64) 64))
+        (= (vec rd) (vec+ (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f32)) 32) 32))))
+
+(def FMLA-vector
+    "0 Q 0 01110 0 s 1 mmmmm 11001 1 nnnnn ddddd"
+    "fmla V$rd.$T, V$rn.$T, V$rm.$T"
+    (names (Q Q) (sz s) (rm m) (rn n) (rd d))
+    (let T (match (: sz Q)
+        0b00 "2S"
+        0b01 "4S"
+        0b11 "2D"
+        (unimplemented)))
+    (if sz
+        (= (vec rd) (vec+ (vec rd) (vec* (vec rn) (vec rm) 64) 64))
+        (= (vec rd) (vec+ (vec rd) (vec* (vec rn) (vec rm) 32) 32))))
+
+(def FMOV-general
+    "f 0 0 11110 tt 1 0m 11o 000000 nnnnn ddddd"
+    "fmov $r1$rd$index1, $r2$rn$index2"
+    (names (sf f) (type t) (mode m) (ropc o) (rn n) (rd d))
+    (block
+        (let opc (: (cast 0b11 u2) ropc))
+        (let tf (: sf type (cast mode u2) opc))
+        (let r1 "") (let r2 "")
+        (match tf
+            0b0_11_00_110 (block (= r1 "W") (= r2 "H"))
+            0b1_11_00_110 (block (= r1 "X") (= r2 "H"))
+            0b0_11_00_111 (block (= r1 "H") (= r2 "W"))
+            0b0_00_00_111 (block (= r1 "S") (= r2 "W"))
+            0b0_00_00_110 (block (= r1 "W") (= r2 "S"))
+            0b1_11_00_111 (block (= r1 "H") (= r2 "X"))
+            0b1_01_00_111 (block (= r1 "D") (= r2 "X"))
+            0b1_10_01_111 (block (= r1 "V") (= r2 "X"))
+            0b1_10_01_110 (block (= r1 "X") (= r2 "V"))
+            0b1_01_00_110 (block (= r1 "X") (= r2 "D"))
+            (unimplemented))
+        (let index1 (if (== r1 "V") ".D[1]" ""))
+        (let index2 (if (== r2 "V") ".D[1]" "")))
+    (match tf
+        0b0_11_00_110 (= (gpr32 rd) (   cast (vec-h rn) u32))
+        0b1_11_00_110 (= (gpr64 rd) (   cast (vec-h rn) u64))
+        0b0_11_00_111 (= (vec-h rd) (   cast (gpr32 rn) u16))
+        0b0_00_00_111 (= (vec-s rd) (bitcast (gpr32 rn) f32))
+        0b0_00_00_110 (= (gpr32 rd) (bitcast (vec-s rn) u32))
+        0b1_11_00_111 (= (vec-h rd) (   cast (gpr64 rn) u16))
+        0b1_01_00_111 (= (vec-d rd) (bitcast (gpr64 rn) f64))
+        0b1_01_00_110 (= (gpr64 rd) (bitcast (vec-d rn) u64))
+        0b1_10_01_110 (= (gpr64 rd) (bitcast (vec-d (| (<< rn 1) 1)) u64))
+        0b1_10_01_111 (= (vec-d (| (<< rd 1) 1)) (bitcast (gpr64 rn) f64))
+        (unimplemented)))
+
+(def FMOV-scalar-immediate
+    "0 0 0 11110 tt 1 iiiiiiii 100 00000 ddddd"
+    "fmov $r$rd, #$sv"
+    (names (type t) (imm i) (rd d))
+    (block
+        (let r (match type
+            0b11 "H"
+            0b00 "S"
+            0b01 "D"
+            (unimplemented)))
+        (let sv (bitcast (:
+            (u1 (>> imm 7))
+            (! (& (>> imm 6) 1))
+            (replicate (u1 (& (>> imm 6) 1)) 5)
+            (cast (& (>> imm 4) 0b11) u2)
+            (cast (& imm 0b1111) u4)
+            (replicate (u1 0) 19)) f32)))
+    (match type
+        0b00 (= (vec-s rd) sv)
+        0b01 (= (vec-d rd)
+            (bitcast (:
+                (u1 (>> imm 7))
+                (! (& (>> imm 6) 1))
+                (replicate (u1 (& (>> imm 6) 1)) 8)
+                (cast (& (>> imm 4) 0b11) u2)
+                (cast (& imm 0b1111) u4)
+                (replicate (u1 0) 48)) f64))))
+
+(def FMUL-by-element-vector-spdp
+    "0 Q 0 01111 1 s L mmmmm 1001 H 0 nnnnn ddddd"
+    "fmul V$rd.$T, V$rn.$T, V$rm.$Ts[$index]"
+    (names (Q Q) (sz s) (L L) (rm m) (H H) (rn n) (rd d))
+    (block
+        (let T (match (: Q sz)
+            0b00 "2S"
+            0b10 "4S"
+            0b11 "2D"
+            (unimplemented)))
+        (let Ts (if sz "D" "S"))
+        (let index
+            (match (: sz L)
+                0b10 (u32 H)
+                0b11 (unimplemented)
+                (u32 (: H L)))))
+    (if sz
+        (= (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f64)) 64))
+        (= (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f32)) 32))))
+
+(def FMUL-scalar
+    "0 0 0 11110 tt 1 mmmmm 0 000 10 nnnnn ddddd"
+    "fmul $r$rd, $r$rn, $r$rm"
+    (names (type t) (rm m) (rn n) (rd d))
+    (let r (match type
+        0b11 "H"
+        0b00 "S"
+        0b01 "D"
+        (unimplemented)))
+    (match type
+        0b00 (= (vec-s rd) (* (vec-s rn) (vec-s rm)))
+        0b01 (= (vec-d rd) (* (vec-d rn) (vec-d rm)))
+        (unimplemented)))
+
+(def FMUL-vector
+    "0 Q 1 01110 0 s 1 mmmmm 11011 1 nnnnn ddddd"
+    "fmul V$rd.$ts, V$rn.$ts, V$rm.$ts"
+    (names (Q Q) (size s) (rm m) (rn n) (rd d))
+    (let ts (match (: size Q)
+        0b00 "2S"
+        0b01 "4S"
+        0b11 "2D"
+        (unimplemented)))
+    (match (: size Q)
+        0b00 (= (vec rd) (vector-zero-top (vec* (vec rn) (vec rm) 32)))
+        0b01 (= (vec rd) (vec* (vec rn) (vec rm) 32))
+        0b11 (= (vec rd) (vec* (vec rn) (vec rm) 64))
+        (unimplemented)))
+
+(def FNEG
+    "0 0 0 11110 tt 1 0000 10 10000 nnnnn ddddd"
+    "fneg $r$rd, $r$rn"
+    (names (type t) (rn n) (rd d))
+    (let r (match type
+        0b11 "H"
+        0b00 "S"
+        0b01 "D"
+        (unimplemented)))
+    (match type
+        0b00 (= (vec-s rd) (-! (vec-s rn)))
+        0b01 (= (vec-d rd) (-! (vec-d rn)))
+        (unimplemented)))
+
+(def FNMUL-scalar
+    "0 0 0 11110 tt 1 mmmmm 1 000 10 nnnnn ddddd"
+    "fnmul $r$rd, $r$rn, $r$rm"
+    (names (type t) (rm m) (rn n) (rd d))
+    (let r (match type
+            0b11 "H"
+            0b00 "S"
+            0b01 "D"
+            (unimplemented)))
+    (match type
+        0b00 (= (vec-s rd) (-! (* (vec-s rn) (vec-s rm))))
+        0b01 (= (vec-d rd) (-! (* (vec-d rn) (vec-d rm))))
+        (unimplemented)))
+
+(def FRSQRTE-vector
+    "0 Q 1 01110 1 s 10000 11101 10 nnnnn ddddd"
+    "frsqrte V$rd.$t, V$rn.$t"
+    (names (Q Q) (size s) (rn n) (rd d))
+    (let t (match (: size Q)
+        0b00 "2S"
+        0b01 "4S"
+        0b11 "2D"
+        (unimplemented)))
+    (= (vec rd) (match (: size Q)
+        0b00 (vec-frsqrte (vec rn) 32 2)
+        0b01 (vec-frsqrte (vec rn) 32 4)
+        0b11 (vec-frsqrte (vec rn) 64 2)
+        (unimplemented))))
+
+(defm frsqrts (a b size type)
+    (vec/ (vec- (vector-all (type 3)) (vec* a b size) size) (vector-all (type 2)) size))
+
+(def FRSQRTS-vector
+    "0 Q 0 01110 1 s 1 mmmmm 11111 1 nnnnn ddddd"
+    "frsqrts V$rd.$t, V$rn.$t, V$rm.$t"
+    (names (Q Q) (size s) (rm m) (rn n) (rd d))
+    (let t (match (: size Q)
+        0b00 "2S"
+        0b01 "4S"
+        0b11 "2D"
+        (unimplemented)))
+    (match (: size Q)
+        0b00 (= (vec rd) (vector-zero-top (frsqrts (vec rn) (vec rm) 32 f32)))
+        0b01 (= (vec rd) (frsqrts (vec rn) (vec rm) 32 f32))
+        0b11 (= (vec rd) (frsqrts (vec rn) (vec rm) 64 f64))
+        (unimplemented)))
+
+(def FSQRT-scalar
+    "0 0 0 11110 tt 1 0000 11 10000 nnnnn ddddd"
+    "fsqrt $r$rd, $r$rn"
+    (names (type t) (rn n) (rd d))
+    (let r (match type
+        0b11 "H"
+        0b00 "S"
+        0b01 "D"
+        (unimplemented)))
+    (match type
+        0b00 (= (vec-s rd) (sqrt (vec-s rn)))
+        0b01 (= (vec-d rd) (sqrt (vec-d rn)))
+        (unimplemented)))
+
+(def FSUB-scalar
+    "0 0 0 11110 tt 1 mmmmm 001 1 10 nnnnn ddddd"
+    "fsub $r$rd, $r$rn, $r$rm"
+    (names (type t) (rm m) (rn n) (rd d))
+    (let r (match type
+        0b11 "H"
+        0b00 "S"
+        0b01 "D"
+        (unimplemented)))
+    (match type
+        0b00 (= (vec-s rd) (- (vec-s rn) (vec-s rm)))
+        0b01 (= (vec-d rd) (- (vec-d rn) (vec-d rm)))
+        (unimplemented)))
+
+(def INS-general
+    "0 1 0 01110000 iiiii 0 0011 1 nnnnn ddddd"
+    "ins V$rd.$ts[$index], $r$rn"
+    (names (imm i) (rn n) (rd d))
+    (block
+        (let ts "") (let index (u32 0)) (let r "W")
+        (if (== (& imm 0b00001) 0b00001)
+            (block (= ts "B") (= index (>> imm 1)))
+            (if (== (& imm 0b00010) 0b00010)
+                (block (= ts "H") (= index (>> imm 2)))
+                (if (== (& imm 0b00100) 0b00100)
+                    (block (= ts "S") (= index (>> imm 3)))
+                    (block (= ts "D") (= index (>> imm 4)) (= r "X"))))))
+    (if (== (& imm 0b00001) 0b00001)
+        (vector-insert rd index (u8 (gpr64 rn))) 
+        (if (== (& imm 0b00010) 0b00010)
+            (vector-insert rd index (u16 (gpr64 rn)))
+            (if (== (& imm 0b00100) 0b00100)
+                (vector-insert rd index (bitcast (gpr32 rn) f32))
+                (vector-insert rd index (bitcast (gpr64 rn) f64))))))
+
+(def INS-vector
+    "0 1 1 01110000 iiiii 0 jjjj 1 nnnnn ddddd"
+    "ins V$rd.$ts[$index1], V$rn.$ts[$index2]"
+    (names (imm5 i) (imm4 j) (rn n) (rd d))
+    (block
+        (let ts "") (let index1 (u32 0)) (let index2 (u32 0))
+        (if (== (& imm5 0b00001) 0b00001)
+            (block (= ts "B") (= index1 (>> imm5 1)) (= index2 imm4))
+            (if (== (& imm5 0b00010) 0b00010)
+                (block (= ts "H") (= index1 (>> imm5 2)) (= index2 (>> imm4 1)))
+                (if (== (& imm5 0b00100) 0b00100)
+                    (block (= ts "S") (= index1 (>> imm5 3)) (= index2 (>> imm4 2)))
+                    (block (= ts "D") (= index1 (>> imm5 4)) (= index2 (>> imm4 3)))))))
+    (if (== (& imm5 0b00001) 0b00001)
+        (vector-insert rd index1 (vector-element (vec rn) index2 u8)) 
+        (if (== (& imm5 0b00010) 0b00010)
+            (vector-insert rd index1 (vector-element (vec rn) index2 u16))
+            (if (== (& imm5 0b00100) 0b00100)
+                (vector-insert rd index1 (vector-element (vec rn) index2 f32))
+                (vector-insert rd index1 (vector-element (vec rn) index2 f64))))))
+
+(def LDAR
+    "1s 001000 1 1 0 11111 1 11111 nnnnn ttttt"
+    "ldar $r$rt, [X$rn]"
+    (names (size s) (rn n) (rt t))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (let address (gpr-or-sp64 rn)
+            (= (gpr32 rt) (load address u32)))
+        (let address (gpr-or-sp64 rn)
+            (= (gpr64 rt) (load address u64)))))
+
+(def LDARB
+    "00 001000 1 1 0 11111 1 11111 nnnnn ttttt"
+    "ldarb W$rt, [X$rn]"
+    (names (rn n) (rt t))
+    (block)
+    (let address (gpr-or-sp64 rn)
+        (= (gpr64 rt) (u64 (load address u8))))) 
+
+(def LDARH
+    "01  001000 1 1 0 11111 1 11111 nnnnn ttttt"
+    "ldarh W$rt, [X$rn]"
+    (names (rn n) (rt t))
+    (block)
+    (let address (gpr-or-sp64 rn)
+        (= (gpr64 rt) (u64 (load address u16))))) 
+
+(def LDAXB
+    "1s 001000 0 1 0 11111 1 11111 nnnnn ttttt"
+    "ldaxb W$rt, [X$rn]"
+    (names (size s) (rn n) (rt t))
+    (block)
+    (let address (gpr-or-sp64 rn)
+        (if (== size 0)
+            (= (gpr32 rt) (load-exclusive address u32))
+            (= (gpr64 rt) (load-exclusive address u64))))) 
+
+(def LDAXRB
+    "00 001000 0 1 0 11111 1 11111 nnnnn ttttt"
+    "ldaxrb W$rt, [X$rn]"
+    (names (rn n) (rt t))
+    (block)
+    (let address (gpr-or-sp64 rn)
+        (= (gpr64 rt) (u64 (load-exclusive address u8))))) 
+
+(def LDAXRH
+    "01 001000 0 1 0 11111 1 11111 nnnnn ttttt"
+    "ldaxrh W$rt, [X$rn]"
+    (names (rn n) (rt t))
+    (block)
+    (let address (gpr-or-sp64 rn)
+        (= (gpr64 rt) (u64 (load-exclusive address u16))))) 
+
+(def LDP-immediate-postindex
+    "s0 101 0 001 1 iiiiiii ppppp nnnnn ttttt"
+    "ldp $r$rt1, $r$rt2, [X$rn], #$simm"
+    (names (size s) (imm i) (rt2 p) (rn n) (rt1 t))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let simm (<< (signext imm i64) (if (== size 0) 2 3))))
+    (let address (gpr-or-sp64 rn)
+        (if (== size 0)
+            (block
+                (= (gpr32 rt1) (load address u32))
+                (= (gpr32 rt2) (load (+ address 4) u32)))
+            (block
+                (= (gpr64 rt1) (load address u64))
+                (= (gpr64 rt2) (load (+ address 8) u64))))
+        (= (gpr-or-sp64 rn) (+ address simm))))
+
+(def LDP-immediate-signed-offset
+    "s0 101 0 010 1 iiiiiii ppppp nnnnn ttttt"
+    "ldp $r$rt1, $r$rt2, [X$rn, #$simm]"
+    (names (size s) (imm i) (rt2 p) (rn n) (rt1 t))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let simm (<< (signext imm i64) (if (== size 0) 2 3))))
+    (let address (+ (gpr-or-sp64 rn) simm)
+        (if (== size 0)
+            (block
+                (= (gpr32 rt1) (load address u32))
+                (= (gpr32 rt2) (load (+ address 4) u32)))
+            (block
+                (= (gpr64 rt1) (load address u64))
+                (= (gpr64 rt2) (load (+ address 8) u64))))))
+
+(def LDP-simd-postindex
+    "oo 101 1 001 1 iiiiiii ppppp nnnnn ttttt"
+    "ldp $r$rt1, $r$rt2, [X$rn], #$simm"
+    (names (opc o) (imm i) (rt2 p) (rn n) (rt1 t))
+    (block
+        (let r (match opc 0b00 "S" 0b01 "D" "Q")) 
+        (let simm (<< (signext imm i64) (match opc 0b00 2 0b01 3 4))))
+    (let address (gpr-or-sp64 rn)
+        (match opc
+            0b00 (block
+                (= (vec-s rt1) (load address f32))
+                (= (vec-s rt2) (load (+ address 4) f32)))
+            0b01 (block
+                (= (vec-d rt1) (load address f64))
+                (= (vec-d rt2) (load (+ address 8) f64)))
+            (block
+                (= (vec rt1) (load address vec))
+                (= (vec rt2) (load (+ address 16) vec))))
+        (= (gpr-or-sp64 rn) (+ address simm))))
+
+(def LDP-simd-signed-offset
+    "oo 101 1 010 1 iiiiiii ppppp nnnnn ttttt"
+    "ldp $r$rt1, $r$rt2, [X$rn, #$simm]"
+    (names (opc o) (imm i) (rt2 p) (rn n) (rt1 t))
+    (block
+        (let r (match opc 0b00 "S" 0b01 "D" "Q")) 
+        (let simm (<< (signext imm i64) (match opc 0b00 2 0b01 3 4))))
+    (let address (+ (gpr-or-sp64 rn) simm)
+        (match opc
+            0b00 (block
+                (= (vec-s rt1) (load address f32))
+                (= (vec-s rt2) (load (+ address 4) f32)))
+            0b01 (block
+                (= (vec-d rt1) (load address f64))
+                (= (vec-d rt2) (load (+ address 8) f64)))
+            (block
+                (= (vec rt1) (load address vec))
+                (= (vec rt2) (load (+ address 16) vec))))))
+
+(def LDPSW-immediate-signed-offset
+    "01 101 0 010 1 iiiiiii ppppp nnnnn ttttt"
+    "ldpsw X$rt1, X$rt2, [X$rn, #$simm]"
+    (names (imm i) (rt2 p) (rn n) (rt1 t))
+    (let simm (<< (signext imm i64) 2))
+    (let address (+ (gpr-or-sp64 rn) simm)
+        (= (gpr64 rt1) (u64 (signext (load address u32) i64)))
+        (= (gpr64 rt2) (u64 (signext (load (+ address 4) u32) i64)))))
+
+(def LDR-immediate-preindex
+    "1s 111 0 00 01 0 iiiiiiiii 11 nnnnn ddddd"
+    "ldr $r$rd, [X$rn, #$imm]!"
+    (names (size s) (rawimm i) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let imm (signext rawimm i64)))
+    (let address (+ (gpr-or-sp64 rn) imm)
+        (if (== size 0)
+            (= (gpr32 rd) (load address u32))
+            (= (gpr64 rd) (load address u64)))
+        (= (gpr-or-sp64 rn) address)))
+
+(def LDR-immediate-postindex
+    "1s 111 0 00 01 0 iiiiiiiii 01 nnnnn ddddd"
+    "ldr $r$rd, [X$rn], #$imm"
+    (names (size s) (rawimm i) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let imm (signext rawimm i64)))
+    (block
+        (if (== size 0)
+            (= (gpr32 rd) (load (gpr-or-sp64 rn) u32))
+            (= (gpr64 rd) (load (gpr-or-sp64 rn) u64)))
+        (= (gpr-or-sp64 rn) (+ (gpr-or-sp64 rn) imm))))
+
+(def LDR-immediate-unsigned-offset
+    "1s 111 0 01 01 iiiiiiiiiiii nnnnn ddddd"
+    "ldr $r$rd, [X$rn, #$imm]"
+    (names (size s) (rawimm i) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let imm (<< rawimm (if (== size 0) 2 3))))
+    (if (== size 0)
+        (= (gpr32 rd) (load (+ (gpr-or-sp64 rn) imm) u32))
+        (= (gpr64 rd) (load (+ (gpr-or-sp64 rn) imm) u64))))
+
+(def LDR-simd-immediate-postindex
+    "ss 111 1 00 o1 0 iiiiiiiii 01 nnnnn ttttt"
+    "ldr $r$rt, [X$rn], #$simm"
+    (names (size s) (opc o) (imm i) (rn n) (rt t))
+    (block
+        (let simm (signext imm i64))
+        (let r (match (: size opc)
+            0b00_0 "B"
+            0b01_0 "H"
+            0b10_0 "S"
+            0b11_0 "D"
+            0b00_1 "Q"
+            (unimplemented))))
+    (let address (gpr-or-sp64 rn)
+        (match (: size opc)
+            0b00_0 (= (vec-b rt) (load address u8))
+            0b01_0 (= (vec-h rt) (load address u16))
+            0b10_0 (= (vec-s rt) (load address f32))
+            0b11_0 (= (vec-d rt) (load address f64))
+            0b00_1 (= (vec rt)   (load address f128))
+            (unimplemented))
+        (= (gpr-or-sp64 rn) (+ address simm))))
+
+(def LDR-simd-immediate-preindex
+    "ss 111 1 00 o1 0 iiiiiiiii 11 nnnnn ttttt"
+    "ldr $r$rt, [X$rn, #$simm]!"
+    (names (size s) (opc o) (imm i) (rn n) (rt t))
+    (block
+        (let simm (signext imm i64))
+        (let r (match (: size opc)
+            0b00_0 "B"
+            0b01_0 "H"
+            0b10_0 "S"
+            0b11_0 "D"
+            0b00_1 "Q"
+            (unimplemented))))
+    (let address (+ (gpr-or-sp64 rn) simm)
+        (match (: size opc)
+            0b00_0 (= (vec-b rt) (load address u8))
+            0b01_0 (= (vec-h rt) (load address u16))
+            0b10_0 (= (vec-s rt) (load address f32))
+            0b11_0 (= (vec-d rt) (load address f64))
+            0b00_1 (= (vec rt)   (load address f128))
+            (unimplemented))
+        (= (gpr-or-sp64 rn) address)))
+
+(def LDR-simd-immediate-unsigned-offset
+    "ss 111 1 01 o1 iiiiiiiiiiii nnnnn ttttt"
+    "ldr $r$rt, [X$rn, #$imm]"
+    (names (size s) (ropc o) (rawimm i) (rn n) (rt t))
+    (block
+        (let opc (: ropc (u1 1)))
+        (let m (: size opc))
+        (let r (match m
+            0b0001 "B"
+            0b0101 "H"
+            0b1001 "S"
+            0b1101 "D"
+            "Q"))
+        (let imm (<< (u32 rawimm) (match m
+            0b0001 0
+            0b0101 1
+            0b1001 2
+            0b1101 3
+            4))))
+    (match m
+        0b0001 (= (vec-b rt) (load (+ (gpr-or-sp64 rn) imm) u8))
+        0b0101 (= (vec-h rt) (load (+ (gpr-or-sp64 rn) imm) u16))
+        0b1001 (= (vec-s rt) (load (+ (gpr-or-sp64 rn) imm) f32))
+        0b1101 (= (vec-d rt) (load (+ (gpr-or-sp64 rn) imm) f64))
+               (= (vec   rt) (load (+ (gpr-or-sp64 rn) imm) f128))))
+
+(def LDR-simd-register
+    "ff 111 1 00 x1 1 mmmmm ooo s 10 nnnnn ttttt"
+    "ldr $r1$rt, [X$rn, $r2$rm, $extend $amount]"
+    (names (size f) (opc x) (rm m) (option o) (scale s) (rn n) (rt t))
+    (block
+        (let r1 (if (& (== size 0) (== opc 1)) "Q" (match size
+            0b00 "B"
+            0b01 "H"
+            0b10 "S"
+            0b11 "D"
+            (unimplemented))))
+        (let r2 (if (& option 1) "X" "W"))
+        (let extend (match option
+            0b010 "UXTW"
+            0b011 "LSL"
+            0b110 "SXTW"
+            0b111 "SXTX"
+            (unimplemented)))
+        (let amount (* scale (if (& (== size 0) (== opc 1)) 4 (match size
+            0b00 1
+            0b01 1
+            0b10 2
+            0b11 3
+            (unimplemented))))))
+    (let offset (<< (match option
+            0b010 (u64 (gpr32 rm))
+            0b011 (gpr64 rm)
+            0b110 (u64 (signext (gpr32 rm) i64))
+            0b111 (gpr64 rm)
+            (unimplemented)) amount)
+        (let address (+ (gpr-or-sp64 rn) offset)
+            (match (: size opc)
+                0b00_0 (= (vec-b rt) (load address u8))
+                0b10_0 (= (vec-s rt) (load address f32))
+                0b11_0 (= (vec-d rt) (load address f64))
+                0b00_1 (= (vec rt) (load address vec))
+                (unimplemented)))))
+
+(def LDR-register
+    "1f 111 0 00 01 1 mmmmm ooo s 10 nnnnn ttttt"
+    "ldr $r1$rt, [X$rn, $r2$rm, $extend $amount]"
+    (names (size f) (rm m) (option o) (scale s) (rn n) (rt t))
+    (block
+        (let r1 (if (== size 0) "W" "X"))
+        (let r2 (if (& option 1) "X" "W"))
+        (let amount (if (== scale 0) 0 (if (== size 0) 2 3)))
+        (let extend (match option
+            0b010 "UXTW"
+            0b110 "SXTW"
+            0b111 "SXTX"
+            "LSL")))
+    (let offset (<< (if (== option 0b110)
+            (u64 (signext (gpr32 rm) i64))
+            (if (& option 1)
+                (gpr64 rm)
+                (u64 (gpr32 rm)))) amount)
+        (if (== size 0)
+            (= (gpr32 rt) (load (+ (gpr-or-sp64 rn) offset) u32))
+            (= (gpr64 rt) (load (+ (gpr-or-sp64 rn) offset) u64)))))
+
+(def LDRB-immediate-postindex
+    "00 111 0 00 01 0 iiiiiiiii 01 nnnnn ttttt"
+    "ldrb W$rt, [X$rn], #$imm"
+    (names (rawimm i) (rn n) (rt t))
+    (let imm (signext rawimm i64))
+    (block
+        (= (gpr32 rt) (u32 (load (gpr-or-sp64 rn) u8)))
+        (= (gpr-or-sp64 rn) (+ (gpr-or-sp64 rn) imm))))
+
+(def LDRB-immediate-preindex
+    "00 111 0 00 01 0 iiiiiiiii 11 nnnnn ttttt"
+    "ldrb W$rt, [X$rn, #$imm]!"
+    (names (rawimm i) (rn n) (rt t))
+    (let imm (signext rawimm i64))
+    (let address (+ (gpr-or-sp64 rn) imm)
+        (= (gpr32 rt) (u32 (load address u8)))
+        (= (gpr-or-sp64 rn) address)))
+
+(def LDRB-immediate-unsigned-offset
+    "00 111 0 01 01 iiiiiiiiiiii nnnnn ttttt"
+    "ldrb W$rt, [X$rn, #$imm]"
+    (names (imm i) (rt t) (rn n))
+    (block)
+    (= (gpr64 rt) (u64 (load (+ (gpr-or-sp64 rn) imm) u8))))
+
+(def LDRB-register
+    "00 111 0 00 01 1 mmmmm ooo s 10 nnnnn ttttt"
+    "ldrb W$rt, [X$rn, $r$rm, $str $amount]"
+    (names (rm m) (option o) (amount s) (rn n) (rt t))
+    (let r (if (& option 1) "X" "W")
+        (let str (match option
+            0b010 "UXTW"
+            0b011 "LSL"
+            0b110 "SXTW"
+            0b111 "SXTX"
+            (unimplemented))))
+    (let offset (<< (if (== option 0b110)
+            (u64 (signext (gpr32 rm) i64))
+            (if (& option 1)
+                (gpr64 rm)
+                (u64 (gpr32 rm)))) amount)
+        (= (gpr32 rt) (load (+ (gpr-or-sp64 rn) offset) u8))))
+
+(def LDRH-immediate-postindex
+    "01 111 0 00 01 0 iiiiiiiii 01 nnnnn ttttt"
+    "ldrh W$rt, [X$rn], #$imm"
+    (names (rawimm i) (rn n) (rt t))
+    (let imm (signext rawimm i64))
+    (let address (gpr-or-sp64 rn)
+        (= (gpr64 rt) (u64 (load address u16)))
+        (= (gpr-or-sp64 rn) (+ address imm))))
+
+(def LDRH-immediate-preindex
+    "01 111 0 00 01 0 iiiiiiiii 11 nnnnn ttttt"
+    "ldrh W$rt, [X$rn, #$imm]!"
+    (names (rawimm i) (rn n) (rt t))
+    (let imm (signext rawimm i64))
+    (let address (+ (gpr-or-sp64 rn) imm)
+        (= (gpr64 rt) (u64 (load address u16)))
+        (= (gpr-or-sp64 rn) address)))
+
+(def LDRH-immediate-unsigned-offset
+    "01 111 0 01 01 iiiiiiiiiiii nnnnn ttttt"
+    "ldrh W$rt, [X$rn, #$imm]"
+    (names (rawimm i) (rt t) (rn n))
+    (let imm (<< rawimm 1))
+    (= (gpr64 rt) (u64 (load (+ (gpr-or-sp64 rn) imm) u16))))
+
+(def LDRH-register
+    "01 111 0 00 01 1 mmmmm ooo s 10 nnnnn ttttt"
+    "ldrh W$rt, [X$rn, $r$rm, $str $amount]"
+    (names (rm m) (option o) (amount s) (rn n) (rt t))
+    (let r (if (& option 1) "X" "W")
+        (let str (match option
+            0b010 "UXTW"
+            0b011 "LSL"
+            0b110 "SXTW"
+            0b111 "SXTX"
+            (unimplemented))))
+    (let offset (<< (if (== option 0b110)
+            (u64 (signext (gpr32 rm) i64))
+            (if (& option 1)
+                (gpr64 rm)
+                (u64 (gpr32 rm)))) amount)
+        (= (gpr32 rt) (load (+ (gpr-or-sp64 rn) offset) u16))))
+
+(def LDRSB-immediate-postindex
+    "00 111 0 00 1o 0 iiiiiiiii 01 nnnnn ttttt"
+    "ldrsb $r$rt, [X$rn], #$imm"
+    (names (rawimm i) (opc o) (rn n) (rt t))
+    (block
+        (let imm (signext rawimm i64))
+        (let r (if (== opc 1) "W" "X")))
+    (let address (gpr-or-sp64 rn)
+        (if (== opc 1)
+            (= (gpr32 rt) (u32 (signext (load address u8) i32)))
+            (= (gpr64 rt) (u64 (signext (load address u8) i64))))
+        (= (gpr-or-sp64 rn) (+ address imm))))
+
+(def LDRSB-immediate-preindex
+    "00 111 0 00 1o 0 iiiiiiiii 11 nnnnn ttttt"
+    "ldrsb $r$rt, [X$rn, #$imm]!"
+    (names (rawimm i) (opc o) (rn n) (rt t))
+    (block
+        (let imm (signext rawimm i64))
+        (let r (if (== opc 1) "W" "X")))
+    (let address (+ (gpr-or-sp64 rn) imm)
+        (if (== opc 1)
+            (= (gpr32 rt) (u32 (signext (load address u8) i32)))
+            (= (gpr64 rt) (u64 (signext (load address u8) i64))))
+        (= (gpr-or-sp64 rn) address)))
+
+(def LDRSB-immediate-unsigned-offset
+    "00 111 0 01 1s iiiiiiiiiiii nnnnn ttttt"
+    "ldrsb $r$rt, [X$rn, #$imm]"
+    (names (opc s) (imm i) (rt t) (rn n))
+    (let r (if (== opc 1) "W" "X"))
+    (if (== opc 1)
+        (= (gpr32 rt) (u32 (signext (load (+ (gpr-or-sp64 rn) imm) u8) i32)))
+        (= (gpr64 rt) (u64 (signext (load (+ (gpr-or-sp64 rn) imm) u8) i64)))))
+
+(def LDRSB-register
+    "00 111 0 00 1x 1 mmmmm ooo s 10 nnnnn ttttt"
+    "ldrsb $r$rt, [X$rn, $r$rm, $str $amount]"
+    (names (rm m) (opc x) (option o) (amount s) (rn n) (rt t))
+    (let r (if (== opc 0) "X" "W")
+        (let str (match option
+            0b010 "UXTW"
+            0b011 "LSL"
+            0b110 "SXTW"
+            0b111 "SXTX"
+            (unimplemented))))
+    (let offset (<< (if (== option 0b110)
+            (u64 (signext (gpr32 rm) i64))
+            (if (& option 1)
+                (gpr64 rm)
+                (u64 (gpr32 rm)))) amount)
+        (if (== opc 1)
+            (= (gpr32 rt) (u32 (signext (load (+ (gpr-or-sp64 rn) offset) u8) i32)))
+            (= (gpr64 rt) (u64 (signext (load (+ (gpr-or-sp64 rn) offset) u8) i64))))))
+
+(def LDRSH-immediate-postindex
+    "01 111 0 00 1o 0 iiiiiiiii 01 nnnnn ttttt"
+    "ldrsh $r$rt, [X$rn], #$imm"
+    (names (rawimm i) (opc o) (rn n) (rt t))
+    (block
+        (let imm (signext rawimm i64))
+        (let r (if (== opc 1) "W" "X")))
+    (let address (gpr-or-sp64 rn)
+        (if (== opc 1)
+            (= (gpr32 rt) (u32 (signext (load address u16) i32)))
+            (= (gpr64 rt) (u64 (signext (load address u16) i64))))
+        (= (gpr-or-sp64 rn) (+ address imm))))
+
+(def LDRSH-immediate-preindex
+    "01 111 0 00 1o 0 iiiiiiiii 11 nnnnn ttttt"
+    "ldrsh $r$rt, [X$rn, #$imm]!"
+    (names (rawimm i) (opc o) (rn n) (rt t))
+    (block
+        (let imm (signext rawimm i64))
+        (let r (if (== opc 1) "W" "X")))
+    (let address (+ (gpr-or-sp64 rn) imm)
+        (if (== opc 1)
+            (= (gpr32 rt) (u32 (signext (load address u16) i32)))
+            (= (gpr64 rt) (u64 (signext (load address u16) i64))))
+        (= (gpr-or-sp64 rn) address)))
+
+(def LDRSH-immediate-unsigned-offset
+    "01 111 0 01 1o iiiiiiiiiiii nnnnn ttttt"
+    "ldrsh $r$rt, [X$rn, #$imm]"
+    (names (opc o) (rawimm i) (rt t) (rn n))
+    (block
+        (let r (if (== opc 1) "W" "X"))
+        (let imm (<< rawimm 1)))
+    (if (== opc 1)
+        (= (gpr32 rt) (u32 (signext (load (+ (gpr-or-sp64 rn) imm) u16) i32)))
+        (= (gpr64 rt) (u64 (signext (load (+ (gpr-or-sp64 rn) imm) u16) i64)))))
+
+(def LDRSH-register
+    "01 111 0 00 1x 1 mmmmm ooo s 10 nnnnn ttttt"
+    "ldrsh $r$rt, [X$rn, $r$rm, $str $amount]"
+    (names (rm m) (opc x) (option o) (amount s) (rn n) (rt t))
+    (let r (if (== opc 0) "X" "W")
+        (let str (match option
+            0b010 "UXTW"
+            0b011 "LSL"
+            0b110 "SXTW"
+            0b111 "SXTX"
+            (unimplemented))))
+    (let offset (<< (if (== option 0b110)
+            (u64 (signext (gpr32 rm) i64))
+            (if (& option 1)
+                (gpr64 rm)
+                (u64 (gpr32 rm)))) amount)
+        (if (== opc 1)
+            (= (gpr32 rt) (u32 (signext (load (+ (gpr-or-sp64 rn) offset) u16) i32)))
+            (= (gpr64 rt) (u64 (signext (load (+ (gpr-or-sp64 rn) offset) u16) i64))))))
+
+(def LDRSW-immediate-postindex
+    "10 111 0 00 10 0 iiiiiiiii 01 nnnnn ttttt"
+    "ldrsw X$rt, [X$rn], #$imm"
+    (names (rawimm i) (rn n) (rt t))
+    (let imm (signext rawimm i64))
+    (let address (gpr-or-sp64 rn)
+        (= (gpr64 rt) (u64 (signext (load address u32) i64)))
+        (= (gpr-or-sp64 rn) (+ address imm))))
+
+(def LDRSW-immediate-preindex
+    "10 111 0 00 10 0 iiiiiiiii 11 nnnnn ttttt"
+    "ldrsw X$rt, [X$rn, #$imm]!"
+    (names (rawimm i) (rn n) (rt t))
+    (let imm (signext rawimm i64))
+    (let address (+ (gpr-or-sp64 rn) imm)
+        (= (gpr64 rt) (u64 (signext (load address u32) i64)))
+        (= (gpr-or-sp64 rn) address)))
+
+(def LDRSW-immediate-unsigned-offset
+    "10 111 0 01 10 iiiiiiiiiiii nnnnn ttttt"
+    "ldrsw X$rt, [X$rn, #$imm]"
+    (names (rawimm i) (rt t) (rn n))
+    (let imm (<< rawimm 2))
+    (= (gpr64 rt) (u64 (signext (load (+ (gpr-or-sp64 rn) imm) u32) i64))))
+
+(def LDRSW-register
+    "10 111 0 00 10 1 mmmmm ooo s 10 nnnnn ttttt"
+    "ldrsw X$rt, [X$rn, $r$rm, $extend $amount]"
+    (names (rm m) (option o) (scale s) (rn n) (rt t))
+    (block
+        (let r (if (& option 1) "X" "W"))
+        (let amount (if (== scale 0) 0 2))
+        (let extend (match option
+            0b010 "UXTW"
+            0b110 "SXTW"
+            0b111 "SXTX"
+            "LSL")))
+    (let offset (<< (if (== option 0b110)
+            (u64 (signext (gpr32 rm) i64))
+            (if (& option 1)
+                (gpr64 rm)
+                (u64 (gpr32 rm)))) amount)
+        (= (gpr64 rt) (u64 (signext (load (+ (gpr-or-sp64 rn) offset) u32) i64)))))
+
+(def LDUR
+    "1s 111 0 00 01 0 iiiiiiiii 00 nnnnn ttttt"
+    "ldur $r$rd, [X$rn, #$imm]"
+    (names (size s) (rawimm i) (rn n) (rd t))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let imm (signext rawimm i64)))
+    (if (== size 0)
+        (= (gpr32 rd) (load (+ (gpr-or-sp64 rn) imm) u32))
+        (= (gpr64 rd) (load (+ (gpr-or-sp64 rn) imm) u64))))
+
+(def LDURB
+    "00 111 0 00 01 0 iiiiiiiii 00 nnnnn ttttt"
+    "ldurb W$rd, [X$rn, #$imm]"
+    (names (rawimm i) (rn n) (rd t))
+    (let imm (signext rawimm i64))
+    (= (gpr64 rd) (u64 (load (+ (gpr-or-sp64 rn) imm) u8))))
+
+(def LDURH
+    "01 111 0 00 01 0 iiiiiiiii 00 nnnnn ttttt"
+    "ldurh W$rd, [X$rn, #$imm]"
+    (names (rawimm i) (rn n) (rd t))
+    (let imm (signext rawimm i64))
+    (= (gpr64 rd) (u64 (load (+ (gpr-or-sp64 rn) imm) u16))))
+
+(def LDURSB
+    "00 111 0 00 1x 0 iiiiiiiii 00 nnnnn ttttt"
+    "ldursb $r$rd, [X$rn, #$imm]"
+    (names (opc x) (rawimm i) (rn n) (rd t))
+    (block
+        (let r (if (== opc 1) "W" "X"))
+        (let imm (signext rawimm i64)))
+    (if (== opc 1)
+        (= (gpr32 rd) (u32 (signext (load (+ (gpr-or-sp64 rn) imm) u8) i32)))
+        (= (gpr64 rd) (u64 (signext (load (+ (gpr-or-sp64 rn) imm) u8) i64)))))
+
+(def LDURSH
+    "01 111 0 00 1x 0 iiiiiiiii 00 nnnnn ttttt"
+    "ldursh $r$rd, [X$rn, #$imm]"
+    (names (opc x) (rawimm i) (rn n) (rd t))
+    (block
+        (let r (if (== opc 1) "W" "X"))
+        (let imm (signext rawimm i64)))
+    (if (== opc 1)
+        (= (gpr32 rd) (u32 (signext (load (+ (gpr-or-sp64 rn) imm) u16) i32)))
+        (= (gpr64 rd) (u64 (signext (load (+ (gpr-or-sp64 rn) imm) u16) i64)))))
+
+(def LDURSW
+    "10 111 0 00 10 0 iiiiiiiii 00 nnnnn ttttt"
+    "ldursw X$rt, [X$rn, #$imm]"
+    (names (rawimm i) (rn n) (rt t))
+    (let imm (signext rawimm i64))
+    (= (gpr64 rt) (u64 (signext (load (+ (gpr-or-sp64 rn) imm) u32) i64))))
+
+(def LDUR-simd
+    "ss 111 1 00 x1 0 iiiiiiiii 00 nnnnn ttttt"
+    "ldur $r$rt, [X$rn, #$imm]"
+    (names (size s) (opc x) (rawimm i) (rn n) (rt t))
+    (block
+        (let r (match (: size opc)
+            0b00_0 "B"
+            0b01_0 "H"
+            0b10_0 "S"
+            0b11_0 "D"
+            0b00_1 "Q"
+            (unimplemented)))
+        (let imm (signext rawimm i64)))
+    (let address (+ (gpr-or-sp64 rn) imm)
+        (match (: size opc)
+            0b00_0 (= (vec-b rt) (load address u8))
+            0b10_0 (= (vec-s rt) (load address f32))
+            0b11_0 (= (vec-d rt) (load address f64))
+            0b00_1 (= (vec   rt) (load address vec)))))
+
+(def LDXR
+    "1s 001000 0 1 0 11111 0 11111 nnnnn ttttt"
+    "ldxr $r$rt, [X$rn]"
+    (names (size s) (rn n) (rt t))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (= (gpr32 rt) (load-exclusive (gpr-or-sp64 rn) u32))
+        (= (gpr64 rt) (load-exclusive (gpr-or-sp64 rn) u64))))
+
+(def LDXRB
+    "00 001000 0 1 0 11111 0 11111 nnnnn ttttt"
+    "ldxrb W$rt, [X$rn]"
+    (names (rn n) (rt t))
+    (block)
+    (= (gpr64 rt) (cast (load-exclusive (gpr-or-sp64 rn) u8) u64)))
+
+(def LDXRH
+    "01 001000 0 1 0 11111 0 11111 nnnnn ttttt"
+    "ldxrh W$rt, [X$rn]"
+    (names (rn n) (rt t))
+    (block)
+    (= (gpr64 rt) (cast (load-exclusive (gpr-or-sp64 rn) u16) u64)))
+
+(def LSL-register
+    "s 0 0 11010110 mmmmm 0010 00 nnnnn ddddd"
+    "lsl $r$rd, $r$rn, $r$rm"
+    (names (size s) (rm m) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (= (gpr32 rd) (<< (gpr32 rn) (% (gpr32 rm) 32)))
+        (= (gpr64 rd) (<< (gpr64 rn) (% (gpr64 rm) 64)))))
+
+(def LSRV
+    "s 0 0 11010110 mmmmm 0010 01 nnnnn ddddd"
+    "lsrv $r$rd, $r$rn, $r$rm"
+    (names (size s) (rm m) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (= (gpr32 rd) (>> (gpr32 rn) (% (gpr32 rm) 32)))
+        (= (gpr64 rd) (>> (gpr64 rn) (% (gpr64 rm) 64)))))
+
+(def MADD
+    "s 00 11011 000 mmmmm 0 aaaaa nnnnn ddddd"
+    "madd $r$rd, $r$rn, $r$rm, $r$ra"
+    (names (size s) (rm m) (ra a) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (= (gpr32 rd) (+ (* (gpr32 rn) (gpr32 rm)) (gpr32 ra)))
+        (= (gpr64 rd) (+ (* (gpr64 rn) (gpr64 rm)) (gpr64 ra)))))
+
+(def MOVI-32bit
+    "0 Q 0 0111100000 a b c 0mm0 0 1 d e f g h rrrrr"
+    "movi V$rd.$t, #$imm, LSL #$amount"
+    (names (Q Q) (cmode m) (a a) (b b) (c c) (d d) (e e) (f f) (g g) (h h) (rd r))
+    (block
+        (let t (if Q "4S" "2S"))
+        (let amount (match cmode
+            0b00 0
+            0b01 8
+            0b10 16
+            0b11 24
+            (unimplemented)))
+        (let imm (: a b c d e f g h)))
+    (let avec (vector-all (bitcast (<< (u32 imm) amount) f32))
+        (if Q
+            (= (vec rd) avec)
+            (= (vec rd) (vector-zero-top avec)))))
+
+(def MOVI-Vx.2D
+    "0 1 1 0111100000 a b c 1110 0 1 d e f g h rrrrr"
+    "movi V$rd, #$imm"
+    (names (a a) (b b) (c c) (d d) (e e) (f f) (g g) (h h) (rd r))
+    (let imm (:
+        (replicate a 8) (replicate b 8)
+        (replicate c 8) (replicate d 8)
+        (replicate e 8) (replicate f 8)
+        (replicate g 8) (replicate h 8)))
+    (= (vec rd) (vector-all imm)))
+
+(def MOVK
+    "s 11 100101 hh iiiiiiiiiiiiiiii ddddd"
+    "movk $r$rd, #$imm, LSL #$shift"
+    (names (size s) (imm i) (rd d) (hw h))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shift (<< hw 4)))
+    (if (== size 0)
+        (= (gpr32 rd) (| (& (gpr32 rd) (^ (u32 -1) (<< (u32 0xFFFF) shift))) (<< (u32 imm) shift)))
+        (= (gpr64 rd) (| (& (gpr64 rd) (^ (u64 -1) (<< (u64 0xFFFF) shift))) (<< (u64 imm) shift)))))
+
+(def MOVN
+    "s 00 100101 hh iiiiiiiiiiiiiiii ddddd"
+    "movn $r$rd, #$imm, LSL #$shift"
+    (names (size s) (imm i) (rd d) (hw h))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shift (<< hw 4)))
+    (if (== size 0)
+        (= (gpr32 rd) (~ (<< (u32 imm) shift)))
+        (= (gpr64 rd) (~ (<< (u64 imm) shift)))))
+
+(def MOVZ
+    "s 10 100101 hh iiiiiiiiiiiiiiii ddddd"
+    "movz $r$rd, #$imm, LSL #$shift"
+    (names (size s) (imm i) (rd d) (hw h))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shift (<< hw 4)))
+    (if (== size 0)
+        (= (gpr32 rd) (<< (u32 imm) shift))
+        (= (gpr64 rd) (<< (u64 imm) shift))))
+
+(def MRS
+    "1101010100 1 1 o ppp nnnn mmmm qqq ttttt"
+    "mrs S$op0 $op1 $cn $cm $op2, X$rt"
+    (names (op0 o) (op1 p) (cn n) (cm m) (op2 q) (rt t))
+    (block)
+    (= (gpr64 rt) (sr op0 op1 cn cm op2)))
+
+(def MSR-register
+    "1101010100 0 1 o ppp nnnn mmmm qqq ttttt"
+    "msr S$op0 $op1 $cn $cm $op2, X$rt"
+    (names (op0 o) (op1 p) (cn n) (cm m) (op2 q) (rt t))
+    (block)
+    (= (sr op0 op1 cn cm op2) (gpr64 rt)))
+
+(def MSUB
+    "s 00 11011 000 mmmmm 1 aaaaa nnnnn ddddd"
+    "msub $r$rd, $r$rn, $r$rm, $r$ra"
+    (names (size s) (rm m) (ra a) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (= (gpr32 rd) (- (gpr32 ra) (* (gpr32 rn) (gpr32 rm))))
+        (= (gpr64 rd) (- (gpr64 ra) (* (gpr64 rn) (gpr64 rm))))))
+
+(def MUL-by-element
+    "0 Q 0 01111 ss L M vvvv 1000 H 0 nnnnn ddddd"
+    "mul V$rd.$t, V$rn.$t, V$rm.$ts[$index]"
+    (names (Q Q) (size s) (L L) (M M) (rv v) (H H) (rn n) (rd d))
+    (block
+        (let rm (if (== size 0b10) (: M rv) rv))
+        (let t (match (: size Q)
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_0 "2S"
+            0b10_1 "4S"
+            (unimplemented)))
+        (let ts (match size
+            0b01 "H"
+            0b10 "S"
+            (unimplemented)))
+        (let index (match size
+            0b01 (: H L M)
+            0b10 (: H L)
+            (unimplemented))))
+    (let v (match size
+                0b01 (vec-uint* (vec rn) (vector-element (vec rm) index u16) 16)
+                0b10 (vec-uint* (vec rn) (vector-element (vec rm) index u32) 32)
+                (unimplemented))
+            (= (vec rd) (if Q v (vector-zero-top v)))))
+
+(def MUL-vector
+    "0 Q 0 01110 ss 1 mmmmm 10011 1 nnnnn ddddd"
+    "mul V$rd.$t, V$rn.$t, V$rm.$t"
+    (names (Q Q) (size s) (rm m) (rn n) (rd d))
+    (let t (match (: size Q)
+        0b00_0 "8B"
+        0b00_1 "16B"
+        0b01_0 "4H"
+        0b01_1 "8H"
+        0b10_0 "2S"
+        0b10_1 "4S"
+        (unimplemented)))
+    (let v (match size
+            0b00 (vec-uint* (vec rn) (vec rm) 8)
+            0b01 (vec-uint* (vec rn) (vec rm) 16)
+            0b10 (vec-uint* (vec rn) (vec rm) 32)
+            (unimplemented))
+        (= (vec rd) (if Q v (vector-zero-top v)))))
+
+(def ORN-shifted-register
+    "f 01 01010 ss 1 mmmmm iiiiii nnnnn ddddd"
+    "orn $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
+    (names (size f) (shift s) (rm m) (imm i) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shiftstr (shift-string shift)))
+    (if (== size 0)
+            (= (gpr32 rd) (| (gpr32 rn) (~ (do-shift32 (gpr32 rm) shift imm))))
+            (= (gpr64 rd) (| (gpr64 rn) (~ (do-shift64 (gpr64 rm) shift imm))))))
+
+(def ORR-immediate
+    "f 01 100100 u iiiiii ssssss nnnnn ddddd"
+    "orr $r$rd, $r$rn, #$imm"
+    (names (size f) (up u) (immr i) (imms s) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let imm (make-wmask up imms immr 1 (if (== size 0) 32 64))))
+    (if (== size 0)
+        (= (gpr-or-sp32 rd) (| (gpr32 rn) (u32 imm)))
+        (= (gpr-or-sp64 rd) (| (gpr64 rn) imm))))
+
+(def ORR-shifted-register
+    "f 01 01010 ss 0 mmmmm iiiiii nnnnn ddddd"
+    "orr $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
+    (names (size f) (shift s) (rm m) (imm i) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shiftstr (shift-string shift)))
+    (if (== size 0)
+        (= (gpr32 rd) (| (gpr32 rn) (do-shift32 (gpr32 rm) shift imm)))
+        (= (gpr64 rd) (| (gpr64 rn) (do-shift64 (gpr64 rm) shift imm)))))
+
+(def ORR-simd-register
+    "0 q 0 01110 10 1 mmmmm 00011 1 nnnnn ddddd"
+    "orr V$rd.$t, V$rn.$t, V$rm.$t"
+    (names (q q) (rm m) (rn n) (rd d))
+    (let t (if (== q 0) "8B" "16B"))
+    (if (== rm rn)
+        (= (vec rd) (vec rn))
+        (unimplemented)))
+
+(def PRFM-immediate
+    "11 111 0 01 10 iiiiiiiiiiii nnnnn ttttt"
+    "prfm #$imm5, [X$rn, #$pimm]"
+    (names (imm i) (rn n) (imm5 t))
+    (let pimm (* imm 8))
+    (block))
+
+(def RBIT
+    "s 1 0 11010110 00000 0000 00 nnnnn ddddd"
+    "rbit $r$rd, $r$rn"
+    (names (size s) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (= (gpr32 rd) (reverse-bits (gpr32 rn)))
+        (= (gpr64 rd) (reverse-bits (gpr64 rn)))))
+
+(def RET
+    "1101011 0 0 10 11111 0000 0 0 nnnnn 00000"
+    "ret X$rn"
+    (names (rn n))
+    (block)
+    (branch-register rn))
+
+(def REV
+    "s 1 0 11010110 00000 0000 1o nnnnn ddddd"
+    "rev $r$rd, $r$rn"
+    (names (size s) (opc o) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (match (: size opc)
+        0b00 (let x (gpr32 rn) (= (gpr32 rd) (|
+            (<< (& x         0xFF) 24)
+            (<< (& (>> x 8)  0xFF) 16)
+            (<< (& (>> x 16) 0xFF) 8)
+                (& (>> x 24) 0xFF))))
+        0b11 (let x (gpr64 rn) (= (gpr64 rd) (|
+            (<< (& x          0xFF) 56)
+            (<< (& (>> x 8)   0xFF) 48)
+            (<< (& (>> x 16)  0xFF) 40)
+            (<< (& (>> x 24)  0xFF) 32)
+            (<< (& (>> x 32)  0xFF) 24)
+            (<< (& (>> x 40)  0xFF) 16)
+            (<< (& (>> x 48)  0xFF) 8)
+                (& (>> x 56)  0xFF))))
+        (unimplemented)))
+
+(def REV16
+    "s 1 0 11010110 00000 0000 01 nnnnn ddddd"
+    "rev16 $r$rd, $r$rn"
+    (names (size s) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (let x (gpr32 rn) (= (gpr32 rd) (|
+            (<< (& x         0xFF) 8)
+                (& (>> x 8)  0xFF)
+            (<< (& (>> x 16) 0xFF) 24)
+            (<< (& (>> x 24) 0xFF) 16))))
+        (let x (gpr64 rn) (= (gpr64 rd) (|
+            (<< (& x         0xFF) 8)
+                (& (>> x 8)  0xFF)
+            (<< (& (>> x 16) 0xFF) 24)
+            (<< (& (>> x 24) 0xFF) 16)
+
+            (<< (& (>> x 32) 0xFF) 40)
+            (<< (& (>> x 40) 0xFF) 32)
+            (<< (& (>> x 48) 0xFF) 56)
+            (<< (& (>> x 56) 0xFF) 48))))))
+
+(def RORV
+    "s 0 0 11010110 mmmmm 0010 11 nnnnn ddddd"
+    "rorv $r$rd, $r$rn, $r$rm"
+    (names (size s) (rm m) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (= (gpr32 rd) (>>> (gpr32 rn) (% (gpr32 rm) 32)))
+        (= (gpr64 rd) (>>> (gpr64 rn) (% (gpr64 rm) 64)))))
+
+(def SBCS
+    "s 1 1 11010000 mmmmm 000000 nnnnn ddddd"
+    "sbcs $r$rd, $r$rn, $r$rm"
+    (names (size s) (rm m) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (= (gpr32 rd) (add-with-carry-set-nzcv32 (gpr32 rn) (~ (gpr32 rm)) (nzcv c)))
+        (= (gpr64 rd) (add-with-carry-set-nzcv64 (gpr64 rn) (~ (gpr64 rm)) (nzcv c)))))
+
+(def SBFM
+    "f 00 100110 o pppppp ssssss nnnnn ddddd"
+    "sbfm $r$rd, $r$rn, #$immr, #$imms"
+    (names (N o) (size f) (immr p) (imms s) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (block
+            (let src (gpr32 rn))
+            (let wmask (u32 (make-wmask N imms immr 0 32)))
+            (let tmask (u32 (make-tmask N imms immr 0 32)))
+            (let bot (& (>>> src immr) wmask))
+            (let top (- (u32 0) (& (>> src imms) 1)))
+            (= (gpr32 rd) (| (& top (~ tmask)) (& bot tmask))))
+        (block
+            (let src (gpr64 rn))
+            (let wmask (make-wmask N imms immr 0 64))
+            (let tmask (make-tmask N imms immr 0 64))
+            (let bot (& (>>> src immr) wmask))
+            (let top (- (u64 0) (& (>> src imms) 1)))
+            (= (gpr64 rd) (| (& top (~ tmask)) (& bot tmask))))))
+
+(def SCVTF-scalar-integer
+    "s 0 0 11110 tt 1 00 010 000000 nnnnn ddddd"
+    "scvtf $r1$rd, $r2$rn"
+    (names (size s) (type t) (rn n) (rd d))
+    (block
+        (let st (: size type))
+        (let r1 "") (let r2 "")
+        (match st
+            0b0_11 (block (= r1 "H") (= r2 "W"))
+            0b0_00 (block (= r1 "S") (= r2 "W"))
+            0b0_01 (block (= r1 "D") (= r2 "W"))
+            0b1_11 (block (= r1 "H") (= r2 "X"))
+            0b1_00 (block (= r1 "S") (= r2 "X"))
+            0b1_01 (block (= r1 "D") (= r2 "X"))
+            (unimplemented)))
+    (match st
+        0b0_00 (= (vec-s rd) (f32 (i32 (gpr32 rn))))
+        0b0_01 (= (vec-d rd) (f64 (i32 (gpr32 rn))))
+        0b1_00 (= (vec-s rd) (f32 (i64 (gpr64 rn))))
+        0b1_01 (= (vec-d rd) (f64 (i64 (gpr64 rn))))
+        (unimplemented)))
+
+(def SCVTF-vector-integer
+    "01 0 11110 0 s 10000 11101 10 nnnnn ddddd"
+    "scvtf $r$rd, $r$rn"
+    (names (size s) (rn n) (rd d))
+    (let r (if (== size 0) "S" "D"))
+    (if (== size 0)
+        (= (vec-s rd) (f32 (bitcast (vec-s rn) i32)))
+        (= (vec-d rd) (f64 (bitcast (vec-d rn) i64)))))
+
+(def SDIV
+    "f 0 0 11010110 mmmmm 00001 1 nnnnn ddddd"
+    "sdiv $r$rd, $r$rn, $r$rm"
+    (names (size f) (rm m) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (let operand2 (gpr32 rm)
+            (= (gpr32 rd) (if (== operand2 0)
+                (u32 0)
+                (u32 (/ (f32 (i32 (gpr32 rn))) (f32 (i32 operand2)))))))
+        (let operand2 (gpr64 rm)
+            (= (gpr64 rd) (if (== operand2 0)
+                (u64 0)
+                (u64 (/ (f64 (i64 (gpr64 rn))) (f64 (i64 operand2)))))))))
+
+(def SMADDL
+    "1 00 11011 0 01 mmmmm 0 aaaaa nnnnn ddddd"
+    "smaddl X$rd, W$rn, W$rm, X$ra"
+    (names (rd d) (rn n) (rm m) (ra a))
+    (block)
+    (= (gpr64 rd) (u64 (+ (i64 (gpr64 ra)) (* (signext (gpr32 rn) i64) (signext (gpr32 rm) i64))))))
+
+(def SMULH
+    "1 00 11011 0 10 mmmmm 0 11111 nnnnn ddddd"
+    "smulh X$rd, X$rn, X$rm"
+    (names (rm m) (rn n) (rd d))
+    (block)
+    (= (gpr64 rd) (u64 (i64 (>> (* (cast (i64 (gpr64 rn)) i128) (cast (i64 (gpr64 rm)) i128)) 64)))))
+
+(defm sshll-elem (i offset type etype)
+    (vector-insert rd i (<< (etype (vector-element iv (u32 (if Q (+ i offset) i)) type)) shift)))
+
+(def SSHLL
+    "0 Q 0 011110 hhhh bbb 10100 1 nnnnn ddddd"
+    "sshll$variant V$rd.$ta, V$rn.$tb, #$shift"
+    (names (Q Q) (immh h) (immb b) (rn n) (rd d))
+    (mlet (variant (if Q "2" "") ta "" tb "" shift (u64 0))
+        (if (== immh 0b0001) (block
+            (= ta "8H") (= tb (if Q "16B" "8B"))
+            (= shift (- (: immh immb) 8)))
+        (if (== (& immh 0b1110) 0b0010) (block
+            (= ta "4S") (= tb (if Q "8H" "4H"))
+            (= shift (- (: immh immb) 16)))
+        (if (== (& immh 0b1100) 0b0100) (block
+            (= ta "2D") (= tb (if Q "4S" "2S"))
+            (= shift (- (: immh immb) 32)))
+        (unimplemented)))))
+    (let iv (vec rn)
+        (= (vec rd) (vector-all (u8 0)))
+        (if (== immh 0b0001) (block
+            (sshll-elem 0 8 i8 i16)
+            (sshll-elem 1 8 i8 i16)
+            (sshll-elem 2 8 i8 i16)
+            (sshll-elem 3 8 i8 i16)
+            (sshll-elem 4 8 i8 i16)
+            (sshll-elem 5 8 i8 i16)
+            (sshll-elem 6 8 i8 i16)
+            (sshll-elem 7 8 i8 i16))
+        (if (== (& immh 0b1110) 0b0010) (block
+            (sshll-elem 0 4 i16 i32)
+            (sshll-elem 1 4 i16 i32)
+            (sshll-elem 2 4 i16 i32)
+            (sshll-elem 3 4 i16 i32))
+        (if (== (& immh 0b1100) 0b0100) (block
+            (sshll-elem 0 2 i32 i64)
+            (sshll-elem 1 2 i32 i64))
+        (unimplemented))))))
+
+(def STLR
+    "1f 001000 1 0 0 11111 1 11111 nnnnn ttttt"
+    "stlr $r$rt, [X$rn]"
+    (names (size f) (rn n) (rt t))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (store (gpr-or-sp64 rn) (gpr32 rt))
+        (store (gpr-or-sp64 rn) (gpr64 rt))))
+
+(def STLRB
+    "00 001000 1 0 0 11111 1 11111 nnnnn ttttt"
+    "stlrb W$rt, [X$rn]"
+    (names (rn n) (rt t))
+    (block)
+    (let address (gpr-or-sp64 rn)
+        (store address (u8 (gpr32 rt)))))
+
+(def STLRH
+    "01 001000 1 0 0 11111 1 11111 nnnnn ttttt"
+    "stlrh W$rt, [X$rn]"
+    (names (rn n) (rt t))
+    (block)
+    (let address (gpr-or-sp64 rn)
+        (store address (u16 (gpr32 rt)))))
+
+(def STLXR
+    "1f 001000 0 0 0 sssss 1 11111 nnnnn ttttt"
+    "stlxr W$rs, $r$rt, [X$rn]"
+    (names (size f) (rs s) (rn n) (rt t))
+    (let r (if (== size 0) "W" "X"))
+    (let address (gpr-or-sp64 rn)
+        (if (== size 0)
+            (store address (gpr32 rt))
+            (store address (gpr64 rt)))
+        (= (gpr32 rs) 0)))
+
+(def STLXRB
+    "00 001000 0 0 0 sssss 1 11111 nnnnn ttttt"
+    "stlxrr W$rs, W$rt, [X$rn]"
+    (names (rs s) (rn n) (rt t))
+    (block)
+    (let address (gpr-or-sp64 rn)
+        (store address (u8 (gpr32 rt)))
+        (= (gpr32 rs) 0)))
+
+(def STP-postindex
+    "s0 101 0 001 0 iiiiiii ppppp nnnnn ttttt"
+    "stp $r$rt1, $r$rt2, [X$rd], #$simm"
+    (names (size s) (imm i) (rd n) (rt1 t) (rt2 p))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let simm (<< (signext imm i64) (if (== size 0) 2 3))))
+    (let address (gpr-or-sp64 rd)
+        (if (== size 0)
+            (block
+                (store address (gpr32 rt1))
+                (store (+ address 4) (gpr32 rt2)))
+            (block
+                (store address (gpr64 rt1))
+                (store (+ address 8) (gpr64 rt2))))
+        (= (gpr-or-sp64 rd) (+ address simm))))
+
+(def STP-preindex
+    "s0 101 0 011 0 iiiiiii ppppp nnnnn ttttt"
+    "stp $r$rt1, $r$rt2, [X$rd, #$simm]!"
+    (names (size s) (imm i) (rd n) (rt1 t) (rt2 p))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let simm (<< (signext imm i64) (if (== size 0) 2 3))))
+    (let address (+ (gpr-or-sp64 rd) simm)
+        (if (== size 0)
+            (block
+                (store address (gpr32 rt1))
+                (store (+ address 4) (gpr32 rt2)))
+            (block
+                (store address (gpr64 rt1))
+                (store (+ address 8) (gpr64 rt2))))
+        (= (gpr-or-sp64 rd) address)))
+
+(def STP-signed-offset
+    "s0 101 0 010 0 iiiiiii ppppp nnnnn ttttt"
+    "stp $r$rt1, $r$rt2, [X$rd, #$simm]"
+    (names (size s) (imm i) (rd n) (rt1 t) (rt2 p))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let simm (<< (signext imm i64) (if (== size 0) 2 3))))
+    (let address (+ (gpr-or-sp64 rd) simm)
+        (if (== size 0)
+            (block
+                (store address (gpr32 rt1))
+                (store (+ address 4) (gpr32 rt2)))
+            (block
+                (store address (gpr64 rt1))
+                (store (+ address 8) (gpr64 rt2))))))
+
+(def STP-simd-postindex
+    "oo 101 1 001 0 iiiiiii ppppp nnnnn ttttt"
+    "stp $r$rt1, $r$rt2, [X$rd], #$simm"
+    (names (opc o) (imm i) (rd n) (rt1 t) (rt2 p))
+    (block
+        (let r (match opc 0b00 "S" 0b01 "D" 0b10 "Q" (unimplemented)))
+        (let simm (<< (signext imm i64) (match opc 0b00 2 0b01 3 0b10 4 (unimplemented)))))
+    (let address (gpr-or-sp64 rd)
+        (match opc
+            0b00 (block
+                (store address (vec-s rt1))
+                (store (+ address 4) (vec-s rt2)))
+            0b01 (block
+                (store address (vec-d rt1))
+                (store (+ address 8) (vec-d rt2)))
+            0b10 (block
+                (store address (vec rt1))
+                (store (+ address 16) (vec rt2)))
+            (unimplemented))
+        (= (gpr-or-sp64 rd) (+ address simm))))
+
+(def STP-simd-preindex
+    "oo 101 1 011 0 iiiiiii ppppp nnnnn ttttt"
+    "stp $r$rt1, $r$rt2, [X$rd, #$simm]!"
+    (names (opc o) (imm i) (rd n) (rt1 t) (rt2 p))
+    (block
+        (let r (match opc 0b00 "S" 0b01 "D" 0b10 "Q" (unimplemented)))
+        (let simm (<< (signext imm i64) (match opc 0b00 2 0b01 3 0b10 4 (unimplemented)))))
+    (let address (+ (gpr-or-sp64 rd) simm)
+        (match opc
+            0b00 (block
+                (store address (vec-s rt1))
+                (store (+ address 4) (vec-s rt2)))
+            0b01 (block
+                (store address (vec-d rt1))
+                (store (+ address 8) (vec-d rt2)))
+            0b10 (block
+                (store address (vec rt1))
+                (store (+ address 16) (vec rt2)))
+            (unimplemented))
+        (= (gpr-or-sp64 rd) address)))
+
+(def STP-simd-signed-offset
+    "oo 101 1 010 0 iiiiiii ppppp nnnnn ttttt"
+    "stp $r$rt1, $r$rt2, [X$rd, #$simm]"
+    (names (opc o) (imm i) (rd n) (rt1 t) (rt2 p))
+    (block
+        (let r (match opc 0b00 "S" 0b01 "D" 0b10 "Q" (unimplemented)))
+        (let simm (<< (signext imm i64) (match opc 0b00 2 0b01 3 0b10 4 (unimplemented)))))
+    (let address (+ (gpr-or-sp64 rd) simm)
+        (match opc
+            0b00 (block
+                (store address (vec-s rt1))
+                (store (+ address 4) (vec-s rt2)))
+            0b01 (block
+                (store address (vec-d rt1))
+                (store (+ address 8) (vec-d rt2)))
+            0b10 (block
+                (store address (vec rt1))
+                (store (+ address 16) (vec rt2)))
+            (unimplemented))))
+
+(def STR-immediate-postindex
+	"1s 111 0 00 00 0 iiiiiiiii 01 nnnnn ttttt"
+	"str $r$rs, [X$rd], #$simm"
+	(names (size s) (imm i) (rd n) (rs t))
+	(block
+		(let r (if (== size 0) "W" "X"))
+		(let simm (signext imm i64)))
+	(let address (gpr-or-sp64 rd)
+		(if (== size 0)
+			(store address (gpr32 rs))
+			(store address (gpr64 rs)))
+		(= (gpr-or-sp64 rd) (+ address simm))))
+
+(def STR-immediate-preindex
+	"1s 111 0 00 00 0 iiiiiiiii 11 nnnnn ttttt"
+	"str $r$rs, [X$rd, #$simm]!"
+	(names (size s) (imm i) (rd n) (rs t))
+	(block
+		(let r (if (== size 0) "W" "X"))
+		(let simm (signext imm i64)))
+	(let address (+ (gpr-or-sp64 rd) simm)
+		(if (== size 0)
+			(store address (gpr32 rs))
+			(store address (gpr64 rs)))
+		(= (gpr-or-sp64 rd) address)))
+
+(def STR-immediate-unsigned-offset
+    "1s 111 0 01 00 iiiiiiiiiiii nnnnn ttttt"
+    "str $r$rs, [X$rd, #$pimm]"
+    (names (size s) (imm i) (rd n) (rs t))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let pimm (<< (u64 imm) (if (== size 0) 2 3))))
+    (if (== size 0)
+        (store (+ (gpr-or-sp64 rd) pimm) (gpr32 rs))
+        (store (+ (gpr-or-sp64 rd) pimm) (gpr64 rs))))
+
+(def STR-register
+    "1f 111 0 00 00 1 mmmmm ooo s 10 nnnnn ttttt"
+    "str $r1$rt, [X$rn, $r2$rm, $extend $amount]"
+    (names (size f) (rm m) (option o) (scale s) (rn n) (rt t))
+    (block
+        (let r1 (if (== size 0) "W" "X"))
+        (let r2 (if (& option 1) "X" "W"))
+        (let amount (if (== scale 0) 0 (if (== size 0) 2 3)))
+        (let extend (match option
+            0b010 "UXTW"
+            0b110 "SXTW"
+            0b111 "SXTX"
+            "LSL")))
+    (let offset (<< (if (== option 0b110)
+            (u64 (signext (gpr32 rm) i64))
+            (if (& option 1)
+                (gpr64 rm)
+                (u64 (gpr32 rm)))) amount)
+        (if (== size 0)
+            (store (+ (gpr-or-sp64 rn) offset) (gpr32 rt))
+            (store (+ (gpr-or-sp64 rn) offset) (gpr64 rt)))))
+
+(def STR-simd-postindex
+    "ss 111 1 00 o0 0 iiiiiiiii 01 nnnnn ttttt"
+    "str $r$rt, [X$rn], #$simm"
+    (names (size s) (opc o) (imm i) (rn n) (rt t))
+    (block
+        (let rop (: size opc (u1 0)))
+        (let r (match rop
+            0b0000 "B"
+            0b0100 "H"
+            0b1000 "S"
+            0b1100 "D"
+            0b0010 "Q"
+            (unimplemented)))
+        (let simm (signext imm i64)))
+    (let address (gpr-or-sp64 rn)
+        (match rop
+            0b0000 (store address (vec-b rt))
+            0b0100 (store address (vec-h rt))
+            0b1000 (store address (vec-s rt))
+            0b1100 (store address (vec-d rt))
+            0b0010 (store address (vec rt))
+            (unimplemented))
+        (= (gpr-or-sp64 rn) (+ address simm))))
+
+(def STR-simd-preindex
+    "ss 111 1 00 o0 0 iiiiiiiii 11 nnnnn ttttt"
+    "str $r$rt, [X$rn, #$simm]!"
+    (names (size s) (opc o) (imm i) (rn n) (rt t))
+    (block
+        (let rop (: size opc (u1 0)))
+        (let r (match rop
+            0b0000 "B"
+            0b0100 "H"
+            0b1000 "S"
+            0b1100 "D"
+            0b0010 "Q"
+            (unimplemented)))
+        (let scale (: opc size))
+        (let simm (signext imm i64)))
+    (let address (+ (gpr-or-sp64 rn) simm)
+        (match rop
+            0b0000 (store address (vec-b rt))
+            0b0100 (store address (vec-h rt))
+            0b1000 (store address (vec-s rt))
+            0b1100 (store address (vec-d rt))
+            0b0010 (store address (vec rt))
+            (unimplemented))
+        (= (gpr-or-sp64 rn) address)))
+
+(def STR-simd-unsigned-offset
+    "ss 111 1 01 o0 iiiiiiiiiiii nnnnn ttttt"
+    "str $r$rt, [X$rn, #$imm]"
+    (names (size s) (opc o) (imm i) (rn n) (rt t))
+    (block
+        (let rop (: size opc (u1 0)))
+        (let r (match rop
+            0b0000 "B"
+            0b0100 "H"
+            0b1000 "S"
+            0b1100 "D"
+            0b0010 "Q"
+            (unimplemented)))
+        (let scale (: opc size)))
+    (let address (+ (gpr-or-sp64 rn) (<< imm scale))
+        (match rop
+            0b0000 (store address (vec-b rt))
+            0b0100 (store address (vec-h rt))
+            0b1000 (store address (vec-s rt))
+            0b1100 (store address (vec-d rt))
+            0b0010 (store address (vec rt))
+            (unimplemented))))
+
+(def STR-simd-register
+    "ff 111 1 00 x0 1 mmmmm ooo s 10 nnnnn ttttt"
+    "str $r1$rt, [X$rn, $r2, $extend $amount]"
+    (names (size f) (opc x) (rm m) (option o) (scale s) (rn n) (rt t))
+    (block
+        (let rop (: size opc (u1 0)))
+        (let r1 (match rop
+            0b0000 "B"
+            0b0100 "H"
+            0b1000 "S"
+            0b1100 "D"
+            0b0010 "Q"
+            (unimplemented)))
+        (let r2 (if (& option 1) "X" "W"))
+        (let amount (if (== scale 0) 0 (match size
+            0b01 1
+            0b10 2
+            0b11 3
+            (if (== opc 1) 4 0)
+            )))
+        (let extend (match option
+            0b010 "UXTW"
+            0b110 "SXTW"
+            0b111 "SXTX"
+            "LSL")))
+    (let offset (<< (if (== option 0b110)
+            (u64 (signext (gpr32 rm) i64))
+            (if (& option 1)
+                (gpr64 rm)
+                (u64 (gpr32 rm)))) amount)
+        (let address (+ (gpr-or-sp64 rn) offset)
+            (match rop
+                0b0000 (store address (vec-b rt))
+                0b0100 (store address (vec-h rt))
+                0b1000 (store address (vec-s rt))
+                0b1100 (store address (vec-d rt))
+                0b0010 (store address (vec rt))
+                (unimplemented)))))
+
+(def STRB-immediate-postindex
+	"00 111 0 00 00 0 iiiiiiiii 01 nnnnn ttttt"
+	"strb W$rs, [X$rd], #$simm"
+	(names (imm i) (rd n) (rs t))
+	(let simm (signext imm i64))
+	(let address (gpr-or-sp64 rd)
+		(store address (u8 (gpr32 rs)))
+		(= (gpr-or-sp64 rd) (+ address simm))))
+
+(def STRB-immediate-preindex
+	"00 111 0 00 00 0 iiiiiiiii 11 nnnnn ttttt"
+	"strb W$rs, [X$rd, #$simm]!"
+	(names (imm i) (rd n) (rs t))
+	(let simm (signext imm i64))
+	(let address (+ (gpr-or-sp64 rd) simm)
+		(store address (u8 (gpr32 rs)))
+		(= (gpr-or-sp64 rd) address)))
+
+(def STRB-immediate-unsigned-offset
+    "00 111 0 01 00 iiiiiiiiiiii nnnnn ttttt"
+    "strb W$rt, [X$rn, #$imm]"
+    (names (imm i) (rn n) (rt t))
+    (block)
+    (store (+ (gpr-or-sp64 rn) imm) (u8 (gpr64 rt))))
+
+(def STRB-register
+    "00 111 0 00 00 1 mmmmm ooo s 10 nnnnn ttttt"
+    "strb W$rt, [X$rn, $r$rm, $str $amount]"
+    (names (rm m) (option o) (amount s) (rn n) (rt t))
+    (let r (if (& option 1) "X" "W")
+        (let str (match option
+            0b010 "UXTW"
+            0b011 "LSL"
+            0b110 "SXTW"
+            0b111 "SXTX"
+            (unimplemented))))
+    (let offset (<< (if (== option 0b110)
+            (u64 (signext (gpr32 rm) i64))
+            (if (& option 1)
+                (gpr64 rm)
+                (u64 (gpr32 rm)))) amount)
+        (store (+ (gpr-or-sp64 rn) offset) (u8 (gpr32 rt)))))
+
+(def STRH-immediate-postindex
+	"01 111 0 00 00 0 iiiiiiiii 01 nnnnn ttttt"
+	"strh W$rs, [X$rd], #$simm"
+	(names (imm i) (rd n) (rs t))
+	(let simm (signext imm i64))
+	(let address (gpr-or-sp64 rd)
+		(store address (u16 (gpr32 rs)))
+		(= (gpr-or-sp64 rd) (+ address simm))))
+
+(def STRH-immediate-preindex
+	"01 111 0 00 00 0 iiiiiiiii 11 nnnnn ttttt"
+	"strh W$rs, [X$rd, #$simm]!"
+	(names (imm i) (rd n) (rs t))
+	(let simm (signext imm i64))
+	(let address (+ (gpr-or-sp64 rd) simm)
+		(store address (u16 (gpr32 rs)))
+		(= (gpr-or-sp64 rd) address)))
+
+(def STRH-immediate-unsigned-offset
+    "01 111 0 01 00 iiiiiiiiiiii nnnnn ttttt"
+    "strh W$rt, [X$rn, #$imm]"
+    (names (rawimm i) (rn n) (rt t))
+    (let imm (<< rawimm 1))
+    (store (+ (gpr-or-sp64 rn) imm) (u16 (gpr64 rt))))
+
+(def STRH-register
+    "01 111 0 00 00 1 mmmmm ooo s 10 nnnnn ttttt"
+    "strh W$rt, [X$rn, $r$rm, $str $amount]"
+    (names (rm m) (option o) (amount s) (rn n) (rt t))
+    (let r (if (& option 1) "X" "W")
+        (let str (match option
+            0b010 "UXTW"
+            0b011 "LSL"
+            0b110 "SXTW"
+            0b111 "SXTX"
+            (unimplemented))))
+    (let offset (<< (if (== option 0b110)
+            (u64 (signext (gpr32 rm) i64))
+            (if (& option 1)
+                (gpr64 rm)
+                (u64 (gpr32 rm)))) amount)
+        (store (+ (gpr-or-sp64 rn) offset) (u16 (gpr32 rt)))))
+
+(def STUR
+    "1s 111 0 00 00 0 iiiiiiiii 00 nnnnn ttttt"
+    "stur $r$rt, [X$rn, #$offset]"
+    (names (size s) (imm i) (rn n) (rt t))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let offset (signext imm i64)))
+    (if (== size 0)
+        (store (+ (gpr-or-sp64 rn) offset) (gpr32 rt))
+        (store (+ (gpr-or-sp64 rn) offset) (gpr64 rt))))
+
+(def STUR-simd
+    "ss 111 1 00 o0 0 iiiiiiiii 00 nnnnn ttttt"
+    "stur $r$rt, [X$rn, #$simm]"
+    (names (size s) (opc o) (imm i) (rn n) (rt t))
+    (block
+        (let rop (: size opc (u1 0)))
+        (let r (match rop
+            0b0000 "B"
+            0b0100 "H"
+            0b1000 "S"
+            0b1100 "D"
+            0b0010 "Q"
+            (unimplemented)))
+        (let simm (signext imm i64)))
+    (let address (+ (gpr-or-sp64 rn) simm)
+        (match rop
+            0b0000 (store address (vec-b rt))
+            0b0100 (store address (vec-h rt))
+            0b1000 (store address (vec-s rt))
+            0b1100 (store address (vec-d rt))
+            0b0010 (store address (vec rt))
+            (unimplemented))))
+
+(def STURB
+    "00 111 0 00 00 0 iiiiiiiii 00 nnnnn ttttt"
+    "sturb W$rt, [X$rn, #$offset]"
+    (names (imm i) (rn n) (rt t))
+    (let offset (signext imm i64))
+    (store (+ (gpr-or-sp64 rn) offset) (u8 (gpr64 rt))))
+
+(def STURH
+    "01 111 0 00 00 0 iiiiiiiii 00 nnnnn ttttt"
+    "sturh W$rt, [X$rn, #$offset]"
+    (names (imm i) (rn n) (rt t))
+    (let offset (signext imm i64))
+    (store (+ (gpr-or-sp64 rn) offset) (u16 (gpr64 rt))))
+
+(def STXR
+    "1f 001000 0 0 0 sssss 0 11111 nnnnn ttttt"
+    "stxr W$rs, $r$rt, [X$rn]"
+    (names (size f) (rs s) (rn n) (rt t))
+    (let r (if (== size 0) "W" "X"))
+    (= (gpr32 rs)
+        (if (== size 0)
+            (store-exclusive (gpr-or-sp64 rn) (gpr32 rt))
+            (store-exclusive (gpr-or-sp64 rn) (gpr64 rt)))))
+
+(def SUB-immediate
+    "f 1 0 10001 0s iiiiiiiiiiii nnnnn ddddd"
+    "sub $r$rd, $r$rn, #$imm, LSL #$shift"
+    (names (size f) (sh s) (imm i) (rd d) (rn n))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shift (if (== sh 0) 0 12)))
+    (if (== size 0)
+        (= (gpr-or-sp32 rd) (- (gpr-or-sp32 rn) (<< (u32 imm) shift)))
+        (= (gpr-or-sp64 rd) (- (gpr-or-sp64 rn) (<< (u64 imm) shift)))))
+
+(def SUB-extended-register
+    "s 1 0 01011 00 1 mmmmm ooo iii nnnnn ddddd"
+    "sub $r1$rd, $r1$rn, $r2$rm, $extend #$imm"
+    (names (size s) (rm m) (option o) (imm i) (rn n) (rd d))
+    (block
+        (let r1 (if (== size 0) "W" "X"))
+        (let r2 (if (== (& option 0b011) 0b011) "X" "W"))
+        (let extend (if (== size 0)
+            (match option
+                0b000 "UXTB"
+                0b001 "UXTH"
+                0b010 "LSL"
+                0b011 "UXTX"
+                0b100 "SXTB"
+                0b101 "SXTH"
+                0b110 "SXTW"
+                "SXTX")
+            (match option
+                0b000 "UXTB"
+                0b001 "UXTH"
+                0b010 "UXTW"
+                0b011 "LSL"
+                0b100 "SXTB"
+                0b101 "SXTH"
+                0b110 "SXTW"
+                "SXTX"))))
+    (if (== size 0)
+        (let m (gpr32 rm)
+            (= (gpr-or-sp32 rd) (- (gpr-or-sp32 rn) (<< (match option
+                0b000 (& m 0xFF)
+                0b001 (& m 0xFFFF)
+                0b100 (u32 (signext (u8 m) i32))
+                0b101 (u32 (signext (u16 m) i32))
+                m) imm))))
+        (if (== (& option 0b011) 0b011)
+            (= (gpr-or-sp64 rd) (- (gpr-or-sp64 rn) (<< (gpr64 rm) imm)))
+            (let m (u64 (gpr32 rm))
+                (= (gpr-or-sp64 rd) (- (gpr-or-sp64 rn) (<< (match option
+                    0b000 (& m 0xFF)
+                    0b001 (& m 0xFFFF)
+                    0b010 (& m 0xFFFFFFFF)
+                    0b100 (u64 (signext (u8 m) i64))
+                    0b101 (u64 (signext (u16 m) i64))
+                    0b110 (u64 (signext m i64))
+                    m) imm)))))))
+
+(def SUB-shifted-register
+    "f 1 0 01011 ss 0 mmmmm iiiiii nnnnn ddddd"
+    "sub $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
+    (names (size f) (shift s) (imm i) (rd d) (rn n) (rm m))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shiftstr (shift-string shift)))
+    (if (== size 0)
+        (= (gpr32 rd) (- (gpr32 rn) (do-shift32 (gpr32 rm) shift imm)))
+        (= (gpr64 rd) (- (gpr64 rn) (do-shift64 (gpr64 rm) shift imm)))))
+
+(def SUBS-extended-register
+    "s 1 1 01011 00 1 mmmmm ooo iii nnnnn ddddd"
+    "subs $r1$rd, $r1$rn, $r2$rm, $extend #$imm"
+    (names (size s) (rm m) (option o) (imm i) (rn n) (rd d))
+    (block
+        (let r1 (if (== size 0) "W" "X"))
+        (let r2 (if (== (& option 0b011) 0b011) "X" "W"))
+        (let extend (if (== size 0)
+            (match option
+                0b000 "UXTB"
+                0b001 "UXTH"
+                0b010 "LSL"
+                0b011 "UXTX"
+                0b100 "SXTB"
+                0b101 "SXTH"
+                0b110 "SXTW"
+                "SXTX")
+            (match option
+                0b000 "UXTB"
+                0b001 "UXTH"
+                0b010 "UXTW"
+                0b011 "LSL"
+                0b100 "SXTB"
+                0b101 "SXTH"
+                0b110 "SXTW"
+                "SXTX"))))
+    (if (== size 0)
+        (let m (gpr32 rm)
+            (= (gpr32 rd) (add-with-carry-set-nzcv32 (gpr-or-sp32 rn) (~ (<< (match option
+                0b000 (& m 0xFF)
+                0b001 (& m 0xFFFF)
+                0b100 (u32 (signext (u8 m) i32))
+                0b101 (u32 (signext (u16 m) i32))
+                m) imm)) 1)))
+        (if (== (& option 0b011) 0b011)
+            (= (gpr64 rd) (add-with-carry-set-nzcv64 (gpr-or-sp64 rn) (~ (<< (gpr64 rm) imm)) 1))
+            (let m (u64 (gpr32 rm))
+                (= (gpr64 rd) (add-with-carry-set-nzcv64 (gpr-or-sp64 rn) (~ (<< (match option
+                    0b000 (& m 0xFF)
+                    0b001 (& m 0xFFFF)
+                    0b010 (& m 0xFFFFFFFF)
+                    0b100 (u64 (signext (u8 m) i64))
+                    0b101 (u64 (signext (u16 m) i64))
+                    0b110 (u64 (signext m i64))
+                    m) imm)) 1))))))
+
+(def SUBS-shifted-register
+    "s 1 1 01011 hh 0 mmmmm iiiiii nnnnn ddddd"
+    "subs $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
+    (names (size s) (shift h) (rm m) (imm i) (rn n) (rd d))
+    (block
+        (let mode32 (== size 0))
+        (let r (if mode32 "W" "X"))
+        (let shiftstr (shift-string shift)))
+    (if mode32
+        (= (gpr32 rd) (add-with-carry-set-nzcv32 (gpr32 rn) (~ (do-shift32 (gpr32 rm) shift imm)) 1))
+        (= (gpr64 rd) (add-with-carry-set-nzcv64 (gpr64 rn) (~ (do-shift64 (gpr64 rm) shift imm)) 1))))
+
+(def SUBS-immediate
+    "s 1 1 10001 0h iiiiiiiiiiii nnnnn ddddd"
+    "subs $r$rd, $r$rn, #$imm, $shiftstr"
+    (names (size s) (shift h) (imm i) (rn n) (rd d))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let shiftstr (match shift
+            0b00 "LSL #0"
+            0b01 "LSL #12"
+            (unimplemented))))
+    (let rimm (if shift (<< (u32 imm) 12) imm)
+        (if (== size 0)
+            (= (gpr32 rd) (add-with-carry-set-nzcv32 (gpr32 rn) (~ (u32 rimm)) 1))
+            (= (gpr64 rd) (add-with-carry-set-nzcv64 (gpr64 rn) (~ (u64 rimm)) 1)))))
+
+(def SVC
+    "11010100 000 iiiiiiiiiiiiiiii 000 01"
+    "svc #$imm"
+    (names (imm i))
+    (block)
+    (svc imm))
+
+(def SYS
+    "1101010100 0 01 ooo nnnn mmmm ppp ttttt"
+    "sys #$op1, $cn, $cm, #$op2, X$rt"
+    (names (op1 o) (cn n) (cm m) (op2 p) (rt t))
+    (block)
+    (block))
+
+(def TBZ
+    "u 011011 0 bbbbb iiiiiiiiiiiiii ttttt"
+    "tbz $r$rt, #$imm, $addr"
+    (names (upper u) (bottom b) (offset i) (rt t))
+    (block
+        (let r (if (== upper 0) "W" "X"))
+        (let imm (| (<< upper 5) bottom))
+        (let addr (+ (pc) (signext (<< (u16 offset) 2) i64))))
+    (if (== (& (>> (gpr64 rt) imm) 1) 0)
+        (branch addr)
+        (branch-default)))
+
+(def TBNZ
+    "u 011011 1 bbbbb iiiiiiiiiiiiii ttttt"
+    "tbnz $r$rt, #$imm, $addr"
+    (names (upper u) (bottom b) (offset i) (rt t))
+    (block
+        (let r (if (== upper 0) "W" "X"))
+        (let imm (| (<< upper 5) bottom))
+        (let addr (+ (pc) (signext (<< (u16 offset) 2) i64))))
+    (if (!= (& (>> (gpr64 rt) imm) 1) 0)
+        (branch addr)
+        (branch-default)))
+
+(def UADDLV
+    "0 q 1 01110 ss 11000 00011 10 nnnnn ddddd"
+    "uaddlv $r$rd, V$rn.$t"
+    (names (Q q) (size s) (rn n) (rd d))
+    (block
+        (let r (match size
+            0b00 "H"
+            0b01 "S"
+            0b10 "D"
+            (unimplemented)))
+        (let t (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_1 "4S"
+            (unimplemented)))
+        (let esize (<< 8 size))
+        (let count (/ (if Q 128 64) esize)))
+    (match size
+        0b00 (= (vec-h rd) (cast (vector-sum-unsigned (vec rn) esize count) u16))
+        0b01 (= (vec-s rd) (bitcast (vector-sum-unsigned (vec rn) esize count) f32))
+        0b10 (= (vec-d rd) (bitcast (u64 (vector-sum-unsigned (vec rn) esize count)) f64))
+        (unimplemented)))
+
+(def UBFM
+    "f 10 100110 o pppppp ssssss nnnnn ddddd"
+    "ubfm $r$rd, $r$rn, #$immr, #$imms"
+    (names (N o) (size f) (immr p) (imms s) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (block
+            (let src (gpr32 rn))
+            (let wmask (u32 (make-wmask N imms immr 0 32)))
+            (let tmask (u32 (make-tmask N imms immr 0 32)))
+            (let bot (& (>>> src immr) wmask))
+            (= (gpr32 rd) (& bot tmask)))
+        (block
+            (let src (gpr64 rn))
+            (let wmask (make-wmask N imms immr 0 64))
+            (let tmask (make-tmask N imms immr 0 64))
+            (let bot (& (>>> src immr) wmask))
+            (= (gpr64 rd) (& bot tmask)))))
+
+(def UCVTF-scalar-integer
+    "s 0 0 11110 tt 1 00 011 000000 nnnnn ddddd"
+    "ucvtf $r1$rd, $r2$rn"
+    (names (size s) (type t) (rn n) (rd d))
+    (block
+        (let st (: size type))
+        (let r1 "") (let r2 "")
+        (match st
+            0b0_11 (block (= r1 "H") (= r2 "W"))
+            0b0_00 (block (= r1 "S") (= r2 "W"))
+            0b0_01 (block (= r1 "D") (= r2 "W"))
+            0b1_11 (block (= r1 "H") (= r2 "X"))
+            0b1_00 (block (= r1 "S") (= r2 "X"))
+            0b1_01 (block (= r1 "D") (= r2 "X"))
+            (unimplemented)))
+    (match st
+        0b0_00 (= (vec-s rd) (f32 (gpr32 rn)))
+        0b0_01 (= (vec-d rd) (f64 (gpr32 rn)))
+        0b1_00 (= (vec-s rd) (f32 (gpr64 rn)))
+        0b1_01 (= (vec-d rd) (f64 (gpr64 rn)))
+        (unimplemented)))
+
+(def UCVTF-vector-integer
+    "01 1 11110 0 s 10000 11101 10 nnnnn ddddd"
+    "ucvtf $r$rd, $r$rn"
+    (names (size s) (rn n) (rd d))
+    (let r (if (== size 0) "S" "D"))
+    (if (== size 0)
+        (= (vec-s rd) (f32 (bitcast (vec-s rn) u32)))
+        (= (vec-d rd) (f64 (bitcast (vec-d rn) u64)))))
+
+(def UDIV
+    "f 0 0 11010110 mmmmm 00001 0 nnnnn ddddd"
+    "udiv $r$rd, $r$rn, $r$rm"
+    (names (size f) (rm m) (rn n) (rd d))
+    (let r (if (== size 0) "W" "X"))
+    (if (== size 0)
+        (let operand2 (gpr32 rm)
+            (= (gpr32 rd) (if (== operand2 0)
+                (u32 0)
+                (/ (gpr32 rn) operand2))))
+        (let operand2 (gpr64 rm)
+            (= (gpr64 rd) (if (== operand2 0)
+                (u64 0)
+                (/ (gpr64 rn) operand2))))))
+
+(def UMADDL
+    "1 00 11011 1 01 mmmmm 0 aaaaa nnnnn ddddd"
+    "umaddl X$rd, W$rn, W$rm, X$ra"
+    (names (rd d) (rn n) (rm m) (ra a))
+    (block)
+    (= (gpr64 rd) (+ (gpr64 ra) (* (u64 (gpr32 rn)) (u64 (gpr32 rm))))))
+
+(def UMULH
+    "1 00 11011 1 10 mmmmm 0 11111 nnnnn ddddd"
+    "umulh X$rd, X$rn, X$rm"
+    (names (rm m) (rn n) (rd d))
+    (block)
+    (= (gpr64 rd) (u64 (>> (* (cast (gpr64 rn) u128) (cast (gpr64 rm) u128)) 64))))
+
+(def XTN
+    "0 0 0 01110 ss 10000 10010 10 nnnnn ddddd"
+    "xtn V$rd.$tb, V$rn.$ta"
+    (names (size s) (rn n) (rd d))
+    (block
+        (let tb (match size
+            0b00 "8B"
+            0b01 "4H"
+            0b10 "2S"
+            (unimplemented)))
+        (let ta (match size
+            0b00 "8H"
+            0b01 "4S"
+            0b10 "2D"
+            (unimplemented))))
+    (match size
+        0b00 (mlet (a (vector-element (vec rn) 0 u16) b (vector-element (vec rn) 1 u16)
+                c (vector-element (vec rn) 2 u16) d (vector-element (vec rn) 3 u16))
+            (= (vec rd) (vector-all (u64 0)))
+            (vector-insert rd 0 (u8 a))
+            (vector-insert rd 1 (u8 b))
+            (vector-insert rd 2 (u8 c))
+            (vector-insert rd 3 (u8 d)))
+        0b01 (mlet (a (vector-element (vec rn) 0 u32) b (vector-element (vec rn) 1 u32))
+            (= (vec rd) (vector-all (u64 0)))
+            (vector-insert rd 0 (u16 a))
+            (vector-insert rd 1 (u16 b)))
+        0b10 (let a (vector-element (vec rn) 0 u64)
+            (= (vec rd) (vector-all (u64 0)))
+            (vector-insert rd 0 (u32 a)))
+        (unimplemented)))
+
+(def XTN2
+    "0 1 0 01110 ss 10000 10010 10 nnnnn ddddd"
+    "xtn2 V$rd.$tb, V$rn.$ta"
+    (names (size s) (rn n) (rd d))
+    (block
+        (let tb (match size
+            0b00 "16B"
+            0b01 "8H"
+            0b10 "4S"
+            (unimplemented)))
+        (let ta (match size
+            0b00 "8H"
+            0b01 "4S"
+            0b10 "2D"
+            (unimplemented))))
+    (match size
+        0b00 (mlet (a (vector-element (vec rn) 0 u16) b (vector-element (vec rn) 1 u16)
+                c (vector-element (vec rn) 2 u16) d (vector-element (vec rn) 3 u16))
+            (vector-insert rd 8 (u8 a))
+            (vector-insert rd 9 (u8 b))
+            (vector-insert rd 10 (u8 c))
+            (vector-insert rd 11 (u8 d)))
+        0b01 (mlet (a (vector-element (vec rn) 0 u32) b (vector-element (vec rn) 1 u32))
+            (vector-insert rd 4 (u16 a))
+            (vector-insert rd 5 (u16 b)))
+        0b10 (let a (vector-element (vec rn) 0 u64)
+            (vector-insert rd 2 (u32 a)))
+        (unimplemented)))
