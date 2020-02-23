@@ -4,6 +4,10 @@
 #include <cstdint>
 #include <tuple>
 #include <boost/format.hpp>
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/IRBuilder.h>
+#include "property.h"
+
 using std::tuple;
 using std::get;
 
@@ -14,16 +18,46 @@ typedef uint8_t byte;
 typedef int8_t sbyte;
 typedef __uint128_t UInt128;
 typedef __int128_t Int128;
-typedef sbyte vector128_sbyte __attribute__((ext_vector_type(16)));
-typedef short vector128_short __attribute__((ext_vector_type(8)));
-typedef int vector128_int __attribute__((ext_vector_type(4)));
-typedef long vector128_long __attribute__((ext_vector_type(2)));
-typedef byte vector128_byte __attribute__((ext_vector_type(16)));
-typedef ushort vector128_ushort __attribute__((ext_vector_type(8)));
-typedef uint vector128_uint __attribute__((ext_vector_type(4)));
-typedef ulong vector128_ulong __attribute__((ext_vector_type(2)));
-typedef float vector128_float __attribute__((ext_vector_type(4)));
-typedef double vector128_double __attribute__((ext_vector_type(2)));
+
+template<typename T> using Vector128 = T __attribute__((ext_vector_type(16 / sizeof(T))));
+template<typename T> constexpr bool is_vector_t() { return sizeof(T) == 16 && !(std::is_same<T, UInt128>() || std::is_same<T, Int128>()); }
+template<typename T> using element_t = typeof(((T) {})[0]);
+template<typename T> constexpr bool is_int_ptr_vec_t() {
+    if constexpr(std::is_integral<T>() || std::is_pointer<T>())
+        return true;
+    else if constexpr(is_vector_t<T>())
+        return std::is_integral<element_t<T>>();
+    else
+        return false;
+}
+template<typename T> constexpr bool is_signed() {
+    if constexpr(is_vector_t<T>())
+        return std::is_signed<element_t<T>>();
+    else
+        return std::is_signed<T>();
+}
+template<typename T> constexpr bool is_floating_point() {
+    if constexpr(is_vector_t<T>())
+        return std::is_floating_point<element_t<T>>();
+    else
+        return std::is_floating_point<T>();
+}
+template<typename T> constexpr int element_count() { return 16 / sizeof(element_t<T>); }
+
+template<template<typename...> class Template, typename T>
+struct is_instantiation_of : std::false_type {};
+template<template<typename...> class Template, typename... Args>
+struct is_instantiation_of< Template, Template<Args...> > : std::true_type {};
+
+template<typename T>
+using is_std_function = is_instantiation_of<std::function, T>;
+
+extern thread_local llvm::LLVMContext Context;
+extern thread_local llvm::IRBuilder<> Builder;
+class Recompiler;
+extern thread_local Recompiler RecompilerInstance;
+llvm::Module* getModule();
+void emitted();
 
 const char* disassemble(uint inst, ulong pc);
 
@@ -137,20 +171,20 @@ inline ulong CountLeadingZeros(ulong v) {
     return 64;
 }
 
-inline vector128_float VectorCountBits(vector128_float vec, long elems) {
-    auto ret = (vector128_byte) {};
-    auto ivec = reinterpret_cast<vector128_byte>(vec);
+inline Vector128<float> VectorCountBits(Vector128<float> vec, long elems) {
+    auto ret = (Vector128<byte>) {};
+    auto ivec = reinterpret_cast<Vector128<byte>>(vec);
     for(auto i = 0; i < elems; ++i)
         ret[i] = __builtin_popcount(ivec[i]);
-    return reinterpret_cast<vector128_float>(ret);
+    return reinterpret_cast<Vector128<float>>(ret);
 }
 
-inline vector128_float VectorExtract(vector128_float _a, vector128_float _b, uint Q, uint _index) {
+inline Vector128<float> VectorExtract(Vector128<float> _a, Vector128<float> _b, uint Q, uint _index) {
     auto index = (int) _index;
-    auto a = reinterpret_cast<vector128_byte>(_a);
-    auto b = reinterpret_cast<vector128_byte>(_b);
+    auto a = reinterpret_cast<Vector128<byte>>(_a);
+    auto b = reinterpret_cast<Vector128<byte>>(_b);
 
-    auto r = (vector128_byte) {};
+    auto r = (Vector128<byte>) {};
     auto count = Q == 0 ? 8 : 16;
 
     if(count == 8) {
@@ -167,25 +201,25 @@ inline vector128_float VectorExtract(vector128_float _a, vector128_float _b, uin
             r[i] = b[i - offset];
     }
 
-    return reinterpret_cast<vector128_float>(r);
+    return reinterpret_cast<Vector128<float>>(r);
 }
 
-inline vector128_float VectorFrsqrte(vector128_float input, int bits, int elements) {
+inline Vector128<float> VectorFrsqrte(Vector128<float> input, int bits, int elements) {
     if(bits == 64) {
-        auto vec = reinterpret_cast<vector128_double>(input);
+        auto vec = reinterpret_cast<Vector128<double>>(input);
         vec[0] = FastInvsqrt(vec[0]);
         vec[1] = FastInvsqrt(vec[1]);
-        return reinterpret_cast<vector128_float>(vec);
+        return reinterpret_cast<Vector128<float>>(vec);
     }
     for(auto i = 0; i < elements; ++i)
         input[i] = FastInvsqrt(input[i]);
     return input;
 }
 
-inline ulong VectorSumUnsigned(vector128_float vec, long esize, long count) {
+inline ulong VectorSumUnsigned(Vector128<float> vec, long esize, long count) {
     switch(esize) {
         case 8: {
-            auto bvec = reinterpret_cast<vector128_byte>(vec);
+            auto bvec = reinterpret_cast<Vector128<byte>>(vec);
             auto sum = 0UL;
             for(auto i = 0; i < count; ++i)
                 sum += bvec[i];

@@ -57,7 +57,7 @@ namespace Generator {
 						var if_label = TempName();
 						var end_label = TempName();
 						var else_label = TempName();
-						c += $"Label {if_label} = DefineLabel(), {else_label} = DefineLabel(), {end_label} = DefineLabel();";
+						c += $"LabelTag {if_label} = DefineLabel(), {else_label} = DefineLabel(), {end_label} = DefineLabel();";
 						c += $"BranchIf({GenerateExpression(list[1])}, {if_label}, {else_label});";
 						c += $"Label({if_label});";
 						GenerateStatement(c, (PList) list[2]);
@@ -144,14 +144,14 @@ namespace Generator {
 					for(var i = 2; i < list.Count; i += 2)
 						opts.Add(i + 1 == list.Count
 							? $"default: {GenerateReturn(GenerateExpression(list[i]))};"
-							: $"case {GenerateExpression(list[i])}: return {GenerateReturn(Expr(list[i + 1]))};");
+							: $"case {GenerateExpression(list[i])}: {GenerateReturn(Expr(list[i + 1]))};");
 					var tn = TempName();
 					return $"([&](auto {tn}) -> {GenerateType(list.Count == 3 ? list[2].Type : list[3].Type)} {{ switch({tn}) {{ {string.Join(" ", opts)} }} }})({GenerateExpression(list[1])})";
 				});
 
 			Expression("svc", _ => EType.Unit.AsRuntime(),
 				list => $"Svc({GenerateExpression(list[1])})",
-				list => $"CallSvc({GenerateExpression(list[1])})");
+				list => $"Call<void, uint>(Svc, {GenerateExpression(list[1])})");
 			
 			Expression("branch", _ => EType.Unit.AsRuntime(), list => $"Branch({GenerateExpression(list[1])})");
 			Expression("branch-linked", _ => EType.Unit.AsRuntime(), list => $"BranchLinked({GenerateExpression(list[1])})");

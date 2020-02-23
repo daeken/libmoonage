@@ -69,11 +69,11 @@ namespace Generator {
 			
 			Expression("<<", FirstType, 
 				list => $"({GenerateExpression(list[1])}) << (uint) ({GenerateExpression(list[2])})", 
-				list => $"({GenerateExpression(list[1])}).ShiftLeft({GenerateExpression(list[2])})");
+				list => $"({GenerateExpression(list[1])}) << ({GenerateExpression(list[2])})");
 			
 			Expression(">>", FirstType, 
 				list => $"({GenerateExpression(list[1])}) >> (uint) ({GenerateExpression(list[2])})", 
-				list => $"({GenerateExpression(list[1])}).ShiftRight({GenerateExpression(list[2])})");
+				list => $"({GenerateExpression(list[1])}) >> ({GenerateExpression(list[2])})");
 			
 			Expression(">>>", FirstType,
 				list => {
@@ -83,7 +83,7 @@ namespace Generator {
 				}, list => {
 					if(!(list[1].Type is EInt(false, var bs))) throw new NotSupportedException();
 					return
-						$"(({GenerateExpression(list[1])}).ShiftLeft((RuntimeValue<uint>) ({bs} - ({GenerateExpression(list[2])})))) | (({GenerateExpression(list[1])}).ShiftRight((RuntimeValue<uint>) ({GenerateExpression(list[2])})))";
+						$"(({GenerateExpression(list[1])}) << ((RuntimeValue<uint>) ({bs} - ({GenerateExpression(list[2])})))) | (({GenerateExpression(list[1])}) >> ((RuntimeValue<uint>) ({GenerateExpression(list[2])})))";
 				});
 
 			Expression(":", list => new EInt(false,

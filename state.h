@@ -1,19 +1,19 @@
 #pragma once
 
 #include <cstdint>
-#include "common.h"
 
-#pragma pack(push, 1)
+typedef float __attribute__((ext_vector_type(4))) vector128_float;
+
 struct CpuState {
-    ulong PC, SP;
+    uint64_t PC, SP;
 
     union {
-        ulong X[32];
+        uint64_t X[32];
         struct {
-            ulong X0 , X1 , X2 , X3 , X4 , X5 , X6 , X7 ,
-                  X8 , X9 , X10, X11, X12, X13, X14, X15,
-                  X16, X17, X18, X19, X20, X21, X22, X23,
-                  X24, X25, X26, X27, X28, X29, X30, X31;
+            uint64_t X0 , X1 , X2 , X3 , X4 , X5 , X6 , X7 ,
+                     X8 , X9 , X10, X11, X12, X13, X14, X15,
+                     X16, X17, X18, X19, X20, X21, X22, X23,
+                     X24, X25, X26, X27, X28, X29, X30, X31;
         };
     };
 
@@ -27,12 +27,11 @@ struct CpuState {
         };
     };
 
-    ulong TlsBase, BranchTo;
-    byte Exclusive8;
-    ushort Exclusive16;
-    uint Exclusive32;
-    ulong Exclusive64;
+    uint64_t BranchTo;
+    uint8_t Exclusive8;
+    uint16_t Exclusive16;
+    uint32_t Exclusive32;
+    uint64_t Exclusive64;
 
-    ulong NZCV_N, NZCV_Z, NZCV_C, NZCV_V;
+    uint64_t NZCV_N, NZCV_Z, NZCV_C, NZCV_V;
 };
-#pragma pack(pop)

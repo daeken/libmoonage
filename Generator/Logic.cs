@@ -38,16 +38,16 @@ namespace Generator {
 								return;
 							
 							case PName("vec-b"):
-								c += $"State->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<vector128_float>((vector128_byte) {{ {GenerateExpression(list[2])}, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }});";
+								c += $"State->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<Vector128<float>>((Vector128<byte>) {{ {GenerateExpression(list[2])}, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }});";
 								return;
 							case PName("vec-h"):
-								c += $"State->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<vector128_float>((vector128_ushort) {{ {GenerateExpression(list[2])}, 0, 0, 0, 0, 0, 0, 0 }});";
+								c += $"State->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<Vector128<float>>((Vector128<ushort>) {{ {GenerateExpression(list[2])}, 0, 0, 0, 0, 0, 0, 0 }});";
 								return;
 							case PName("vec-s"):
-								c += $"State->V[(int) ({GenerateExpression(sub[1])})] = (vector128_float) {{ {GenerateExpression(list[2])}, 0, 0, 0 }};";
+								c += $"State->V[(int) ({GenerateExpression(sub[1])})] = (Vector128<float>) {{ {GenerateExpression(list[2])}, 0, 0, 0 }};";
 								return;
 							case PName("vec-d"):
-								c += $"State->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<vector128_float>((vector128_double) {{ {GenerateExpression(list[2])}, 0 }});";
+								c += $"State->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<Vector128<float>>((Vector128<double>) {{ {GenerateExpression(list[2])}, 0 }});";
 								return;
 							
 							case PName("sr"):
@@ -87,7 +87,7 @@ namespace Generator {
 								c--;
 								return;
 							case PName("sr"):
-								c += $"CallSR({GenerateExpression(sub[1])}, {GenerateExpression(sub[2])}, {GenerateExpression(sub[3])}, {GenerateExpression(sub[4])}, {GenerateExpression(sub[5])}, {GenerateExpression(list[2])});";
+								c += $"Call<void, uint, uint, uint, uint, uint, ulong>(SR, {GenerateExpression(sub[1])}, {GenerateExpression(sub[2])}, {GenerateExpression(sub[3])}, {GenerateExpression(sub[4])}, {GenerateExpression(sub[5])}, {GenerateExpression(list[2])});";
 								return;
 						}
 

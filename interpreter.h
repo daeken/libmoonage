@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include "common.h"
 #include "state.h"
 
 class Interpreter {
