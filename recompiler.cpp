@@ -21,7 +21,7 @@ thread_local Recompiler RecompilerInstance;
 long _LabelTag::inc;
 
 Recompiler::Recompiler() {
-    memset(&state, 0, sizeof(CpuState));
+    memset((void*) &state, 0, sizeof(CpuState));
 }
 
 bool initialized = false;
@@ -45,7 +45,7 @@ void Recompiler::run(ulong pc, ulong sp) {
     while(true) {
         auto block = Cache.GetBlock(pc);
         if(block->func == nullptr) {
-            if(!globalInterface->isValidCodePointer(pc, &state))
+            if(!globalInterface->isValidCodePointer(pc, (CpuState*) &state))
                 return;
             block->mutex.lock();
             if(block->func == nullptr)
@@ -56,7 +56,8 @@ void Recompiler::run(ulong pc, ulong sp) {
 
         state.BranchTo = -1UL;
         cout << "Running block at " << hex << pc << endl;
-        block->func(&state);
+        block->func((CpuState*) &state);
+        cout << "Finished block at " << hex << state.PC << endl;
         state.PC = pc = state.BranchTo;
         assert((pc & 3) == 0);
     }
@@ -70,7 +71,8 @@ void Recompiler::recompileMultiple(Block *block) {
     auto name = (boost::format("_%1$#x") % block->addr).str();
     module = std::make_unique<llvm::Module>("moonage", Builder.getContext());
     function = llvm::Function::Create((llvm::FunctionType*) LlvmType<std::function<void(ulong)>>(), llvm::Function::ExternalLinkage, name, module.get());
-    CpuStateRef = RuntimeValue<ulong>(function->arg_begin());
+    auto farg = function->arg_begin();
+    CpuStateRef = RuntimeValue<ulong>([farg]() { return farg; });
 
     llvm::legacy::FunctionPassManager pm{module.get()};
     pm.add(llvm::createInstructionCombiningPass(true));
@@ -83,6 +85,7 @@ void Recompiler::recompileMultiple(Block *block) {
     pm.add(llvm::createDeadInstEliminationPass());
     pm.add(llvm::createAggressiveDCEPass());
     pm.add(llvm::createPartiallyInlineLibCallsPass());
+    pm.add(llvm::createInstructionCombiningPass(true));
     pm.doInitialization();
 
     usedLabels.clear();
@@ -91,8 +94,8 @@ void Recompiler::recompileMultiple(Block *block) {
     Builder.SetInsertPoint(llvm::BasicBlock::Create(Builder.getContext(), "", function));
 
     memset(registersUsed, 0, sizeof(registersUsed));
-    for(auto & registerLocal : registerLocals)
-        registerLocal = new Local<ulong>();
+    for(auto i = 0; i < 31; ++i)
+        registerLocals[i] = new Local<ulong>();
 
     auto preRegisterLoad = DefineLabel(), postRegisterLoad = DefineLabel(), retLabel = DefineLabel();
     Branch(preRegisterLoad);
@@ -172,8 +175,8 @@ void Recompiler::recompileMultiple(Block *block) {
     assert(fptr != nullptr);
     block->func = (BlockFunc) fptr;
 
-    for(auto & registerLocal : registerLocals)
-        delete registerLocal;
+    for(auto i = 0; i < 31; ++i)
+        delete registerLocals[i];
 }
 
 ulong SR(uint op0, uint op1, uint crn, uint crm, uint op2) {

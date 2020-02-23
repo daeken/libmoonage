@@ -9,7 +9,7 @@ namespace Generator {
 				(c, list) => list.Skip(1).ForEach(x => GenerateStatement(c, (PList) x)));
 			
 			Expression("block", list => list.Last().Type, 
-				list => $@"([&]() -> {GenerateType(list.Type)} {{
+				list => $@"([=]() -> {GenerateType(list.Type)} {{
 {string.Join('\n', list.Skip(1).Select((x, i) => {
 					string code;
 					if(x is PList xl) {
@@ -23,7 +23,7 @@ namespace Generator {
 					return $"\t\t{code.Trim()}";
 				}))}
 	}})()", 
-				list => $@"([&]() -> {GenerateType(list.Type)} {{
+				list => $@"([=]() -> {GenerateType(list.Type)} {{
 {string.Join('\n', list.Skip(1).Select((x, i) => {
 					string code;
 					if(x is PList xl) {
@@ -134,7 +134,7 @@ namespace Generator {
 							? $"default: {GenerateReturn(GenerateExpression(list[i]))};"
 							: $"case {GenerateExpression(list[i])}: {GenerateReturn(GenerateExpression(list[i + 1]))};");
 					var tn = TempName();
-					return $"([&](auto {tn}) -> {GenerateType(list.Count == 3 ? list[2].Type : list[3].Type)} {{ switch({tn}) {{ {string.Join(" ", opts)} }} }})({GenerateExpression(list[1])})";
+					return $"([=](auto {tn}) -> {GenerateType(list.Count == 3 ? list[2].Type : list[3].Type)} {{ switch({tn}) {{ {string.Join(" ", opts)} }} }})({GenerateExpression(list[1])})";
 				}, list => {
 					string Expr(PTree expr) {
 						var str = GenerateExpression(expr);
@@ -146,7 +146,7 @@ namespace Generator {
 							? $"default: {GenerateReturn(GenerateExpression(list[i]))};"
 							: $"case {GenerateExpression(list[i])}: {GenerateReturn(Expr(list[i + 1]))};");
 					var tn = TempName();
-					return $"([&](auto {tn}) -> {GenerateType(list.Count == 3 ? list[2].Type : list[3].Type)} {{ switch({tn}) {{ {string.Join(" ", opts)} }} }})({GenerateExpression(list[1])})";
+					return $"([=](auto {tn}) -> {GenerateType(list.Count == 3 ? list[2].Type : list[3].Type)} {{ switch({tn}) {{ {string.Join(" ", opts)} }} }})({GenerateExpression(list[1])})";
 				});
 
 			Expression("svc", _ => EType.Unit.AsRuntime(),

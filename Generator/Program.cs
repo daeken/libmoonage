@@ -158,6 +158,7 @@ namespace Generator {
 					case EString _: return "string";
 					case EInt i:
 						switch(i.Width) {
+							case int x when x == 1: return "bool";
 							case int x when x > 64: return i.Signed ? "Int128" : "UInt128";
 							case int x when x > 32: return i.Signed ? "long" : "ulong";
 							case int x when x > 16: return i.Signed ? "int" : "uint";

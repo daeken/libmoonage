@@ -1,9 +1,11 @@
 #include "interpreter.h"
 #include <iostream>
 #include <ios>
+#include "interface.h"
 using namespace std;
 
 Interpreter::Interpreter() {
+    assert(globalInterface != nullptr);
     State = new CpuState;
     memset(State, 0, sizeof(CpuState));
     State->BranchTo = (ulong) -1L;
@@ -12,8 +14,11 @@ Interpreter::Interpreter() {
 void Interpreter::run(ulong pc, ulong sp) {
     State->PC = pc;
     State->SP = sp;
-    while(true)
+    while(true) {
+        if(!globalInterface->isValidCodePointer(State->PC, State))
+            break;
         runOne();
+    }
 }
 
 void Interpreter::runOne() {

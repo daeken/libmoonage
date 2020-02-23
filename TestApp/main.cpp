@@ -5,7 +5,7 @@
 #include <interface.h>
 using namespace std;
 
-void dumpregs(CpuState* state) {
+void dumpregs(volatile CpuState* state) {
     cout << "-----" << endl;
     for(auto i = 0; i < 32; ++i) {
         cout << "X" << dec << i << "=" << hex << state->X[i] << "  ";
@@ -18,22 +18,23 @@ void dumpregs(CpuState* state) {
 class TestInterface : public CpuInterface {
 public:
     bool isValidCodePointer(uint64_t addr, CpuState* state) override {
-        cout << "Checking pointer validity: " << hex << addr << endl;
-        return true;
+        //cout << "Checking pointer validity: " << hex << addr << endl;
+        return addr != 0xDEADBEE0;
     }
 };
 
 int main() {
-    uint8_t body[] = { 0x21, 0x04, 0x00, 0x91, 0xff, 0xff, 0xff, 0x17 };
-    /*auto interpreter = new Interpreter();
-    interpreter->State->PC = (ulong) body;
-    //while(true) {
-    for(auto i = 0; i < 100000; ++i) {
-        //dumpregs(interpreter);
-        interpreter->runOne();
-    }*/
+    uint8_t body[] = { 0x21, 0x00, 0x80, 0xd2, 0x02, 0xe2, 0x84, 0xd2, 0x00, 0x00, 0x01, 0x8b, 0x43, 0x00, 0x00, 0xcb, 0xc3, 0xff, 0xff, 0xb5, 0xc0, 0x03, 0x5f, 0xd6 };
     TestInterface interface;
     registerCpuInterface(&interface);
+
+    RecompilerInstance.state.X30 = 0xDEADBEE0;
     RecompilerInstance.run((ulong) body, 0);
+    dumpregs(&RecompilerInstance.state);
+
+    /*auto interpreter = new Interpreter();
+    interpreter->State->X30 = 0xDEADBEE0;
+    interpreter->run((ulong) body, 0);
+    dumpregs(interpreter->State);*/
     return 0;
 }

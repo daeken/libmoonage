@@ -16,4 +16,7 @@ ELSE()
 ENDIF(CMAKE_BUILD_TYPE MATCHES DEBUG)
 link_libraries(moonage)
 
+add_definitions(-fsanitize=address)
+set(CMAKE_EXE_LINKER_FLAGS -fsanitize=address)
+
 add_executable(testapp main.cpp)

@@ -31,8 +31,8 @@ class Local {
 public:
     llvm::Value* pointer;
     Property<RuntimeValue<T>> value{
-        [=]() { return Builder.CreateLoad(pointer); },
-        [=](auto val) { return Builder.CreateStore(val, pointer); }
+        [=]() { return RuntimeValue<T>([=]() { return Builder.CreateLoad(pointer); }); },
+        [=](auto val) { Builder.CreateStore(val, pointer); }
     };
     inline Local() : pointer(Builder.CreateAlloca(LlvmType<T>())) { }
 };
@@ -48,7 +48,7 @@ public:
     void run(ulong pc, ulong sp);
     void recompileMultiple(Block* block);
 
-    CpuState state;
+    volatile CpuState state;
     ulong currentPC;
     bool registersUsed[31];
     Local<ulong>* registerLocals[31];
@@ -71,6 +71,7 @@ public:
         [=](auto reg) {
             if(reg == 31)
                 return (RuntimeValue<ulong>) 0UL;
+            registersUsed[reg] = true;
             return registerLocals[reg]->value();
         },
         [=](auto reg, auto value) {
@@ -84,9 +85,11 @@ public:
     };
     Indexer<RuntimeValue<Vector128<float>>> VR{
         [=](auto reg) {
-            auto addr = FieldAddress(V0) + (reg * 16);
-            auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<float>*>());
-            return Builder.CreateLoad(ptr);
+            return RuntimeValue<Vector128<float>>([=]() {
+                auto addr = FieldAddress(V0) + (reg * 16);
+                auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<float>*>());
+                return Builder.CreateLoad(ptr);
+            });
         },
         [=](auto reg, auto value) {
             auto addr = FieldAddress(V0) + (reg * 16);
@@ -96,9 +99,11 @@ public:
     };
     Indexer<RuntimeValue<byte>> VBR{
         [=](auto reg) {
-            auto addr = FieldAddress(V0) + (reg * 16);
-            auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<byte*>());
-            return Builder.CreateLoad(ptr);
+            return RuntimeValue<byte>([=]() {
+                auto addr = FieldAddress(V0) + (reg * 16);
+                auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<byte *>());
+                return Builder.CreateLoad(ptr);
+            });
         },
         [=](auto reg, auto value) {
             auto addr = FieldAddress(V0) + (reg * 16);
@@ -111,9 +116,11 @@ public:
     };
     Indexer<RuntimeValue<ushort>> VHR{
             [=](auto reg) {
-                auto addr = FieldAddress(V0) + (reg * 16);
-                auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<ushort*>());
-                return Builder.CreateLoad(ptr);
+                return RuntimeValue<ushort>([=]() {
+                    auto addr = FieldAddress(V0) + (reg * 16);
+                    auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<ushort *>());
+                    return Builder.CreateLoad(ptr);
+                });
             },
             [=](auto reg, auto value) {
                 auto addr = FieldAddress(V0) + (reg * 16);
@@ -126,9 +133,11 @@ public:
     };
     Indexer<RuntimeValue<float>> VSR{
             [=](auto reg) {
-                auto addr = FieldAddress(V0) + (reg * 16);
-                auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<float*>());
-                return Builder.CreateLoad(ptr);
+                return RuntimeValue<float>([=]() {
+                    auto addr = FieldAddress(V0) + (reg * 16);
+                    auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<float *>());
+                    return Builder.CreateLoad(ptr);
+                });
             },
             [=](auto reg, auto value) {
                 auto addr = FieldAddress(V0) + (reg * 16);
@@ -141,9 +150,11 @@ public:
     };
     Indexer<RuntimeValue<double>> VDR{
             [=](auto reg) {
-                auto addr = FieldAddress(V0) + (reg * 16);
-                auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<double*>());
-                return Builder.CreateLoad(ptr);
+                return RuntimeValue<double>([=]() {
+                    auto addr = FieldAddress(V0) + (reg * 16);
+                    auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<double *>());
+                    return Builder.CreateLoad(ptr);
+                });
             },
             [=](auto reg, auto value) {
                 auto addr = FieldAddress(V0) + (reg * 16);
@@ -232,11 +243,11 @@ public:
             suppressedBranch = label->id;
         justBranched = true;
     }
-    inline void BranchIf(RuntimeValue<byte> cond, LabelTag _if, LabelTag _else) {
+    inline void BranchIf(RuntimeValue<bool> cond, LabelTag _if, LabelTag _else) {
         if(justBranched) return;
         usedLabels.insert(_if->id);
         usedLabels.insert(_else->id);
-        Builder.CreateCondBr(Builder.CreateICmpNE(cond, (RuntimeValue<byte>) (byte) 0), _if->block(), _else->block());
+        Builder.CreateCondBr(cond, _if->block(), _else->block());
         justBranched = true;
     }
 
@@ -274,8 +285,7 @@ public:
 
     inline void BranchRegister(int reg) {
         auto base = [&]() {
-            auto target = XR[reg];
-            BranchToR = target;
+            BranchToR = XR[reg]();
             Branch(*preStoreRegistersLabel);
             branched = true;
         };
@@ -295,14 +305,14 @@ public:
 
     template<typename T>
     inline RuntimeValue<byte> CompareAndSwap(RuntimePointer<T> pointer, RuntimeValue<T> value, RuntimeValue<T> comparand) {
-        return RuntimeValue<byte>(0);
+        assert(false);
     }
 };
 
 template<typename CondT, typename ValueT>
 inline RuntimeValue<ValueT> Ternary(RuntimeValue<CondT> cond, RuntimeValue<ValueT> a, RuntimeValue<ValueT> b) {
-    auto rec = &RecompilerInstance;
     return RuntimeValue<ValueT>([=]() {
+        auto rec = &RecompilerInstance;
         auto if_ = rec->DefineLabel(), else_ = rec->DefineLabel(), end = rec->DefineLabel();
         rec->BranchIf(cond, if_, else_);
         rec->Label(if_);

@@ -5,7 +5,7 @@
 
 #include "common.h"
 
-#define RV(T, value) return RuntimeValue<T>([=]() { return (value); })
+#define RV(T, value) return RuntimeValue<T>([=, __this=*this]() { return (value); })
 
 template<typename T> struct function_traits;
 
@@ -52,22 +52,21 @@ template<typename T>
 class RuntimeValue {
 public:
     using Type = T;
+    int constructor;
     std::function<llvm::Value*()> generator;
 
     template<typename U = T>
     inline RuntimeValue(T value) {
         static_assert(!is_vector_t<T>());
+        constructor = 0xf001;
         if constexpr(std::is_floating_point<T>())
             generator = [=]() { return llvm::ConstantFP::get(LlvmType<T>(), (double) value); };
         else
             generator = [=]() { return llvm::ConstantInt::get(LlvmType<T>(), (ulong) value, is_signed<T>()); };
     }
 
-    inline RuntimeValue(llvm::Value* value) : generator([=]() { return value; }) { }
-
-    inline RuntimeValue(std::function<llvm::Value*()> generator) : generator(generator) { }
-
-    inline void BuildGenerator(llvm::Value* value) { generator = [=]() { return value; }; }
+    inline RuntimeValue(std::function<llvm::Value*()> generator) : constructor(0xf003), generator(generator) {
+    }
 
     inline llvm::Value* Emit() const {
         auto value = generator();
@@ -84,33 +83,33 @@ public:
         else if constexpr(is_vector_t<T>() || is_vector_t<OT>()) {
             static_assert(is_vector_t<T>());
             static_assert(is_vector_t<OT>());
-            RV(OT, Builder.CreateBitCast(*this, LlvmType<OT>()));
+            RV(OT, Builder.CreateBitCast(__this, LlvmType<OT>()));
         } else if constexpr(std::is_same<T, bool>())
-            RV(OT, Builder.CreateZExt(*this, LlvmType<OT>()));
+            RV(OT, Builder.CreateZExt(__this, LlvmType<OT>()));
         else if constexpr(std::is_same<OT, bool>())
-            RV(OT, Builder.CreateICmpNE(*this, (RuntimeValue<OT>) OT(0)));
+            RV(OT, Builder.CreateICmpNE(__this, (RuntimeValue<T>) (T) 0));
         else if constexpr(std::is_floating_point<OT>()) {
             if constexpr(std::is_integral<T>()) {
                 if constexpr(std::is_signed<T>())
-                    RV(OT, Builder.CreateSIToFP(*this, LlvmType<OT>()));
+                    RV(OT, Builder.CreateSIToFP(__this, LlvmType<OT>()));
                 else
-                    RV(OT, Builder.CreateUIToFP(*this, LlvmType<OT>()));
+                    RV(OT, Builder.CreateUIToFP(__this, LlvmType<OT>()));
             } else
-                RV(OT, Builder.CreateFPCast(*this, LlvmType<OT>()));
+                RV(OT, Builder.CreateFPCast(__this, LlvmType<OT>()));
         } else if constexpr(std::is_floating_point<T>()) {
             static_assert(std::is_integral<OT>());
             if constexpr(std::is_signed<OT>())
-                RV(OT, Builder.CreateFPToSI(*this, LlvmType<OT>()));
+                RV(OT, Builder.CreateFPToSI(__this, LlvmType<OT>()));
             else
-                RV(OT, Builder.CreateFPToUI(*this, LlvmType<OT>()));
+                RV(OT, Builder.CreateFPToUI(__this, LlvmType<OT>()));
         } else if constexpr(sizeof(T) == sizeof(OT))
-            RV(OT, Builder.CreateBitCast(*this, LlvmType<OT>()));
+            RV(OT, Builder.CreateBitCast(__this, LlvmType<OT>()));
         else if constexpr(sizeof(T) > sizeof(OT))
-            RV(OT, Builder.CreateTrunc(*this, LlvmType<OT>()));
+            RV(OT, Builder.CreateTrunc(__this, LlvmType<OT>()));
         else if constexpr(std::is_signed<OT>())
-            RV(OT, Builder.CreateSExt(*this, LlvmType<OT>()));
+            RV(OT, Builder.CreateSExt(__this, LlvmType<OT>()));
         else
-            RV(OT, Builder.CreateZExt(*this, LlvmType<OT>()));
+            RV(OT, Builder.CreateZExt(__this, LlvmType<OT>()));
     }
 
     template<typename RetType, typename ... ArgTypes, typename = std::enable_if_t<!std::is_void_v<RetType>>>
@@ -125,15 +124,16 @@ public:
 
     inline RuntimeValue<T> Store() const {
         auto value = Emit();
+        assert(value != nullptr);
         RV(T, value);
     }
 
     template<typename U = T, typename = std::enable_if_t<std::is_floating_point_v<U>>>
     inline RuntimeValue<T> Abs() const {
         if constexpr(std::is_same<U, float>())
-            RV(T, (CallIntrinsic<float, float>("llvm.fabs.f32", *this)));
+            RV(T, (CallIntrinsic<float, float>("llvm.fabs.f32", __this)));
         else if constexpr(std::is_same<U, double>())
-            RV(T, (CallIntrinsic<double, double>("llvm.fabs.f64", *this)));
+            RV(T, (CallIntrinsic<double, double>("llvm.fabs.f64", __this)));
         else
             static_assert(std::is_void<U>());
     }
@@ -144,9 +144,9 @@ public:
     }
     inline RuntimeValue<T> operator+(RuntimeValue<T> right) const {
         if constexpr(is_int_ptr_vec_t<T>())
-            RV(T, Builder.CreateAdd(*this, right));
+            RV(T, Builder.CreateAdd(__this, right));
         else
-            RV(T, Builder.CreateFAdd(*this, right));
+            RV(T, Builder.CreateFAdd(__this, right));
     }
     template<typename U = T, typename = std::enable_if_t<!std::is_void_v<U>>>
     inline friend RuntimeValue<T> operator+(T left, RuntimeValue<T> right) { return (RuntimeValue<T>) left + right; }
@@ -156,9 +156,9 @@ public:
     }
     inline RuntimeValue<T> operator-(RuntimeValue<T> right) const {
         if constexpr(is_int_ptr_vec_t<T>())
-            RV(T, Builder.CreateSub(*this, right));
+            RV(T, Builder.CreateSub(__this, right));
         else
-            RV(T, Builder.CreateFSub(*this, right));
+            RV(T, Builder.CreateFSub(__this, right));
     }
     inline friend RuntimeValue<T> operator-(T left, RuntimeValue<T> right) { return (RuntimeValue<T>) left - right; }
     template<typename U = T, typename = std::enable_if<is_vector_t<U>()>>
@@ -167,9 +167,9 @@ public:
     }
     inline RuntimeValue<T> operator*(RuntimeValue<T> right) const {
         if constexpr(is_int_ptr_vec_t<T>())
-            RV(T, Builder.CreateMul(*this, right));
+            RV(T, Builder.CreateMul(__this, right));
         else
-            RV(T, Builder.CreateFMul(*this, right));
+            RV(T, Builder.CreateFMul(__this, right));
     }
     inline friend RuntimeValue<T> operator*(T left, RuntimeValue<T> right) { return (RuntimeValue<T>) left * right; }
     template<typename U = T, typename = std::enable_if<is_vector_t<U>()>>
@@ -179,60 +179,65 @@ public:
     inline RuntimeValue<T> operator/(RuntimeValue<T> right) const {
         if constexpr(is_int_ptr_vec_t<T>()) {
             if constexpr(is_signed<T>())
-                RV(T, Builder.CreateSDiv(*this, right));
+                RV(T, Builder.CreateSDiv(__this, right));
             else
-                RV(T, Builder.CreateUDiv(*this, right));
+                RV(T, Builder.CreateUDiv(__this, right));
         } else
-            RV(T, Builder.CreateFDiv(*this, right));
+            RV(T, Builder.CreateFDiv(__this, right));
     }
     inline friend RuntimeValue<T> operator/(T left, RuntimeValue<T> right) { return (RuntimeValue<T>) left / right; }
     inline RuntimeValue<T> operator%(RuntimeValue<T> right) const {
         if constexpr(is_int_ptr_vec_t<T>()) {
             if constexpr(is_signed<T>())
-                RV(T, Builder.CreateSRem(*this, right));
+                RV(T, Builder.CreateSRem(__this, right));
             else
-                RV(T, Builder.CreateURem(*this, right));
+                RV(T, Builder.CreateURem(__this, right));
         } else
-            RV(T, Builder.CreateFRem(*this, right));
+            RV(T, Builder.CreateFRem(__this, right));
     }
     inline friend RuntimeValue<T> operator%(T left, RuntimeValue<T> right) { return (RuntimeValue<T>) left % right; }
     inline RuntimeValue<T> operator-() {
         if constexpr(is_floating_point<T>())
-            RV(T, Builder.CreateFNeg(*this));
+            RV(T, Builder.CreateFNeg(__this));
         else
-            RV(T, Builder.CreateNeg(*this));
+            RV(T, Builder.CreateNeg(__this));
     }
 
     inline RuntimeValue<T> operator>>(RuntimeValue<T> right) const {
-        return Ternary(
-            (RuntimeValue<bool>) (right >= sizeof(T) * 8),
+        RV(T, Builder.CreateShl(__this, right));
+        /*return Ternary(
+            (RuntimeValue<bool>) (right >= (RuntimeValue<T>) (sizeof(T) * 8)),
             (RuntimeValue<T>) (T) 0,
-            RuntimeValue<T>([=]() { return Builder.CreateShl(*this, right); })
-        );
+            RuntimeValue<T>([=]() { return Builder.CreateShl(__this, right); })
+        );*/
     }
     inline RuntimeValue<T> operator<<(RuntimeValue<T> right) const {
-        return Ternary(
-            (RuntimeValue<bool>) (right >= sizeof(T) * 8),
+        /*return Ternary(
+            (RuntimeValue<bool>) (right >= (RuntimeValue<T>) (sizeof(T) * 8)),
             (RuntimeValue<T>) (T) 0,
             is_signed<T>()
-                ? RuntimeValue<T>([=]() { return Builder.CreateAShr(*this, right); })
-                : RuntimeValue<T>([=]() { return Builder.CreateLShr(*this, right); })
-        );
+                ? RuntimeValue<T>([=]() { return Builder.CreateAShr(__this, right); })
+                : RuntimeValue<T>([=]() { return Builder.CreateLShr(__this, right); })
+        );*/
+        if constexpr(is_signed<T>())
+            RV(T, Builder.CreateAShr(__this, right));
+        else
+            RV(T, Builder.CreateLShr(__this, right));
     }
     inline RuntimeValue<T> operator&(RuntimeValue<T> right) const {
-        RV(T, Builder.CreateAnd(*this, right));
+        RV(T, Builder.CreateAnd(__this, right));
     }
     inline RuntimeValue<T> operator|(RuntimeValue<T> right) const {
-        RV(T, Builder.CreateOr(*this, right));
+        RV(T, Builder.CreateOr(__this, right));
     }
     inline RuntimeValue<T> operator^(RuntimeValue<T> right) const {
-        RV(T, Builder.CreateXor(*this, right));
+        RV(T, Builder.CreateXor(__this, right));
     }
-    inline RuntimeValue<T> operator!() const {
-        RV(T, Builder.CreateICmpEQ(*this, (RuntimeValue<T>) (T) 0));
+    inline RuntimeValue<bool> operator!() const {
+        RV(bool, Builder.CreateICmpEQ(__this, (RuntimeValue<T>) (T) 0));
     }
     inline RuntimeValue<T> operator~() const {
-        RV(T, Builder.CreateNot(*this));
+        RV(T, Builder.CreateNot(__this));
     }
     inline RuntimeValue<T> AndNot(RuntimeValue<T> right) const {
         if constexpr(is_vector_t<T>())
@@ -241,55 +246,55 @@ public:
             return *this & ~right;
     }
 
-    inline RuntimeValue<byte> operator==(RuntimeValue<T> right) const {
+    inline RuntimeValue<bool> operator==(RuntimeValue<T> right) const {
         if constexpr(std::is_integral<T>())
-            RV(byte, Builder.CreateICmpEQ(*this, right));
+            RV(bool, Builder.CreateICmpEQ(__this, right));
         else
-            RV(byte, Builder.CreateFCmpOEQ(*this, right));
+            RV(bool, Builder.CreateFCmpOEQ(__this, right));
     }
-    inline RuntimeValue<byte> operator!=(RuntimeValue<T> right) const {
+    inline RuntimeValue<bool> operator!=(RuntimeValue<T> right) const {
         if constexpr(std::is_integral<T>())
-            RV(byte, Builder.CreateICmpNE(*this, right));
+            RV(bool, Builder.CreateICmpNE(__this, right));
         else
-            RV(byte, Builder.CreateFCmpONE(*this, right));
+            RV(bool, Builder.CreateFCmpONE(__this, right));
     }
-    inline RuntimeValue<byte> operator>=(RuntimeValue<T> right) const {
+    inline RuntimeValue<bool> operator>=(RuntimeValue<T> right) const {
         if constexpr(std::is_integral<T>() && std::is_signed<T>())
-            RV(byte, Builder.CreateICmpSGE(*this, right));
+            RV(bool, Builder.CreateICmpSGE(__this, right));
         else if constexpr(std::is_integral<T>() && !std::is_signed<T>())
-            RV(byte, Builder.CreateICmpUGE(*this, right));
+            RV(bool, Builder.CreateICmpUGE(__this, right));
         else
-            RV(byte, Builder.CreateFCmpOGE(*this, right));
+            RV(bool, Builder.CreateFCmpOGE(__this, right));
     }
-    inline RuntimeValue<byte> operator>(RuntimeValue<T> right) const {
+    inline RuntimeValue<bool> operator>(RuntimeValue<T> right) const {
         if constexpr(std::is_integral<T>() && std::is_signed<T>())
-            RV(byte, Builder.CreateICmpSGT(*this, right));
+            RV(bool, Builder.CreateICmpSGT(__this, right));
         else if constexpr(std::is_integral<T>() && !std::is_signed<T>())
-            RV(byte, Builder.CreateICmpUGT(*this, right));
+            RV(bool, Builder.CreateICmpUGT(__this, right));
         else
-            RV(byte, Builder.CreateFCmpOGT(*this, right));
+            RV(bool, Builder.CreateFCmpOGT(__this, right));
     }
-    inline RuntimeValue<byte> operator<(RuntimeValue<T> right) const {
+    inline RuntimeValue<bool> operator<(RuntimeValue<T> right) const {
         if constexpr(std::is_integral<T>() && std::is_signed<T>())
-            RV(byte, Builder.CreateICmpSLT(*this, right));
+            RV(bool, Builder.CreateICmpSLT(__this, right));
         else if constexpr(std::is_integral<T>() && !std::is_signed<T>())
-            RV(byte, Builder.CreateICmpULT(*this, right));
+            RV(bool, Builder.CreateICmpULT(__this, right));
         else
-            RV(byte, Builder.CreateFCmpOLT(*this, right));
+            RV(bool, Builder.CreateFCmpOLT(__this, right));
     }
-    inline RuntimeValue<byte> operator<=(RuntimeValue<T> right) const {
+    inline RuntimeValue<bool> operator<=(RuntimeValue<T> right) const {
         if constexpr(std::is_integral<T>() && std::is_signed<T>())
-            RV(byte, Builder.CreateICmpSLE(*this, right));
+            RV(bool, Builder.CreateICmpSLE(__this, right));
         else if constexpr(std::is_integral<T>() && !std::is_signed<T>())
-            RV(byte, Builder.CreateICmpULE(*this, right));
+            RV(bool, Builder.CreateICmpULE(__this, right));
         else
-            RV(byte, Builder.CreateFCmpOLE(*this, right));
+            RV(bool, Builder.CreateFCmpOLE(__this, right));
     }
 
     template<typename U = T>
     inline RuntimeValue<Vector128<U>> CreateVector() const {
-        return RuntimeValue<Vector128<U>>([=]() {
-            auto value = Emit();
+        return RuntimeValue<Vector128<U>>([=, __this=*this]() {
+            auto value = __this.Emit();
             llvm::Value* vec = llvm::UndefValue::get(LlvmType<Vector128<U>>());
             for(auto i = 0; i < element_count<Vector128<U>>(); ++i)
                 vec = Builder.CreateInsertElement(vec, value, i);
@@ -299,13 +304,13 @@ public:
 
     template<typename ElementT>
     inline RuntimeValue<ElementT> Element(int index) const {
-        RV(ElementT, Builder.CreateExtractElement((RuntimeValue<Vector128<ElementT>>) *this, index));
+        RV(ElementT, Builder.CreateExtractElement((RuntimeValue<Vector128<ElementT>>) __this, index));
     }
 
     template<typename ElementT, typename U = T, typename = std::enable_if_t<std::is_same_v<U, Vector128<float>>>>
     inline RuntimeValue<Vector128<float>> Insert(int index, RuntimeValue<ElementT> value) const {
-        return RuntimeValue<Vector128<float>>([=]() {
-            auto vec = Emit();
+        return RuntimeValue<Vector128<float>>([index, value, __this=*this]() {
+            auto vec = __this.Emit();
             if constexpr(std::is_same<ElementT, float>())
                 vec = Builder.CreateBitCast(vec, LlvmType<Vector128<ElementT>>());
             vec = Builder.CreateInsertElement(vec, value, index);
@@ -317,8 +322,8 @@ public:
 
     template<typename U = T, typename = std::enable_if_t<std::is_floating_point_v<U>>>
     inline RuntimeValue<byte> IsNaN() const {
-        return RuntimeValue<bool>([=]() {
-            auto value = Emit();
+        return RuntimeValue<bool>([__this=*this]() {
+            auto value = __this.Emit();
             return Builder.CreateFCmpUNO(value, value);
         });
     }
@@ -326,15 +331,15 @@ public:
     template<typename U>
     inline RuntimeValue<U> Bitcast() const {
         static_assert(sizeof(T) == sizeof(U));
-        RV(U, Builder.CreateBitCast(*this, LlvmType<U>()));
+        RV(U, Builder.CreateBitCast(__this, LlvmType<U>()));
     }
 
     template<typename U = T, typename = std::enable_if_t<std::is_floating_point_v<U>>>
     inline RuntimeValue<T> Sqrt() const {
         if constexpr(std::is_same<U, float>())
-            RV(T, (CallIntrinsic<float, float>("sqrtf", *this)));
+            RV(T, (CallIntrinsic<float, float>("sqrtf", __this)));
         else if constexpr(std::is_same<U, double>())
-            RV(T, (CallIntrinsic<double, double>("sqrt", *this)));
+            RV(T, (CallIntrinsic<double, double>("sqrt", __this)));
         else
             static_assert(std::is_void<U>());
     }
@@ -350,11 +355,13 @@ public:
               safe(safe), isVolatile(isVolatile) {}
     Property<RuntimeValue<T>> value{
             [=]() {
-                auto load = Builder.CreateLoad(pointer);
-                load->setAlignment(1);
-                if(isVolatile)
-                    load->setVolatile(true);
-                return load;
+                return RuntimeValue<T>([__this=*this]() {
+                    auto load = Builder.CreateLoad(__this.pointer);
+                    load->setAlignment(1);
+                    if(__this.isVolatile)
+                        load->setVolatile(true);
+                    return load;
+                });
             },
             [=](auto v) {
                 auto store = Builder.CreateStore(pointer, v);

@@ -17,6 +17,7 @@ add_definitions(${LLVM_DEFINITIONS})
 llvm_map_components_to_libnames(llvm_libs core support mc mcjit native nativecodegen target)
 message("${llvm_libs}")
 link_libraries(${llvm_libs})
+add_definitions(-fsanitize=address)
 
 add_library(moonage disassembler.generated.cpp common.h interpreter.generated.cpp interpreter.cpp interpreter.h state.h recompiler.generated.cpp recompiler.h runtimeValue.cpp runtimeValue.h recompiler.cpp property.h cacheManager.cpp cacheManager.h interface.h interface.cpp)
 
