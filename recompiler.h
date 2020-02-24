@@ -29,10 +29,11 @@ using LabelTag = std::shared_ptr<_LabelTag>;
 template<typename T>
 class Local {
 public:
+    bool used = false;
     llvm::Value* pointer;
     Property<RuntimeValue<T>> value{
-        [=]() { return RuntimeValue<T>([=]() { return Builder.CreateLoad(pointer); }); },
-        [=](auto val) { Builder.CreateStore(val, pointer); }
+        [=]() { return RuntimeValue<T>([=]() { used = true; return Builder.CreateLoad(pointer); }); },
+        [=](auto val) { used = true; Builder.CreateStore(val, pointer); }
     };
     inline Local() : pointer(Builder.CreateAlloca(LlvmType<T>())) { }
 };
@@ -50,8 +51,9 @@ public:
 
     volatile CpuState state;
     ulong currentPC;
-    bool registersUsed[31];
-    Local<ulong>* registerLocals[31];
+    void* stateLocals[sizeof(CpuState)];
+    template<typename T>
+    inline Local<T>* GetLocal(int i) { return (Local<T>*) stateLocals[i]; }
 
     llvm::Function* function;
     std::unique_ptr<llvm::Module> module;
@@ -71,21 +73,18 @@ public:
         [=](auto reg) {
             if(reg == 31)
                 return (RuntimeValue<ulong>) 0UL;
-            registersUsed[reg] = true;
-            return registerLocals[reg]->value();
+            return GetLocal<ulong>(offsetof(CpuState, X0) + reg * 8)->value();
         },
         [=](auto reg, auto value) {
             if(reg == 31) {
                 value.Emit();
                 return;
             }
-            registersUsed[reg] = true;
-            registerLocals[reg]->value = value;
+            GetLocal<ulong>(offsetof(CpuState, X0) + reg * 8)->value = value;
         }
     };
     Indexer<RuntimeValue<Vector128<float>>> VR{
         [=](auto reg) {
-            assert(reg >= 0 && reg <= 31);
             return RuntimeValue<Vector128<float>>([=]() {
                 auto addr = FieldAddress(V0) + (reg * 16);
                 auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<float>*>());
@@ -93,7 +92,6 @@ public:
             });
         },
         [=](auto reg, auto value) {
-            assert(reg >= 0 && reg <= 31);
             auto addr = FieldAddress(V0) + (reg * 16);
             auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<float>*>());
             Builder.CreateStore(value, ptr);
@@ -101,7 +99,6 @@ public:
     };
     Indexer<RuntimeValue<byte>> VBR{
         [=](auto reg) {
-            assert(reg >= 0 && reg <= 31);
             return RuntimeValue<byte>([=]() {
                 auto addr = FieldAddress(V0) + (reg * 16);
                 auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<byte *>());
@@ -109,7 +106,6 @@ public:
             });
         },
         [=](auto reg, auto value) {
-            assert(reg >= 0 && reg <= 31);
             auto addr = FieldAddress(V0) + (reg * 16);
             auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<byte>*>());
             auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<byte>>()), value, (RuntimeValue<int>) 0);
@@ -120,7 +116,6 @@ public:
     };
     Indexer<RuntimeValue<ushort>> VHR{
             [=](auto reg) {
-                assert(reg >= 0 && reg <= 31);
                 return RuntimeValue<ushort>([=]() {
                     auto addr = FieldAddress(V0) + (reg * 16);
                     auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<ushort *>());
@@ -128,7 +123,6 @@ public:
                 });
             },
             [=](auto reg, auto value) {
-                assert(reg >= 0 && reg <= 31);
                 auto addr = FieldAddress(V0) + (reg * 16);
                 auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<ushort>*>());
                 auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<ushort>>()), value, (RuntimeValue<int>) 0);
@@ -139,7 +133,6 @@ public:
     };
     Indexer<RuntimeValue<float>> VSR{
             [=](auto reg) {
-                assert(reg >= 0 && reg <= 31);
                 return RuntimeValue<float>([=]() {
                     auto addr = FieldAddress(V0) + (reg * 16);
                     auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<float *>());
@@ -147,7 +140,6 @@ public:
                 });
             },
             [=](auto reg, auto value) {
-                assert(reg >= 0 && reg <= 31);
                 auto addr = FieldAddress(V0) + (reg * 16);
                 auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<float>*>());
                 auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<float>>()), value, (RuntimeValue<int>) 0);
@@ -158,7 +150,6 @@ public:
     };
     Indexer<RuntimeValue<double>> VDR{
             [=](auto reg) {
-                assert(reg >= 0 && reg <= 31);
                 return RuntimeValue<double>([=]() {
                     auto addr = FieldAddress(V0) + (reg * 16);
                     auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<double *>());
@@ -166,7 +157,6 @@ public:
                 });
             },
             [=](auto reg, auto value) {
-                assert(reg >= 0 && reg <= 31);
                 auto addr = FieldAddress(V0) + (reg * 16);
                 auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<double>*>());
                 auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<double>>()), value, (RuntimeValue<int>) 0);
@@ -175,12 +165,17 @@ public:
             }
     };
 
-#define FIELD(name) Property<RuntimeValue<decltype(CpuState::name)>> name##R{ \
+#define DIRECT_FIELD(name) Property<RuntimeValue<decltype(CpuState::name)>> name##R{ \
     [=]() { return Field<decltype(CpuState::name)>(offsetof(CpuState, name)); }, \
     [=](auto value) { Field(offsetof(CpuState, name), value); } \
 }
 
-    FIELD(BranchTo);
+#define FIELD(name) Property<RuntimeValue<decltype(CpuState::name)>> name##R{ \
+    [=]() { return GetLocal<decltype(CpuState::name)>(offsetof(CpuState, name))->value; }, \
+    [=](auto value) { GetLocal<decltype(CpuState::name)>(offsetof(CpuState, name))->value = value; } \
+}
+
+    DIRECT_FIELD(BranchTo);
     FIELD(PC);
     FIELD(SP);
     FIELD(Exclusive8);

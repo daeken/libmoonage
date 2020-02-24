@@ -93,9 +93,9 @@ void Recompiler::recompileMultiple(Block *block) {
 
     Builder.SetInsertPoint(llvm::BasicBlock::Create(Builder.getContext(), "", function));
 
-    memset(registersUsed, 0, sizeof(registersUsed));
-    for(auto i = 0; i < 31; ++i)
-        registerLocals[i] = new Local<ulong>();
+#define LDEF(name) do { stateLocals[offsetof(CpuState, name)] = (void*) new Local<decltype(CpuState::name)>(); } while(0)
+    STATE_MEMBER_DEFS(LDEF);
+#undef LDEF
 
     auto preRegisterLoad = DefineLabel(), postRegisterLoad = DefineLabel(), retLabel = DefineLabel();
     Branch(preRegisterLoad);
@@ -144,15 +144,15 @@ void Recompiler::recompileMultiple(Block *block) {
     }
 
     Label(preRegisterLoad);
-    for(auto i = 0; i < 31; ++i)
-        if(registersUsed[i])
-            registerLocals[i]->value = Field<ulong>(offsetof(CpuState, X0) + 8 * i);
+#define LOAD(name) do { auto __temp = (Local<decltype(CpuState::name)>*) stateLocals[offsetof(CpuState, name)]; if(__temp->used) __temp->value = Field<decltype(CpuState::name)>(offsetof(CpuState, name)); } while(0)
+    STATE_MEMBER_DEFS(LOAD);
+#undef LOAD
     Branch(postRegisterLoad);
 
     Label(preRegisterStore);
-    for(auto i = 0; i < 31; ++i)
-        if(registersUsed[i])
-            Field<ulong>(offsetof(CpuState, X0) + 8 * i, registerLocals[i]->value);
+#define STORE(name) do { auto __temp = (Local<decltype(CpuState::name)>*) stateLocals[offsetof(CpuState, name)]; if(__temp->used) Field<decltype(CpuState::name)>(offsetof(CpuState, name), __temp->value); } while(0)
+    STATE_MEMBER_DEFS(STORE);
+#undef STORE
     Builder.CreateRetVoid();
 
     //function->dump();
@@ -175,8 +175,9 @@ void Recompiler::recompileMultiple(Block *block) {
     assert(fptr != nullptr);
     block->func = (BlockFunc) fptr;
 
-    for(auto i = 0; i < 31; ++i)
-        delete registerLocals[i];
+#define UNDEF(name) do { delete (Local<decltype(CpuState::name)>*) stateLocals[offsetof(CpuState, name)]; } while(0)
+    STATE_MEMBER_DEFS(UNDEF);
+#undef STORE
 }
 
 ulong SR(uint op0, uint op1, uint crn, uint crm, uint op2) {
