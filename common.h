@@ -59,6 +59,8 @@ extern thread_local Recompiler RecompilerInstance;
 llvm::Module* getModule();
 void emitted();
 
+extern const int instructionClassCount;
+const char* getInstructionClass(uint inst);
 const char* disassemble(uint inst, ulong pc);
 
 template<class T>

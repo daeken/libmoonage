@@ -85,6 +85,7 @@ public:
     };
     Indexer<RuntimeValue<Vector128<float>>> VR{
         [=](auto reg) {
+            assert(reg >= 0 && reg <= 31);
             return RuntimeValue<Vector128<float>>([=]() {
                 auto addr = FieldAddress(V0) + (reg * 16);
                 auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<float>*>());
@@ -92,6 +93,7 @@ public:
             });
         },
         [=](auto reg, auto value) {
+            assert(reg >= 0 && reg <= 31);
             auto addr = FieldAddress(V0) + (reg * 16);
             auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<float>*>());
             Builder.CreateStore(value, ptr);
@@ -99,6 +101,7 @@ public:
     };
     Indexer<RuntimeValue<byte>> VBR{
         [=](auto reg) {
+            assert(reg >= 0 && reg <= 31);
             return RuntimeValue<byte>([=]() {
                 auto addr = FieldAddress(V0) + (reg * 16);
                 auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<byte *>());
@@ -106,6 +109,7 @@ public:
             });
         },
         [=](auto reg, auto value) {
+            assert(reg >= 0 && reg <= 31);
             auto addr = FieldAddress(V0) + (reg * 16);
             auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<byte>*>());
             auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<byte>>()), value, (RuntimeValue<int>) 0);
@@ -116,6 +120,7 @@ public:
     };
     Indexer<RuntimeValue<ushort>> VHR{
             [=](auto reg) {
+                assert(reg >= 0 && reg <= 31);
                 return RuntimeValue<ushort>([=]() {
                     auto addr = FieldAddress(V0) + (reg * 16);
                     auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<ushort *>());
@@ -123,6 +128,7 @@ public:
                 });
             },
             [=](auto reg, auto value) {
+                assert(reg >= 0 && reg <= 31);
                 auto addr = FieldAddress(V0) + (reg * 16);
                 auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<ushort>*>());
                 auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<ushort>>()), value, (RuntimeValue<int>) 0);
@@ -133,6 +139,7 @@ public:
     };
     Indexer<RuntimeValue<float>> VSR{
             [=](auto reg) {
+                assert(reg >= 0 && reg <= 31);
                 return RuntimeValue<float>([=]() {
                     auto addr = FieldAddress(V0) + (reg * 16);
                     auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<float *>());
@@ -140,6 +147,7 @@ public:
                 });
             },
             [=](auto reg, auto value) {
+                assert(reg >= 0 && reg <= 31);
                 auto addr = FieldAddress(V0) + (reg * 16);
                 auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<float>*>());
                 auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<float>>()), value, (RuntimeValue<int>) 0);
@@ -150,6 +158,7 @@ public:
     };
     Indexer<RuntimeValue<double>> VDR{
             [=](auto reg) {
+                assert(reg >= 0 && reg <= 31);
                 return RuntimeValue<double>([=]() {
                     auto addr = FieldAddress(V0) + (reg * 16);
                     auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<double *>());
@@ -157,6 +166,7 @@ public:
                 });
             },
             [=](auto reg, auto value) {
+                assert(reg >= 0 && reg <= 31);
                 auto addr = FieldAddress(V0) + (reg * 16);
                 auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<double>*>());
                 auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<double>>()), value, (RuntimeValue<int>) 0);
@@ -217,7 +227,7 @@ public:
     template<typename RetType, typename ... ArgTypes, typename = std::enable_if_t<!std::is_void_v<RetType>>>
     inline RuntimeValue<RetType> Call(RetType (*func)(ArgTypes ...), RuntimeValue<ArgTypes> ... args) const {
         return RuntimeValue<RetType>([=]() {
-            return Builder.CreateCall(Builder.CreateIntToPtr((RuntimeValue<ulong>) (ulong) func, LlvmType<std::function<RetType(ArgTypes ...)>>()), { args.Emit()... });
+            return Builder.CreateCall(Builder.CreateIntToPtr((RuntimeValue<ulong>) (ulong) func, LlvmType<std::function<RetType(ArgTypes ...)>*>()), { args.Emit()... });
         });
     }
 

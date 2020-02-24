@@ -8,6 +8,441 @@ typedef uint32_t uint;
 typedef uint16_t ushort;
 typedef uint8_t byte;
 
+const int instructionClassCount = 214+0;
+
+const char* getInstructionClass(uint inst) {
+	if((inst & 0x7FE0FC00U) == 0x3A000000U)
+		return "ADCS";
+	if((inst & 0x7FE00000U) == 0x0B200000U)
+		return "ADD-extended-register";
+	if((inst & 0x7F800000U) == 0x11000000U)
+		return "ADD-immediate";
+	if((inst & 0x7F200000U) == 0x0B000000U)
+		return "ADD-shifted-register";
+	if((inst & 0xBF20FC00U) == 0x0E208400U)
+		return "ADD-vector";
+	if((inst & 0x7F800000U) == 0x31000000U)
+		return "ADDS-immediate";
+	if((inst & 0x7F200000U) == 0x2B000000U)
+		return "ADDS-shifted-register";
+	if((inst & 0x9F000000U) == 0x90000000U)
+		return "ADRP";
+	if((inst & 0x7F800000U) == 0x12000000U)
+		return "AND-immediate";
+	if((inst & 0x7F200000U) == 0x0A000000U)
+		return "AND-shifted-register";
+	if((inst & 0x7F200000U) == 0x6A000000U)
+		return "ANDS-shifted-register";
+	if((inst & 0x7F800000U) == 0x72000000U)
+		return "ANDS-immediate";
+	if((inst & 0x7FE0FC00U) == 0x1AC02800U)
+		return "ASRV";
+	if((inst & 0xFC000000U) == 0x14000000U)
+		return "B";
+	if((inst & 0xFF000010U) == 0x54000000U)
+		return "B.cond";
+	if((inst & 0x7F800000U) == 0x33000000U)
+		return "BFM";
+	if((inst & 0x7F200000U) == 0x0A200000U)
+		return "BIC";
+	if((inst & 0xBFE0FC00U) == 0x0E601C00U)
+		return "BIC-vector-register";
+	if((inst & 0xFC000000U) == 0x94000000U)
+		return "BL";
+	if((inst & 0xFFFFFC1FU) == 0xD63F0000U)
+		return "BLR";
+	if((inst & 0xFFFFFC1FU) == 0xD61F0000U)
+		return "BR";
+	if((inst & 0xBFE0FC00U) == 0x08207C00U)
+		return "CASP";
+	if((inst & 0xBFE0FC00U) == 0x08607C00U)
+		return "CASPA";
+	if((inst & 0xBFE0FC00U) == 0x0860FC00U)
+		return "CASPAL";
+	if((inst & 0xBFE0FC00U) == 0x0820FC00U)
+		return "CASPL";
+	if((inst & 0x7F000000U) == 0x35000000U)
+		return "CBNZ";
+	if((inst & 0x7F000000U) == 0x34000000U)
+		return "CBZ";
+	if((inst & 0x7FE00C10U) == 0x3A400800U)
+		return "CCMN-immediate";
+	if((inst & 0x7FE00C10U) == 0x7A400800U)
+		return "CCMP-immediate";
+	if((inst & 0x7FE00C10U) == 0x7A400000U)
+		return "CCMP-register";
+	if((inst & 0xFFFFF0FFU) == 0xD503305FU)
+		return "CLREX";
+	if((inst & 0x7FFFFC00U) == 0x5AC01000U)
+		return "CLZ";
+	if((inst & 0xBF3FFC00U) == 0x0E205800U)
+		return "CNT";
+	if((inst & 0x7FE00C00U) == 0x1A800000U)
+		return "CSEL";
+	if((inst & 0x7FE00C00U) == 0x1A800400U)
+		return "CSINC";
+	if((inst & 0x7FE00C00U) == 0x5A800000U)
+		return "CSINV";
+	if((inst & 0x7FE00C00U) == 0x5A800400U)
+		return "CSNEG";
+	if((inst & 0xFFFFF0FFU) == 0xD50330BFU)
+		return "DMB";
+	if((inst & 0xFFFFF0FFU) == 0xD503309FU)
+		return "DSB";
+	if((inst & 0xBFE0FC00U) == 0x0E000C00U)
+		return "DUP-general";
+	if((inst & 0xFFE0FC00U) == 0x5E000400U)
+		return "DUP-element-scalar";
+	if((inst & 0x7F200000U) == 0x4A200000U)
+		return "EON-shifted-register";
+	if((inst & 0x7F800000U) == 0x52000000U)
+		return "EOR-immediate";
+	if((inst & 0x7F200000U) == 0x4A000000U)
+		return "EOR-shifted-register";
+	if((inst & 0xBFE08400U) == 0x2E000000U)
+		return "EXT";
+	if((inst & 0x7FA00000U) == 0x13800000U)
+		return "EXTR";
+	if((inst & 0xFF3FFC00U) == 0x1E20C000U)
+		return "FABS-scalar";
+	if((inst & 0xBFBFFC00U) == 0x0EA0F800U)
+		return "FABS-vector";
+	if((inst & 0xFF20FC00U) == 0x1E202800U)
+		return "FADD-scalar";
+	if((inst & 0xBFA0FC00U) == 0x0E20D400U)
+		return "FADD-vector";
+	if((inst & 0xFFBFFC00U) == 0x7E30D800U)
+		return "FADDP-scalar";
+	if((inst & 0xBFA0FC00U) == 0x2E20D400U)
+		return "FADDP-vector";
+	if((inst & 0xFF200C10U) == 0x1E200400U)
+		return "FCCMP";
+	if((inst & 0x9F20F400U) == 0x0E20E400U)
+		return "FCMxx-register-vector";
+	if((inst & 0x9FBFEC00U) == 0x0EA0C800U)
+		return "FCMxx-zero-vector";
+	if((inst & 0xBFBFFC00U) == 0x0EA0E800U)
+		return "FCMLT-zero-vector";
+	if((inst & 0xFF20FC17U) == 0x1E202000U)
+		return "FCMP";
+	if((inst & 0xFF200C00U) == 0x1E200C00U)
+		return "FCSEL";
+	if((inst & 0xFF3E7C00U) == 0x1E224000U)
+		return "FCVT";
+	if((inst & 0x7F3F0000U) == 0x1E180000U)
+		return "FCVTZS-scalar-fixedpoint";
+	if((inst & 0x7F3FFC00U) == 0x1E380000U)
+		return "FCVTZS-scalar-integer";
+	if((inst & 0x7F3F0000U) == 0x1E190000U)
+		return "FCVTZU-scalar-fixedpoint";
+	if((inst & 0x7F3FFC00U) == 0x1E390000U)
+		return "FCVTZU-scalar-integer";
+	if((inst & 0xFF20FC00U) == 0x1E201800U)
+		return "FDIV-scalar";
+	if((inst & 0xFF20FC00U) == 0x1E204800U)
+		return "FMAX-scalar";
+	if((inst & 0xFF20FC00U) == 0x1E206800U)
+		return "FMAXNM-scalar";
+	if((inst & 0xFF20FC00U) == 0x1E205800U)
+		return "FMIN-scalar";
+	if((inst & 0xFF20FC00U) == 0x1E207800U)
+		return "FMINNM-scalar";
+	if((inst & 0xBF80F400U) == 0x0F801000U)
+		return "FMLA-by-element-vector-spdp";
+	if((inst & 0xBFA0FC00U) == 0x0E20CC00U)
+		return "FMLA-vector";
+	if((inst & 0x7F36FC00U) == 0x1E260000U)
+		return "FMOV-general";
+	if((inst & 0xFF201FE0U) == 0x1E201000U)
+		return "FMOV-scalar-immediate";
+	if((inst & 0xBF80F400U) == 0x0F809000U)
+		return "FMUL-by-element-vector-spdp";
+	if((inst & 0xFF20FC00U) == 0x1E200800U)
+		return "FMUL-scalar";
+	if((inst & 0xBFA0FC00U) == 0x2E20DC00U)
+		return "FMUL-vector";
+	if((inst & 0xFF3FFC00U) == 0x1E214000U)
+		return "FNEG";
+	if((inst & 0xFF20FC00U) == 0x1E208800U)
+		return "FNMUL-scalar";
+	if((inst & 0xBFBFFC00U) == 0x2EA1D800U)
+		return "FRSQRTE-vector";
+	if((inst & 0xBFA0FC00U) == 0x0EA0FC00U)
+		return "FRSQRTS-vector";
+	if((inst & 0xFF3FFC00U) == 0x1E21C000U)
+		return "FSQRT-scalar";
+	if((inst & 0xFF20FC00U) == 0x1E203800U)
+		return "FSUB-scalar";
+	if((inst & 0xFFE0FC00U) == 0x4E001C00U)
+		return "INS-general";
+	if((inst & 0xFFE08400U) == 0x6E000400U)
+		return "INS-vector";
+	if((inst & 0xBFFFFC00U) == 0x88DFFC00U)
+		return "LDAR";
+	if((inst & 0xFFFFFC00U) == 0x08DFFC00U)
+		return "LDARB";
+	if((inst & 0xFFFFFC00U) == 0x48DFFC00U)
+		return "LDARH";
+	if((inst & 0xBFFFFC00U) == 0x885FFC00U)
+		return "LDAXB";
+	if((inst & 0xFFFFFC00U) == 0x085FFC00U)
+		return "LDAXRB";
+	if((inst & 0xFFFFFC00U) == 0x485FFC00U)
+		return "LDAXRH";
+	if((inst & 0x7FC00000U) == 0x28C00000U)
+		return "LDP-immediate-postindex";
+	if((inst & 0x7FC00000U) == 0x29400000U)
+		return "LDP-immediate-signed-offset";
+	if((inst & 0x3FC00000U) == 0x2CC00000U)
+		return "LDP-simd-postindex";
+	if((inst & 0x3FC00000U) == 0x2D400000U)
+		return "LDP-simd-signed-offset";
+	if((inst & 0xFFC00000U) == 0x69400000U)
+		return "LDPSW-immediate-signed-offset";
+	if((inst & 0xBFE00C00U) == 0xB8400C00U)
+		return "LDR-immediate-preindex";
+	if((inst & 0xBFE00C00U) == 0xB8400400U)
+		return "LDR-immediate-postindex";
+	if((inst & 0xBFC00000U) == 0xB9400000U)
+		return "LDR-immediate-unsigned-offset";
+	if((inst & 0x3F600C00U) == 0x3C400400U)
+		return "LDR-simd-immediate-postindex";
+	if((inst & 0x3F600C00U) == 0x3C400C00U)
+		return "LDR-simd-immediate-preindex";
+	if((inst & 0x3F400000U) == 0x3D400000U)
+		return "LDR-simd-immediate-unsigned-offset";
+	if((inst & 0x3F600C00U) == 0x3C600800U)
+		return "LDR-simd-register";
+	if((inst & 0xBFE00C00U) == 0xB8600800U)
+		return "LDR-register";
+	if((inst & 0xFFE00C00U) == 0x38400400U)
+		return "LDRB-immediate-postindex";
+	if((inst & 0xFFE00C00U) == 0x38400C00U)
+		return "LDRB-immediate-preindex";
+	if((inst & 0xFFC00000U) == 0x39400000U)
+		return "LDRB-immediate-unsigned-offset";
+	if((inst & 0xFFE00C00U) == 0x38600800U)
+		return "LDRB-register";
+	if((inst & 0xFFE00C00U) == 0x78400400U)
+		return "LDRH-immediate-postindex";
+	if((inst & 0xFFE00C00U) == 0x78400C00U)
+		return "LDRH-immediate-preindex";
+	if((inst & 0xFFC00000U) == 0x79400000U)
+		return "LDRH-immediate-unsigned-offset";
+	if((inst & 0xFFE00C00U) == 0x78600800U)
+		return "LDRH-register";
+	if((inst & 0xFFA00C00U) == 0x38800400U)
+		return "LDRSB-immediate-postindex";
+	if((inst & 0xFFA00C00U) == 0x38800C00U)
+		return "LDRSB-immediate-preindex";
+	if((inst & 0xFF800000U) == 0x39800000U)
+		return "LDRSB-immediate-unsigned-offset";
+	if((inst & 0xFFA00C00U) == 0x38A00800U)
+		return "LDRSB-register";
+	if((inst & 0xFFA00C00U) == 0x78800400U)
+		return "LDRSH-immediate-postindex";
+	if((inst & 0xFFA00C00U) == 0x78800C00U)
+		return "LDRSH-immediate-preindex";
+	if((inst & 0xFF800000U) == 0x79800000U)
+		return "LDRSH-immediate-unsigned-offset";
+	if((inst & 0xFFA00C00U) == 0x78A00800U)
+		return "LDRSH-register";
+	if((inst & 0xFFE00C00U) == 0xB8800400U)
+		return "LDRSW-immediate-postindex";
+	if((inst & 0xFFE00C00U) == 0xB8800C00U)
+		return "LDRSW-immediate-preindex";
+	if((inst & 0xFFC00000U) == 0xB9800000U)
+		return "LDRSW-immediate-unsigned-offset";
+	if((inst & 0xFFE00C00U) == 0xB8A00800U)
+		return "LDRSW-register";
+	if((inst & 0xBFE00C00U) == 0xB8400000U)
+		return "LDUR";
+	if((inst & 0xFFE00C00U) == 0x38400000U)
+		return "LDURB";
+	if((inst & 0xFFE00C00U) == 0x78400000U)
+		return "LDURH";
+	if((inst & 0xFFA00C00U) == 0x38800000U)
+		return "LDURSB";
+	if((inst & 0xFFA00C00U) == 0x78800000U)
+		return "LDURSH";
+	if((inst & 0xFFE00C00U) == 0xB8800000U)
+		return "LDURSW";
+	if((inst & 0x3F600C00U) == 0x3C400000U)
+		return "LDUR-simd";
+	if((inst & 0xBFFFFC00U) == 0x885F7C00U)
+		return "LDXR";
+	if((inst & 0xFFFFFC00U) == 0x085F7C00U)
+		return "LDXRB";
+	if((inst & 0xFFFFFC00U) == 0x485F7C00U)
+		return "LDXRH";
+	if((inst & 0x7FE0FC00U) == 0x1AC02000U)
+		return "LSL-register";
+	if((inst & 0x7FE0FC00U) == 0x1AC02400U)
+		return "LSRV";
+	if((inst & 0x7FE08000U) == 0x1B000000U)
+		return "MADD";
+	if((inst & 0xBFF89C00U) == 0x0F000400U)
+		return "MOVI-32bit";
+	if((inst & 0xFFF8FC00U) == 0x6F00E400U)
+		return "MOVI-Vx.2D";
+	if((inst & 0x7F800000U) == 0x72800000U)
+		return "MOVK";
+	if((inst & 0x7F800000U) == 0x12800000U)
+		return "MOVN";
+	if((inst & 0x7F800000U) == 0x52800000U)
+		return "MOVZ";
+	if((inst & 0xFFF00000U) == 0xD5300000U)
+		return "MRS";
+	if((inst & 0xFFF00000U) == 0xD5100000U)
+		return "MSR-register";
+	if((inst & 0x7FE08000U) == 0x1B008000U)
+		return "MSUB";
+	if((inst & 0xBF00F400U) == 0x0F008000U)
+		return "MUL-by-element";
+	if((inst & 0xBF20FC00U) == 0x0E209C00U)
+		return "MUL-vector";
+	if((inst & 0x7F200000U) == 0x2A200000U)
+		return "ORN-shifted-register";
+	if((inst & 0x7F800000U) == 0x32000000U)
+		return "ORR-immediate";
+	if((inst & 0x7F200000U) == 0x2A000000U)
+		return "ORR-shifted-register";
+	if((inst & 0xBFE0FC00U) == 0x0EA01C00U)
+		return "ORR-simd-register";
+	if((inst & 0xFFC00000U) == 0xF9800000U)
+		return "PRFM-immediate";
+	if((inst & 0x7FFFFC00U) == 0x5AC00000U)
+		return "RBIT";
+	if((inst & 0xFFFFFC1FU) == 0xD65F0000U)
+		return "RET";
+	if((inst & 0x7FFFF800U) == 0x5AC00800U)
+		return "REV";
+	if((inst & 0x7FFFFC00U) == 0x5AC00400U)
+		return "REV16";
+	if((inst & 0x7FE0FC00U) == 0x1AC02C00U)
+		return "RORV";
+	if((inst & 0x7FE0FC00U) == 0x7A000000U)
+		return "SBCS";
+	if((inst & 0x7F800000U) == 0x13000000U)
+		return "SBFM";
+	if((inst & 0x7F3FFC00U) == 0x1E220000U)
+		return "SCVTF-scalar-integer";
+	if((inst & 0xFFBFFC00U) == 0x5E21D800U)
+		return "SCVTF-vector-integer";
+	if((inst & 0x7FE0FC00U) == 0x1AC00C00U)
+		return "SDIV";
+	if((inst & 0xFFE08000U) == 0x9B200000U)
+		return "SMADDL";
+	if((inst & 0xFFE0FC00U) == 0x9B407C00U)
+		return "SMULH";
+	if((inst & 0xBF80FC00U) == 0x0F00A400U)
+		return "SSHLL";
+	if((inst & 0xBFFFFC00U) == 0x889FFC00U)
+		return "STLR";
+	if((inst & 0xFFFFFC00U) == 0x089FFC00U)
+		return "STLRB";
+	if((inst & 0xFFFFFC00U) == 0x489FFC00U)
+		return "STLRH";
+	if((inst & 0xBFE0FC00U) == 0x8800FC00U)
+		return "STLXR";
+	if((inst & 0xFFE0FC00U) == 0x0800FC00U)
+		return "STLXRB";
+	if((inst & 0x7FC00000U) == 0x28800000U)
+		return "STP-postindex";
+	if((inst & 0x7FC00000U) == 0x29800000U)
+		return "STP-preindex";
+	if((inst & 0x7FC00000U) == 0x29000000U)
+		return "STP-signed-offset";
+	if((inst & 0x3FC00000U) == 0x2C800000U)
+		return "STP-simd-postindex";
+	if((inst & 0x3FC00000U) == 0x2D800000U)
+		return "STP-simd-preindex";
+	if((inst & 0x3FC00000U) == 0x2D000000U)
+		return "STP-simd-signed-offset";
+	if((inst & 0xBFE00C00U) == 0xB8000400U)
+		return "STR-immediate-postindex";
+	if((inst & 0xBFE00C00U) == 0xB8000C00U)
+		return "STR-immediate-preindex";
+	if((inst & 0xBFC00000U) == 0xB9000000U)
+		return "STR-immediate-unsigned-offset";
+	if((inst & 0xBFE00C00U) == 0xB8200800U)
+		return "STR-register";
+	if((inst & 0x3F600C00U) == 0x3C000400U)
+		return "STR-simd-postindex";
+	if((inst & 0x3F600C00U) == 0x3C000C00U)
+		return "STR-simd-preindex";
+	if((inst & 0x3F400000U) == 0x3D000000U)
+		return "STR-simd-unsigned-offset";
+	if((inst & 0x3F600C00U) == 0x3C200800U)
+		return "STR-simd-register";
+	if((inst & 0xFFE00C00U) == 0x38000400U)
+		return "STRB-immediate-postindex";
+	if((inst & 0xFFE00C00U) == 0x38000C00U)
+		return "STRB-immediate-preindex";
+	if((inst & 0xFFC00000U) == 0x39000000U)
+		return "STRB-immediate-unsigned-offset";
+	if((inst & 0xFFE00C00U) == 0x38200800U)
+		return "STRB-register";
+	if((inst & 0xFFE00C00U) == 0x78000400U)
+		return "STRH-immediate-postindex";
+	if((inst & 0xFFE00C00U) == 0x78000C00U)
+		return "STRH-immediate-preindex";
+	if((inst & 0xFFC00000U) == 0x79000000U)
+		return "STRH-immediate-unsigned-offset";
+	if((inst & 0xFFE00C00U) == 0x78200800U)
+		return "STRH-register";
+	if((inst & 0xBFE00C00U) == 0xB8000000U)
+		return "STUR";
+	if((inst & 0x3F600C00U) == 0x3C000000U)
+		return "STUR-simd";
+	if((inst & 0xFFE00C00U) == 0x38000000U)
+		return "STURB";
+	if((inst & 0xFFE00C00U) == 0x78000000U)
+		return "STURH";
+	if((inst & 0xBFE0FC00U) == 0x88007C00U)
+		return "STXR";
+	if((inst & 0x7F800000U) == 0x51000000U)
+		return "SUB-immediate";
+	if((inst & 0x7FE00000U) == 0x4B200000U)
+		return "SUB-extended-register";
+	if((inst & 0x7F200000U) == 0x4B000000U)
+		return "SUB-shifted-register";
+	if((inst & 0x7FE00000U) == 0x6B200000U)
+		return "SUBS-extended-register";
+	if((inst & 0x7F200000U) == 0x6B000000U)
+		return "SUBS-shifted-register";
+	if((inst & 0x7F800000U) == 0x71000000U)
+		return "SUBS-immediate";
+	if((inst & 0xFFE0001FU) == 0xD4000001U)
+		return "SVC";
+	if((inst & 0xFFF80000U) == 0xD5080000U)
+		return "SYS";
+	if((inst & 0x7F000000U) == 0x36000000U)
+		return "TBZ";
+	if((inst & 0x7F000000U) == 0x37000000U)
+		return "TBNZ";
+	if((inst & 0xBF3FFC00U) == 0x2E303800U)
+		return "UADDLV";
+	if((inst & 0x7F800000U) == 0x53000000U)
+		return "UBFM";
+	if((inst & 0x7F3FFC00U) == 0x1E230000U)
+		return "UCVTF-scalar-integer";
+	if((inst & 0xFFBFFC00U) == 0x7E21D800U)
+		return "UCVTF-vector-integer";
+	if((inst & 0x7FE0FC00U) == 0x1AC00800U)
+		return "UDIV";
+	if((inst & 0xFFE08000U) == 0x9BA00000U)
+		return "UMADDL";
+	if((inst & 0xFFE0FC00U) == 0x9BC07C00U)
+		return "UMULH";
+	if((inst & 0xFF3FFC00U) == 0x0E212800U)
+		return "XTN";
+	if((inst & 0xFF3FFC00U) == 0x4E212800U)
+		return "XTN2";
+
+    return nullptr;
+}
+
 const char* disassemble(uint inst, ulong pc) {
 	/* ADCS */
 	if((inst & 0x7FE0FC00U) == 0x3A000000U) {

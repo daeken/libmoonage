@@ -202,7 +202,7 @@ namespace Generator {
 				
 				case PName("vector-all"): return $"reinterpret_cast<Vector128<float>>(({GenerateExpression(list[1])}) - (Vector128<{GenerateType(list[1].Type)}>) {{}})";
 				case PName("vector-zero-top"): return GenerateExpression(list[1]);
-				case PName("vector-insert"): return $"reinterpret_cast<Vector128<{GenerateType(list[3].Type)}>*>(&(State->V[(int) ({GenerateExpression(list[1])})]))[{GenerateExpression(list[2])}] = {GenerateExpression(list[3])}";
+				case PName("vector-insert"): return $"reinterpret_cast<Vector128<{GenerateType(list[3].Type)}>*>(&(State->V[(int) ({GenerateExpression(list[1])})]))[0][{GenerateExpression(list[2])}] = {GenerateExpression(list[3])}";
 				case PName("vector-element"):
 					return $"reinterpret_cast<Vector128<{GenerateType(list.Type.AsCompiletime())}>>({GenerateExpression(list[1])})[{GenerateExpression(list[2])}]";
 				case PName("vector-count-bits"): return $"VectorCountBits({GenerateExpression(list[1])}, {GenerateExpression(list[2])})";
@@ -253,6 +253,8 @@ namespace Generator {
 			
 			var c = new CodeBuilder();
 			c += 1;
+			var ic = new CodeBuilder();
+			ic += 1;
 			
 			foreach(var def in defs) {
 				Console.WriteLine(def.Name + "...");
@@ -281,7 +283,10 @@ namespace Generator {
 				
 				c += $"/* {def.Name} */";
 				c += $"if((inst & 0x{def.Mask:X8}U) == 0x{def.Match:X8}U) {{";
+				ic += $"if((inst & 0x{def.Mask:X8}U) == 0x{def.Match:X8}U)";
 				c++;
+				ic++;
+				ic += $"return \"{def.Name}\";";
 				GenerateFields(c, def);
 				GenerateStatement(c, def.Decode);
 				var line = $"return (boost::format(\"{RewriteFormat(def.Disassembly)}\")";
@@ -289,12 +294,16 @@ namespace Generator {
 					line += " % " + arg;
 				c += line + ").str().c_str();";
 				c--;
+				ic--;
 				c += "}";
 			}
 			
 			using var fp = File.Open("../disassembler.generated.cpp", FileMode.Truncate);
 			using var sw = new StreamWriter(fp);
-			sw.Write(File.ReadAllText("disassemblerStub.cpp").Replace("/*%CODE%*/", c.Code));
+			sw.Write(File.ReadAllText("disassemblerStub.cpp")
+				.Replace("/*%D_CODE%*/", c.Code)
+				.Replace("/*%IC_CODE%*/", ic.Code)
+				.Replace("/*%IC_COUNT%*/", defs.Count.ToString()));
 		}
 		
 		static void BuildInterpreter(List<Def> defs) {
@@ -330,6 +339,7 @@ namespace Generator {
 				c += $"/* {def.Name} */";
 				c += $"if((inst & 0x{def.Mask:X8}U) == 0x{def.Match:X8}U) {{";
 				c++;
+				//c += $"printf(\"Instruction: {def.Name}\\n\");";
 				GenerateFields(c, def);
 				GenerateStatement(c, def.Decode);
 				GenerateStatement(c, def.Eval);

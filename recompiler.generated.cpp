@@ -416,7 +416,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
-		auto v = ((RuntimeValue<Vector128<float>>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).AndNot((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))).Store();
+		auto v = ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) (~(((RuntimeValue<Vector128<byte>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) & ((RuntimeValue<Vector128<byte>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)]))))))).Store();
 		if(((bool) (((Q) == (0x1)) ? 1U : 0U)) != 0) {
 			VR[(int) (rd)] = v;
 		} else {

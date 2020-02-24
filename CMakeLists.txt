@@ -22,3 +22,4 @@ add_definitions(-fsanitize=address)
 add_library(moonage disassembler.generated.cpp common.h interpreter.generated.cpp interpreter.cpp interpreter.h state.h recompiler.generated.cpp recompiler.h runtimeValue.cpp runtimeValue.h recompiler.cpp property.h cacheManager.cpp cacheManager.h interface.h interface.cpp)
 
 add_subdirectory("${PROJECT_SOURCE_DIR}/TestApp" "${PROJECT_SOURCE_DIR}/TestApp_output")
+add_subdirectory("${PROJECT_SOURCE_DIR}/UnitTests" "${PROJECT_SOURCE_DIR}/UnitTests_output")

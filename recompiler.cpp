@@ -55,9 +55,9 @@ void Recompiler::run(ulong pc, ulong sp) {
         assert(block->func != nullptr);
 
         state.BranchTo = -1UL;
-        cout << "Running block at " << hex << pc << endl;
+        //cout << "Running block at " << hex << pc << endl;
         block->func((CpuState*) &state);
-        cout << "Finished block at " << hex << state.PC << endl;
+        //cout << "Finished block at " << hex << state.PC << endl;
         state.PC = pc = state.BranchTo;
         assert((pc & 3) == 0);
     }
@@ -133,7 +133,7 @@ void Recompiler::recompileMultiple(Block *block) {
                 break;
             }
 
-            cout << "Recompiling instruction at 0x" << hex << pc << endl;
+            //cout << "Recompiling instruction at 0x" << hex << pc << endl;
             PCR = pc;
             if(!recompile(*(uint*) pc, pc)) {
                 cout << "Instruction at 0x" << hex << pc << " failed to recompile" << endl;

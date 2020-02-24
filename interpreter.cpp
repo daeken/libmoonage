@@ -8,7 +8,6 @@ Interpreter::Interpreter() {
     assert(globalInterface != nullptr);
     State = new CpuState;
     memset(State, 0, sizeof(CpuState));
-    State->BranchTo = (ulong) -1L;
 }
 
 void Interpreter::run(ulong pc, ulong sp) {
@@ -28,6 +27,7 @@ void Interpreter::runOne() {
         cout << "Disassembly failed at " << hex << State->PC << " --- " << inst << endl;
         exit(1);
     }
+    State->BranchTo = (ulong) -1L;
     interpret(inst, State->PC);
     if(State->BranchTo != (ulong) -1L) {
         State->PC = State->BranchTo;

@@ -4,9 +4,9 @@
 
 typedef float __attribute__((ext_vector_type(4))) vector128_float;
 
+#pragma pack(push, 8)
 struct CpuState {
     uint64_t PC, SP;
-    uint64_t BranchTo;
 
     union {
         uint64_t X[32];
@@ -34,4 +34,7 @@ struct CpuState {
     uint64_t Exclusive64;
 
     uint64_t NZCV_N, NZCV_Z, NZCV_C, NZCV_V;
+
+    uint64_t BranchTo;
 };
+#pragma pack(pop)

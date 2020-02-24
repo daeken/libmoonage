@@ -113,12 +113,9 @@ public:
     }
 
     template<typename RetType, typename ... ArgTypes, typename = std::enable_if_t<!std::is_void_v<RetType>>>
-    static inline RuntimeValue<RetType> CallIntrinsic(const char* name, RuntimeValue<ArgTypes> ... args) {
+    static inline RuntimeValue<RetType> CallIntrinsic(llvm::Intrinsic::ID id, RuntimeValue<ArgTypes> ... args) {
         return RuntimeValue<RetType>([=]() {
-            auto func = (llvm::Function*) getModule()->getNamedIFunc(name);
-            if(func == nullptr)
-                func = llvm::Function::Create((llvm::FunctionType*) LlvmType<std::function<RetType(ArgTypes ...)>>(), llvm::GlobalValue::LinkageTypes::CommonLinkage, name, getModule());
-            return Builder.CreateCall(func, { args.Emit()... });
+            return Builder.CreateCall(llvm::Intrinsic::getDeclaration(getModule(), id, { LlvmType<ArgTypes>()... }), { args.Emit()... });
         });
     }
 
@@ -130,12 +127,7 @@ public:
 
     template<typename U = T, typename = std::enable_if_t<std::is_floating_point_v<U>>>
     inline RuntimeValue<T> Abs() const {
-        if constexpr(std::is_same<U, float>())
-            RV(T, (CallIntrinsic<float, float>("llvm.fabs.f32", __this)));
-        else if constexpr(std::is_same<U, double>())
-            RV(T, (CallIntrinsic<double, double>("llvm.fabs.f64", __this)));
-        else
-            static_assert(std::is_void<U>());
+        RV(T, (CallIntrinsic<T, T>(llvm::Intrinsic::ID::fabs, __this)));
     }
 
     template<typename U = T, typename = std::enable_if<is_vector_t<U>()>>
@@ -203,26 +195,21 @@ public:
             RV(T, Builder.CreateNeg(__this));
     }
 
-    inline RuntimeValue<T> operator>>(RuntimeValue<T> right) const {
-        RV(T, Builder.CreateShl(__this, right));
-        /*return Ternary(
-            (RuntimeValue<bool>) (right >= (RuntimeValue<T>) (sizeof(T) * 8)),
-            (RuntimeValue<T>) (T) 0,
-            RuntimeValue<T>([=]() { return Builder.CreateShl(__this, right); })
-        );*/
-    }
     inline RuntimeValue<T> operator<<(RuntimeValue<T> right) const {
-        /*return Ternary(
-            (RuntimeValue<bool>) (right >= (RuntimeValue<T>) (sizeof(T) * 8)),
+        return Ternary(
+            (RuntimeValue<bool>) (right >= (sizeof(T) * 8)),
+            (RuntimeValue<T>) (T) 0,
+            RuntimeValue<T>([__this=*this, right]() { return Builder.CreateShl(__this, right); })
+        );
+    }
+    inline RuntimeValue<T> operator>>(RuntimeValue<T> right) const {
+        return Ternary(
+            (RuntimeValue<bool>) (right >= (sizeof(T) * 8)),
             (RuntimeValue<T>) (T) 0,
             is_signed<T>()
-                ? RuntimeValue<T>([=]() { return Builder.CreateAShr(__this, right); })
-                : RuntimeValue<T>([=]() { return Builder.CreateLShr(__this, right); })
-        );*/
-        if constexpr(is_signed<T>())
-            RV(T, Builder.CreateAShr(__this, right));
-        else
-            RV(T, Builder.CreateLShr(__this, right));
+                ? RuntimeValue<T>([__this=*this, right]() { return Builder.CreateAShr(__this, right); })
+                : RuntimeValue<T>([__this=*this, right]() { return Builder.CreateLShr(__this, right); })
+        );
     }
     inline RuntimeValue<T> operator&(RuntimeValue<T> right) const {
         RV(T, Builder.CreateAnd(__this, right));
@@ -238,12 +225,6 @@ public:
     }
     inline RuntimeValue<T> operator~() const {
         RV(T, Builder.CreateNot(__this));
-    }
-    inline RuntimeValue<T> AndNot(RuntimeValue<T> right) const {
-        if constexpr(is_vector_t<T>())
-            RV(T, Builder.CreateBitCast(Builder.CreateAnd(Bitcast<UInt128>(), Builder.CreateNot(right.Bitcast<UInt128>())), LlvmType<T>()));
-        else
-            return *this & ~right;
     }
 
     inline RuntimeValue<bool> operator==(RuntimeValue<T> right) const {
@@ -311,10 +292,10 @@ public:
     inline RuntimeValue<Vector128<float>> Insert(int index, RuntimeValue<ElementT> value) const {
         return RuntimeValue<Vector128<float>>([index, value, __this=*this]() {
             auto vec = __this.Emit();
-            if constexpr(std::is_same<ElementT, float>())
+            if constexpr(!std::is_same<ElementT, float>())
                 vec = Builder.CreateBitCast(vec, LlvmType<Vector128<ElementT>>());
             vec = Builder.CreateInsertElement(vec, value, index);
-            if constexpr(std::is_same<ElementT, float>())
+            if constexpr(!std::is_same<ElementT, float>())
                 return Builder.CreateBitCast(vec, LlvmType<Vector128<float>>());
             return vec;
         });
@@ -336,12 +317,7 @@ public:
 
     template<typename U = T, typename = std::enable_if_t<std::is_floating_point_v<U>>>
     inline RuntimeValue<T> Sqrt() const {
-        if constexpr(std::is_same<U, float>())
-            RV(T, (CallIntrinsic<float, float>("sqrtf", __this)));
-        else if constexpr(std::is_same<U, double>())
-            RV(T, (CallIntrinsic<double, double>("sqrt", __this)));
-        else
-            static_assert(std::is_void<U>());
+        RV(T, (CallIntrinsic<T, T>(llvm::Intrinsic::ID::sqrt, __this)));
     }
 };
 

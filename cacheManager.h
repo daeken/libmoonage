@@ -23,6 +23,7 @@ public:
     unordered_map<ulong, Block*> blocks;
     mutex mutex;
 
+    void Clear();
     Block* GetBlock(ulong addr);
 };
 
