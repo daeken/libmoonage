@@ -85,83 +85,64 @@ public:
     };
     Indexer<RuntimeValue<Vector128<float>>> VR{
         [=](auto reg) {
-            return RuntimeValue<Vector128<float>>([=]() {
-                auto addr = FieldAddress(V0) + (reg * 16);
-                auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<float>*>());
-                return Builder.CreateLoad(ptr);
-            });
+            return GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value;
         },
         [=](auto reg, auto value) {
-            auto addr = FieldAddress(V0) + (reg * 16);
-            auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<float>*>());
-            Builder.CreateStore(value, ptr);
+            GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value = value;
         }
     };
     Indexer<RuntimeValue<byte>> VBR{
         [=](auto reg) {
-            return RuntimeValue<byte>([=]() {
-                auto addr = FieldAddress(V0) + (reg * 16);
-                auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<byte *>());
-                return Builder.CreateLoad(ptr);
-            });
+            auto vec = GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value();
+            return vec.template Element<byte>(0);
         },
         [=](auto reg, auto value) {
-            auto addr = FieldAddress(V0) + (reg * 16);
-            auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<byte>*>());
-            auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<byte>>()), value, (RuntimeValue<int>) 0);
-            for(auto i = 1; i < 16; ++i)
-                bvec = Builder.CreateInsertElement(bvec, (RuntimeValue<byte>) 0, (RuntimeValue<int>) i);
-            Builder.CreateStore(bvec, ptr);
+            GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value = RuntimeValue<Vector128<byte>>([value]() {
+                auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<byte>>()), value, (RuntimeValue<int>) 0);
+                for(auto i = 1; i < 16; ++i)
+                    bvec = Builder.CreateInsertElement(bvec, (RuntimeValue<byte>) 0, (RuntimeValue<int>) i);
+                return bvec;
+            });
         }
     };
     Indexer<RuntimeValue<ushort>> VHR{
             [=](auto reg) {
-                return RuntimeValue<ushort>([=]() {
-                    auto addr = FieldAddress(V0) + (reg * 16);
-                    auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<ushort *>());
-                    return Builder.CreateLoad(ptr);
-                });
+                auto vec = GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value();
+                return vec.template Element<ushort>(0);
             },
             [=](auto reg, auto value) {
-                auto addr = FieldAddress(V0) + (reg * 16);
-                auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<ushort>*>());
-                auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<ushort>>()), value, (RuntimeValue<int>) 0);
-                for(auto i = 1; i < 8; ++i)
-                    bvec = Builder.CreateInsertElement(bvec, (RuntimeValue<ushort>) 0, (RuntimeValue<int>) i);
-                Builder.CreateStore(bvec, ptr);
+                GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value = RuntimeValue<Vector128<ushort>>([value]() {
+                    auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<ushort>>()), value, (RuntimeValue<int>) 0);
+                    for(auto i = 1; i < 8; ++i)
+                        bvec = Builder.CreateInsertElement(bvec, (RuntimeValue<ushort>) 0, (RuntimeValue<int>) i);
+                    return bvec;
+                });
             }
     };
     Indexer<RuntimeValue<float>> VSR{
             [=](auto reg) {
-                return RuntimeValue<float>([=]() {
-                    auto addr = FieldAddress(V0) + (reg * 16);
-                    auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<float *>());
-                    return Builder.CreateLoad(ptr);
-                });
+                auto vec = GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value();
+                return vec.template Element<float>(0);
             },
             [=](auto reg, auto value) {
-                auto addr = FieldAddress(V0) + (reg * 16);
-                auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<float>*>());
-                auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<float>>()), value, (RuntimeValue<int>) 0);
-                for(auto i = 1; i < 4; ++i)
-                    bvec = Builder.CreateInsertElement(bvec, (RuntimeValue<float>) 0.0f, (RuntimeValue<int>) i);
-                Builder.CreateStore(bvec, ptr);
+                GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value = RuntimeValue<Vector128<float>>([value]() {
+                    auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<float>>()), value, (RuntimeValue<int>) 0);
+                    for(auto i = 1; i < 4; ++i)
+                        bvec = Builder.CreateInsertElement(bvec, (RuntimeValue<float>) 0, (RuntimeValue<int>) i);
+                    return bvec;
+                });
             }
     };
     Indexer<RuntimeValue<double>> VDR{
             [=](auto reg) {
-                return RuntimeValue<double>([=]() {
-                    auto addr = FieldAddress(V0) + (reg * 16);
-                    auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<double *>());
-                    return Builder.CreateLoad(ptr);
-                });
+                auto vec = GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value();
+                return vec.template Element<double>(0);
             },
             [=](auto reg, auto value) {
-                auto addr = FieldAddress(V0) + (reg * 16);
-                auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<Vector128<double>*>());
-                auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<double>>()), value, (RuntimeValue<int>) 0);
-                bvec = Builder.CreateInsertElement(bvec, (RuntimeValue<double>) 0.0, (RuntimeValue<int>) 1);
-                Builder.CreateStore(bvec, ptr);
+                GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value = RuntimeValue<Vector128<double>>([value]() {
+                    auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<double>>()), value, (RuntimeValue<int>) 0);
+                    return Builder.CreateInsertElement(bvec, (RuntimeValue<double>) 0.0, (RuntimeValue<int>) 1);
+                });
             }
     };
 
