@@ -4661,7 +4661,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 	/* SVC */
 	if((inst & 0xFFE0001FU) == 0xD4000001U) {
 		auto imm = (inst >> 5) & 0xFFFFU;
-		Call<void, uint>(Svc, imm);
+		CallSvc(imm);
 		return true;
 	}
 	/* SYS */

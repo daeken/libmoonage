@@ -90,6 +90,8 @@ void Recompiler::recompileMultiple(Block *block) {
 
     usedLabels.clear();
     blockLabels.clear();
+    loadRegistersLabels.clear();
+    storeRegistersLabels.clear();
 
     Builder.SetInsertPoint(llvm::BasicBlock::Create(Builder.getContext(), "", function));
 
@@ -101,8 +103,8 @@ void Recompiler::recompileMultiple(Block *block) {
     Branch(preRegisterLoad);
     Label(postRegisterLoad);
 
-    auto preRegisterStore = DefineLabel();
-    preStoreRegistersLabel = &preRegisterStore;
+    storeRegistersLabels.push_back({ DefineLabel(), retLabel });
+    loadRegistersLabels.push_back({ preRegisterLoad, postRegisterLoad });
 
     blocksNeeded.push({BlockContext(), block->addr});
 
@@ -129,7 +131,7 @@ void Recompiler::recompileMultiple(Block *block) {
             Label(label);
             if(!globalInterface->isValidCodePointer(pc, nullptr)) {
                 BranchToR = pc;
-                Branch(preRegisterStore);
+                Branch(std::get<0>(storeRegistersLabels[0]));
                 break;
             }
 
@@ -143,16 +145,23 @@ void Recompiler::recompileMultiple(Block *block) {
         }
     }
 
-    Label(preRegisterLoad);
+    for(auto& [pre, post] : loadRegistersLabels) {
+        Label(pre);
 #define LOAD(name) do { auto __temp = (Local<decltype(CpuState::name)>*) stateLocals[offsetof(CpuState, name)]; if(__temp->used) __temp->value = Field<decltype(CpuState::name)>(offsetof(CpuState, name)); } while(0)
-    STATE_MEMBER_DEFS(LOAD);
+        STATE_MEMBER_DEFS(LOAD);
 #undef LOAD
-    Branch(postRegisterLoad);
+        Branch(post);
+    }
 
-    Label(preRegisterStore);
+    for(auto& [pre, post] : storeRegistersLabels) {
+        Label(pre);
 #define STORE(name) do { auto __temp = (Local<decltype(CpuState::name)>*) stateLocals[offsetof(CpuState, name)]; if(__temp->used) Field<decltype(CpuState::name)>(offsetof(CpuState, name), __temp->value); } while(0)
-    STATE_MEMBER_DEFS(STORE);
+        STATE_MEMBER_DEFS(STORE);
 #undef STORE
+        Branch(post);
+    }
+
+    Label(retLabel);
     Builder.CreateRetVoid();
 
     //function->dump();
@@ -180,14 +189,14 @@ void Recompiler::recompileMultiple(Block *block) {
 #undef STORE
 }
 
+int Svc(uint svc, ulong state) {
+    return globalInterface->Svc(svc, (CpuState*) state);
+}
+
 ulong SR(uint op0, uint op1, uint crn, uint crm, uint op2) {
-    assert(false);
+    return globalInterface->SR(op0, op1, crn, crm, op2);
 }
 
 void SR(uint op0, uint op1, uint crn, uint crm, uint op2, ulong value) {
-    assert(false);
-}
-
-void Svc(uint svc) {
-    assert(false);
+    globalInterface->SR(op0, op1, crn, crm, op2, value);
 }

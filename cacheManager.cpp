@@ -2,6 +2,8 @@
 
 CacheManager Cache;
 
+// This will leak a metric shittonne of memory
+// ONLY use this for testing purposes
 void CacheManager::Clear() {
     blocks.clear();
 }

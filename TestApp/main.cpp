@@ -21,6 +21,15 @@ public:
         //cout << "Checking pointer validity: " << hex << addr << endl;
         return addr != 0xDEADBEE0;
     }
+    bool Svc(uint32_t svc, CpuState* state) override {
+        assert(false);
+    }
+    uint64_t SR(uint32_t op0, uint32_t op1, uint32_t crn, uint32_t crm, uint32_t op2) override {
+        assert(false);
+    }
+    void SR(uint32_t op0, uint32_t op1, uint32_t crn, uint32_t crm, uint32_t op2, uint64_t value) override {
+        assert(false);
+    }
 };
 
 int main(int argc, char** argv) {
@@ -35,9 +44,9 @@ int main(int argc, char** argv) {
         dumpregs(&RecompilerInstance.state);
     } else {
         auto interpreter = new Interpreter();
-        interpreter->State->X30 = 0xDEADBEE0;
+        interpreter->state->X30 = 0xDEADBEE0;
         interpreter->run((ulong) body, 0);
-        dumpregs(interpreter->State);
+        dumpregs(interpreter->state);
     }
 
     return 0;

@@ -4,12 +4,15 @@
 
 typedef float __attribute__((ext_vector_type(4))) vector128_float;
 
+// These DO NOT INCLUDE X31 or BranchTo!
+// X31 is undefined and BranchTo is implementation-specific
+
 #define STATE_MEMBERS(v) \
     v(PC), v(SP), \
     v(X0 ), v(X1 ), v(X2 ), v(X3 ), v(X4 ), v(X5 ), v(X6 ), v(X7 ), \
     v(X8 ), v(X9 ), v(X10), v(X11), v(X12), v(X13), v(X14), v(X15), \
     v(X16), v(X17), v(X18), v(X19), v(X20), v(X21), v(X22), v(X23), \
-    v(X24), v(X25), v(X26), v(X27), v(X28), v(X29), v(X30), v(X31), \
+    v(X24), v(X25), v(X26), v(X27), v(X28), v(X29), v(X30), \
     v(V0 ), v(V1 ), v(V2 ), v(V3 ), v(V4 ), v(V5 ), v(V6 ), v(V7 ), \
     v(V8 ), v(V9 ), v(V10), v(V11), v(V12), v(V13), v(V14), v(V15), \
     v(V16), v(V17), v(V18), v(V19), v(V20), v(V21), v(V22), v(V23), \
@@ -18,17 +21,19 @@ typedef float __attribute__((ext_vector_type(4))) vector128_float;
     v(NZCV_N), v(NZCV_Z), v(NZCV_C), v(NZCV_V)
 
 #define STATE_MEMBER_DEFS(v) \
+do { \
     v(PC); v(SP); \
     v(X0 ); v(X1 ); v(X2 ); v(X3 ); v(X4 ); v(X5 ); v(X6 ); v(X7 ); \
     v(X8 ); v(X9 ); v(X10); v(X11); v(X12); v(X13); v(X14); v(X15); \
     v(X16); v(X17); v(X18); v(X19); v(X20); v(X21); v(X22); v(X23); \
-    v(X24); v(X25); v(X26); v(X27); v(X28); v(X29); v(X30); v(X31); \
+    v(X24); v(X25); v(X26); v(X27); v(X28); v(X29); v(X30); \
     v(V0 ); v(V1 ); v(V2 ); v(V3 ); v(V4 ); v(V5 ); v(V6 ); v(V7 ); \
     v(V8 ); v(V9 ); v(V10); v(V11); v(V12); v(V13); v(V14); v(V15); \
     v(V16); v(V17); v(V18); v(V19); v(V20); v(V21); v(V22); v(V23); \
     v(V24); v(V25); v(V26); v(V27); v(V28); v(V29); v(V30); v(V31); \
     v(Exclusive8); v(Exclusive16); v(Exclusive32); v(Exclusive64); \
-    v(NZCV_N); v(NZCV_Z); v(NZCV_C); v(NZCV_V);
+    v(NZCV_N); v(NZCV_Z); v(NZCV_C); v(NZCV_V); \
+} while(0)
 
 #pragma pack(push, 8)
 struct CpuState {

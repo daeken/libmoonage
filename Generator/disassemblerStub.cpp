@@ -15,7 +15,7 @@ const char* getInstructionClass(uint inst) {
     return nullptr;
 }
 
-const char* disassemble(uint inst, ulong pc) {
+string disassemble(uint inst, ulong pc) {
 /*%D_CODE%*/
-    return nullptr;
+    return "";
 }

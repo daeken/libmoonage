@@ -443,7 +443,7 @@ const char* getInstructionClass(uint inst) {
     return nullptr;
 }
 
-const char* disassemble(uint inst, ulong pc) {
+string disassemble(uint inst, ulong pc) {
 	/* ADCS */
 	if((inst & 0x7FE0FC00U) == 0x3A000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -451,7 +451,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("adcs %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("adcs %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* ADD-extended-register */
 	if((inst & 0x7FE00000U) == 0x0B200000U) {
@@ -464,7 +464,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
 		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_0) -> string { switch(temp_0) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_1) -> string { switch(temp_1) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
-		return (boost::format("add %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r1 % rd % r1 % rn % r2 % rm % extend % imm).str().c_str();
+		return (boost::format("add %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r1 % rd % r1 % rn % r2 % rm % extend % imm).str();
 	}
 	/* ADD-immediate */
 	if((inst & 0x7F800000U) == 0x11000000U) {
@@ -476,7 +476,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shift = (long) (((bool) (((sh) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0xC));
 		auto simm = (uint) (((uint) ((uint) (imm))) << (uint) (shift));
-		return (boost::format("add %1%%2%, %3%%4%, #%5$#x, LSL #%6%%7$#x") % r % rd % r % rn % imm % ((shift) < 0 ? "-" : "") % ((shift) < 0 ? -(shift) : (shift))).str().c_str();
+		return (boost::format("add %1%%2%, %3%%4%, #%5$#x, LSL #%6%%7$#x") % r % rd % r % rn % imm % ((shift) < 0 ? "-" : "") % ((shift) < 0 ? -(shift) : (shift))).str();
 	}
 	/* ADD-shifted-register */
 	if((inst & 0x7F200000U) == 0x0B000000U) {
@@ -488,7 +488,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shiftstr = (string) (([=](auto temp_2) -> string { switch(temp_2) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
-		return (boost::format("add %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str().c_str();
+		return (boost::format("add %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str();
 	}
 	/* ADD-vector */
 	if((inst & 0xBF20FC00U) == 0x0E208400U) {
@@ -498,7 +498,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto ts = (string) (([=](auto temp_3) -> string { switch(temp_3) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		return (boost::format("add V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % ts % rn % ts % rm % ts).str().c_str();
+		return (boost::format("add V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % ts % rn % ts % rm % ts).str();
 	}
 	/* ADDS-immediate */
 	if((inst & 0x7F800000U) == 0x31000000U) {
@@ -510,7 +510,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shift = (long) (((bool) (((sh) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0xC));
 		auto simm = (uint) (((uint) ((uint) (imm))) << (uint) (shift));
-		return (boost::format("adds %1%%2%, %3%%4%, #%5$#x, LSL #%6%%7$#x") % r % rd % r % rn % imm % ((shift) < 0 ? "-" : "") % ((shift) < 0 ? -(shift) : (shift))).str().c_str();
+		return (boost::format("adds %1%%2%, %3%%4%, #%5$#x, LSL #%6%%7$#x") % r % rd % r % rn % imm % ((shift) < 0 ? "-" : "") % ((shift) < 0 ? -(shift) : (shift))).str();
 	}
 	/* ADDS-shifted-register */
 	if((inst & 0x7F200000U) == 0x2B000000U) {
@@ -522,7 +522,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shiftstr = (string) (([=](auto temp_4) -> string { switch(temp_4) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
-		return (boost::format("adds %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str().c_str();
+		return (boost::format("adds %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str();
 	}
 	/* ADRP */
 	if((inst & 0x9F000000U) == 0x90000000U) {
@@ -531,7 +531,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>((ulong) ((ulong) (((ulong) (ulong) (((ulong) (((ulong) ((ushort) ((ushort) (0x0)))) << 0)) | ((ulong) (((ulong) (immlo)) << 12)))) | ((ulong) (((ulong) (immhi)) << 14)))), 33));
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) ((ulong) (((ulong) (((ulong) ((ushort) ((ushort) (0x0)))) << 0)) | ((ulong) (((ulong) ((ulong) ((ulong) ((ulong) (((ulong) (pc)) >> (uint) (0xC)))))) << 12)))))) + ((ulong) (long) (imm)));
-		return (boost::format("adrp X%1%, #%2$#x") % rd % addr).str().c_str();
+		return (boost::format("adrp X%1%, #%2$#x") % rd % addr).str();
 	}
 	/* AND-immediate */
 	if((inst & 0x7F800000U) == 0x12000000U) {
@@ -543,7 +543,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (ulong) (MakeWMask(up, imms, immr, (long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
-		return (boost::format("and %1%%2%, %3%%4%, #%5$#x") % r % rd % r % rn % imm).str().c_str();
+		return (boost::format("and %1%%2%, %3%%4%, #%5$#x") % r % rd % r % rn % imm).str();
 	}
 	/* AND-shifted-register */
 	if((inst & 0x7F200000U) == 0x0A000000U) {
@@ -555,7 +555,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shiftstr = (string) (([=](auto temp_5) -> string { switch(temp_5) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
-		return (boost::format("and %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str().c_str();
+		return (boost::format("and %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str();
 	}
 	/* ANDS-shifted-register */
 	if((inst & 0x7F200000U) == 0x6A000000U) {
@@ -567,7 +567,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shiftstr = (string) (([=](auto temp_6) -> string { switch(temp_6) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
-		return (boost::format("ands %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str().c_str();
+		return (boost::format("ands %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str();
 	}
 	/* ANDS-immediate */
 	if((inst & 0x7F800000U) == 0x72000000U) {
@@ -579,7 +579,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (ulong) (MakeWMask(up, imms, immr, (long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
-		return (boost::format("ands %1%%2%, %3%%4%, #%5$#x") % r % rd % r % rn % imm).str().c_str();
+		return (boost::format("ands %1%%2%, %3%%4%, #%5$#x") % r % rd % r % rn % imm).str();
 	}
 	/* ASRV */
 	if((inst & 0x7FE0FC00U) == 0x1AC02800U) {
@@ -588,13 +588,13 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("asrv %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("asrv %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* B */
 	if((inst & 0xFC000000U) == 0x14000000U) {
 		auto imm = (inst >> 0) & 0x3FFFFFFU;
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) (((uint) ((uint) (imm))) << (uint) (0x2)), 28)))));
-		return (boost::format("b #%1$#x") % addr).str().c_str();
+		return (boost::format("b #%1$#x") % addr).str();
 	}
 	/* B.cond */
 	if((inst & 0xFF000010U) == 0x54000000U) {
@@ -602,7 +602,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto cond = (inst >> 0) & 0xFU;
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) (((uint) ((uint) (imm))) << (uint) (0x2)), 21)))));
 		auto condstr = (string) (([=](auto temp_7) -> string { switch(temp_7) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		return (boost::format("b.%1% #%2$#x") % condstr % addr).str().c_str();
+		return (boost::format("b.%1% #%2$#x") % condstr % addr).str();
 	}
 	/* BFM */
 	if((inst & 0x7F800000U) == 0x33000000U) {
@@ -613,7 +613,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("bfm %1%%2%, %3%%4%, #%5%, #%6%") % r % rd % r % rn % immr % imms).str().c_str();
+		return (boost::format("bfm %1%%2%, %3%%4%, #%5%, #%6%") % r % rd % r % rn % immr % imms).str();
 	}
 	/* BIC */
 	if((inst & 0x7F200000U) == 0x0A200000U) {
@@ -625,7 +625,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shiftstr = (string) (([=](auto temp_8) -> string { switch(temp_8) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
-		return (boost::format("bic %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str().c_str();
+		return (boost::format("bic %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str();
 	}
 	/* BIC-vector-register */
 	if((inst & 0xBFE0FC00U) == 0x0E601C00U) {
@@ -634,24 +634,24 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
-		return (boost::format("bic V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % t % rn % t % rm % t).str().c_str();
+		return (boost::format("bic V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % t % rn % t % rm % t).str();
 	}
 	/* BL */
 	if((inst & 0xFC000000U) == 0x94000000U) {
 		auto imm = (inst >> 0) & 0x3FFFFFFU;
 		auto offset = (long) (SignExt<long>((uint) (((uint) ((uint) (imm))) << (uint) (0x2)), 28));
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) (offset)));
-		return (boost::format("bl #%1$#x") % addr).str().c_str();
+		return (boost::format("bl #%1$#x") % addr).str();
 	}
 	/* BLR */
 	if((inst & 0xFFFFFC1FU) == 0xD63F0000U) {
 		auto rn = (inst >> 5) & 0x1FU;
-		return (boost::format("blr X%1%") % rn).str().c_str();
+		return (boost::format("blr X%1%") % rn).str();
 	}
 	/* BR */
 	if((inst & 0xFFFFFC1FU) == 0xD61F0000U) {
 		auto rn = (inst >> 5) & 0x1FU;
-		return (boost::format("br X%1%") % rn).str().c_str();
+		return (boost::format("br X%1%") % rn).str();
 	}
 	/* CASP */
 	if((inst & 0xBFE0FC00U) == 0x08207C00U) {
@@ -662,7 +662,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto rs2 = (ulong) (((ulong) (byte) (rs)) + ((ulong) (long) (0x1)));
 		auto rt2 = (ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)));
-		return (boost::format("casp %1%%2%, %3%%4$#x, %5%%6%, %7%%8$#x, [X%9%]") % r % rs % r % rs2 % r % rt % r % rt2 % rn).str().c_str();
+		return (boost::format("casp %1%%2%, %3%%4$#x, %5%%6%, %7%%8$#x, [X%9%]") % r % rs % r % rs2 % r % rt % r % rt2 % rn).str();
 	}
 	/* CASPA */
 	if((inst & 0xBFE0FC00U) == 0x08607C00U) {
@@ -673,7 +673,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto rs2 = (ulong) (((ulong) (byte) (rs)) + ((ulong) (long) (0x1)));
 		auto rt2 = (ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)));
-		return (boost::format("caspa %1%%2%, %3%%4$#x, %5%%6%, %7%%8$#x, [X%9%]") % r % rs % r % rs2 % r % rt % r % rt2 % rn).str().c_str();
+		return (boost::format("caspa %1%%2%, %3%%4$#x, %5%%6%, %7%%8$#x, [X%9%]") % r % rs % r % rs2 % r % rt % r % rt2 % rn).str();
 	}
 	/* CASPAL */
 	if((inst & 0xBFE0FC00U) == 0x0860FC00U) {
@@ -684,7 +684,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto rs2 = (ulong) (((ulong) (byte) (rs)) + ((ulong) (long) (0x1)));
 		auto rt2 = (ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)));
-		return (boost::format("caspal %1%%2%, %3%%4$#x, %5%%6%, %7%%8$#x, [X%9%]") % r % rs % r % rs2 % r % rt % r % rt2 % rn).str().c_str();
+		return (boost::format("caspal %1%%2%, %3%%4$#x, %5%%6%, %7%%8$#x, [X%9%]") % r % rs % r % rs2 % r % rt % r % rt2 % rn).str();
 	}
 	/* CASPL */
 	if((inst & 0xBFE0FC00U) == 0x0820FC00U) {
@@ -695,7 +695,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto rs2 = (ulong) (((ulong) (byte) (rs)) + ((ulong) (long) (0x1)));
 		auto rt2 = (ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)));
-		return (boost::format("caspl %1%%2%, %3%%4$#x, %5%%6%, %7%%8$#x, [X%9%]") % r % rs % r % rs2 % r % rt % r % rt2 % rn).str().c_str();
+		return (boost::format("caspl %1%%2%, %3%%4$#x, %5%%6%, %7%%8$#x, [X%9%]") % r % rs % r % rs2 % r % rt % r % rt2 % rn).str();
 	}
 	/* CBNZ */
 	if((inst & 0x7F000000U) == 0x35000000U) {
@@ -704,7 +704,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rs = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) ((uint) ((imm) << (uint) (0x2)))), 21)))));
-		return (boost::format("cbnz %1%%2%, #%3$#x") % r % rs % addr).str().c_str();
+		return (boost::format("cbnz %1%%2%, #%3$#x") % r % rs % addr).str();
 	}
 	/* CBZ */
 	if((inst & 0x7F000000U) == 0x34000000U) {
@@ -713,7 +713,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rs = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) ((uint) ((imm) << (uint) (0x2)))), 21)))));
-		return (boost::format("cbz %1%%2%, #%3$#x") % r % rs % addr).str().c_str();
+		return (boost::format("cbz %1%%2%, #%3$#x") % r % rs % addr).str();
 	}
 	/* CCMN-immediate */
 	if((inst & 0x7FE00C10U) == 0x3A400800U) {
@@ -724,7 +724,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto condstr = (string) (([=](auto temp_9) -> string { switch(temp_9) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		return (boost::format("ccmn %1%%2%, #%3%, #%4%, %5%") % r % rn % imm % nzcv % condstr).str().c_str();
+		return (boost::format("ccmn %1%%2%, #%3%, #%4%, %5%") % r % rn % imm % nzcv % condstr).str();
 	}
 	/* CCMP-immediate */
 	if((inst & 0x7FE00C10U) == 0x7A400800U) {
@@ -735,7 +735,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto condstr = (string) (([=](auto temp_10) -> string { switch(temp_10) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		return (boost::format("ccmp %1%%2%, #%3%, #%4%, %5%") % r % rn % imm % nzcv % condstr).str().c_str();
+		return (boost::format("ccmp %1%%2%, #%3%, #%4%, %5%") % r % rn % imm % nzcv % condstr).str();
 	}
 	/* CCMP-register */
 	if((inst & 0x7FE00C10U) == 0x7A400000U) {
@@ -746,12 +746,12 @@ const char* disassemble(uint inst, ulong pc) {
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto condstr = (string) (([=](auto temp_11) -> string { switch(temp_11) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		return (boost::format("ccmp %1%%2%, %3%%4%, #%5%, %6%") % r % rn % r % rm % nzcv % condstr).str().c_str();
+		return (boost::format("ccmp %1%%2%, %3%%4%, #%5%, %6%") % r % rn % r % rm % nzcv % condstr).str();
 	}
 	/* CLREX */
 	if((inst & 0xFFFFF0FFU) == 0xD503305FU) {
 		auto crm = (inst >> 8) & 0xFU;
-		return (boost::format("clrex")).str().c_str();
+		return (boost::format("clrex")).str();
 	}
 	/* CLZ */
 	if((inst & 0x7FFFFC00U) == 0x5AC01000U) {
@@ -759,7 +759,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("clz %1%%2%, %3%%4%") % r % rd % r % rn).str().c_str();
+		return (boost::format("clz %1%%2%, %3%%4%") % r % rd % r % rn).str();
 	}
 	/* CNT */
 	if((inst & 0xBF3FFC00U) == 0x0E205800U) {
@@ -768,7 +768,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) (([=](auto temp_12) -> string { switch(temp_12) { case 0x0: return string("8B"); case 0x1: return string("16B"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		return (boost::format("cnt V%1%.%2%, V%3%.%4%") % rd % t % rn % t).str().c_str();
+		return (boost::format("cnt V%1%.%2%, V%3%.%4%") % rd % t % rn % t).str();
 	}
 	/* CSEL */
 	if((inst & 0x7FE00C00U) == 0x1A800000U) {
@@ -779,7 +779,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto condstr = (string) (([=](auto temp_13) -> string { switch(temp_13) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		return (boost::format("csel %1%%2%, %3%%4%, %5%%6%, %7%") % r % rd % r % rn % r % rm % condstr).str().c_str();
+		return (boost::format("csel %1%%2%, %3%%4%, %5%%6%, %7%") % r % rd % r % rn % r % rm % condstr).str();
 	}
 	/* CSINC */
 	if((inst & 0x7FE00C00U) == 0x1A800400U) {
@@ -790,7 +790,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto condstr = (string) (([=](auto temp_14) -> string { switch(temp_14) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		return (boost::format("csinc %1%%2%, %3%%4%, %5%%6%, %7%") % r % rd % r % rn % r % rm % condstr).str().c_str();
+		return (boost::format("csinc %1%%2%, %3%%4%, %5%%6%, %7%") % r % rd % r % rn % r % rm % condstr).str();
 	}
 	/* CSINV */
 	if((inst & 0x7FE00C00U) == 0x5A800000U) {
@@ -801,7 +801,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto condstr = (string) (([=](auto temp_15) -> string { switch(temp_15) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		return (boost::format("csinv %1%%2%, %3%%4%, %5%%6%, %7%") % r % rd % r % rn % r % rm % condstr).str().c_str();
+		return (boost::format("csinv %1%%2%, %3%%4%, %5%%6%, %7%") % r % rd % r % rn % r % rm % condstr).str();
 	}
 	/* CSNEG */
 	if((inst & 0x7FE00C00U) == 0x5A800400U) {
@@ -812,19 +812,19 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto condstr = (string) (([=](auto temp_16) -> string { switch(temp_16) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		return (boost::format("csneg %1%%2%, %3%%4%, %5%%6%, %7%") % r % rd % r % rn % r % rm % condstr).str().c_str();
+		return (boost::format("csneg %1%%2%, %3%%4%, %5%%6%, %7%") % r % rd % r % rn % r % rm % condstr).str();
 	}
 	/* DMB */
 	if((inst & 0xFFFFF0FFU) == 0xD50330BFU) {
 		auto m = (inst >> 8) & 0xFU;
 		auto option = (string) (([=](auto temp_17) -> string { switch(temp_17) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(m));
-		return (boost::format("DMB %1%") % option).str().c_str();
+		return (boost::format("DMB %1%") % option).str();
 	}
 	/* DSB */
 	if((inst & 0xFFFFF0FFU) == 0xD503309FU) {
 		auto crm = (inst >> 8) & 0xFU;
 		auto option = (string) (([=](auto temp_18) -> string { switch(temp_18) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(crm));
-		return (boost::format("DSB %1%") % option).str().c_str();
+		return (boost::format("DSB %1%") % option).str();
 	}
 	/* DUP-general */
 	if((inst & 0xBFE0FC00U) == 0x0E000C00U) {
@@ -835,7 +835,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto size = ((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0xF))))) == (0x0)) ? 1U : 0U) != 0) ? throw "Not implemented" : ((long) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0xF))))) == (0x8)) ? 1U : 0U) != 0) ? (0x40) : (0x20)));
 		auto r = (string) (((bool) (((size) == (0x40)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
 		auto T = ((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0xF))))) == (0x0)) ? 1U : 0U) != 0) ? throw "Not implemented" : ((string) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x1))))) == (0x1)) ? 1U : 0U) != 0) ? ((string) ((Q != 0) ? (string("16B")) : (string("8B")))) : ((string) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x3))))) == (0x2)) ? 1U : 0U) != 0) ? ((string) ((Q != 0) ? (string("8H")) : (string("4H")))) : ((string) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x7))))) == (0x4)) ? 1U : 0U) != 0) ? ((string) ((Q != 0) ? (string("4S")) : (string("2S")))) : ((string) ((Q != 0) ? (string("2D")) : throw "Not implemented"))))))));
-		return (boost::format("dup V%1%.%2%, %3%%4%") % rd % T % r % rn).str().c_str();
+		return (boost::format("dup V%1%.%2%, %3%%4%") % rd % T % r % rn).str();
 	}
 	/* DUP-element-scalar */
 	if((inst & 0xFFE0FC00U) == 0x5E000400U) {
@@ -870,7 +870,7 @@ const char* disassemble(uint inst, ulong pc) {
 				}
 			}
 		}
-		return (boost::format("dup %1%%2%, V%3%.%4%[%5$#x]") % r % rd % rn % r % index).str().c_str();
+		return (boost::format("dup %1%%2%, V%3%.%4%[%5$#x]") % r % rd % rn % r % index).str();
 	}
 	/* EON-shifted-register */
 	if((inst & 0x7F200000U) == 0x4A200000U) {
@@ -882,7 +882,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shiftstr = (string) (([=](auto temp_19) -> string { switch(temp_19) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
-		return (boost::format("eon %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str().c_str();
+		return (boost::format("eon %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str();
 	}
 	/* EOR-immediate */
 	if((inst & 0x7F800000U) == 0x52000000U) {
@@ -894,7 +894,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (ulong) (MakeWMask(up, imms, immr, (long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
-		return (boost::format("and %1%%2%, %3%%4%, #%5$#x") % r % rd % r % rn % imm).str().c_str();
+		return (boost::format("and %1%%2%, %3%%4%, #%5$#x") % r % rd % r % rn % imm).str();
 	}
 	/* EOR-shifted-register */
 	if((inst & 0x7F200000U) == 0x4A000000U) {
@@ -906,7 +906,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shiftstr = (string) (([=](auto temp_20) -> string { switch(temp_20) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
-		return (boost::format("eor %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str().c_str();
+		return (boost::format("eor %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str();
 	}
 	/* EXT */
 	if((inst & 0xBFE08400U) == 0x2E000000U) {
@@ -916,7 +916,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto ts = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
-		return (boost::format("ext V%1%.%2%, V%3%.%4%, V%5%.%6%, #%7%") % rd % ts % rn % ts % rm % ts % index).str().c_str();
+		return (boost::format("ext V%1%.%2%, V%3%.%4%, V%5%.%6%, #%7%") % rd % ts % rn % ts % rm % ts % index).str();
 	}
 	/* EXTR */
 	if((inst & 0x7FA00000U) == 0x13800000U) {
@@ -927,7 +927,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("extr %1%%2%, %3%%4%, %5%%6%, #%7%") % r % rd % r % rn % r % rm % lsb).str().c_str();
+		return (boost::format("extr %1%%2%, %3%%4%, %5%%6%, #%7%") % r % rd % r % rn % r % rm % lsb).str();
 	}
 	/* FABS-scalar */
 	if((inst & 0xFF3FFC00U) == 0x1E20C000U) {
@@ -935,7 +935,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_21) -> string { switch(temp_21) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		return (boost::format("fabs %1%%2%, %3%%4%") % r % rd % r % rn).str().c_str();
+		return (boost::format("fabs %1%%2%, %3%%4%") % r % rd % r % rn).str();
 	}
 	/* FABS-vector */
 	if((inst & 0xBFBFFC00U) == 0x0EA0F800U) {
@@ -944,7 +944,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) (([=](auto temp_22) -> string { switch(temp_22) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		return (boost::format("fabs V%1%.%2%, V%3%.%4%") % rd % t % rn % t).str().c_str();
+		return (boost::format("fabs V%1%.%2%, V%3%.%4%") % rd % t % rn % t).str();
 	}
 	/* FADD-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E202800U) {
@@ -953,7 +953,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_23) -> string { switch(temp_23) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		return (boost::format("fadd %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("fadd %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* FADD-vector */
 	if((inst & 0xBFA0FC00U) == 0x0E20D400U) {
@@ -963,7 +963,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto ts = (string) (([=](auto temp_24) -> string { switch(temp_24) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		return (boost::format("fadd V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % ts % rn % ts % rm % ts).str().c_str();
+		return (boost::format("fadd V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % ts % rn % ts % rm % ts).str();
 	}
 	/* FADDP-scalar */
 	if((inst & 0xFFBFFC00U) == 0x7E30D800U) {
@@ -971,7 +971,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : (string("D")));
-		return (boost::format("faddp %1%%2%, V%3%.2%4%") % r % rd % rn % r).str().c_str();
+		return (boost::format("faddp %1%%2%, V%3%.2%4%") % r % rd % rn % r).str();
 	}
 	/* FADDP-vector */
 	if((inst & 0xBFA0FC00U) == 0x2E20D400U) {
@@ -981,7 +981,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) (([=](auto temp_25) -> string { switch(temp_25) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		return (boost::format("faddp V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % t % rn % t % rm % t).str().c_str();
+		return (boost::format("faddp V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % t % rn % t % rm % t).str();
 	}
 	/* FCCMP */
 	if((inst & 0xFF200C10U) == 0x1E200400U) {
@@ -992,7 +992,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (([=](auto temp_26) -> string { switch(temp_26) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		auto condstr = (string) (([=](auto temp_27) -> string { switch(temp_27) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		return (boost::format("fccmp %1%%2%, %3%%4%, #%5%, %6%") % r % rn % r % rm % nzcv % condstr).str().c_str();
+		return (boost::format("fccmp %1%%2%, %3%%4%, #%5%, %6%") % r % rn % r % rm % nzcv % condstr).str();
 	}
 	/* FCMxx-register-vector */
 	if((inst & 0x9F20F400U) == 0x0E20E400U) {
@@ -1006,7 +1006,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto top = (string) (([=](auto temp_28) -> string { switch(temp_28) { case 0x0: return string("EQ"); case 0x2: return string("GE"); case 0x3: return string("GE"); case 0x6: return string("GT"); case 0x7: return string("GT"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
 		auto t = (string) (([=](auto temp_29) -> string { switch(temp_29) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		return (boost::format("FCM%1% V%2%.%3%, V%4%.%5%, V%6%.%7%") % top % rd % t % rn % t % rm % t).str().c_str();
+		return (boost::format("FCM%1% V%2%.%3%, V%4%.%5%, V%6%.%7%") % top % rd % t % rn % t % rm % t).str();
 	}
 	/* FCMxx-zero-vector */
 	if((inst & 0x9FBFEC00U) == 0x0EA0C800U) {
@@ -1018,7 +1018,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto top = (string) (([=](auto temp_30) -> string { switch(temp_30) { case 0x0: return string("GT"); case 0x1: return string("GE"); case 0x2: return string("EQ"); default: return string("LE"); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
 		auto t = (string) (([=](auto temp_31) -> string { switch(temp_31) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		return (boost::format("FCM%1% V%2%.%3%, V%4%.%5%, #0.0") % top % rd % t % rn % t).str().c_str();
+		return (boost::format("FCM%1% V%2%.%3%, V%4%.%5%, #0.0") % top % rd % t % rn % t).str();
 	}
 	/* FCMLT-zero-vector */
 	if((inst & 0xBFBFFC00U) == 0x0EA0E800U) {
@@ -1027,7 +1027,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) (([=](auto temp_32) -> string { switch(temp_32) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		return (boost::format("FCMLT V%1%.%2%, V%3%.%4%, #0.0") % rd % t % rn % t).str().c_str();
+		return (boost::format("FCMLT V%1%.%2%, V%3%.%4%, #0.0") % rd % t % rn % t).str();
 	}
 	/* FCMP */
 	if((inst & 0xFF20FC17U) == 0x1E202000U) {
@@ -1037,7 +1037,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto opc = (inst >> 3) & 0x1U;
 		auto r = (string) (([=](auto temp_33) -> string { switch(temp_33) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		auto zero = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("/0")) : (string("")));
-		return (boost::format("fcmp %1%%2%, %3%%4% %5%") % r % rn % r % rm % zero).str().c_str();
+		return (boost::format("fcmp %1%%2%, %3%%4% %5%") % r % rn % r % rm % zero).str();
 	}
 	/* FCSEL */
 	if((inst & 0xFF200C00U) == 0x1E200C00U) {
@@ -1048,7 +1048,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_34) -> string { switch(temp_34) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		auto condstr = (string) (([=](auto temp_35) -> string { switch(temp_35) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		return (boost::format("fcsel %1%%2%, %3%%4%, %5%%6%, %7%") % r % rd % r % rn % r % rm % condstr).str().c_str();
+		return (boost::format("fcsel %1%%2%, %3%%4%, %5%%6%, %7%") % r % rd % r % rn % r % rm % condstr).str();
 	}
 	/* FCVT */
 	if((inst & 0xFF3E7C00U) == 0x1E224000U) {
@@ -1095,7 +1095,7 @@ const char* disassemble(uint inst, ulong pc) {
 				break;
 			}
 		}
-		return (boost::format("fcvt %1%%2%, %3%%4%") % r1 % rd % r2 % rn).str().c_str();
+		return (boost::format("fcvt %1%%2%, %3%%4%") % r1 % rd % r2 % rn).str();
 	}
 	/* FCVTZS-scalar-fixedpoint */
 	if((inst & 0x7F3F0000U) == 0x1E180000U) {
@@ -1107,7 +1107,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto fbits = (ulong) (((ulong) (long) (0x40)) - ((ulong) (byte) (scale)));
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (([=](auto temp_36) -> string { switch(temp_36) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		return (boost::format("fcvtzs %1%%2%, %3%%4%, #%5$#x") % r1 % rd % r2 % rn % fbits).str().c_str();
+		return (boost::format("fcvtzs %1%%2%, %3%%4%, #%5$#x") % r1 % rd % r2 % rn % fbits).str();
 	}
 	/* FCVTZS-scalar-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E380000U) {
@@ -1154,7 +1154,7 @@ const char* disassemble(uint inst, ulong pc) {
 				break;
 			}
 		}
-		return (boost::format("fcvtzs %1%%2%, %3%%4%") % r1 % rd % r2 % rn).str().c_str();
+		return (boost::format("fcvtzs %1%%2%, %3%%4%") % r1 % rd % r2 % rn).str();
 	}
 	/* FCVTZU-scalar-fixedpoint */
 	if((inst & 0x7F3F0000U) == 0x1E190000U) {
@@ -1166,7 +1166,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto fbits = (ulong) (((ulong) (long) (0x40)) - ((ulong) (byte) (scale)));
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (([=](auto temp_37) -> string { switch(temp_37) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		return (boost::format("fcvtzu %1%%2%, %3%%4%, #%5$#x") % r1 % rd % r2 % rn % fbits).str().c_str();
+		return (boost::format("fcvtzu %1%%2%, %3%%4%, #%5$#x") % r1 % rd % r2 % rn % fbits).str();
 	}
 	/* FCVTZU-scalar-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E390000U) {
@@ -1213,7 +1213,7 @@ const char* disassemble(uint inst, ulong pc) {
 				break;
 			}
 		}
-		return (boost::format("fcvtzu %1%%2%, %3%%4%") % r1 % rd % r2 % rn).str().c_str();
+		return (boost::format("fcvtzu %1%%2%, %3%%4%") % r1 % rd % r2 % rn).str();
 	}
 	/* FDIV-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E201800U) {
@@ -1222,7 +1222,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_38) -> string { switch(temp_38) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		return (boost::format("fdiv %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("fdiv %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* FMAX-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E204800U) {
@@ -1231,7 +1231,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_39) -> string { switch(temp_39) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		return (boost::format("fmax %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("fmax %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* FMAXNM-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E206800U) {
@@ -1240,7 +1240,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_40) -> string { switch(temp_40) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		return (boost::format("fmaxnm %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("fmaxnm %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* FMIN-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E205800U) {
@@ -1249,7 +1249,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_41) -> string { switch(temp_41) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		return (boost::format("fmin %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("fmin %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* FMINNM-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E207800U) {
@@ -1258,7 +1258,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_42) -> string { switch(temp_42) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		return (boost::format("fminnm %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("fminnm %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* FMLA-by-element-vector-spdp */
 	if((inst & 0xBF80F400U) == 0x0F801000U) {
@@ -1272,7 +1272,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto T = (string) (([=](auto temp_43) -> string { switch(temp_43) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
 		auto index = (uint) (([=](auto temp_44) -> uint { switch(temp_44) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
-		return (boost::format("fmla V%1%.%2%, V%3%.%4%, V%5%.%6%[%7$#x]") % rd % T % rn % T % rm % Ts % index).str().c_str();
+		return (boost::format("fmla V%1%.%2%, V%3%.%4%, V%5%.%6%[%7$#x]") % rd % T % rn % T % rm % Ts % index).str();
 	}
 	/* FMLA-vector */
 	if((inst & 0xBFA0FC00U) == 0x0E20CC00U) {
@@ -1282,7 +1282,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto T = (string) (([=](auto temp_45) -> string { switch(temp_45) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
-		return (boost::format("fmla V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % T % rn % T % rm % T).str().c_str();
+		return (boost::format("fmla V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % T % rn % T % rm % T).str();
 	}
 	/* FMOV-general */
 	if((inst & 0x7F36FC00U) == 0x1E260000U) {
@@ -1354,7 +1354,7 @@ const char* disassemble(uint inst, ulong pc) {
 		}
 		auto index1 = (string) (((bool) (((r1) == (string("V"))) ? 1U : 0U) != 0) ? (string(".D[1]")) : (string("")));
 		auto index2 = (string) (((bool) (((r2) == (string("V"))) ? 1U : 0U) != 0) ? (string(".D[1]")) : (string("")));
-		return (boost::format("fmov %1%%2%%3%, %4%%5%%6%") % r1 % rd % index1 % r2 % rn % index2).str().c_str();
+		return (boost::format("fmov %1%%2%%3%, %4%%5%%6%") % r1 % rd % index1 % r2 % rn % index2).str();
 	}
 	/* FMOV-scalar-immediate */
 	if((inst & 0xFF201FE0U) == 0x1E201000U) {
@@ -1363,7 +1363,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_46) -> string { switch(temp_46) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		auto sv = (float) (Bitcast<uint, float>((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((bool) ((bool) (0x0)))) << 0)) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 1)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 2)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 3)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 4)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 5)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 6)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 7)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 8)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 9)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 10)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 11)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 12)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 13)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 14)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 15)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 16)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 17)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 18)))))) << 0)) | ((uint) (((uint) ((byte) ((byte) ((byte) ((((ulong) (imm)) & ((ulong) (0xF)))))))) << 19)))) | ((uint) (((uint) ((byte) ((byte) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x4)))) & ((ulong) (0x3)))))))) << 23)))) | ((uint) (((uint) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 0)) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 1)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 2)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 3)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 4)))))) << 25)))) | ((uint) (((uint) ((bool) (((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1))))) != 0 ? 0U : 1U))) << 30)))) | ((uint) (((uint) ((bool) ((bool) ((byte) ((imm) >> (uint) (0x7)))))) << 31))))));
-		return (boost::format("fmov %1%%2%, #%3%") % r % rd % sv).str().c_str();
+		return (boost::format("fmov %1%%2%, #%3%") % r % rd % sv).str();
 	}
 	/* FMUL-by-element-vector-spdp */
 	if((inst & 0xBF80F400U) == 0x0F809000U) {
@@ -1377,7 +1377,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto T = (string) (([=](auto temp_47) -> string { switch(temp_47) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
 		auto index = (uint) (([=](auto temp_48) -> uint { switch(temp_48) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
-		return (boost::format("fmul V%1%.%2%, V%3%.%4%, V%5%.%6%[%7$#x]") % rd % T % rn % T % rm % Ts % index).str().c_str();
+		return (boost::format("fmul V%1%.%2%, V%3%.%4%, V%5%.%6%[%7$#x]") % rd % T % rn % T % rm % Ts % index).str();
 	}
 	/* FMUL-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E200800U) {
@@ -1386,7 +1386,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_49) -> string { switch(temp_49) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		return (boost::format("fmul %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("fmul %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* FMUL-vector */
 	if((inst & 0xBFA0FC00U) == 0x2E20DC00U) {
@@ -1396,7 +1396,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto ts = (string) (([=](auto temp_50) -> string { switch(temp_50) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		return (boost::format("fmul V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % ts % rn % ts % rm % ts).str().c_str();
+		return (boost::format("fmul V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % ts % rn % ts % rm % ts).str();
 	}
 	/* FNEG */
 	if((inst & 0xFF3FFC00U) == 0x1E214000U) {
@@ -1404,7 +1404,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_51) -> string { switch(temp_51) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		return (boost::format("fneg %1%%2%, %3%%4%") % r % rd % r % rn).str().c_str();
+		return (boost::format("fneg %1%%2%, %3%%4%") % r % rd % r % rn).str();
 	}
 	/* FNMUL-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E208800U) {
@@ -1413,7 +1413,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_52) -> string { switch(temp_52) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		return (boost::format("fnmul %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("fnmul %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* FRSQRTE-vector */
 	if((inst & 0xBFBFFC00U) == 0x2EA1D800U) {
@@ -1422,7 +1422,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) (([=](auto temp_53) -> string { switch(temp_53) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		return (boost::format("frsqrte V%1%.%2%, V%3%.%4%") % rd % t % rn % t).str().c_str();
+		return (boost::format("frsqrte V%1%.%2%, V%3%.%4%") % rd % t % rn % t).str();
 	}
 	/* FRSQRTS-vector */
 	if((inst & 0xBFA0FC00U) == 0x0EA0FC00U) {
@@ -1432,7 +1432,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) (([=](auto temp_54) -> string { switch(temp_54) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		return (boost::format("frsqrts V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % t % rn % t % rm % t).str().c_str();
+		return (boost::format("frsqrts V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % t % rn % t % rm % t).str();
 	}
 	/* FSQRT-scalar */
 	if((inst & 0xFF3FFC00U) == 0x1E21C000U) {
@@ -1440,7 +1440,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_55) -> string { switch(temp_55) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		return (boost::format("fsqrt %1%%2%, %3%%4%") % r % rd % r % rn).str().c_str();
+		return (boost::format("fsqrt %1%%2%, %3%%4%") % r % rd % r % rn).str();
 	}
 	/* FSUB-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E203800U) {
@@ -1449,7 +1449,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_56) -> string { switch(temp_56) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		return (boost::format("fsub %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("fsub %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* INS-general */
 	if((inst & 0xFFE0FC00U) == 0x4E001C00U) {
@@ -1477,7 +1477,7 @@ const char* disassemble(uint inst, ulong pc) {
 				}
 			}
 		}
-		return (boost::format("ins V%1%.%2%[%3$#x], %4%%5%") % rd % ts % index % r % rn).str().c_str();
+		return (boost::format("ins V%1%.%2%[%3$#x], %4%%5%") % rd % ts % index % r % rn).str();
 	}
 	/* INS-vector */
 	if((inst & 0xFFE08400U) == 0x6E000400U) {
@@ -1509,7 +1509,7 @@ const char* disassemble(uint inst, ulong pc) {
 				}
 			}
 		}
-		return (boost::format("ins V%1%.%2%[%3$#x], V%4%.%5%[%6$#x]") % rd % ts % index1 % rn % ts % index2).str().c_str();
+		return (boost::format("ins V%1%.%2%[%3$#x], V%4%.%5%[%6$#x]") % rd % ts % index1 % rn % ts % index2).str();
 	}
 	/* LDAR */
 	if((inst & 0xBFFFFC00U) == 0x88DFFC00U) {
@@ -1517,38 +1517,38 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("ldar %1%%2%, [X%3%]") % r % rt % rn).str().c_str();
+		return (boost::format("ldar %1%%2%, [X%3%]") % r % rt % rn).str();
 	}
 	/* LDARB */
 	if((inst & 0xFFFFFC00U) == 0x08DFFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		return (boost::format("ldarb W%1%, [X%2%]") % rt % rn).str().c_str();
+		return (boost::format("ldarb W%1%, [X%2%]") % rt % rn).str();
 	}
 	/* LDARH */
 	if((inst & 0xFFFFFC00U) == 0x48DFFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		return (boost::format("ldarh W%1%, [X%2%]") % rt % rn).str().c_str();
+		return (boost::format("ldarh W%1%, [X%2%]") % rt % rn).str();
 	}
 	/* LDAXB */
 	if((inst & 0xBFFFFC00U) == 0x885FFC00U) {
 		auto size = (inst >> 30) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		return (boost::format("ldaxb W%1%, [X%2%]") % rt % rn).str().c_str();
+		return (boost::format("ldaxb W%1%, [X%2%]") % rt % rn).str();
 	}
 	/* LDAXRB */
 	if((inst & 0xFFFFFC00U) == 0x085FFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		return (boost::format("ldaxrb W%1%, [X%2%]") % rt % rn).str().c_str();
+		return (boost::format("ldaxrb W%1%, [X%2%]") % rt % rn).str();
 	}
 	/* LDAXRH */
 	if((inst & 0xFFFFFC00U) == 0x485FFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		return (boost::format("ldaxrh W%1%, [X%2%]") % rt % rn).str().c_str();
+		return (boost::format("ldaxrh W%1%, [X%2%]") % rt % rn).str();
 	}
 	/* LDP-immediate-postindex */
 	if((inst & 0x7FC00000U) == 0x28C00000U) {
@@ -1559,7 +1559,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		return (boost::format("ldp %1%%2%, %3%%4%, [X%5%], #%6%%7$#x") % r % rt1 % r % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("ldp %1%%2%, %3%%4%, [X%5%], #%6%%7$#x") % r % rt1 % r % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* LDP-immediate-signed-offset */
 	if((inst & 0x7FC00000U) == 0x29400000U) {
@@ -1570,7 +1570,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		return (boost::format("ldp %1%%2%, %3%%4%, [X%5%, #%6%%7$#x]") % r % rt1 % r % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("ldp %1%%2%, %3%%4%, [X%5%, #%6%%7$#x]") % r % rt1 % r % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* LDP-simd-postindex */
 	if((inst & 0x3FC00000U) == 0x2CC00000U) {
@@ -1581,7 +1581,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_57) -> string { switch(temp_57) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_58) -> long { switch(temp_58) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
-		return (boost::format("ldp %1%%2%, %3%%4%, [X%5%], #%6%%7$#x") % r % rt1 % r % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("ldp %1%%2%, %3%%4%, [X%5%], #%6%%7$#x") % r % rt1 % r % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* LDP-simd-signed-offset */
 	if((inst & 0x3FC00000U) == 0x2D400000U) {
@@ -1592,7 +1592,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_59) -> string { switch(temp_59) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_60) -> long { switch(temp_60) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
-		return (boost::format("ldp %1%%2%, %3%%4%, [X%5%, #%6%%7$#x]") % r % rt1 % r % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("ldp %1%%2%, %3%%4%, [X%5%, #%6%%7$#x]") % r % rt1 % r % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* LDPSW-immediate-signed-offset */
 	if((inst & 0xFFC00000U) == 0x69400000U) {
@@ -1601,7 +1601,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) (0x2));
-		return (boost::format("ldpsw X%1%, X%2%, [X%3%, #%4%%5$#x]") % rt1 % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("ldpsw X%1%, X%2%, [X%3%, #%4%%5$#x]") % rt1 % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* LDR-immediate-preindex */
 	if((inst & 0xBFE00C00U) == 0xB8400C00U) {
@@ -1611,7 +1611,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		return (boost::format("ldr %1%%2%, [X%3%, #%4%%5$#x]!") % r % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldr %1%%2%, [X%3%, #%4%%5$#x]!") % r % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDR-immediate-postindex */
 	if((inst & 0xBFE00C00U) == 0xB8400400U) {
@@ -1621,7 +1621,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		return (boost::format("ldr %1%%2%, [X%3%], #%4%%5$#x") % r % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldr %1%%2%, [X%3%], #%4%%5$#x") % r % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDR-immediate-unsigned-offset */
 	if((inst & 0xBFC00000U) == 0xB9400000U) {
@@ -1631,7 +1631,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (ushort) ((rawimm) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		return (boost::format("ldr %1%%2%, [X%3%, #%4$#x]") % r % rd % rn % imm).str().c_str();
+		return (boost::format("ldr %1%%2%, [X%3%, #%4$#x]") % r % rd % rn % imm).str();
 	}
 	/* LDR-simd-immediate-postindex */
 	if((inst & 0x3F600C00U) == 0x3C400400U) {
@@ -1642,7 +1642,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto r = (string) (([=](auto temp_61) -> string { switch(temp_61) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		return (boost::format("ldr %1%%2%, [X%3%], #%4%%5$#x") % r % rt % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("ldr %1%%2%, [X%3%], #%4%%5$#x") % r % rt % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* LDR-simd-immediate-preindex */
 	if((inst & 0x3F600C00U) == 0x3C400C00U) {
@@ -1653,7 +1653,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto r = (string) (([=](auto temp_62) -> string { switch(temp_62) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		return (boost::format("ldr %1%%2%, [X%3%, #%4%%5$#x]!") % r % rt % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("ldr %1%%2%, [X%3%, #%4%%5$#x]!") % r % rt % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* LDR-simd-immediate-unsigned-offset */
 	if((inst & 0x3F400000U) == 0x3D400000U) {
@@ -1666,7 +1666,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto m = (byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 2))));
 		auto r = (string) (([=](auto temp_63) -> string { switch(temp_63) { case 0x1: return string("B"); case 0x5: return string("H"); case 0x9: return string("S"); case 0xD: return string("D"); default: return string("Q"); } })(m));
 		auto imm = (uint) (((uint) ((uint) (rawimm))) << (uint) ((long) (([=](auto temp_64) -> long { switch(temp_64) { case 0x1: return 0x0; case 0x5: return 0x1; case 0x9: return 0x2; case 0xD: return 0x3; default: return 0x4; } })(m))));
-		return (boost::format("ldr %1%%2%, [X%3%, #%4$#x]") % r % rt % rn % imm).str().c_str();
+		return (boost::format("ldr %1%%2%, [X%3%, #%4$#x]") % r % rt % rn % imm).str();
 	}
 	/* LDR-simd-register */
 	if((inst & 0x3F600C00U) == 0x3C600800U) {
@@ -1681,7 +1681,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto extend = (string) (([=](auto temp_66) -> string { switch(temp_66) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto amount = (ulong) (((ulong) (bool) (scale)) * ((ulong) (long) ((long) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (0x4) : ((long) (([=](auto temp_67) -> long { switch(temp_67) { case 0x0: return 0x1; case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: throw "Not implemented"; } })(size)))))));
-		return (boost::format("ldr %1%%2%, [X%3%, %4%%5%, %6% %7$#x]") % r1 % rt % rn % r2 % rm % extend % amount).str().c_str();
+		return (boost::format("ldr %1%%2%, [X%3%, %4%%5%, %6% %7$#x]") % r1 % rt % rn % r2 % rm % extend % amount).str();
 	}
 	/* LDR-register */
 	if((inst & 0xBFE00C00U) == 0xB8600800U) {
@@ -1695,7 +1695,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		auto extend = (string) (([=](auto temp_68) -> string { switch(temp_68) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
-		return (boost::format("ldr %1%%2%, [X%3%, %4%%5%, %6% %7%%8$#x]") % r1 % rt % rn % r2 % rm % extend % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str().c_str();
+		return (boost::format("ldr %1%%2%, [X%3%, %4%%5%, %6% %7%%8$#x]") % r1 % rt % rn % r2 % rm % extend % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str();
 	}
 	/* LDRB-immediate-postindex */
 	if((inst & 0xFFE00C00U) == 0x38400400U) {
@@ -1703,7 +1703,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		return (boost::format("ldrb W%1%, [X%2%], #%3%%4$#x") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldrb W%1%, [X%2%], #%3%%4$#x") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDRB-immediate-preindex */
 	if((inst & 0xFFE00C00U) == 0x38400C00U) {
@@ -1711,14 +1711,14 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		return (boost::format("ldrb W%1%, [X%2%, #%3%%4$#x]!") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldrb W%1%, [X%2%, #%3%%4$#x]!") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDRB-immediate-unsigned-offset */
 	if((inst & 0xFFC00000U) == 0x39400000U) {
 		auto imm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		return (boost::format("ldrb W%1%, [X%2%, #%3$#x]") % rt % rn % imm).str().c_str();
+		return (boost::format("ldrb W%1%, [X%2%, #%3$#x]") % rt % rn % imm).str();
 	}
 	/* LDRB-register */
 	if((inst & 0xFFE00C00U) == 0x38600800U) {
@@ -1729,7 +1729,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto str = (string) (([=](auto temp_69) -> string { switch(temp_69) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
-		return (boost::format("ldrb W%1%, [X%2%, %3%%4%, %5% %6%]") % rt % rn % r % rm % str % amount).str().c_str();
+		return (boost::format("ldrb W%1%, [X%2%, %3%%4%, %5% %6%]") % rt % rn % r % rm % str % amount).str();
 	}
 	/* LDRH-immediate-postindex */
 	if((inst & 0xFFE00C00U) == 0x78400400U) {
@@ -1737,7 +1737,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		return (boost::format("ldrh W%1%, [X%2%], #%3%%4$#x") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldrh W%1%, [X%2%], #%3%%4$#x") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDRH-immediate-preindex */
 	if((inst & 0xFFE00C00U) == 0x78400C00U) {
@@ -1745,7 +1745,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		return (boost::format("ldrh W%1%, [X%2%, #%3%%4$#x]!") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldrh W%1%, [X%2%, #%3%%4$#x]!") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDRH-immediate-unsigned-offset */
 	if((inst & 0xFFC00000U) == 0x79400000U) {
@@ -1753,7 +1753,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (ushort) ((rawimm) << (uint) (0x1));
-		return (boost::format("ldrh W%1%, [X%2%, #%3$#x]") % rt % rn % imm).str().c_str();
+		return (boost::format("ldrh W%1%, [X%2%, #%3$#x]") % rt % rn % imm).str();
 	}
 	/* LDRH-register */
 	if((inst & 0xFFE00C00U) == 0x78600800U) {
@@ -1764,7 +1764,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto str = (string) (([=](auto temp_70) -> string { switch(temp_70) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
-		return (boost::format("ldrh W%1%, [X%2%, %3%%4%, %5% %6%]") % rt % rn % r % rm % str % amount).str().c_str();
+		return (boost::format("ldrh W%1%, [X%2%, %3%%4%, %5% %6%]") % rt % rn % r % rm % str % amount).str();
 	}
 	/* LDRSB-immediate-postindex */
 	if((inst & 0xFFA00C00U) == 0x38800400U) {
@@ -1774,7 +1774,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("ldrsb %1%%2%, [X%3%], #%4%%5$#x") % r % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldrsb %1%%2%, [X%3%], #%4%%5$#x") % r % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDRSB-immediate-preindex */
 	if((inst & 0xFFA00C00U) == 0x38800C00U) {
@@ -1784,7 +1784,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("ldrsb %1%%2%, [X%3%, #%4%%5$#x]!") % r % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldrsb %1%%2%, [X%3%, #%4%%5$#x]!") % r % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDRSB-immediate-unsigned-offset */
 	if((inst & 0xFF800000U) == 0x39800000U) {
@@ -1793,7 +1793,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("ldrsb %1%%2%, [X%3%, #%4$#x]") % r % rt % rn % imm).str().c_str();
+		return (boost::format("ldrsb %1%%2%, [X%3%, #%4$#x]") % r % rt % rn % imm).str();
 	}
 	/* LDRSB-register */
 	if((inst & 0xFFA00C00U) == 0x38A00800U) {
@@ -1805,7 +1805,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
 		auto str = (string) (([=](auto temp_71) -> string { switch(temp_71) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
-		return (boost::format("ldrsb %1%%2%, [X%3%, %4%%5%, %6% %7%]") % r % rt % rn % r % rm % str % amount).str().c_str();
+		return (boost::format("ldrsb %1%%2%, [X%3%, %4%%5%, %6% %7%]") % r % rt % rn % r % rm % str % amount).str();
 	}
 	/* LDRSH-immediate-postindex */
 	if((inst & 0xFFA00C00U) == 0x78800400U) {
@@ -1815,7 +1815,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("ldrsh %1%%2%, [X%3%], #%4%%5$#x") % r % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldrsh %1%%2%, [X%3%], #%4%%5$#x") % r % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDRSH-immediate-preindex */
 	if((inst & 0xFFA00C00U) == 0x78800C00U) {
@@ -1825,7 +1825,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("ldrsh %1%%2%, [X%3%, #%4%%5$#x]!") % r % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldrsh %1%%2%, [X%3%, #%4%%5$#x]!") % r % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDRSH-immediate-unsigned-offset */
 	if((inst & 0xFF800000U) == 0x79800000U) {
@@ -1835,7 +1835,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (ushort) ((rawimm) << (uint) (0x1));
-		return (boost::format("ldrsh %1%%2%, [X%3%, #%4$#x]") % r % rt % rn % imm).str().c_str();
+		return (boost::format("ldrsh %1%%2%, [X%3%, #%4$#x]") % r % rt % rn % imm).str();
 	}
 	/* LDRSH-register */
 	if((inst & 0xFFA00C00U) == 0x78A00800U) {
@@ -1847,7 +1847,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
 		auto str = (string) (([=](auto temp_72) -> string { switch(temp_72) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
-		return (boost::format("ldrsh %1%%2%, [X%3%, %4%%5%, %6% %7%]") % r % rt % rn % r % rm % str % amount).str().c_str();
+		return (boost::format("ldrsh %1%%2%, [X%3%, %4%%5%, %6% %7%]") % r % rt % rn % r % rm % str % amount).str();
 	}
 	/* LDRSW-immediate-postindex */
 	if((inst & 0xFFE00C00U) == 0xB8800400U) {
@@ -1855,7 +1855,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		return (boost::format("ldrsw X%1%, [X%2%], #%3%%4$#x") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldrsw X%1%, [X%2%], #%3%%4$#x") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDRSW-immediate-preindex */
 	if((inst & 0xFFE00C00U) == 0xB8800C00U) {
@@ -1863,7 +1863,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		return (boost::format("ldrsw X%1%, [X%2%, #%3%%4$#x]!") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldrsw X%1%, [X%2%, #%3%%4$#x]!") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDRSW-immediate-unsigned-offset */
 	if((inst & 0xFFC00000U) == 0xB9800000U) {
@@ -1871,7 +1871,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (ushort) ((rawimm) << (uint) (0x2));
-		return (boost::format("ldrsw X%1%, [X%2%, #%3$#x]") % rt % rn % imm).str().c_str();
+		return (boost::format("ldrsw X%1%, [X%2%, #%3$#x]") % rt % rn % imm).str();
 	}
 	/* LDRSW-register */
 	if((inst & 0xFFE00C00U) == 0xB8A00800U) {
@@ -1883,7 +1883,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0x2));
 		auto extend = (string) (([=](auto temp_73) -> string { switch(temp_73) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
-		return (boost::format("ldrsw X%1%, [X%2%, %3%%4%, %5% %6%%7$#x]") % rt % rn % r % rm % extend % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str().c_str();
+		return (boost::format("ldrsw X%1%, [X%2%, %3%%4%, %5% %6%%7$#x]") % rt % rn % r % rm % extend % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str();
 	}
 	/* LDUR */
 	if((inst & 0xBFE00C00U) == 0xB8400000U) {
@@ -1893,7 +1893,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		return (boost::format("ldur %1%%2%, [X%3%, #%4%%5$#x]") % r % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldur %1%%2%, [X%3%, #%4%%5$#x]") % r % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDURB */
 	if((inst & 0xFFE00C00U) == 0x38400000U) {
@@ -1901,7 +1901,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		return (boost::format("ldurb W%1%, [X%2%, #%3%%4$#x]") % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldurb W%1%, [X%2%, #%3%%4$#x]") % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDURH */
 	if((inst & 0xFFE00C00U) == 0x78400000U) {
@@ -1909,7 +1909,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		return (boost::format("ldurh W%1%, [X%2%, #%3%%4$#x]") % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldurh W%1%, [X%2%, #%3%%4$#x]") % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDURSB */
 	if((inst & 0xFFA00C00U) == 0x38800000U) {
@@ -1919,7 +1919,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		return (boost::format("ldursb %1%%2%, [X%3%, #%4%%5$#x]") % r % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldursb %1%%2%, [X%3%, #%4%%5$#x]") % r % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDURSH */
 	if((inst & 0xFFA00C00U) == 0x78800000U) {
@@ -1929,7 +1929,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		return (boost::format("ldursh %1%%2%, [X%3%, #%4%%5$#x]") % r % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldursh %1%%2%, [X%3%, #%4%%5$#x]") % r % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDURSW */
 	if((inst & 0xFFE00C00U) == 0xB8800000U) {
@@ -1937,7 +1937,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		return (boost::format("ldursw X%1%, [X%2%, #%3%%4$#x]") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldursw X%1%, [X%2%, #%3%%4$#x]") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDUR-simd */
 	if((inst & 0x3F600C00U) == 0x3C400000U) {
@@ -1948,7 +1948,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_74) -> string { switch(temp_74) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		return (boost::format("ldur %1%%2%, [X%3%, #%4%%5$#x]") % r % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str().c_str();
+		return (boost::format("ldur %1%%2%, [X%3%, #%4%%5$#x]") % r % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	/* LDXR */
 	if((inst & 0xBFFFFC00U) == 0x885F7C00U) {
@@ -1956,19 +1956,19 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("ldxr %1%%2%, [X%3%]") % r % rt % rn).str().c_str();
+		return (boost::format("ldxr %1%%2%, [X%3%]") % r % rt % rn).str();
 	}
 	/* LDXRB */
 	if((inst & 0xFFFFFC00U) == 0x085F7C00U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		return (boost::format("ldxrb W%1%, [X%2%]") % rt % rn).str().c_str();
+		return (boost::format("ldxrb W%1%, [X%2%]") % rt % rn).str();
 	}
 	/* LDXRH */
 	if((inst & 0xFFFFFC00U) == 0x485F7C00U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		return (boost::format("ldxrh W%1%, [X%2%]") % rt % rn).str().c_str();
+		return (boost::format("ldxrh W%1%, [X%2%]") % rt % rn).str();
 	}
 	/* LSL-register */
 	if((inst & 0x7FE0FC00U) == 0x1AC02000U) {
@@ -1977,7 +1977,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("lsl %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("lsl %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* LSRV */
 	if((inst & 0x7FE0FC00U) == 0x1AC02400U) {
@@ -1986,7 +1986,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("lsrv %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("lsrv %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* MADD */
 	if((inst & 0x7FE08000U) == 0x1B000000U) {
@@ -1996,7 +1996,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("madd %1%%2%, %3%%4%, %5%%6%, %7%%8%") % r % rd % r % rn % r % rm % r % ra).str().c_str();
+		return (boost::format("madd %1%%2%, %3%%4%, %5%%6%, %7%%8%") % r % rd % r % rn % r % rm % r % ra).str();
 	}
 	/* MOVI-32bit */
 	if((inst & 0xBFF89C00U) == 0x0F000400U) {
@@ -2014,7 +2014,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
 		auto amount = (long) (([=](auto temp_75) -> long { switch(temp_75) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
 		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
-		return (boost::format("movi V%1%.%2%, #%3%, LSL #%4%%5$#x") % rd % t % imm % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str().c_str();
+		return (boost::format("movi V%1%.%2%, #%3%, LSL #%4%%5$#x") % rd % t % imm % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str();
 	}
 	/* MOVI-Vx.2D */
 	if((inst & 0xFFF8FC00U) == 0x6F00E400U) {
@@ -2028,7 +2028,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto imm = (ulong) ((ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (h)) << 1)))) | ((byte) (((byte) (h)) << 2)))) | ((byte) (((byte) (h)) << 3)))) | ((byte) (((byte) (h)) << 4)))) | ((byte) (((byte) (h)) << 5)))) | ((byte) (((byte) (h)) << 6)))) | ((byte) (((byte) (h)) << 7)))))) << 0)) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (g)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (g)) << 2)))) | ((byte) (((byte) (g)) << 3)))) | ((byte) (((byte) (g)) << 4)))) | ((byte) (((byte) (g)) << 5)))) | ((byte) (((byte) (g)) << 6)))) | ((byte) (((byte) (g)) << 7)))))) << 8)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (f)) << 0)) | ((byte) (((byte) (f)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (f)) << 3)))) | ((byte) (((byte) (f)) << 4)))) | ((byte) (((byte) (f)) << 5)))) | ((byte) (((byte) (f)) << 6)))) | ((byte) (((byte) (f)) << 7)))))) << 16)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (e)) << 0)) | ((byte) (((byte) (e)) << 1)))) | ((byte) (((byte) (e)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (e)) << 4)))) | ((byte) (((byte) (e)) << 5)))) | ((byte) (((byte) (e)) << 6)))) | ((byte) (((byte) (e)) << 7)))))) << 24)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (d)) << 0)) | ((byte) (((byte) (d)) << 1)))) | ((byte) (((byte) (d)) << 2)))) | ((byte) (((byte) (d)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (d)) << 5)))) | ((byte) (((byte) (d)) << 6)))) | ((byte) (((byte) (d)) << 7)))))) << 32)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (c)) << 0)) | ((byte) (((byte) (c)) << 1)))) | ((byte) (((byte) (c)) << 2)))) | ((byte) (((byte) (c)) << 3)))) | ((byte) (((byte) (c)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (c)) << 6)))) | ((byte) (((byte) (c)) << 7)))))) << 40)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (b)) << 0)) | ((byte) (((byte) (b)) << 1)))) | ((byte) (((byte) (b)) << 2)))) | ((byte) (((byte) (b)) << 3)))) | ((byte) (((byte) (b)) << 4)))) | ((byte) (((byte) (b)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (b)) << 7)))))) << 48)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (a)) << 0)) | ((byte) (((byte) (a)) << 1)))) | ((byte) (((byte) (a)) << 2)))) | ((byte) (((byte) (a)) << 3)))) | ((byte) (((byte) (a)) << 4)))) | ((byte) (((byte) (a)) << 5)))) | ((byte) (((byte) (a)) << 6)))) | ((byte) (((byte) (a)) << 7)))))) << 56))));
-		return (boost::format("movi V%1%, #%2$#x") % rd % imm).str().c_str();
+		return (boost::format("movi V%1%, #%2$#x") % rd % imm).str();
 	}
 	/* MOVK */
 	if((inst & 0x7F800000U) == 0x72800000U) {
@@ -2038,7 +2038,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shift = (byte) ((hw) << (uint) (0x4));
-		return (boost::format("movk %1%%2%, #%3$#x, LSL #%4%") % r % rd % imm % shift).str().c_str();
+		return (boost::format("movk %1%%2%, #%3$#x, LSL #%4%") % r % rd % imm % shift).str();
 	}
 	/* MOVN */
 	if((inst & 0x7F800000U) == 0x12800000U) {
@@ -2048,7 +2048,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shift = (byte) ((hw) << (uint) (0x4));
-		return (boost::format("movn %1%%2%, #%3$#x, LSL #%4%") % r % rd % imm % shift).str().c_str();
+		return (boost::format("movn %1%%2%, #%3$#x, LSL #%4%") % r % rd % imm % shift).str();
 	}
 	/* MOVZ */
 	if((inst & 0x7F800000U) == 0x52800000U) {
@@ -2058,7 +2058,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shift = (byte) ((hw) << (uint) (0x4));
-		return (boost::format("movz %1%%2%, #%3$#x, LSL #%4%") % r % rd % imm % shift).str().c_str();
+		return (boost::format("movz %1%%2%, #%3$#x, LSL #%4%") % r % rd % imm % shift).str();
 	}
 	/* MRS */
 	if((inst & 0xFFF00000U) == 0xD5300000U) {
@@ -2068,7 +2068,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto cm = (inst >> 8) & 0xFU;
 		auto op2 = (inst >> 5) & 0x7U;
 		auto rt = (inst >> 0) & 0x1FU;
-		return (boost::format("mrs S%1% %2% %3% %4% %5%, X%6%") % op0 % op1 % cn % cm % op2 % rt).str().c_str();
+		return (boost::format("mrs S%1% %2% %3% %4% %5%, X%6%") % op0 % op1 % cn % cm % op2 % rt).str();
 	}
 	/* MSR-register */
 	if((inst & 0xFFF00000U) == 0xD5100000U) {
@@ -2078,7 +2078,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto cm = (inst >> 8) & 0xFU;
 		auto op2 = (inst >> 5) & 0x7U;
 		auto rt = (inst >> 0) & 0x1FU;
-		return (boost::format("msr S%1% %2% %3% %4% %5%, X%6%") % op0 % op1 % cn % cm % op2 % rt).str().c_str();
+		return (boost::format("msr S%1% %2% %3% %4% %5%, X%6%") % op0 % op1 % cn % cm % op2 % rt).str();
 	}
 	/* MSUB */
 	if((inst & 0x7FE08000U) == 0x1B008000U) {
@@ -2088,7 +2088,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("msub %1%%2%, %3%%4%, %5%%6%, %7%%8%") % r % rd % r % rn % r % rm % r % ra).str().c_str();
+		return (boost::format("msub %1%%2%, %3%%4%, %5%%6%, %7%%8%") % r % rd % r % rn % r % rm % r % ra).str();
 	}
 	/* MUL-by-element */
 	if((inst & 0xBF00F400U) == 0x0F008000U) {
@@ -2104,7 +2104,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto t = (string) (([=](auto temp_76) -> string { switch(temp_76) { case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto ts = (string) (([=](auto temp_77) -> string { switch(temp_77) { case 0x1: return string("H"); case 0x2: return string("S"); default: throw "Not implemented"; } })(size));
 		auto index = (byte) (([=](auto temp_78) -> byte { switch(temp_78) { case 0x1: return (byte) ((byte) (((byte) (byte) (((byte) (((byte) (M)) << 0)) | ((byte) (((byte) (L)) << 1)))) | ((byte) (((byte) (H)) << 2)))); case 0x2: return (byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))); default: throw "Not implemented"; } })(size));
-		return (boost::format("mul V%1%.%2%, V%3%.%4%, V%5%.%6%[%7%]") % rd % t % rn % t % rm % ts % index).str().c_str();
+		return (boost::format("mul V%1%.%2%, V%3%.%4%, V%5%.%6%[%7%]") % rd % t % rn % t % rm % ts % index).str();
 	}
 	/* MUL-vector */
 	if((inst & 0xBF20FC00U) == 0x0E209C00U) {
@@ -2114,7 +2114,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) (([=](auto temp_79) -> string { switch(temp_79) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		return (boost::format("mul V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % t % rn % t % rm % t).str().c_str();
+		return (boost::format("mul V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % t % rn % t % rm % t).str();
 	}
 	/* ORN-shifted-register */
 	if((inst & 0x7F200000U) == 0x2A200000U) {
@@ -2126,7 +2126,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shiftstr = (string) (([=](auto temp_80) -> string { switch(temp_80) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
-		return (boost::format("orn %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str().c_str();
+		return (boost::format("orn %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str();
 	}
 	/* ORR-immediate */
 	if((inst & 0x7F800000U) == 0x32000000U) {
@@ -2138,7 +2138,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (ulong) (MakeWMask(up, imms, immr, (long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
-		return (boost::format("orr %1%%2%, %3%%4%, #%5$#x") % r % rd % r % rn % imm).str().c_str();
+		return (boost::format("orr %1%%2%, %3%%4%, #%5$#x") % r % rd % r % rn % imm).str();
 	}
 	/* ORR-shifted-register */
 	if((inst & 0x7F200000U) == 0x2A000000U) {
@@ -2150,7 +2150,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shiftstr = (string) (([=](auto temp_81) -> string { switch(temp_81) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
-		return (boost::format("orr %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str().c_str();
+		return (boost::format("orr %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str();
 	}
 	/* ORR-simd-register */
 	if((inst & 0xBFE0FC00U) == 0x0EA01C00U) {
@@ -2159,7 +2159,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) (((bool) (((q) == (0x0)) ? 1U : 0U) != 0) ? (string("8B")) : (string("16B")));
-		return (boost::format("orr V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % t % rn % t % rm % t).str().c_str();
+		return (boost::format("orr V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % t % rn % t % rm % t).str();
 	}
 	/* PRFM-immediate */
 	if((inst & 0xFFC00000U) == 0xF9800000U) {
@@ -2167,7 +2167,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto imm5 = (inst >> 0) & 0x1FU;
 		auto pimm = (ulong) (((ulong) (ushort) (imm)) * ((ulong) (long) (0x8)));
-		return (boost::format("prfm #%1%, [X%2%, #%3$#x]") % imm5 % rn % pimm).str().c_str();
+		return (boost::format("prfm #%1%, [X%2%, #%3$#x]") % imm5 % rn % pimm).str();
 	}
 	/* RBIT */
 	if((inst & 0x7FFFFC00U) == 0x5AC00000U) {
@@ -2175,12 +2175,12 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("rbit %1%%2%, %3%%4%") % r % rd % r % rn).str().c_str();
+		return (boost::format("rbit %1%%2%, %3%%4%") % r % rd % r % rn).str();
 	}
 	/* RET */
 	if((inst & 0xFFFFFC1FU) == 0xD65F0000U) {
 		auto rn = (inst >> 5) & 0x1FU;
-		return (boost::format("ret X%1%") % rn).str().c_str();
+		return (boost::format("ret X%1%") % rn).str();
 	}
 	/* REV */
 	if((inst & 0x7FFFF800U) == 0x5AC00800U) {
@@ -2189,7 +2189,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("rev %1%%2%, %3%%4%") % r % rd % r % rn).str().c_str();
+		return (boost::format("rev %1%%2%, %3%%4%") % r % rd % r % rn).str();
 	}
 	/* REV16 */
 	if((inst & 0x7FFFFC00U) == 0x5AC00400U) {
@@ -2197,7 +2197,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("rev16 %1%%2%, %3%%4%") % r % rd % r % rn).str().c_str();
+		return (boost::format("rev16 %1%%2%, %3%%4%") % r % rd % r % rn).str();
 	}
 	/* RORV */
 	if((inst & 0x7FE0FC00U) == 0x1AC02C00U) {
@@ -2206,7 +2206,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("rorv %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("rorv %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* SBCS */
 	if((inst & 0x7FE0FC00U) == 0x7A000000U) {
@@ -2215,7 +2215,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("sbcs %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("sbcs %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* SBFM */
 	if((inst & 0x7F800000U) == 0x13000000U) {
@@ -2226,7 +2226,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("sbfm %1%%2%, %3%%4%, #%5%, #%6%") % r % rd % r % rn % immr % imms).str().c_str();
+		return (boost::format("sbfm %1%%2%, %3%%4%, #%5%, #%6%") % r % rd % r % rn % immr % imms).str();
 	}
 	/* SCVTF-scalar-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E220000U) {
@@ -2273,7 +2273,7 @@ const char* disassemble(uint inst, ulong pc) {
 				break;
 			}
 		}
-		return (boost::format("scvtf %1%%2%, %3%%4%") % r1 % rd % r2 % rn).str().c_str();
+		return (boost::format("scvtf %1%%2%, %3%%4%") % r1 % rd % r2 % rn).str();
 	}
 	/* SCVTF-vector-integer */
 	if((inst & 0xFFBFFC00U) == 0x5E21D800U) {
@@ -2281,7 +2281,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : (string("D")));
-		return (boost::format("scvtf %1%%2%, %3%%4%") % r % rd % r % rn).str().c_str();
+		return (boost::format("scvtf %1%%2%, %3%%4%") % r % rd % r % rn).str();
 	}
 	/* SDIV */
 	if((inst & 0x7FE0FC00U) == 0x1AC00C00U) {
@@ -2290,7 +2290,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("sdiv %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("sdiv %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* SMADDL */
 	if((inst & 0xFFE08000U) == 0x9B200000U) {
@@ -2298,14 +2298,14 @@ const char* disassemble(uint inst, ulong pc) {
 		auto ra = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		return (boost::format("smaddl X%1%, W%2%, W%3%, X%4%") % rd % rn % rm % ra).str().c_str();
+		return (boost::format("smaddl X%1%, W%2%, W%3%, X%4%") % rd % rn % rm % ra).str();
 	}
 	/* SMULH */
 	if((inst & 0xFFE0FC00U) == 0x9B407C00U) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		return (boost::format("smulh X%1%, X%2%, X%3%") % rd % rn % rm).str().c_str();
+		return (boost::format("smulh X%1%, X%2%, X%3%") % rd % rn % rm).str();
 	}
 	/* SSHLL */
 	if((inst & 0xBF80FC00U) == 0x0F00A400U) {
@@ -2337,7 +2337,7 @@ const char* disassemble(uint inst, ulong pc) {
 				}
 			}
 		}
-		return (boost::format("sshll%1% V%2%.%3%, V%4%.%5%, #%6$#x") % variant % rd % ta % rn % tb % shift).str().c_str();
+		return (boost::format("sshll%1% V%2%.%3%, V%4%.%5%, #%6$#x") % variant % rd % ta % rn % tb % shift).str();
 	}
 	/* STLR */
 	if((inst & 0xBFFFFC00U) == 0x889FFC00U) {
@@ -2345,19 +2345,19 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("stlr %1%%2%, [X%3%]") % r % rt % rn).str().c_str();
+		return (boost::format("stlr %1%%2%, [X%3%]") % r % rt % rn).str();
 	}
 	/* STLRB */
 	if((inst & 0xFFFFFC00U) == 0x089FFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		return (boost::format("stlrb W%1%, [X%2%]") % rt % rn).str().c_str();
+		return (boost::format("stlrb W%1%, [X%2%]") % rt % rn).str();
 	}
 	/* STLRH */
 	if((inst & 0xFFFFFC00U) == 0x489FFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		return (boost::format("stlrh W%1%, [X%2%]") % rt % rn).str().c_str();
+		return (boost::format("stlrh W%1%, [X%2%]") % rt % rn).str();
 	}
 	/* STLXR */
 	if((inst & 0xBFE0FC00U) == 0x8800FC00U) {
@@ -2366,14 +2366,14 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("stlxr W%1%, %2%%3%, [X%4%]") % rs % r % rt % rn).str().c_str();
+		return (boost::format("stlxr W%1%, %2%%3%, [X%4%]") % rs % r % rt % rn).str();
 	}
 	/* STLXRB */
 	if((inst & 0xFFE0FC00U) == 0x0800FC00U) {
 		auto rs = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		return (boost::format("stlxrr W%1%, W%2%, [X%3%]") % rs % rt % rn).str().c_str();
+		return (boost::format("stlxrr W%1%, W%2%, [X%3%]") % rs % rt % rn).str();
 	}
 	/* STP-postindex */
 	if((inst & 0x7FC00000U) == 0x28800000U) {
@@ -2384,7 +2384,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		return (boost::format("stp %1%%2%, %3%%4%, [X%5%], #%6%%7$#x") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("stp %1%%2%, %3%%4%, [X%5%], #%6%%7$#x") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* STP-preindex */
 	if((inst & 0x7FC00000U) == 0x29800000U) {
@@ -2395,7 +2395,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		return (boost::format("stp %1%%2%, %3%%4%, [X%5%, #%6%%7$#x]!") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("stp %1%%2%, %3%%4%, [X%5%, #%6%%7$#x]!") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* STP-signed-offset */
 	if((inst & 0x7FC00000U) == 0x29000000U) {
@@ -2406,7 +2406,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		return (boost::format("stp %1%%2%, %3%%4%, [X%5%, #%6%%7$#x]") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("stp %1%%2%, %3%%4%, [X%5%, #%6%%7$#x]") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* STP-simd-postindex */
 	if((inst & 0x3FC00000U) == 0x2C800000U) {
@@ -2417,7 +2417,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_82) -> string { switch(temp_82) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_83) -> long { switch(temp_83) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
-		return (boost::format("stp %1%%2%, %3%%4%, [X%5%], #%6%%7$#x") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("stp %1%%2%, %3%%4%, [X%5%], #%6%%7$#x") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* STP-simd-preindex */
 	if((inst & 0x3FC00000U) == 0x2D800000U) {
@@ -2428,7 +2428,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_84) -> string { switch(temp_84) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_85) -> long { switch(temp_85) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
-		return (boost::format("stp %1%%2%, %3%%4%, [X%5%, #%6%%7$#x]!") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("stp %1%%2%, %3%%4%, [X%5%, #%6%%7$#x]!") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* STP-simd-signed-offset */
 	if((inst & 0x3FC00000U) == 0x2D000000U) {
@@ -2439,7 +2439,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_86) -> string { switch(temp_86) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_87) -> long { switch(temp_87) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
-		return (boost::format("stp %1%%2%, %3%%4%, [X%5%, #%6%%7$#x]") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("stp %1%%2%, %3%%4%, [X%5%, #%6%%7$#x]") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* STR-immediate-postindex */
 	if((inst & 0xBFE00C00U) == 0xB8000400U) {
@@ -2449,7 +2449,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rs = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto simm = (long) (SignExt<long>(imm, 9));
-		return (boost::format("str %1%%2%, [X%3%], #%4%%5$#x") % r % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("str %1%%2%, [X%3%], #%4%%5$#x") % r % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* STR-immediate-preindex */
 	if((inst & 0xBFE00C00U) == 0xB8000C00U) {
@@ -2459,7 +2459,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rs = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto simm = (long) (SignExt<long>(imm, 9));
-		return (boost::format("str %1%%2%, [X%3%, #%4%%5$#x]!") % r % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("str %1%%2%, [X%3%, #%4%%5$#x]!") % r % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* STR-immediate-unsigned-offset */
 	if((inst & 0xBFC00000U) == 0xB9000000U) {
@@ -2469,7 +2469,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rs = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto pimm = (ulong) (((ulong) ((ulong) (imm))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		return (boost::format("str %1%%2%, [X%3%, #%4$#x]") % r % rs % rd % pimm).str().c_str();
+		return (boost::format("str %1%%2%, [X%3%, #%4$#x]") % r % rs % rd % pimm).str();
 	}
 	/* STR-register */
 	if((inst & 0xBFE00C00U) == 0xB8200800U) {
@@ -2483,7 +2483,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		auto extend = (string) (([=](auto temp_88) -> string { switch(temp_88) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
-		return (boost::format("str %1%%2%, [X%3%, %4%%5%, %6% %7%%8$#x]") % r1 % rt % rn % r2 % rm % extend % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str().c_str();
+		return (boost::format("str %1%%2%, [X%3%, %4%%5%, %6% %7%%8$#x]") % r1 % rt % rn % r2 % rm % extend % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str();
 	}
 	/* STR-simd-postindex */
 	if((inst & 0x3F600C00U) == 0x3C000400U) {
@@ -2495,7 +2495,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
 		auto r = (string) (([=](auto temp_89) -> string { switch(temp_89) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto simm = (long) (SignExt<long>(imm, 9));
-		return (boost::format("str %1%%2%, [X%3%], #%4%%5$#x") % r % rt % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("str %1%%2%, [X%3%], #%4%%5$#x") % r % rt % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* STR-simd-preindex */
 	if((inst & 0x3F600C00U) == 0x3C000C00U) {
@@ -2508,7 +2508,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r = (string) (([=](auto temp_90) -> string { switch(temp_90) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto scale = (byte) ((byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (opc)) << 2))));
 		auto simm = (long) (SignExt<long>(imm, 9));
-		return (boost::format("str %1%%2%, [X%3%, #%4%%5$#x]!") % r % rt % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("str %1%%2%, [X%3%, #%4%%5$#x]!") % r % rt % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* STR-simd-unsigned-offset */
 	if((inst & 0x3F400000U) == 0x3D000000U) {
@@ -2520,7 +2520,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
 		auto r = (string) (([=](auto temp_91) -> string { switch(temp_91) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto scale = (byte) ((byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (opc)) << 2))));
-		return (boost::format("str %1%%2%, [X%3%, #%4$#x]") % r % rt % rn % imm).str().c_str();
+		return (boost::format("str %1%%2%, [X%3%, #%4$#x]") % r % rt % rn % imm).str();
 	}
 	/* STR-simd-register */
 	if((inst & 0x3F600C00U) == 0x3C200800U) {
@@ -2536,7 +2536,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (([=](auto temp_93) -> long { switch(temp_93) { case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: return (long) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (0x4) : (0x0)); } })(size))));
 		auto extend = (string) (([=](auto temp_94) -> string { switch(temp_94) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
-		return (boost::format("str %1%%2%, [X%3%, %4%, %5% %6%%7$#x]") % r1 % rt % rn % r2 % extend % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str().c_str();
+		return (boost::format("str %1%%2%, [X%3%, %4%, %5% %6%%7$#x]") % r1 % rt % rn % r2 % extend % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str();
 	}
 	/* STRB-immediate-postindex */
 	if((inst & 0xFFE00C00U) == 0x38000400U) {
@@ -2544,7 +2544,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
-		return (boost::format("strb W%1%, [X%2%], #%3%%4$#x") % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("strb W%1%, [X%2%], #%3%%4$#x") % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* STRB-immediate-preindex */
 	if((inst & 0xFFE00C00U) == 0x38000C00U) {
@@ -2552,14 +2552,14 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
-		return (boost::format("strb W%1%, [X%2%, #%3%%4$#x]!") % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("strb W%1%, [X%2%, #%3%%4$#x]!") % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* STRB-immediate-unsigned-offset */
 	if((inst & 0xFFC00000U) == 0x39000000U) {
 		auto imm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		return (boost::format("strb W%1%, [X%2%, #%3$#x]") % rt % rn % imm).str().c_str();
+		return (boost::format("strb W%1%, [X%2%, #%3$#x]") % rt % rn % imm).str();
 	}
 	/* STRB-register */
 	if((inst & 0xFFE00C00U) == 0x38200800U) {
@@ -2570,7 +2570,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto str = (string) (([=](auto temp_95) -> string { switch(temp_95) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
-		return (boost::format("strb W%1%, [X%2%, %3%%4%, %5% %6%]") % rt % rn % r % rm % str % amount).str().c_str();
+		return (boost::format("strb W%1%, [X%2%, %3%%4%, %5% %6%]") % rt % rn % r % rm % str % amount).str();
 	}
 	/* STRH-immediate-postindex */
 	if((inst & 0xFFE00C00U) == 0x78000400U) {
@@ -2578,7 +2578,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
-		return (boost::format("strh W%1%, [X%2%], #%3%%4$#x") % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("strh W%1%, [X%2%], #%3%%4$#x") % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* STRH-immediate-preindex */
 	if((inst & 0xFFE00C00U) == 0x78000C00U) {
@@ -2586,7 +2586,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
-		return (boost::format("strh W%1%, [X%2%, #%3%%4$#x]!") % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("strh W%1%, [X%2%, #%3%%4$#x]!") % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* STRH-immediate-unsigned-offset */
 	if((inst & 0xFFC00000U) == 0x79000000U) {
@@ -2594,7 +2594,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (ushort) ((rawimm) << (uint) (0x1));
-		return (boost::format("strh W%1%, [X%2%, #%3$#x]") % rt % rn % imm).str().c_str();
+		return (boost::format("strh W%1%, [X%2%, #%3$#x]") % rt % rn % imm).str();
 	}
 	/* STRH-register */
 	if((inst & 0xFFE00C00U) == 0x78200800U) {
@@ -2605,7 +2605,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto str = (string) (([=](auto temp_96) -> string { switch(temp_96) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
-		return (boost::format("strh W%1%, [X%2%, %3%%4%, %5% %6%]") % rt % rn % r % rm % str % amount).str().c_str();
+		return (boost::format("strh W%1%, [X%2%, %3%%4%, %5% %6%]") % rt % rn % r % rm % str % amount).str();
 	}
 	/* STUR */
 	if((inst & 0xBFE00C00U) == 0xB8000000U) {
@@ -2615,7 +2615,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto offset = (long) (SignExt<long>(imm, 9));
-		return (boost::format("stur %1%%2%, [X%3%, #%4%%5$#x]") % r % rt % rn % ((offset) < 0 ? "-" : "") % ((offset) < 0 ? -(offset) : (offset))).str().c_str();
+		return (boost::format("stur %1%%2%, [X%3%, #%4%%5$#x]") % r % rt % rn % ((offset) < 0 ? "-" : "") % ((offset) < 0 ? -(offset) : (offset))).str();
 	}
 	/* STUR-simd */
 	if((inst & 0x3F600C00U) == 0x3C000000U) {
@@ -2627,7 +2627,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
 		auto r = (string) (([=](auto temp_97) -> string { switch(temp_97) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto simm = (long) (SignExt<long>(imm, 9));
-		return (boost::format("stur %1%%2%, [X%3%, #%4%%5$#x]") % r % rt % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str().c_str();
+		return (boost::format("stur %1%%2%, [X%3%, #%4%%5$#x]") % r % rt % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	/* STURB */
 	if((inst & 0xFFE00C00U) == 0x38000000U) {
@@ -2635,7 +2635,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto offset = (long) (SignExt<long>(imm, 9));
-		return (boost::format("sturb W%1%, [X%2%, #%3%%4$#x]") % rt % rn % ((offset) < 0 ? "-" : "") % ((offset) < 0 ? -(offset) : (offset))).str().c_str();
+		return (boost::format("sturb W%1%, [X%2%, #%3%%4$#x]") % rt % rn % ((offset) < 0 ? "-" : "") % ((offset) < 0 ? -(offset) : (offset))).str();
 	}
 	/* STURH */
 	if((inst & 0xFFE00C00U) == 0x78000000U) {
@@ -2643,7 +2643,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto offset = (long) (SignExt<long>(imm, 9));
-		return (boost::format("sturh W%1%, [X%2%, #%3%%4$#x]") % rt % rn % ((offset) < 0 ? "-" : "") % ((offset) < 0 ? -(offset) : (offset))).str().c_str();
+		return (boost::format("sturh W%1%, [X%2%, #%3%%4$#x]") % rt % rn % ((offset) < 0 ? "-" : "") % ((offset) < 0 ? -(offset) : (offset))).str();
 	}
 	/* STXR */
 	if((inst & 0xBFE0FC00U) == 0x88007C00U) {
@@ -2652,7 +2652,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("stxr W%1%, %2%%3%, [X%4%]") % rs % r % rt % rn).str().c_str();
+		return (boost::format("stxr W%1%, %2%%3%, [X%4%]") % rs % r % rt % rn).str();
 	}
 	/* SUB-immediate */
 	if((inst & 0x7F800000U) == 0x51000000U) {
@@ -2663,7 +2663,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shift = (long) (((bool) (((sh) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0xC));
-		return (boost::format("sub %1%%2%, %3%%4%, #%5$#x, LSL #%6%%7$#x") % r % rd % r % rn % imm % ((shift) < 0 ? "-" : "") % ((shift) < 0 ? -(shift) : (shift))).str().c_str();
+		return (boost::format("sub %1%%2%, %3%%4%, #%5$#x, LSL #%6%%7$#x") % r % rd % r % rn % imm % ((shift) < 0 ? "-" : "") % ((shift) < 0 ? -(shift) : (shift))).str();
 	}
 	/* SUB-extended-register */
 	if((inst & 0x7FE00000U) == 0x4B200000U) {
@@ -2676,7 +2676,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
 		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_98) -> string { switch(temp_98) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_99) -> string { switch(temp_99) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
-		return (boost::format("sub %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r1 % rd % r1 % rn % r2 % rm % extend % imm).str().c_str();
+		return (boost::format("sub %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r1 % rd % r1 % rn % r2 % rm % extend % imm).str();
 	}
 	/* SUB-shifted-register */
 	if((inst & 0x7F200000U) == 0x4B000000U) {
@@ -2688,7 +2688,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shiftstr = (string) (([=](auto temp_100) -> string { switch(temp_100) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
-		return (boost::format("sub %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str().c_str();
+		return (boost::format("sub %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str();
 	}
 	/* SUBS-extended-register */
 	if((inst & 0x7FE00000U) == 0x6B200000U) {
@@ -2701,7 +2701,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
 		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_101) -> string { switch(temp_101) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_102) -> string { switch(temp_102) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
-		return (boost::format("subs %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r1 % rd % r1 % rn % r2 % rm % extend % imm).str().c_str();
+		return (boost::format("subs %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r1 % rd % r1 % rn % r2 % rm % extend % imm).str();
 	}
 	/* SUBS-shifted-register */
 	if((inst & 0x7F200000U) == 0x6B000000U) {
@@ -2714,7 +2714,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto mode32 = (bool) (((size) == (0x0)) ? 1U : 0U);
 		auto r = (string) ((mode32 != 0) ? (string("W")) : (string("X")));
 		auto shiftstr = (string) (([=](auto temp_103) -> string { switch(temp_103) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
-		return (boost::format("subs %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str().c_str();
+		return (boost::format("subs %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str();
 	}
 	/* SUBS-immediate */
 	if((inst & 0x7F800000U) == 0x71000000U) {
@@ -2725,12 +2725,12 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto shiftstr = (string) (([=](auto temp_104) -> string { switch(temp_104) { case 0x0: return string("LSL #0"); case 0x1: return string("LSL #12"); default: throw "Not implemented"; } })(shift));
-		return (boost::format("subs %1%%2%, %3%%4%, #%5$#x, %6%") % r % rd % r % rn % imm % shiftstr).str().c_str();
+		return (boost::format("subs %1%%2%, %3%%4%, #%5$#x, %6%") % r % rd % r % rn % imm % shiftstr).str();
 	}
 	/* SVC */
 	if((inst & 0xFFE0001FU) == 0xD4000001U) {
 		auto imm = (inst >> 5) & 0xFFFFU;
-		return (boost::format("svc #%1$#x") % imm).str().c_str();
+		return (boost::format("svc #%1$#x") % imm).str();
 	}
 	/* SYS */
 	if((inst & 0xFFF80000U) == 0xD5080000U) {
@@ -2739,7 +2739,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto cm = (inst >> 8) & 0xFU;
 		auto op2 = (inst >> 5) & 0x7U;
 		auto rt = (inst >> 0) & 0x1FU;
-		return (boost::format("sys #%1%, %2%, %3%, #%4%, X%5%") % op1 % cn % cm % op2 % rt).str().c_str();
+		return (boost::format("sys #%1%, %2%, %3%, #%4%, X%5%") % op1 % cn % cm % op2 % rt).str();
 	}
 	/* TBZ */
 	if((inst & 0x7F000000U) == 0x36000000U) {
@@ -2750,7 +2750,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((upper) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (bool) ((((byte) ((bool) ((upper) << (uint) (0x5)))) | ((byte) (bottom))));
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((ushort) (((ushort) ((ushort) (offset))) << (uint) (0x2)), 16)))));
-		return (boost::format("tbz %1%%2%, #%3%, %4$#x") % r % rt % imm % addr).str().c_str();
+		return (boost::format("tbz %1%%2%, #%3%, %4$#x") % r % rt % imm % addr).str();
 	}
 	/* TBNZ */
 	if((inst & 0x7F000000U) == 0x37000000U) {
@@ -2761,7 +2761,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((upper) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (bool) ((((byte) ((bool) ((upper) << (uint) (0x5)))) | ((byte) (bottom))));
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((ushort) (((ushort) ((ushort) (offset))) << (uint) (0x2)), 16)))));
-		return (boost::format("tbnz %1%%2%, #%3%, %4$#x") % r % rt % imm % addr).str().c_str();
+		return (boost::format("tbnz %1%%2%, #%3%, %4$#x") % r % rt % imm % addr).str();
 	}
 	/* UADDLV */
 	if((inst & 0xBF3FFC00U) == 0x2E303800U) {
@@ -2773,7 +2773,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto t = (string) (([=](auto temp_106) -> string { switch(temp_106) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto esize = (long) ((0x8) << (uint) (size));
 		auto count = (long) (((long) (long) ((long) ((Q != 0) ? (0x80) : (0x40)))) / ((long) (long) (esize)));
-		return (boost::format("uaddlv %1%%2%, V%3%.%4%") % r % rd % rn % t).str().c_str();
+		return (boost::format("uaddlv %1%%2%, V%3%.%4%") % r % rd % rn % t).str();
 	}
 	/* UBFM */
 	if((inst & 0x7F800000U) == 0x53000000U) {
@@ -2784,7 +2784,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("ubfm %1%%2%, %3%%4%, #%5%, #%6%") % r % rd % r % rn % immr % imms).str().c_str();
+		return (boost::format("ubfm %1%%2%, %3%%4%, #%5%, #%6%") % r % rd % r % rn % immr % imms).str();
 	}
 	/* UCVTF-scalar-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E230000U) {
@@ -2831,7 +2831,7 @@ const char* disassemble(uint inst, ulong pc) {
 				break;
 			}
 		}
-		return (boost::format("ucvtf %1%%2%, %3%%4%") % r1 % rd % r2 % rn).str().c_str();
+		return (boost::format("ucvtf %1%%2%, %3%%4%") % r1 % rd % r2 % rn).str();
 	}
 	/* UCVTF-vector-integer */
 	if((inst & 0xFFBFFC00U) == 0x7E21D800U) {
@@ -2839,7 +2839,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : (string("D")));
-		return (boost::format("ucvtf %1%%2%, %3%%4%") % r % rd % r % rn).str().c_str();
+		return (boost::format("ucvtf %1%%2%, %3%%4%") % r % rd % r % rn).str();
 	}
 	/* UDIV */
 	if((inst & 0x7FE0FC00U) == 0x1AC00800U) {
@@ -2848,7 +2848,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		return (boost::format("udiv %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str().c_str();
+		return (boost::format("udiv %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
 	/* UMADDL */
 	if((inst & 0xFFE08000U) == 0x9BA00000U) {
@@ -2856,14 +2856,14 @@ const char* disassemble(uint inst, ulong pc) {
 		auto ra = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		return (boost::format("umaddl X%1%, W%2%, W%3%, X%4%") % rd % rn % rm % ra).str().c_str();
+		return (boost::format("umaddl X%1%, W%2%, W%3%, X%4%") % rd % rn % rm % ra).str();
 	}
 	/* UMULH */
 	if((inst & 0xFFE0FC00U) == 0x9BC07C00U) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		return (boost::format("umulh X%1%, X%2%, X%3%") % rd % rn % rm).str().c_str();
+		return (boost::format("umulh X%1%, X%2%, X%3%") % rd % rn % rm).str();
 	}
 	/* XTN */
 	if((inst & 0xFF3FFC00U) == 0x0E212800U) {
@@ -2872,7 +2872,7 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto tb = (string) (([=](auto temp_107) -> string { switch(temp_107) { case 0x0: return string("8B"); case 0x1: return string("4H"); case 0x2: return string("2S"); default: throw "Not implemented"; } })(size));
 		auto ta = (string) (([=](auto temp_108) -> string { switch(temp_108) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
-		return (boost::format("xtn V%1%.%2%, V%3%.%4%") % rd % tb % rn % ta).str().c_str();
+		return (boost::format("xtn V%1%.%2%, V%3%.%4%") % rd % tb % rn % ta).str();
 	}
 	/* XTN2 */
 	if((inst & 0xFF3FFC00U) == 0x4E212800U) {
@@ -2881,8 +2881,8 @@ const char* disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto tb = (string) (([=](auto temp_109) -> string { switch(temp_109) { case 0x0: return string("16B"); case 0x1: return string("8H"); case 0x2: return string("4S"); default: throw "Not implemented"; } })(size));
 		auto ta = (string) (([=](auto temp_110) -> string { switch(temp_110) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
-		return (boost::format("xtn2 V%1%.%2%, V%3%.%4%") % rd % tb % rn % ta).str().c_str();
+		return (boost::format("xtn2 V%1%.%2%, V%3%.%4%") % rd % tb % rn % ta).str();
 	}
 
-    return nullptr;
+    return "";
 }

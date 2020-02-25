@@ -202,7 +202,7 @@ namespace Generator {
 				
 				case PName("vector-all"): return $"reinterpret_cast<Vector128<float>>(({GenerateExpression(list[1])}) - (Vector128<{GenerateType(list[1].Type)}>) {{}})";
 				case PName("vector-zero-top"): return GenerateExpression(list[1]);
-				case PName("vector-insert"): return $"reinterpret_cast<Vector128<{GenerateType(list[3].Type)}>*>(&(State->V[(int) ({GenerateExpression(list[1])})]))[0][{GenerateExpression(list[2])}] = {GenerateExpression(list[3])}";
+				case PName("vector-insert"): return $"reinterpret_cast<Vector128<{GenerateType(list[3].Type)}>*>(&(state->V[(int) ({GenerateExpression(list[1])})]))[0][{GenerateExpression(list[2])}] = {GenerateExpression(list[3])}";
 				case PName("vector-element"):
 					return $"reinterpret_cast<Vector128<{GenerateType(list.Type.AsCompiletime())}>>({GenerateExpression(list[1])})[{GenerateExpression(list[2])}]";
 				case PName("vector-count-bits"): return $"VectorCountBits({GenerateExpression(list[1])}, {GenerateExpression(list[2])})";
@@ -271,7 +271,7 @@ namespace Generator {
 									args.Add($"(({name}) < 0 ? -({name}) : ({name}))");
 									return $"%{args.Count - 1}%%{args.Count}$#x";
 								} else {
-									args.Add(name);
+									args.Add(signed || size != 8 ? name : "(uint16_t) " + name);
 									return $"%{args.Count}$#x";
 								}
 							}
@@ -292,7 +292,7 @@ namespace Generator {
 				var line = $"return (boost::format(\"{RewriteFormat(def.Disassembly)}\")";
 				foreach(var arg in args)
 					line += " % " + arg;
-				c += line + ").str().c_str();";
+				c += line + ").str();";
 				c--;
 				ic--;
 				c += "}";

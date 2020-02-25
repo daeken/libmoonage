@@ -11,43 +11,43 @@ namespace Generator {
 					if(list[1] is PList sub)
 						switch(sub[0]) {
 							case PName("gpr32"):
-								c += $"State->X[(int) {GenerateExpression(sub[1])}] = (ulong) (uint) ({GenerateExpression(list[2])});";
+								c += $"state->X[(int) {GenerateExpression(sub[1])}] = (ulong) (uint) ({GenerateExpression(list[2])});";
 								return;
 							case PName("gpr-or-sp32"):
 								c += $"if({GenerateExpression(sub[1])} == 31)";
 								c++;
-								c += $"State->SP = (ulong) (uint) ({GenerateExpression(list[2])});";
+								c += $"state->SP = (ulong) (uint) ({GenerateExpression(list[2])});";
 								c--;
 								c += "else";
 								c++;
-								c += $"State->X[(int) {GenerateExpression(sub[1])}] = (ulong) (uint) ({GenerateExpression(list[2])});";
+								c += $"state->X[(int) {GenerateExpression(sub[1])}] = (ulong) (uint) ({GenerateExpression(list[2])});";
 								c--;
 								return;
 							case PName("gpr64"):
-								c += $"State->X[(int) {GenerateExpression(sub[1])}] = {GenerateExpression(list[2])};";
+								c += $"state->X[(int) {GenerateExpression(sub[1])}] = {GenerateExpression(list[2])};";
 								return;
 							case PName("gpr-or-sp64"):
 								c += $"if({GenerateExpression(sub[1])} == 31)";
 								c++;
-								c += $"State->SP = {GenerateExpression(list[2])};";
+								c += $"state->SP = {GenerateExpression(list[2])};";
 								c--;
 								c += "else";
 								c++;
-								c += $"State->X[(int) {GenerateExpression(sub[1])}] = {GenerateExpression(list[2])};";
+								c += $"state->X[(int) {GenerateExpression(sub[1])}] = {GenerateExpression(list[2])};";
 								c--;
 								return;
 							
 							case PName("vec-b"):
-								c += $"State->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<Vector128<float>>((Vector128<byte>) {{ {GenerateExpression(list[2])}, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }});";
+								c += $"state->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<Vector128<float>>((Vector128<byte>) {{ {GenerateExpression(list[2])}, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }});";
 								return;
 							case PName("vec-h"):
-								c += $"State->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<Vector128<float>>((Vector128<ushort>) {{ {GenerateExpression(list[2])}, 0, 0, 0, 0, 0, 0, 0 }});";
+								c += $"state->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<Vector128<float>>((Vector128<ushort>) {{ {GenerateExpression(list[2])}, 0, 0, 0, 0, 0, 0, 0 }});";
 								return;
 							case PName("vec-s"):
-								c += $"State->V[(int) ({GenerateExpression(sub[1])})] = (Vector128<float>) {{ {GenerateExpression(list[2])}, 0, 0, 0 }};";
+								c += $"state->V[(int) ({GenerateExpression(sub[1])})] = (Vector128<float>) {{ {GenerateExpression(list[2])}, 0, 0, 0 }};";
 								return;
 							case PName("vec-d"):
-								c += $"State->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<Vector128<float>>((Vector128<double>) {{ {GenerateExpression(list[2])}, 0 }});";
+								c += $"state->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<Vector128<float>>((Vector128<double>) {{ {GenerateExpression(list[2])}, 0 }});";
 								return;
 							
 							case PName("sr"):

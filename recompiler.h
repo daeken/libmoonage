@@ -42,6 +42,10 @@ struct BlockContext {
     ulong LR = -1UL;
 };
 
+int Svc(uint svc, ulong state);
+ulong SR(uint op0, uint op1, uint crn, uint crm, uint op2);
+void SR(uint op0, uint op1, uint crn, uint crm, uint op2, ulong value);
+
 class Recompiler {
 public:
     Recompiler();
@@ -63,7 +67,7 @@ public:
     long suppressedBranch;
     llvm::BasicBlock* currentBlock;
     unordered_set<long> usedLabels;
-    LabelTag* preStoreRegistersLabel;
+    std::vector<std::tuple<LabelTag, LabelTag>> loadRegistersLabels, storeRegistersLabels;
     unordered_map<ulong, LabelTag> blockLabels;
     queue<tuple<BlockContext, ulong>> blocksNeeded;
     RuntimeValue<ulong> CpuStateRef{nullptr};
@@ -221,6 +225,19 @@ public:
         justBranched = false;
         Builder.SetInsertPoint(currentBlock = label->block());
     }
+
+    inline void CallSvc(uint svc) {
+        auto preStore = DefineLabel(), postStore = DefineLabel();
+        auto preLoad = DefineLabel(), postLoad = DefineLabel();
+        storeRegistersLabels.push_back({ preStore, postStore });
+        loadRegistersLabels.push_back({ preLoad, postLoad });
+        Branch(preStore);
+        Label(postStore);
+        auto cont = Call<int, uint, ulong>(Svc, svc, CpuStateRef);
+        BranchIf(cont == 1, preLoad, std::get<1>(storeRegistersLabels[0]));
+        Label(postLoad);
+    }
+
     inline void Branch(LabelTag label) {
         if(!justBranched) {
             Builder.CreateBr(label->block());
@@ -229,7 +246,7 @@ public:
             suppressedBranch = label->id;
         justBranched = true;
     }
-    inline void BranchIf(RuntimeValue<bool> cond, LabelTag _if, LabelTag _else) {
+    inline void BranchIf(const RuntimeValue<bool>& cond, LabelTag _if, LabelTag _else) {
         if(justBranched) return;
         usedLabels.insert(_if->id);
         usedLabels.insert(_else->id);
@@ -241,7 +258,7 @@ public:
         auto next = currentPC + 4;
         XR[30] = next;
         // Handle case where the next instruction after branch is bad
-        if(disassemble(*(uint*) next, next) == nullptr) {
+        if(getInstructionClass(*(uint*) next) == nullptr) {
             func();
             return;
         }
@@ -272,7 +289,7 @@ public:
     inline void BranchRegister(int reg) {
         auto base = [&]() {
             BranchToR = XR[reg]();
-            Branch(*preStoreRegistersLabel);
+            Branch(std::get<0>(storeRegistersLabels[0]));
             branched = true;
         };
         if(reg != 30 || context.LR == -1UL) {
@@ -316,8 +333,3 @@ inline RuntimeValue<ValueT> Ternary(RuntimeValue<CondT> cond, RuntimeValue<Value
         return phi;
     });
 }
-
-ulong SR(uint op0, uint op1, uint crn, uint crm, uint op2);
-void SR(uint op0, uint op1, uint crn, uint crm, uint op2, ulong value);
-
-void Svc(uint svc);

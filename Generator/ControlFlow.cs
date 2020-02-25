@@ -151,7 +151,7 @@ namespace Generator {
 
 			Expression("svc", _ => EType.Unit.AsRuntime(),
 				list => $"Svc({GenerateExpression(list[1])})",
-				list => $"Call<void, uint>(Svc, {GenerateExpression(list[1])})");
+				list => $"CallSvc({GenerateExpression(list[1])})");
 			
 			Expression("branch", _ => EType.Unit.AsRuntime(), list => $"Branch({GenerateExpression(list[1])})");
 			Expression("branch-linked", _ => EType.Unit.AsRuntime(), list => $"BranchLinked({GenerateExpression(list[1])})");

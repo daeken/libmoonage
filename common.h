@@ -61,7 +61,7 @@ void emitted();
 
 extern const int instructionClassCount;
 const char* getInstructionClass(uint inst);
-const char* disassemble(uint inst, ulong pc);
+std::string disassemble(uint inst, ulong pc);
 
 template<class T>
 inline T SignExt(ulong value, const int size) {
