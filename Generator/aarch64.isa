@@ -176,6 +176,15 @@
         (= (gpr32 rd) (add-with-carry-set-nzcv32 (gpr32 rn) (do-shift32 (gpr32 rm) shift imm) 0))
         (= (gpr64 rd) (add-with-carry-set-nzcv64 (gpr64 rn) (do-shift64 (gpr64 rm) shift imm) 0))))
 
+(def ADR
+    "0 ll 10000 iiiiiiiiiiiiiiiiiii ddddd"
+    "adr X$rd, #$addr"
+    (names (immlo l) (immhi i) (rd d))
+    (block
+        (let imm (signext (: immhi immlo) i64))
+        (let addr (+ (pc) imm)))
+    (= (gpr64 rd) addr))
+
 (def ADRP
     "1 ll 10000 iiiiiiiiiiiiiiiiiii ddddd"
     "adrp X$rd, #$addr"
@@ -206,6 +215,14 @@
     (if (== size 0)
         (= (gpr32 rd) (& (gpr32 rn) (do-shift32 (gpr32 rm) shift imm)))
         (= (gpr64 rd) (& (gpr64 rn) (do-shift64 (gpr64 rm) shift imm)))))
+
+(def AND-vector
+    "0 Q 0 01110 00 1 mmmmm 00011 1 nnnnn ddddd"
+    "and V$rd.$ts, V$rn.$ts, V$rm.$ts"
+    (names (Q Q) (rm m) (rn n) (rd d))
+    (let ts (if Q "16B" "8B"))
+    (let v (vector-zero-top (vec& (vec rn) (vec rm)))
+        (= (vec rd) (if Q v (vector-zero-top v)))))
 
 (def ANDS-shifted-register
     "f 11 01010 ss 0 mmmmm iiiiii nnnnn ddddd"
@@ -358,6 +375,13 @@
     (names (rn n))
     (block)
     (branch-register rn))
+
+(def BRK
+    "11010100 001 iiiiiiiiiiiiiiii 000 00"
+    "brk #$imm"
+    (names (imm i))
+    (block)
+    (branch 0xf1f1f1f1f2f2f2f2))
 
 (def CASP
     "0 f 001000 0 0 1 sssss 0 11111 nnnnn ttttt"
@@ -1176,6 +1200,29 @@
         0b0100 (= (vec-s rd) (f32 (vec-d rn)))
         (unimplemented)))
 
+(def FCVTL[2]
+    "0 Q 0 01110 0 s 10000 10111 10 nnnnn ddddd"
+    "fcvtl$o2 V$rd.$ta, V$rn.$tb"
+    (names (Q Q) (size s) (rn n) (rd d))
+    (block
+        (let o2 (if Q "2" ""))
+        (let ta (if size "2D" "4S"))
+        (let tb (match (: size Q)
+            0b00 "4H"
+            0b01 "8H"
+            0b10 "2S"
+            "4S")))
+    (let n (vec rn)
+        (= (vec rd) (vector-all (u8 0)))
+        (match (: size Q)
+            0b10 (block
+                    (vector-insert rd 0 (f64 (vector-element n 0 f32)))
+                    (vector-insert rd 1 (f64 (vector-element n 1 f32))))
+            0b11 (block
+                    (vector-insert rd 0 (f64 (vector-element n 2 f32)))
+                    (vector-insert rd 1 (f64 (vector-element n 3 f32))))
+            (unimplemented))))
+
 (def FCVTZS-scalar-fixedpoint
     "f 0 0 11110 tt 0 11 000 ssssss nnnnn ddddd"
     "fcvtzs $r1$rd, $r2$rn, #$fbits"
@@ -1271,6 +1318,35 @@
         0b11 (unimplemented)
         0b00 (= (vec-s rd) (/ (vec-s rn) (vec-s rm)))
         0b01 (= (vec-d rd) (/ (vec-d rn) (vec-d rm)))
+        (unimplemented)))
+
+(def FDIV-vector
+    "0 Q 1 01110 0 s 1 mmmmm 11111 1 nnnnn ddddd"
+    "fdiv V$rd.$ts, V$rn.$ts, V$rm.$ts"
+    (names (Q Q) (size s) (rm m) (rn n) (rd d))
+    (let ts (match (: size Q)
+        0b00 "2S"
+        0b01 "4S"
+        0b11 "2D"
+        (unimplemented)))
+    (match (: size Q)
+        0b00 (= (vec rd) (vector-zero-top (vec/ (vec rn) (vec rm) 32)))
+        0b01 (= (vec rd) (vec/ (vec rn) (vec rm) 32))
+        0b11 (= (vec rd) (vec/ (vec rn) (vec rm) 64))
+        (unimplemented)))
+
+(def FMADD
+    "0 0 0 11111 tt 0 mmmmm 0 aaaaa nnnnn ddddd"
+    "fmadd $t$rd, $t$rn, $t$rm, $t$ra"
+    (names (type t) (rm m) (ra a) (rn n) (rd d))
+    (let t (match type
+                0b00 "S"
+                0b01 "D"
+                0b11 "H"
+                (unimplemented)))
+    (match type
+        0b00 (= (vec-s rd) (+ (* (vec-s rn) (vec-s rm)) (vec-s ra)))
+        0b01 (= (vec-d rd) (+ (* (vec-d rn) (vec-d rm)) (vec-d ra)))
         (unimplemented)))
 
 (def FMAX-scalar
@@ -1422,6 +1498,29 @@
                 (cast (& imm 0b1111) u4)
                 (replicate (u1 0) 48)) f64))))
 
+(def FMOV-vector-immediate-single
+    "0 Q 0 0111100000 a b c 1111 0 1 d e f g h ttttt"
+    "fmov V$rd.$T, #$sv"
+    (names (Q Q) (a a) (b b) (c c) (d d) (e e) (f f) (g g) (h h) (rd t))
+    (block
+        (let T (if Q "4S" "2S"))
+        (let sv (bitcast (^ (:
+            a b b b b b b c d e f g h (cast 0 u19)
+        ) (<< (cast 1 u32) 30)) f32)))
+    (let avec (vector-all sv)
+        (if Q
+            (= (vec rd) avec)
+            (= (vec rd) (vector-zero-top avec)))))
+
+(def FMOV-vector-immediate-double
+    "0 1 1 0111100000 a b c 1111 0 1 d e f g h ttttt"
+    "fmov V$rd.2D, #$sv"
+    (names (a a) (b b) (c c) (d d) (e e) (f f) (g g) (h h) (rd t))
+    (let sv (bitcast (^ (:
+        a b b b b b b b b b c d e f g h (cast 0 u48) 
+    ) (<< (cast 1 u64) 62)) f64))
+    (= (vec rd) (vector-all sv)))
+
 (def FMUL-by-element-vector-spdp
     "0 Q 0 01111 1 s L mmmmm 1001 H 0 nnnnn ddddd"
     "fmul V$rd.$T, V$rn.$T, V$rm.$Ts[$index]"
@@ -1497,6 +1596,48 @@
     (match type
         0b00 (= (vec-s rd) (-! (* (vec-s rn) (vec-s rm))))
         0b01 (= (vec-d rd) (-! (* (vec-d rn) (vec-d rm))))
+        (unimplemented)))
+
+(def FRINTA-scalar
+    "0 0 0 11110 tt 1 001 100 10000 nnnnn ddddd"
+    "frinta $r$rd, $r$rn"
+    (names (type t) (rn n) (rd d))
+    (let r (match type
+        0b11 "H"
+        0b00 "S"
+        0b01 "D"
+        (unimplemented)))
+    (match type
+        0b00 (= (vec-s rd) (frinta (vec-s rn)))
+        0b01 (= (vec-d rd) (frinta (vec-d rn)))
+        (unimplemented)))
+
+(def FRINTM-scalar
+    "0 0 0 11110 tt 1 001 010 10000 nnnnn ddddd"
+    "frintm $r$rd, $r$rn"
+    (names (type t) (rn n) (rd d))
+    (let r (match type
+        0b11 "H"
+        0b00 "S"
+        0b01 "D"
+        (unimplemented)))
+    (match type
+        0b00 (= (vec-s rd) (frintm (vec-s rn)))
+        0b01 (= (vec-d rd) (frintm (vec-d rn)))
+        (unimplemented)))
+
+(def FRINTP-scalar
+    "0 0 0 11110 tt 1 001 001 10000 nnnnn ddddd"
+    "frintp $r$rd, $r$rn"
+    (names (type t) (rn n) (rd d))
+    (let r (match type
+        0b11 "H"
+        0b00 "S"
+        0b01 "D"
+        (unimplemented)))
+    (match type
+        0b00 (= (vec-s rd) (frintp (vec-s rn)))
+        0b01 (= (vec-d rd) (frintp (vec-d rn)))
         (unimplemented)))
 
 (def FRSQRTE-vector
@@ -1773,6 +1914,18 @@
         (= (gpr32 rd) (load (+ (gpr-or-sp64 rn) imm) u32))
         (= (gpr64 rd) (load (+ (gpr-or-sp64 rn) imm) u64))))
 
+(def LDR-literal
+    "0s 011 0 00 iiiiiiiiiiiiiiiiiii ttttt"
+    "ldr $r$rt, #$addr"
+    (names (size s) (rawimm i) (rt t))
+    (block
+        (let r (if (== size 0) "W" "X"))
+        (let offset (signext (cast (<< rawimm 2) u21) i64))
+        (let addr (+ (pc) offset)))
+    (if (== size 0)
+        (= (gpr32 rt) (load addr u32))
+        (= (gpr64 rt) (load addr u64))))
+
 (def LDR-simd-immediate-postindex
     "ss 111 1 00 o1 0 iiiiiiiii 01 nnnnn ttttt"
     "ldr $r$rt, [X$rn], #$simm"
@@ -1844,6 +1997,23 @@
         0b1001 (= (vec-s rt) (load (+ (gpr-or-sp64 rn) imm) f32))
         0b1101 (= (vec-d rt) (load (+ (gpr-or-sp64 rn) imm) f64))
                (= (vec   rt) (load (+ (gpr-or-sp64 rn) imm) f128))))
+
+(def LDR-simd-literal
+    "ss 011 1 00 iiiiiiiiiiiiiiiiiii ttttt"
+    "ldr $r$rt, #$addr"
+    (names (size s) (imm i) (rt t))
+    (block
+        (let r (match size
+            0b00 "S"
+            0b01 "D"
+            0b10 "Q"
+            (unimplemented)))
+        (let addr (+ (pc) (signext (: imm (cast 0b00 u2)) i64))))
+    (match size
+        0b00 (= (vec-s rt) (load addr f32))
+        0b01 (= (vec-d rt) (load addr f64))
+        0b10 (= (vec rt) (load addr f128))
+        (unimplemented)))
 
 (def LDR-simd-register
     "ff 111 1 00 x1 1 mmmmm ooo s 10 nnnnn ttttt"
@@ -2128,6 +2298,13 @@
     (let imm (<< rawimm 2))
     (= (gpr64 rt) (u64 (signext (load (+ (gpr-or-sp64 rn) imm) u32) i64))))
 
+(def LDRSW-literal
+    "10 011 0 00 iiiiiiiiiiiiiiiiiii ttttt"
+    "ldrsw X$rt, #$addr"
+    (names (imm i) (rt t))
+    (let addr (+ (pc) (signext (: imm (cast 0b00 u2)) i64)))
+    (= (gpr64 rt) (u64 (signext (load addr u32) i64))))
+
 (def LDRSW-register
     "10 111 0 00 10 1 mmmmm ooo s 10 nnnnn ttttt"
     "ldrsw X$rt, [X$rn, $r$rm, $extend $amount]"
@@ -2271,7 +2448,31 @@
         (= (gpr32 rd) (+ (* (gpr32 rn) (gpr32 rm)) (gpr32 ra)))
         (= (gpr64 rd) (+ (* (gpr64 rn) (gpr64 rm)) (gpr64 ra)))))
 
-(def MOVI-32bit
+(def MOVI-scalar-64bit
+    "0 0 1 0111100000 a b c 1110 0 1 d e f g h ttttt"
+    "movi D$rd, #$imm"
+    (names (a a) (b b) (c c) (d d) (e e) (f f) (g g) (h h) (rd t))
+    (mlet (
+            imm8a (u8 (if a 0xFF 0)) imm8b (u8 (if b 0xFF 0))
+            imm8c (u8 (if c 0xFF 0)) imm8d (u8 (if d 0xFF 0))
+            imm8e (u8 (if e 0xFF 0)) imm8f (u8 (if f 0xFF 0))
+            imm8g (u8 (if g 0xFF 0)) imm8h (u8 (if h 0xFF 0)))
+        (let imm (: imm8a imm8b imm8c imm8d imm8e imm8f imm8g imm8h)))
+    (= (vec-d rd) (bitcast imm f64)))
+
+(def MOVI-vector-8bit
+    "0 Q 0 0111100000 a b c 1110 0 1 d e f g h rrrrr"
+    "movi V$rd.$t, #$imm"
+    (names (Q Q) (a a) (b b) (c c) (d d) (e e) (f f) (g g) (h h) (rd r))
+    (block
+        (let t (if Q "16B" "8B"))
+        (let imm (: a b c d e f g h)))
+    (let avec (vector-all (bitcast (: imm imm imm imm) f32))
+        (if Q
+            (= (vec rd) avec)
+            (= (vec rd) (vector-zero-top avec)))))
+
+(def MOVI-vector-32bit
     "0 Q 0 0111100000 a b c 0mm0 0 1 d e f g h rrrrr"
     "movi V$rd.$t, #$imm, LSL #$amount"
     (names (Q Q) (cmode m) (a a) (b b) (c c) (d d) (e e) (f f) (g g) (h h) (rd r))
@@ -2400,6 +2601,60 @@
             0b10 (vec-uint* (vec rn) (vec rm) 32)
             (unimplemented))
         (= (vec rd) (if Q v (vector-zero-top v)))))
+
+(def NEG-vector
+    "0 Q 1 01110 ss 10000 01011 10 nnnnn ddddd"
+    "neg V$rd.$t, V$rn.$t"
+    (names (Q Q) (size s) (rn n) (rd d))
+    (let t (match (: size Q)
+        0b00_0 "8B"
+        0b00_1 "16B"
+        0b01_0 "4H"
+        0b01_1 "8H"
+        0b10_0 "2S"
+        0b10_1 "4S"
+        0b11_1 "2D"
+        (unimplemented)))
+    (let n (vec rn)
+        (= (vec rd) (vector-all (u8 0)))
+        (match (: size Q)
+            0b00_0 (block
+                    (vector-insert rd 0 (-! (vector-element n 0 i8))) (vector-insert rd 1 (-! (vector-element n 1 i8)))
+                    (vector-insert rd 2 (-! (vector-element n 2 i8))) (vector-insert rd 3 (-! (vector-element n 3 i8)))
+                    (vector-insert rd 4 (-! (vector-element n 4 i8))) (vector-insert rd 5 (-! (vector-element n 5 i8)))
+                    (vector-insert rd 6 (-! (vector-element n 6 i8))) (vector-insert rd 7 (-! (vector-element n 7 i8))))
+            0b00_1 (block
+                    (vector-insert rd  0 (-! (vector-element n  0 i8))) (vector-insert rd  1 (-! (vector-element n  1 i8)))
+                    (vector-insert rd  2 (-! (vector-element n  2 i8))) (vector-insert rd  3 (-! (vector-element n  3 i8)))
+                    (vector-insert rd  4 (-! (vector-element n  4 i8))) (vector-insert rd  5 (-! (vector-element n  5 i8)))
+                    (vector-insert rd  6 (-! (vector-element n  6 i8))) (vector-insert rd  7 (-! (vector-element n  7 i8)))
+                    (vector-insert rd  8 (-! (vector-element n  8 i8))) (vector-insert rd  9 (-! (vector-element n  9 i8)))
+                    (vector-insert rd 10 (-! (vector-element n 10 i8))) (vector-insert rd 11 (-! (vector-element n 11 i8)))
+                    (vector-insert rd 12 (-! (vector-element n 12 i8))) (vector-insert rd 13 (-! (vector-element n 13 i8)))
+                    (vector-insert rd 14 (-! (vector-element n 14 i8))) (vector-insert rd 15 (-! (vector-element n 15 i8))))
+            0b01_0 (block
+                    (vector-insert rd 0 (-! (vector-element n 0 i16))) (vector-insert rd 1 (-! (vector-element n 1 i16)))
+                    (vector-insert rd 2 (-! (vector-element n 2 i16))) (vector-insert rd 3 (-! (vector-element n 3 i16))))
+            0b01_1 (block
+                    (vector-insert rd 0 (-! (vector-element n 0 i16))) (vector-insert rd 1 (-! (vector-element n 1 i16)))
+                    (vector-insert rd 2 (-! (vector-element n 2 i16))) (vector-insert rd 3 (-! (vector-element n 3 i16)))
+                    (vector-insert rd 4 (-! (vector-element n 4 i16))) (vector-insert rd 5 (-! (vector-element n 5 i16)))
+                    (vector-insert rd 6 (-! (vector-element n 6 i16))) (vector-insert rd 7 (-! (vector-element n 7 i16))))
+            0b10_0 (block
+                    (vector-insert rd 0 (-! (vector-element n 0 f32))) (vector-insert rd 1 (-! (vector-element n 1 f32))))
+            0b10_1 (block
+                    (vector-insert rd 0 (-! (vector-element n 0 f32))) (vector-insert rd 1 (-! (vector-element n 1 f32)))
+                    (vector-insert rd 2 (-! (vector-element n 2 f32))) (vector-insert rd 3 (-! (vector-element n 3 f32))))
+            0b11_1 (block
+                    (vector-insert rd 0 (-! (vector-element n 0 f64))) (vector-insert rd 1 (-! (vector-element n 1 f64))))
+            (unimplemented))))
+
+(def NOP
+    "1101010100 0 00 011 0010 0000 000 11111"
+    "nop"
+    (names)
+    (block)
+    (block))
 
 (def ORN-shifted-register
     "f 01 01010 ss 1 mmmmm iiiiii nnnnn ddddd"
@@ -2571,7 +2826,7 @@
         0b1_01 (= (vec-d rd) (f64 (i64 (gpr64 rn))))
         (unimplemented)))
 
-(def SCVTF-vector-integer
+(def SCVTF-scalar
     "01 0 11110 0 s 10000 11101 10 nnnnn ddddd"
     "scvtf $r$rd, $r$rn"
     (names (size s) (rn n) (rd d))
@@ -2579,6 +2834,31 @@
     (if (== size 0)
         (= (vec-s rd) (f32 (bitcast (vec-s rn) i32)))
         (= (vec-d rd) (f64 (bitcast (vec-d rn) i64)))))
+
+(def SCVTF-vector
+    "0 Q 0 01110 0 s 10000 11101 10 nnnnn ddddd"
+    "scvtf V$rd.$t, V$rn.$t"
+    (names (Q Q) (size s) (rn n) (rd d))
+    (let t (match (: size Q)
+        0b00 "2S"
+        0b01 "4S"
+        0b11 "2D"
+        (unimplemented)))
+    (let n (vec rn)
+        (= (vec rd) (vector-all (u8 0)))
+        (match (: size Q)
+            0b00 (block
+                    (vector-insert rd 0 (f32 (vector-element n 0 i32)))
+                    (vector-insert rd 1 (f32 (vector-element n 1 i32))))
+            0b01 (block
+                    (vector-insert rd 0 (f32 (vector-element n 0 i32)))
+                    (vector-insert rd 1 (f32 (vector-element n 1 i32)))
+                    (vector-insert rd 2 (f32 (vector-element n 2 i32)))
+                    (vector-insert rd 3 (f32 (vector-element n 3 i32))))
+            0b11 (block
+                    (vector-insert rd 0 (f64 (vector-element n 0 i64)))
+                    (vector-insert rd 1 (f64 (vector-element n 1 i64))))
+            (unimplemented))))
 
 (def SDIV
     "f 0 0 11010110 mmmmm 00001 1 nnnnn ddddd"
@@ -3280,11 +3560,11 @@
     (names (upper u) (bottom b) (offset i) (rt t))
     (block
         (let r (if (== upper 0) "W" "X"))
-        (let imm (| (<< upper 5) bottom))
+        (let imm (| (<< (u32 upper) 5) (u32 bottom)))
         (let addr (+ (pc) (signext (<< (u16 offset) 2) i64))))
-    (if (== (& (>> (gpr64 rt) imm) 1) 0)
-        (branch addr)
-        (branch-default)))
+    (if (& (>> (gpr64 rt) imm) 1)
+        (branch-default)
+        (branch addr)))
 
 (def TBNZ
     "u 011011 1 bbbbb iiiiiiiiiiiiii ttttt"
@@ -3292,9 +3572,9 @@
     (names (upper u) (bottom b) (offset i) (rt t))
     (block
         (let r (if (== upper 0) "W" "X"))
-        (let imm (| (<< upper 5) bottom))
+        (let imm (| (<< (u32 upper) 5) (u32 bottom)))
         (let addr (+ (pc) (signext (<< (u16 offset) 2) i64))))
-    (if (!= (& (>> (gpr64 rt) imm) 1) 0)
+    (if (& (>> (gpr64 rt) imm) 1)
         (branch addr)
         (branch-default)))
 
@@ -3342,7 +3622,7 @@
             (let bot (& (>>> src immr) wmask))
             (= (gpr64 rd) (& bot tmask)))))
 
-(def UCVTF-scalar-integer
+(def UCVTF-scalar-gpr-integer
     "s 0 0 11110 tt 1 00 011 000000 nnnnn ddddd"
     "ucvtf $r1$rd, $r2$rn"
     (names (size s) (type t) (rn n) (rd d))
@@ -3364,7 +3644,7 @@
         0b1_01 (= (vec-d rd) (f64 (gpr64 rn)))
         (unimplemented)))
 
-(def UCVTF-vector-integer
+(def UCVTF-scalar-integer
     "01 1 11110 0 s 10000 11101 10 nnnnn ddddd"
     "ucvtf $r$rd, $r$rn"
     (names (size s) (rn n) (rd d))
@@ -3372,6 +3652,31 @@
     (if (== size 0)
         (= (vec-s rd) (f32 (bitcast (vec-s rn) u32)))
         (= (vec-d rd) (f64 (bitcast (vec-d rn) u64)))))
+
+(def UCVTF-vector
+    "0 Q 1 01110 0 s 10000 11101 10 nnnnn ddddd"
+    "ucvtf V$rd.$t, V$rn.$t"
+    (names (Q Q) (size s) (rn n) (rd d))
+    (let t (match (: size Q)
+        0b00 "2S"
+        0b01 "4S"
+        0b11 "2D"
+        (unimplemented)))
+    (let n (vec rn)
+        (= (vec rd) (vector-all (u8 0)))
+        (match (: size Q)
+            0b00 (block
+                    (vector-insert rd 0 (f32 (vector-element n 0 u32)))
+                    (vector-insert rd 1 (f32 (vector-element n 1 u32))))
+            0b01 (block
+                    (vector-insert rd 0 (f32 (vector-element n 0 u32)))
+                    (vector-insert rd 1 (f32 (vector-element n 1 u32)))
+                    (vector-insert rd 2 (f32 (vector-element n 2 u32)))
+                    (vector-insert rd 3 (f32 (vector-element n 3 u32))))
+            0b11 (block
+                    (vector-insert rd 0 (f64 (vector-element n 0 u64)))
+                    (vector-insert rd 1 (f64 (vector-element n 1 u64))))
+            (unimplemented))))
 
 (def UDIV
     "f 0 0 11010110 mmmmm 00001 0 nnnnn ddddd"
@@ -3401,6 +3706,42 @@
     (names (rm m) (rn n) (rd d))
     (block)
     (= (gpr64 rd) (u64 (>> (* (cast (gpr64 rn) u128) (cast (gpr64 rm) u128)) 64))))
+
+(defm ushl-sub (i type) (vector-insert rd i (<< (vector-element n i type) (vector-element m i type))))
+
+(def USHL-vector
+    "0 Q 1 01110 ss 1 mmmmm 010 0 0 1 nnnnn ddddd"
+    "ushl V$rd.$t, V$rn.$t, V$rm.$t"
+    (names (Q Q) (size s) (rm m) (rn n) (rd d))
+    (let t (match (: size Q)
+        0b00_0 "8B"
+        0b00_1 "16B"
+        0b01_0 "4H"
+        0b01_1 "8H"
+        0b10_0 "2S"
+        0b10_1 "4S"
+        0b11_1 "2D"
+        (unimplemented)))
+    (mlet (n (vec rn) m (vec rm))
+        (= (vec rd) (vector-all (u8 0)))
+        (match (: size Q)
+            0b00_0 (block
+                    (ushl-sub 0 u8) (ushl-sub 1 u8) (ushl-sub 2 u8) (ushl-sub 3 u8)
+                    (ushl-sub 4 u8) (ushl-sub 5 u8) (ushl-sub 6 u8) (ushl-sub 7 u8))
+            0b00_1 (block
+                    (ushl-sub  0 u8) (ushl-sub  1 u8) (ushl-sub  2 u8) (ushl-sub  3 u8)
+                    (ushl-sub  4 u8) (ushl-sub  5 u8) (ushl-sub  6 u8) (ushl-sub  7 u8)
+                    (ushl-sub  8 u8) (ushl-sub  9 u8) (ushl-sub 10 u8) (ushl-sub 11 u8)
+                    (ushl-sub 12 u8) (ushl-sub 13 u8) (ushl-sub 14 u8) (ushl-sub 15 u8))
+            0b01_0 (block
+                    (ushl-sub 0 u16) (ushl-sub 1 u16) (ushl-sub 2 u16) (ushl-sub 3 u16))
+            0b01_1 (block
+                    (ushl-sub 0 u16) (ushl-sub 1 u16) (ushl-sub 2 u16) (ushl-sub 3 u16)
+                    (ushl-sub 4 u16) (ushl-sub 5 u16) (ushl-sub 6 u16) (ushl-sub 7 u16))
+            0b10_0 (block (ushl-sub 0 u32) (ushl-sub 1 u32))
+            0b10_1 (block (ushl-sub 0 u32) (ushl-sub 1 u32) (ushl-sub 2 u32) (ushl-sub 3 u32))
+            0b11_1 (block (ushl-sub 0 u64) (ushl-sub 1 u64))
+            (unimplemented))))
 
 (def XTN
     "0 0 0 01110 ss 10000 10010 10 nnnnn ddddd"

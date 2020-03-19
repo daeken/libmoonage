@@ -96,6 +96,10 @@ namespace Generator {
 					_ => throw new NotSupportedException()
 				});
 			
+			Expression("vec&", list => list[1].Type, 
+				list => $"reinterpret_cast<Vector128<float>>((reinterpret_cast<Vector128<byte>>({GenerateExpression(list[1])}) & reinterpret_cast<Vector128<byte>>({GenerateExpression(list[2])})))",
+				list => $"(RuntimeValue<Vector128<float>>) ((((RuntimeValue<Vector128<byte>>) ({GenerateExpression(list[1])})) & ((RuntimeValue<Vector128<byte>>) ({GenerateExpression(list[2])}))))");
+			
 			Expression("vec&~", list => list[1].Type, 
 				list => $"reinterpret_cast<Vector128<float>>(~(reinterpret_cast<Vector128<byte>>({GenerateExpression(list[1])}) & reinterpret_cast<Vector128<byte>>({GenerateExpression(list[2])})))",
 				list => $"(RuntimeValue<Vector128<float>>) (~(((RuntimeValue<Vector128<byte>>) ({GenerateExpression(list[1])})) & ((RuntimeValue<Vector128<byte>>) ({GenerateExpression(list[2])}))))");

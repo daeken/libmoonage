@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#define EXPORTED __attribute__ ((visibility ("default")))
+
 struct CpuState;
 
 // NOTE: All methods could be accessed from any thread, as there's one CPU per thread.
@@ -21,4 +23,4 @@ public:
 };
 
 extern CpuInterface* globalInterface;
-void registerCpuInterface(CpuInterface* interface);
+EXPORTED void registerCpuInterface(CpuInterface* interface);

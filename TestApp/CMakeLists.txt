@@ -9,14 +9,14 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 include_directories(/usr/local/include ../)
 link_directories(/usr/local/lib)
-IF(CMAKE_BUILD_TYPE MATCHES DEBUG)
+IF(CMAKE_BUILD_TYPE MATCHES Debug)
     link_directories(../cmake-build-debug)
 ELSE()
     link_directories(../cmake-build-release)
-ENDIF(CMAKE_BUILD_TYPE MATCHES DEBUG)
+ENDIF()
 link_libraries(moonage)
 
-add_definitions(-fsanitize=address)
-set(CMAKE_EXE_LINKER_FLAGS -fsanitize=address)
+#add_definitions(-fsanitize=address)
+#set(CMAKE_EXE_LINKER_FLAGS -fsanitize=address)
 
 add_executable(testapp main.cpp)

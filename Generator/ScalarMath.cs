@@ -124,6 +124,18 @@ namespace Generator {
 				list => $"({GenerateType(list.Type)}) sqrt((double) ({GenerateExpression(list[1])}))",
 				list => $"({GenerateType(list.Type)}) (({GenerateType(new EFloat(64).AsRuntime(list[1].Type.Runtime))}) ({GenerateExpression(list[1])})).Sqrt()");
 			
+			Expression("frinta", list => list[1].Type, 
+				list => $"round{(list[1].Type is EFloat(var size) && size == 32 ? "f" : "")}({GenerateExpression(list[1])})", 
+				list => $"({GenerateExpression(list[1])}).Round()");
+			
+			Expression("frintm", list => list[1].Type, 
+				list => $"ceil{(list[1].Type is EFloat(var size) && size == 32 ? "f" : "")}(({GenerateExpression(list[1])}) - 0.5{(list[1].Type is EFloat(var _size) && _size == 32 ? "f" : "")})", 
+				list => $"({GenerateExpression(list[1])}).RoundHalfDown()");
+			
+			Expression("frintp", list => list[1].Type, 
+				list => $"floor{(list[1].Type is EFloat(var size) && size == 32 ? "f" : "")}(({GenerateExpression(list[1])}) + 0.5{(list[1].Type is EFloat(var _size) && _size == 32 ? "f" : "")})", 
+				list => $"({GenerateExpression(list[1])}).RoundHalfUp()");
+			
 			Expression("bitwidth", _ => new EInt(true, 32),
 				list => {
 					switch(TypeFromName(list[1])) {

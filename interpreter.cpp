@@ -22,17 +22,26 @@ void Interpreter::run(ulong pc, ulong sp) {
 }
 
 void Interpreter::runOne() {
+    /*cout << "-----" << endl;
+    for(auto i = 0; i < 32; ++i) {
+        cout << "X" << dec << i << "=" << hex << state->X[i] << "  ";
+        if((i & 1) == 1) cout << endl;
+    }
+    cout << "PC=" << hex << state->PC << "  " << "SP=" << state->SP << endl;
+    cout << "-----" << dec << endl;*/
     auto inst = *(uint*) state->PC;
     auto _asm = disassemble(inst, state->PC);
     if(_asm == "") {
         cout << "Disassembly failed at " << hex << state->PC << " --- " << inst << endl;
         exit(1);
     }
-    state->BranchTo = (ulong) -1L;
-    interpret(inst, state->PC);
-    if(state->BranchTo != (ulong) -1L) {
+    //cout << "Running instruction for 0x" << hex << state->PC << " (" << inst << ") - " << _asm << endl;
+    state->BranchTo = (ulong) -3L;
+    if(!interpret(inst, state->PC))
+        throw "Interpretation failed";
+    if(state->BranchTo != (ulong) -3L) {
         state->PC = state->BranchTo;
-        state->BranchTo = (ulong) -1L;
+        state->BranchTo = (ulong) -3L;
     } else
         state->PC += 4;
 }

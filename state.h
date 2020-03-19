@@ -3,6 +3,7 @@
 #include <cstdint>
 
 typedef float __attribute__((ext_vector_type(4))) vector128_float;
+typedef double __attribute__((ext_vector_type(2))) vector128_double;
 
 // These DO NOT INCLUDE X31 or BranchTo!
 // X31 is undefined and BranchTo is implementation-specific

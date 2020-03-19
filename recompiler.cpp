@@ -22,6 +22,7 @@ long _LabelTag::inc;
 
 Recompiler::Recompiler() {
     memset((void*) &state, 0, sizeof(CpuState));
+    noLocalBranches = false;
 }
 
 bool initialized = false;
@@ -55,15 +56,49 @@ void Recompiler::run(ulong pc, ulong sp) {
         assert(block->func != nullptr);
 
         state.BranchTo = -1UL;
-        //cout << "Running block at " << hex << pc << endl;
+        cout << "Running block for " << hex << pc << endl;
         block->func((CpuState*) &state);
-        //cout << "Finished block at " << hex << state.PC << endl;
+        cout << "Finished block at " << hex << state.PC << endl;
         state.PC = pc = state.BranchTo;
-        assert((pc & 3) == 0);
+        //assert(pc != -1UL);
+        if((pc & 3) != 0) {
+            cout << "Next block is supposed to be at unaligned " << hex << pc << endl;
+            break;
+        }
     }
 }
 
-#include <sys/mman.h>
+void Recompiler::runOne() {
+    auto pc = state.PC;
+    auto block = Cache.GetBlock(pc);
+    if(block->func == nullptr) {
+        if(!globalInterface->isValidCodePointer(pc, (CpuState*) &state))
+            return;
+        block->mutex.lock();
+        if(block->func == nullptr)
+            recompileMultiple(block);
+        block->mutex.unlock();
+    }
+    assert(block->func != nullptr);
+
+    state.BranchTo = -1UL;
+    block->func((CpuState*) &state);
+    state.PC = state.BranchTo;
+}
+
+void Recompiler::precompile(ulong pc) {
+    assert(globalInterface != nullptr);
+    auto block = Cache.GetBlock(pc);
+    if(block->func == nullptr) {
+        if(!globalInterface->isValidCodePointer(pc, (CpuState*) &state))
+            return;
+        block->mutex.lock();
+        if(block->func == nullptr)
+            recompileMultiple(block);
+        block->mutex.unlock();
+    }
+    assert(block->func != nullptr);
+}
 
 void Recompiler::recompileMultiple(Block *block) {
     initialize();
@@ -103,8 +138,8 @@ void Recompiler::recompileMultiple(Block *block) {
     Branch(preRegisterLoad);
     Label(postRegisterLoad);
 
-    storeRegistersLabels.push_back({ DefineLabel(), retLabel });
-    loadRegistersLabels.push_back({ preRegisterLoad, postRegisterLoad });
+    storeRegistersLabels.emplace_back(DefineLabel(), retLabel);
+    loadRegistersLabels.emplace_back(preRegisterLoad, postRegisterLoad);
 
     blocksNeeded.push({BlockContext(), block->addr});
 
@@ -135,11 +170,16 @@ void Recompiler::recompileMultiple(Block *block) {
                 break;
             }
 
-            //cout << "Recompiling instruction at 0x" << hex << pc << endl;
+            //cout << "Recompiling instruction at 0x" << hex << pc << " with contents 0x" << hex << *((uint*) pc) << endl;
+            //cout << "Disassembly: " << disassemble(*(uint*) pc, pc) << endl;
             PCR = pc;
             if(!recompile(*(uint*) pc, pc)) {
-                cout << "Instruction at 0x" << hex << pc << " failed to recompile" << endl;
-                assert(false);
+                if(noLocalBranches)
+                    throw "Recompilation failed";
+                else {
+                    cout << "Instruction at 0x" << hex << pc << " (" << hex << *((uint*) pc) << ") failed to recompile" << endl;
+                    assert(false);
+                }
             }
             pc += 4;
         }

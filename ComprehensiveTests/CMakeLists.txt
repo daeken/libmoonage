@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(UnitTests)
+project(ComprehensiveTests)
 
 set(CMAKE_CXX_STANDARD 20)
 set(Boost_USE_STATIC_LIBS ON)
@@ -19,4 +19,11 @@ link_libraries(moonage)
 #add_definitions(-fsanitize=address)
 #set(CMAKE_EXE_LINKER_FLAGS -fsanitize=address)
 
-add_executable(unittests main.cpp insts.h)
+set(CMAKE_EXE_LINKER_FLAGS -Wl,-image_base,0x100000000)
+
+add_executable(comprehensivetests main.cpp)
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/filteredInsns.bin DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/limitedInsns.bin DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/baselineStates.bin DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/run.py DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/)

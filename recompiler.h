@@ -46,11 +46,13 @@ int Svc(uint svc, ulong state);
 ulong SR(uint op0, uint op1, uint crn, uint crm, uint op2);
 void SR(uint op0, uint op1, uint crn, uint crm, uint op2, ulong value);
 
-class Recompiler {
+class EXPORTED Recompiler {
 public:
     Recompiler();
     bool recompile(uint inst, ulong pc);
     void run(ulong pc, ulong sp);
+    void runOne();
+    void precompile(ulong pc);
     void recompileMultiple(Block* block);
 
     volatile CpuState state;
@@ -62,6 +64,7 @@ public:
     llvm::Function* function;
     std::unique_ptr<llvm::Module> module;
     BlockContext context;
+    bool noLocalBranches;
     bool branched;
     bool justBranched;
     long suppressedBranch;
@@ -258,7 +261,8 @@ public:
         auto next = currentPC + 4;
         XR[30] = next;
         // Handle case where the next instruction after branch is bad
-        if(getInstructionClass(*(uint*) next) == nullptr) {
+        // Or we're only recompiling a single block for debugging
+        if(noLocalBranches || getInstructionClass(*(uint*) next) == nullptr) {
             func();
             return;
         }
@@ -275,6 +279,12 @@ public:
     }
 
     inline void Branch(ulong addr) {
+        if(noLocalBranches) {
+            BranchToR = addr;
+            Branch(std::get<0>(storeRegistersLabels[0]));
+            branched = true;
+            return;
+        }
         LabelTag label;
         if(blockLabels.count(addr) == 0) {
             label = blockLabels[addr] = DefineLabel();
@@ -292,10 +302,11 @@ public:
             Branch(std::get<0>(storeRegistersLabels[0]));
             branched = true;
         };
-        if(reg != 30 || context.LR == -1UL) {
+        // Uncomment to follow paths after bl(r) instructions
+        //if(reg != 30 || context.LR == -1UL) {
             base();
             return;
-        }
+        //}
 
         auto if_ = DefineLabel(), else_ = DefineLabel();
         BranchIf(XR[30]() == context.LR, if_, else_);
@@ -308,7 +319,19 @@ public:
 
     template<typename T>
     inline RuntimeValue<byte> CompareAndSwap(RuntimePointer<T> pointer, RuntimeValue<T> value, RuntimeValue<T> comparand) {
-        assert(false);
+        return RuntimeValue<byte>([=]() {
+            return Builder.CreateSelect(
+                Builder.CreateExtractValue(
+                    Builder.CreateAtomicCmpXchg(
+                        pointer.pointer, comparand, value,
+                        llvm::AtomicOrdering::SequentiallyConsistent,
+                        llvm::AtomicOrdering::SequentiallyConsistent,
+                        false
+                    ), 1
+                ),
+                (RuntimeValue<byte>) 0, (RuntimeValue<byte>) 1
+            );
+        });
     }
 };
 

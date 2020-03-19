@@ -56,13 +56,13 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_288) -> string { switch(temp_288) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_289) -> string { switch(temp_289) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_310) -> string { switch(temp_310) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_311) -> string { switch(temp_311) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))).Store();
 			if(rd == 31)
-				SPR = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (([=](auto temp_290) -> RuntimeValue<uint> { switch(temp_290) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x4: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
+				SPR = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (([=](auto temp_312) -> RuntimeValue<uint> { switch(temp_312) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x4: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
 			else
-				XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (([=](auto temp_291) -> RuntimeValue<uint> { switch(temp_291) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x4: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
+				XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (([=](auto temp_313) -> RuntimeValue<uint> { switch(temp_313) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x4: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
 		} else {
 			if(((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U)) != 0) {
 				if(rd == 31)
@@ -72,9 +72,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 			} else {
 				auto m = ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))).Store();
 				if(rd == 31)
-					SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (([=](auto temp_292) -> RuntimeValue<ulong> { switch(temp_292) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFFFFFF))))); case 0x4: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); case 0x6: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((RuntimeValue<uint>) (m)), 32))))); default: return m; } })(option))) << (imm)))));
+					SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (([=](auto temp_314) -> RuntimeValue<ulong> { switch(temp_314) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFFFFFF))))); case 0x4: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); case 0x6: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((RuntimeValue<uint>) (m)), 32))))); default: return m; } })(option))) << (imm)))));
 				else
-					XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (([=](auto temp_293) -> RuntimeValue<ulong> { switch(temp_293) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFFFFFF))))); case 0x4: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); case 0x6: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((RuntimeValue<uint>) (m)), 32))))); default: return m; } })(option))) << (imm)))));
+					XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (([=](auto temp_315) -> RuntimeValue<ulong> { switch(temp_315) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFFFFFF))))); case 0x4: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); case 0x6: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((RuntimeValue<uint>) (m)), 32))))); default: return m; } })(option))) << (imm)))));
 			}
 		}
 		return true;
@@ -111,17 +111,17 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_294) -> string { switch(temp_294) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_316) -> string { switch(temp_316) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			if(rd == 31)
-				SPR = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_295) -> RuntimeValue<uint> { switch(temp_295) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))));
+				SPR = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_317) -> RuntimeValue<uint> { switch(temp_317) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))));
 			else
-				XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_296) -> RuntimeValue<uint> { switch(temp_296) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))));
+				XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_318) -> RuntimeValue<uint> { switch(temp_318) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))));
 		} else {
 			if(rd == 31)
-				SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_297) -> RuntimeValue<ulong> { switch(temp_297) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))));
+				SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_319) -> RuntimeValue<ulong> { switch(temp_319) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))));
 			else
-				XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_298) -> RuntimeValue<ulong> { switch(temp_298) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))));
+				XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_320) -> RuntimeValue<ulong> { switch(temp_320) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))));
 		}
 		return true;
 	}
@@ -132,8 +132,8 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_299) -> string { switch(temp_299) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto v = ((RuntimeValue<Vector128<float>>) (([=](auto temp_300) -> RuntimeValue<Vector128<float>> { switch(temp_300) { case 0x0: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<byte>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((RuntimeValue<Vector128<byte>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x1: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<ushort>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((RuntimeValue<Vector128<ushort>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x2: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<uint>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((RuntimeValue<Vector128<uint>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x3: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<ulong>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((RuntimeValue<Vector128<ulong>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); default: throw "Not implemented"; } })(size))).Store();
+		auto ts = (string) (([=](auto temp_321) -> string { switch(temp_321) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto v = ((RuntimeValue<Vector128<float>>) (([=](auto temp_322) -> RuntimeValue<Vector128<float>> { switch(temp_322) { case 0x0: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<byte>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((RuntimeValue<Vector128<byte>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x1: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<ushort>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((RuntimeValue<Vector128<ushort>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x2: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<uint>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((RuntimeValue<Vector128<uint>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x3: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<ulong>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((RuntimeValue<Vector128<ulong>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); default: throw "Not implemented"; } })(size))).Store();
 		VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((RuntimeValue<Vector128<float>>) (v)));
 		return true;
 	}
@@ -189,11 +189,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_301) -> string { switch(temp_301) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_323) -> string { switch(temp_323) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (([=]() -> RuntimeValue<uint> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]()))))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_302) -> RuntimeValue<uint> { switch(temp_302) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_324) -> RuntimeValue<uint> { switch(temp_324) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))).Store();
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint) ((uint) (0x0));
 					auto bits = (int) (32);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -208,7 +208,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		} else {
 			XR[(int) rd] = (RuntimeValue<ulong>) (([=]() -> RuntimeValue<ulong> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]())))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_303) -> RuntimeValue<ulong> { switch(temp_303) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_325) -> RuntimeValue<ulong> { switch(temp_325) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))).Store();
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (ulong) ((ulong) (0x0));
 					auto bits = (int) (64);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -221,6 +221,16 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 					return (usum).Store();
 				})());
 		}
+		return true;
+	}
+	/* ADR */
+	if((inst & 0x9F000000U) == 0x10000000U) {
+		auto immlo = (inst >> 29) & 0x3U;
+		auto immhi = (inst >> 5) & 0x7FFFFU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto imm = (long) (SignExt<long>((uint) ((uint) (((uint) (((uint) (immlo)) << 0)) | ((uint) (((uint) (immhi)) << 2)))), 21));
+		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) (imm)));
+		XR[(int) rd] = addr;
 		return true;
 	}
 	/* ADRP */
@@ -265,12 +275,23 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_304) -> string { switch(temp_304) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_326) -> string { switch(temp_326) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) & ((RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_305) -> RuntimeValue<uint> { switch(temp_305) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))))));
+			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) & ((RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_327) -> RuntimeValue<uint> { switch(temp_327) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))))));
 		} else {
-			XR[(int) rd] = (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_306) -> RuntimeValue<ulong> { switch(temp_306) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))));
+			XR[(int) rd] = (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_328) -> RuntimeValue<ulong> { switch(temp_328) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))));
 		}
+		return true;
+	}
+	/* AND-vector */
+	if((inst & 0xBFE0FC00U) == 0x0E201C00U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto ts = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
+		auto v = ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((((RuntimeValue<Vector128<byte>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) & ((RuntimeValue<Vector128<byte>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))).Store();
+		VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((RuntimeValue<Vector128<float>>) (v)));
 		return true;
 	}
 	/* ANDS-shifted-register */
@@ -282,16 +303,16 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_307) -> string { switch(temp_307) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_329) -> string { switch(temp_329) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			auto result = ((RuntimeValue<uint>) ((((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) & ((RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_308) -> RuntimeValue<uint> { switch(temp_308) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
+			auto result = ((RuntimeValue<uint>) ((((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) & ((RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_330) -> RuntimeValue<uint> { switch(temp_330) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
 			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) (result);
 			NZCV_NR = (RuntimeValue<uint>) ((result) >> (0x1F));
 			NZCV_ZR = (RuntimeValue<bool>) ((result) == (0x0));
 			NZCV_CR = 0x0;
 			NZCV_VR = 0x0;
 		} else {
-			auto result = ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_309) -> RuntimeValue<ulong> { switch(temp_309) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
+			auto result = ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_331) -> RuntimeValue<ulong> { switch(temp_331) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
 			XR[(int) rd] = result;
 			NZCV_NR = (RuntimeValue<ulong>) ((result) >> (0x3F));
 			NZCV_ZR = (RuntimeValue<bool>) ((result) == (0x0));
@@ -353,17 +374,17 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto cond = (inst >> 0) & 0xFU;
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) (((uint) ((uint) (imm))) << (uint) (0x2)), 21)))));
-		auto condstr = (string) (([=](auto temp_310) -> string { switch(temp_310) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((RuntimeValue<bool>) (([=](auto temp_311) -> RuntimeValue<bool> { switch(temp_311) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_312 = DefineLabel(), temp_314 = DefineLabel(), temp_313 = DefineLabel();
-		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_312, temp_314);
-		Label(temp_312);
+		auto condstr = (string) (([=](auto temp_332) -> string { switch(temp_332) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((RuntimeValue<bool>) (([=](auto temp_333) -> RuntimeValue<bool> { switch(temp_333) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_334 = DefineLabel(), temp_336 = DefineLabel(), temp_335 = DefineLabel();
+		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_334, temp_336);
+		Label(temp_334);
 		Branch(addr);
-		Branch(temp_313);
-		Label(temp_314);
+		Branch(temp_335);
+		Label(temp_336);
 		Branch(pc + 4);
-		Branch(temp_313);
-		Label(temp_313);
+		Branch(temp_335);
+		Label(temp_335);
 		return true;
 	}
 	/* BFM */
@@ -401,11 +422,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_315) -> string { switch(temp_315) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_337) -> string { switch(temp_337) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) & ((RuntimeValue<uint>) ((RuntimeValue<uint>) (~((RuntimeValue<uint>) (([=](auto temp_316) -> RuntimeValue<uint> { switch(temp_316) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))))))));
+			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) & ((RuntimeValue<uint>) ((RuntimeValue<uint>) (~((RuntimeValue<uint>) (([=](auto temp_338) -> RuntimeValue<uint> { switch(temp_338) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))))))));
 		} else {
-			XR[(int) rd] = (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (~((RuntimeValue<ulong>) (([=](auto temp_317) -> RuntimeValue<ulong> { switch(temp_317) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))))));
+			XR[(int) rd] = (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (~((RuntimeValue<ulong>) (([=](auto temp_339) -> RuntimeValue<ulong> { switch(temp_339) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))))));
 		}
 		return true;
 	}
@@ -442,6 +463,12 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 	if((inst & 0xFFFFFC1FU) == 0xD61F0000U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		BranchRegister(rn);
+		return true;
+	}
+	/* BRK */
+	if((inst & 0xFFE0001FU) == 0xD4200000U) {
+		auto imm = (inst >> 5) & 0xFFFFU;
+		Branch(-0xE0E0E0E0D0D0D0E);
 		return true;
 	}
 	/* CASP */
@@ -483,15 +510,15 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 			auto nl = ((RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]()))).Store();
 			auto nh = ((RuntimeValue<uint>) (((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)))) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) (ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)))]()))).Store();
 			auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-			auto data = ((RuntimeValue<ulong>) (((RuntimePointer<ulong>) (address)).value)).Store();
-			LabelTag temp_318 = DefineLabel(), temp_320 = DefineLabel(), temp_319 = DefineLabel();
-			BranchIf((RuntimeValue<bool>) ((data) == ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (ch))) << (0x20)))) | ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (cl)))))))), temp_318, temp_320);
-			Label(temp_318);
-			((RuntimePointer<ulong>) (address)).value = (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (nh))) << (0x20)))) | ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (nl))))));
-			Branch(temp_319);
-			Label(temp_320);
-			Branch(temp_319);
-			Label(temp_319);
+			auto data = ((RuntimeValue<ulong>) (((RuntimePointer<ulong>) (address)).value())).Store();
+			LabelTag temp_340 = DefineLabel(), temp_342 = DefineLabel(), temp_341 = DefineLabel();
+			BranchIf((RuntimeValue<bool>) ((data) == ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (ch))) << (0x20)))) | ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (cl)))))))), temp_340, temp_342);
+			Label(temp_340);
+			((RuntimePointer<ulong>) (address)).value((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (nh))) << (0x20)))) | ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (nl)))))));
+			Branch(temp_341);
+			Label(temp_342);
+			Branch(temp_341);
+			Label(temp_341);
 			XR[(int) rs] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) (data)));
 			XR[(int) (ulong) (((ulong) (byte) (rs)) + ((ulong) (long) (0x1)))] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<ulong>) ((data) >> (0x20)))));
 		} else {
@@ -500,17 +527,17 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 			auto nl = ((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]())).Store();
 			auto nh = ((RuntimeValue<ulong>) (((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)))) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) (ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)))]())).Store();
 			auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-			auto dl = ((RuntimeValue<ulong>) (((RuntimePointer<ulong>) (address)).value)).Store();
-			auto dh = ((RuntimeValue<ulong>) (((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value)).Store();
-			LabelTag temp_321 = DefineLabel(), temp_323 = DefineLabel(), temp_322 = DefineLabel();
-			BranchIf((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) ((dl) == (cl)))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) ((dh) == (ch)))))), temp_321, temp_323);
-			Label(temp_321);
-			((RuntimePointer<ulong>) (address)).value = nl;
-			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value = nh;
-			Branch(temp_322);
-			Label(temp_323);
-			Branch(temp_322);
-			Label(temp_322);
+			auto dl = ((RuntimeValue<ulong>) (((RuntimePointer<ulong>) (address)).value())).Store();
+			auto dh = ((RuntimeValue<ulong>) (((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value())).Store();
+			LabelTag temp_343 = DefineLabel(), temp_345 = DefineLabel(), temp_344 = DefineLabel();
+			BranchIf((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) ((dl) == (cl)))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) ((dh) == (ch)))))), temp_343, temp_345);
+			Label(temp_343);
+			((RuntimePointer<ulong>) (address)).value(nl);
+			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value(nh);
+			Branch(temp_344);
+			Label(temp_345);
+			Branch(temp_344);
+			Label(temp_344);
 			XR[(int) rs] = dl;
 			XR[(int) (ulong) (((ulong) (byte) (rs)) + ((ulong) (long) (0x1)))] = dh;
 		}
@@ -536,25 +563,25 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) ((uint) ((imm) << (uint) (0x2)))), 21)))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			LabelTag temp_324 = DefineLabel(), temp_326 = DefineLabel(), temp_325 = DefineLabel();
-			BranchIf((RuntimeValue<bool>) (((RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]()))) != ((uint) ((uint) (0x0)))), temp_324, temp_326);
-			Label(temp_324);
+			LabelTag temp_346 = DefineLabel(), temp_348 = DefineLabel(), temp_347 = DefineLabel();
+			BranchIf((RuntimeValue<bool>) (((RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]()))) != ((uint) ((uint) (0x0)))), temp_346, temp_348);
+			Label(temp_346);
 			Branch(addr);
-			Branch(temp_325);
-			Label(temp_326);
+			Branch(temp_347);
+			Label(temp_348);
 			Branch(pc + 4);
-			Branch(temp_325);
-			Label(temp_325);
+			Branch(temp_347);
+			Label(temp_347);
 		} else {
-			LabelTag temp_327 = DefineLabel(), temp_329 = DefineLabel(), temp_328 = DefineLabel();
-			BranchIf((RuntimeValue<bool>) (((RuntimeValue<ulong>) ((rs) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rs]())) != ((ulong) ((ulong) (0x0)))), temp_327, temp_329);
-			Label(temp_327);
+			LabelTag temp_349 = DefineLabel(), temp_351 = DefineLabel(), temp_350 = DefineLabel();
+			BranchIf((RuntimeValue<bool>) (((RuntimeValue<ulong>) ((rs) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rs]())) != ((ulong) ((ulong) (0x0)))), temp_349, temp_351);
+			Label(temp_349);
 			Branch(addr);
-			Branch(temp_328);
-			Label(temp_329);
+			Branch(temp_350);
+			Label(temp_351);
 			Branch(pc + 4);
-			Branch(temp_328);
-			Label(temp_328);
+			Branch(temp_350);
+			Label(temp_350);
 		}
 		return true;
 	}
@@ -566,25 +593,25 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) ((uint) ((imm) << (uint) (0x2)))), 21)))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			LabelTag temp_330 = DefineLabel(), temp_332 = DefineLabel(), temp_331 = DefineLabel();
-			BranchIf((RuntimeValue<bool>) (((RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]()))) == ((uint) ((uint) (0x0)))), temp_330, temp_332);
-			Label(temp_330);
+			LabelTag temp_352 = DefineLabel(), temp_354 = DefineLabel(), temp_353 = DefineLabel();
+			BranchIf((RuntimeValue<bool>) (((RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]()))) == ((uint) ((uint) (0x0)))), temp_352, temp_354);
+			Label(temp_352);
 			Branch(addr);
-			Branch(temp_331);
-			Label(temp_332);
+			Branch(temp_353);
+			Label(temp_354);
 			Branch(pc + 4);
-			Branch(temp_331);
-			Label(temp_331);
+			Branch(temp_353);
+			Label(temp_353);
 		} else {
-			LabelTag temp_333 = DefineLabel(), temp_335 = DefineLabel(), temp_334 = DefineLabel();
-			BranchIf((RuntimeValue<bool>) (((RuntimeValue<ulong>) ((rs) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rs]())) == ((ulong) ((ulong) (0x0)))), temp_333, temp_335);
-			Label(temp_333);
+			LabelTag temp_355 = DefineLabel(), temp_357 = DefineLabel(), temp_356 = DefineLabel();
+			BranchIf((RuntimeValue<bool>) (((RuntimeValue<ulong>) ((rs) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rs]())) == ((ulong) ((ulong) (0x0)))), temp_355, temp_357);
+			Label(temp_355);
 			Branch(addr);
-			Branch(temp_334);
-			Label(temp_335);
+			Branch(temp_356);
+			Label(temp_357);
 			Branch(pc + 4);
-			Branch(temp_334);
-			Label(temp_334);
+			Branch(temp_356);
+			Label(temp_356);
 		}
 		return true;
 	}
@@ -596,11 +623,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_336) -> string { switch(temp_336) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((RuntimeValue<bool>) (([=](auto temp_337) -> RuntimeValue<bool> { switch(temp_337) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_338 = DefineLabel(), temp_340 = DefineLabel(), temp_339 = DefineLabel();
-		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_338, temp_340);
-		Label(temp_338);
+		auto condstr = (string) (([=](auto temp_358) -> string { switch(temp_358) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((RuntimeValue<bool>) (([=](auto temp_359) -> RuntimeValue<bool> { switch(temp_359) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_360 = DefineLabel(), temp_362 = DefineLabel(), temp_361 = DefineLabel();
+		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_360, temp_362);
+		Label(temp_360);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) 0x1F] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (([=]() -> RuntimeValue<uint> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]()))))).Store();
@@ -632,11 +659,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 					return (usum).Store();
 				})());
 		}
-		Branch(temp_339);
-		Label(temp_340);
+		Branch(temp_361);
+		Label(temp_362);
 		NZCVR = (ulong) (((ulong) ((ulong) (nzcv))) << (uint) (0x1C));
-		Branch(temp_339);
-		Label(temp_339);
+		Branch(temp_361);
+		Label(temp_361);
 		return true;
 	}
 	/* CCMP-immediate */
@@ -647,11 +674,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_341) -> string { switch(temp_341) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((RuntimeValue<bool>) (([=](auto temp_342) -> RuntimeValue<bool> { switch(temp_342) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_343 = DefineLabel(), temp_345 = DefineLabel(), temp_344 = DefineLabel();
-		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_343, temp_345);
-		Label(temp_343);
+		auto condstr = (string) (([=](auto temp_363) -> string { switch(temp_363) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((RuntimeValue<bool>) (([=](auto temp_364) -> RuntimeValue<bool> { switch(temp_364) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_365 = DefineLabel(), temp_367 = DefineLabel(), temp_366 = DefineLabel();
+		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_365, temp_367);
+		Label(temp_365);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) 0x1F] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (([=]() -> RuntimeValue<uint> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]()))))).Store();
@@ -683,11 +710,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 					return (usum).Store();
 				})());
 		}
-		Branch(temp_344);
-		Label(temp_345);
+		Branch(temp_366);
+		Label(temp_367);
 		NZCVR = (ulong) (((ulong) ((ulong) (nzcv))) << (uint) (0x1C));
-		Branch(temp_344);
-		Label(temp_344);
+		Branch(temp_366);
+		Label(temp_366);
 		return true;
 	}
 	/* CCMP-register */
@@ -698,11 +725,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_346) -> string { switch(temp_346) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((RuntimeValue<bool>) (([=](auto temp_347) -> RuntimeValue<bool> { switch(temp_347) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_348 = DefineLabel(), temp_350 = DefineLabel(), temp_349 = DefineLabel();
-		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_348, temp_350);
-		Label(temp_348);
+		auto condstr = (string) (([=](auto temp_368) -> string { switch(temp_368) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((RuntimeValue<bool>) (([=](auto temp_369) -> RuntimeValue<bool> { switch(temp_369) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_370 = DefineLabel(), temp_372 = DefineLabel(), temp_371 = DefineLabel();
+		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_370, temp_372);
+		Label(temp_370);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) 0x1F] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (([=]() -> RuntimeValue<uint> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]()))))).Store();
@@ -734,11 +761,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 					return (usum).Store();
 				})());
 		}
-		Branch(temp_349);
-		Label(temp_350);
+		Branch(temp_371);
+		Label(temp_372);
 		NZCVR = (ulong) (((ulong) ((ulong) (nzcv))) << (uint) (0x1C));
-		Branch(temp_349);
-		Label(temp_349);
+		Branch(temp_371);
+		Label(temp_371);
 		return true;
 	}
 	/* CLREX */
@@ -765,8 +792,8 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_351) -> string { switch(temp_351) { case 0x0: return string("8B"); case 0x1: return string("16B"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, long>(VectorCountBits, (RuntimeValue<Vector128<float>>) (VR[(int) (rn)]), (long) (([=](auto temp_352) -> long { switch(temp_352) { case 0x0: return 0x8; default: return 0x10; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))))));
+		auto t = (string) (([=](auto temp_373) -> string { switch(temp_373) { case 0x0: return string("8B"); case 0x1: return string("16B"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, long>(VectorCountBits, (RuntimeValue<Vector128<float>>) (VR[(int) (rn)]), (long) (([=](auto temp_374) -> long { switch(temp_374) { case 0x0: return 0x8; default: return 0x10; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))))));
 		return true;
 	}
 	/* CSEL */
@@ -777,25 +804,25 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_353) -> string { switch(temp_353) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((RuntimeValue<bool>) (([=](auto temp_354) -> RuntimeValue<bool> { switch(temp_354) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_355 = DefineLabel(), temp_357 = DefineLabel(), temp_356 = DefineLabel();
-		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_355, temp_357);
-		Label(temp_355);
+		auto condstr = (string) (([=](auto temp_375) -> string { switch(temp_375) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((RuntimeValue<bool>) (([=](auto temp_376) -> RuntimeValue<bool> { switch(temp_376) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_377 = DefineLabel(), temp_379 = DefineLabel(), temp_378 = DefineLabel();
+		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_377, temp_379);
+		Label(temp_377);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())));
 		} else {
 			XR[(int) rd] = (RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]());
 		}
-		Branch(temp_356);
-		Label(temp_357);
+		Branch(temp_378);
+		Label(temp_379);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())));
 		} else {
 			XR[(int) rd] = (RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]());
 		}
-		Branch(temp_356);
-		Label(temp_356);
+		Branch(temp_378);
+		Label(temp_378);
 		return true;
 	}
 	/* CSINC */
@@ -806,25 +833,25 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_358) -> string { switch(temp_358) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((RuntimeValue<bool>) (([=](auto temp_359) -> RuntimeValue<bool> { switch(temp_359) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_360 = DefineLabel(), temp_362 = DefineLabel(), temp_361 = DefineLabel();
-		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_360, temp_362);
-		Label(temp_360);
+		auto condstr = (string) (([=](auto temp_380) -> string { switch(temp_380) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((RuntimeValue<bool>) (([=](auto temp_381) -> RuntimeValue<bool> { switch(temp_381) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_382 = DefineLabel(), temp_384 = DefineLabel(), temp_383 = DefineLabel();
+		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_382, temp_384);
+		Label(temp_382);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())));
 		} else {
 			XR[(int) rd] = (RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]());
 		}
-		Branch(temp_361);
-		Label(temp_362);
+		Branch(temp_383);
+		Label(temp_384);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())))) + ((RuntimeValue<uint>) (RuntimeValue<uint>) ((uint) ((uint) (0x1))))));
 		} else {
 			XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x1)));
 		}
-		Branch(temp_361);
-		Label(temp_361);
+		Branch(temp_383);
+		Label(temp_383);
 		return true;
 	}
 	/* CSINV */
@@ -835,25 +862,25 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_363) -> string { switch(temp_363) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((RuntimeValue<bool>) (([=](auto temp_364) -> RuntimeValue<bool> { switch(temp_364) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_365 = DefineLabel(), temp_367 = DefineLabel(), temp_366 = DefineLabel();
-		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_365, temp_367);
-		Label(temp_365);
+		auto condstr = (string) (([=](auto temp_385) -> string { switch(temp_385) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((RuntimeValue<bool>) (([=](auto temp_386) -> RuntimeValue<bool> { switch(temp_386) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_387 = DefineLabel(), temp_389 = DefineLabel(), temp_388 = DefineLabel();
+		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_387, temp_389);
+		Label(temp_387);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())));
 		} else {
 			XR[(int) rd] = (RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]());
 		}
-		Branch(temp_366);
-		Label(temp_367);
+		Branch(temp_388);
+		Label(temp_389);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (~((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())))));
 		} else {
 			XR[(int) rd] = (RuntimeValue<ulong>) (~((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())));
 		}
-		Branch(temp_366);
-		Label(temp_366);
+		Branch(temp_388);
+		Label(temp_388);
 		return true;
 	}
 	/* CSNEG */
@@ -864,37 +891,37 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_368) -> string { switch(temp_368) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((RuntimeValue<bool>) (([=](auto temp_369) -> RuntimeValue<bool> { switch(temp_369) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_370 = DefineLabel(), temp_372 = DefineLabel(), temp_371 = DefineLabel();
-		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_370, temp_372);
-		Label(temp_370);
+		auto condstr = (string) (([=](auto temp_390) -> string { switch(temp_390) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((RuntimeValue<bool>) (([=](auto temp_391) -> RuntimeValue<bool> { switch(temp_391) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_392 = DefineLabel(), temp_394 = DefineLabel(), temp_393 = DefineLabel();
+		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_392, temp_394);
+		Label(temp_392);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())));
 		} else {
 			XR[(int) rd] = (RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]());
 		}
-		Branch(temp_371);
-		Label(temp_372);
+		Branch(temp_393);
+		Label(temp_394);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (-((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())))))))));
 		} else {
 			XR[(int) rd] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (-((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))))));
 		}
-		Branch(temp_371);
-		Label(temp_371);
+		Branch(temp_393);
+		Label(temp_393);
 		return true;
 	}
 	/* DMB */
 	if((inst & 0xFFFFF0FFU) == 0xD50330BFU) {
 		auto m = (inst >> 8) & 0xFU;
-		auto option = (string) (([=](auto temp_373) -> string { switch(temp_373) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(m));
+		auto option = (string) (([=](auto temp_395) -> string { switch(temp_395) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(m));
 		return true;
 	}
 	/* DSB */
 	if((inst & 0xFFFFF0FFU) == 0xD503309FU) {
 		auto crm = (inst >> 8) & 0xFU;
-		auto option = (string) (([=](auto temp_374) -> string { switch(temp_374) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(crm));
+		auto option = (string) (([=](auto temp_396) -> string { switch(temp_396) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(crm));
 		return true;
 	}
 	/* DUP-general */
@@ -976,11 +1003,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_375) -> string { switch(temp_375) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_397) -> string { switch(temp_397) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) ^ ((RuntimeValue<uint>) ((RuntimeValue<uint>) (~((RuntimeValue<uint>) (([=](auto temp_376) -> RuntimeValue<uint> { switch(temp_376) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))))))));
+			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) ^ ((RuntimeValue<uint>) ((RuntimeValue<uint>) (~((RuntimeValue<uint>) (([=](auto temp_398) -> RuntimeValue<uint> { switch(temp_398) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))))))));
 		} else {
-			XR[(int) rd] = (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) ^ ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (~((RuntimeValue<ulong>) (([=](auto temp_377) -> RuntimeValue<ulong> { switch(temp_377) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))))));
+			XR[(int) rd] = (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) ^ ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (~((RuntimeValue<ulong>) (([=](auto temp_399) -> RuntimeValue<ulong> { switch(temp_399) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))))));
 		}
 		return true;
 	}
@@ -1016,11 +1043,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_378) -> string { switch(temp_378) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_400) -> string { switch(temp_400) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) ^ ((RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_379) -> RuntimeValue<uint> { switch(temp_379) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))))));
+			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) ^ ((RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_401) -> RuntimeValue<uint> { switch(temp_401) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))))));
 		} else {
-			XR[(int) rd] = (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) ^ ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_380) -> RuntimeValue<ulong> { switch(temp_380) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))));
+			XR[(int) rd] = (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) ^ ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_402) -> RuntimeValue<ulong> { switch(temp_402) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))));
 		}
 		return true;
 	}
@@ -1056,7 +1083,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_381) -> string { switch(temp_381) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_403) -> string { switch(temp_403) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (RuntimeValue<float>) (((RuntimeValue<float>) (VSR[(int) (rn)])).Abs());
@@ -1079,7 +1106,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_382) -> string { switch(temp_382) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_404) -> string { switch(temp_404) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				auto a = ((RuntimeValue<float>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x0))).Store();
@@ -1122,7 +1149,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_383) -> string { switch(temp_383) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_405) -> string { switch(temp_405) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x3: {
 				VHR[(int) (rd)] = (RuntimeValue<ushort>) ((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (((RuntimeValue<ushort>) (RuntimeValue<ushort>) ((RuntimeValue<ushort>) (VHR[(int) (rn)]))) + ((RuntimeValue<ushort>) (RuntimeValue<ushort>) ((RuntimeValue<ushort>) (VHR[(int) (rm)]))))));
@@ -1150,7 +1177,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_384) -> string { switch(temp_384) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_406) -> string { switch(temp_406) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)]))));
@@ -1191,7 +1218,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_385) -> string { switch(temp_385) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_407) -> string { switch(temp_407) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				auto a = ((RuntimeValue<float>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x0))).Store();
@@ -1243,12 +1270,12 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto cond = (inst >> 12) & 0xFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
-		auto r = (string) (([=](auto temp_386) -> string { switch(temp_386) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		auto condstr = (string) (([=](auto temp_387) -> string { switch(temp_387) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((RuntimeValue<bool>) (([=](auto temp_388) -> RuntimeValue<bool> { switch(temp_388) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_389 = DefineLabel(), temp_391 = DefineLabel(), temp_390 = DefineLabel();
-		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_389, temp_391);
-		Label(temp_389);
+		auto r = (string) (([=](auto temp_408) -> string { switch(temp_408) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto condstr = (string) (([=](auto temp_409) -> string { switch(temp_409) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((RuntimeValue<bool>) (([=](auto temp_410) -> RuntimeValue<bool> { switch(temp_410) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_411 = DefineLabel(), temp_413 = DefineLabel(), temp_412 = DefineLabel();
+		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_411, temp_413);
+		Label(temp_411);
 		switch(type) {
 			case 0x0: {
 				auto __macro_fcmp_a = ((RuntimeValue<float>) (VSR[(int) (rn)])).Store();
@@ -1267,11 +1294,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 				break;
 			}
 		}
-		Branch(temp_390);
-		Label(temp_391);
+		Branch(temp_412);
+		Label(temp_413);
 		NZCVR = (ulong) (((ulong) ((ulong) (nzcv))) << (uint) (0x1C));
-		Branch(temp_390);
-		Label(temp_390);
+		Branch(temp_412);
+		Label(temp_412);
 		return true;
 	}
 	/* FCMxx-register-vector */
@@ -1284,8 +1311,8 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto ac = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto top = (string) (([=](auto temp_392) -> string { switch(temp_392) { case 0x0: return string("EQ"); case 0x2: return string("GE"); case 0x3: return string("GE"); case 0x6: return string("GT"); case 0x7: return string("GT"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
-		auto t = (string) (([=](auto temp_393) -> string { switch(temp_393) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto top = (string) (([=](auto temp_414) -> string { switch(temp_414) { case 0x0: return string("EQ"); case 0x2: return string("GE"); case 0x3: return string("GE"); case 0x6: return string("GT"); case 0x7: return string("GT"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+		auto t = (string) (([=](auto temp_415) -> string { switch(temp_415) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				auto a1 = ((RuntimeValue<float>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x0))).Store();
@@ -1293,8 +1320,8 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 				auto b1 = ((RuntimeValue<float>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(0x0))).Store();
 				auto b2 = ((RuntimeValue<float>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(0x1))).Store();
 				VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (((RuntimeValue<int>) ((int) ((int) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<float>) (([=](auto temp_394) -> RuntimeValue<float> { switch(temp_394) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) == (b1))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) >= (b1))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x3: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a1).Abs())) >= ((RuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x6: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) > (b1))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x7: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a1).Abs())) > ((RuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<float>) (([=](auto temp_395) -> RuntimeValue<float> { switch(temp_395) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) == (b2))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) >= (b2))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x3: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a2).Abs())) >= ((RuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x6: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) > (b2))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x7: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a2).Abs())) > ((RuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<float>) (([=](auto temp_416) -> RuntimeValue<float> { switch(temp_416) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) == (b1))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) >= (b1))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x3: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a1).Abs())) >= ((RuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x6: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) > (b1))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x7: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a1).Abs())) > ((RuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<float>) (([=](auto temp_417) -> RuntimeValue<float> { switch(temp_417) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) == (b2))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) >= (b2))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x3: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a2).Abs())) >= ((RuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x6: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) > (b2))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x7: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a2).Abs())) > ((RuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
 				break;
 			}
 			case 0x1: {
@@ -1307,10 +1334,10 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 				auto b3 = ((RuntimeValue<float>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(0x2))).Store();
 				auto b4 = ((RuntimeValue<float>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(0x3))).Store();
 				VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (((RuntimeValue<int>) ((int) ((int) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<float>) (([=](auto temp_396) -> RuntimeValue<float> { switch(temp_396) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) == (b1))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) >= (b1))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x3: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a1).Abs())) >= ((RuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x6: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) > (b1))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x7: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a1).Abs())) > ((RuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<float>) (([=](auto temp_397) -> RuntimeValue<float> { switch(temp_397) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) == (b2))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) >= (b2))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x3: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a2).Abs())) >= ((RuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x6: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) > (b2))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x7: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a2).Abs())) > ((RuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<float>) (([=](auto temp_398) -> RuntimeValue<float> { switch(temp_398) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a3) == (b3))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a3) >= (b3))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x3: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a3).Abs())) >= ((RuntimeValue<float>) ((b3).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x6: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a3) > (b3))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x7: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a3).Abs())) > ((RuntimeValue<float>) ((b3).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<float>) (([=](auto temp_399) -> RuntimeValue<float> { switch(temp_399) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a4) == (b4))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a4) >= (b4))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x3: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a4).Abs())) >= ((RuntimeValue<float>) ((b4).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x6: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a4) > (b4))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x7: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a4).Abs())) > ((RuntimeValue<float>) ((b4).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<float>) (([=](auto temp_418) -> RuntimeValue<float> { switch(temp_418) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) == (b1))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) >= (b1))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x3: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a1).Abs())) >= ((RuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x6: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) > (b1))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x7: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a1).Abs())) > ((RuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<float>) (([=](auto temp_419) -> RuntimeValue<float> { switch(temp_419) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) == (b2))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) >= (b2))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x3: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a2).Abs())) >= ((RuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x6: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) > (b2))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x7: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a2).Abs())) > ((RuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<float>) (([=](auto temp_420) -> RuntimeValue<float> { switch(temp_420) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a3) == (b3))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a3) >= (b3))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x3: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a3).Abs())) >= ((RuntimeValue<float>) ((b3).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x6: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a3) > (b3))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x7: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a3).Abs())) > ((RuntimeValue<float>) ((b3).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<float>) (([=](auto temp_421) -> RuntimeValue<float> { switch(temp_421) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a4) == (b4))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a4) >= (b4))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x3: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a4).Abs())) >= ((RuntimeValue<float>) ((b4).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x6: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a4) > (b4))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x7: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<float>) ((a4).Abs())) > ((RuntimeValue<float>) ((b4).Abs())))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
 				break;
 			}
 			case 0x3: {
@@ -1319,8 +1346,8 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 				auto b1 = ((RuntimeValue<double>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(0x0))).Store();
 				auto b2 = ((RuntimeValue<double>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(0x1))).Store();
 				VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (((RuntimeValue<int>) ((int) ((int) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<double>) (([=](auto temp_400) -> RuntimeValue<double> { switch(temp_400) { case 0x0: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) == (b1))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x2: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) >= (b1))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x3: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<double>) ((a1).Abs())) >= ((RuntimeValue<double>) ((b1).Abs())))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x6: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) > (b1))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x7: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<double>) ((a1).Abs())) > ((RuntimeValue<double>) ((b1).Abs())))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<double>) (([=](auto temp_401) -> RuntimeValue<double> { switch(temp_401) { case 0x0: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) == (b2))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x2: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) >= (b2))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x3: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<double>) ((a2).Abs())) >= ((RuntimeValue<double>) ((b2).Abs())))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x6: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) > (b2))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x7: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<double>) ((a2).Abs())) > ((RuntimeValue<double>) ((b2).Abs())))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<double>) (([=](auto temp_422) -> RuntimeValue<double> { switch(temp_422) { case 0x0: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) == (b1))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x2: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) >= (b1))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x3: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<double>) ((a1).Abs())) >= ((RuntimeValue<double>) ((b1).Abs())))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x6: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a1) > (b1))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x7: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<double>) ((a1).Abs())) > ((RuntimeValue<double>) ((b1).Abs())))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<double>) (([=](auto temp_423) -> RuntimeValue<double> { switch(temp_423) { case 0x0: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) == (b2))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x2: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) >= (b2))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x3: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<double>) ((a2).Abs())) >= ((RuntimeValue<double>) ((b2).Abs())))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x6: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((a2) > (b2))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x7: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<double>) ((a2).Abs())) > ((RuntimeValue<double>) ((b2).Abs())))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2)))))));
 				break;
 			}
 			default: {
@@ -1338,15 +1365,15 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto op = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto top = (string) (([=](auto temp_402) -> string { switch(temp_402) { case 0x0: return string("GT"); case 0x1: return string("GE"); case 0x2: return string("EQ"); default: return string("LE"); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
-		auto t = (string) (([=](auto temp_403) -> string { switch(temp_403) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto top = (string) (([=](auto temp_424) -> string { switch(temp_424) { case 0x0: return string("GT"); case 0x1: return string("GE"); case 0x2: return string("EQ"); default: return string("LE"); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+		auto t = (string) (([=](auto temp_425) -> string { switch(temp_425) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				auto v1 = ((RuntimeValue<float>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x0))).Store();
 				auto v2 = ((RuntimeValue<float>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x1))).Store();
 				VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (((RuntimeValue<int>) ((int) ((int) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<float>) (([=](auto temp_404) -> RuntimeValue<float> { switch(temp_404) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) > ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x1: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) >= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) == ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: return (RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) <= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<float>) (([=](auto temp_405) -> RuntimeValue<float> { switch(temp_405) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) > ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x1: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) >= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) == ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: return (RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) <= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<float>) (([=](auto temp_426) -> RuntimeValue<float> { switch(temp_426) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) > ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x1: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) >= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) == ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: return (RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) <= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<float>) (([=](auto temp_427) -> RuntimeValue<float> { switch(temp_427) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) > ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x1: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) >= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) == ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: return (RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) <= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
 				break;
 			}
 			case 0x1: {
@@ -1355,18 +1382,18 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 				auto v3 = ((RuntimeValue<float>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x2))).Store();
 				auto v4 = ((RuntimeValue<float>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x3))).Store();
 				VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (((RuntimeValue<int>) ((int) ((int) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<float>) (([=](auto temp_406) -> RuntimeValue<float> { switch(temp_406) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) > ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x1: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) >= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) == ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: return (RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) <= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<float>) (([=](auto temp_407) -> RuntimeValue<float> { switch(temp_407) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) > ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x1: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) >= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) == ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: return (RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) <= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<float>) (([=](auto temp_408) -> RuntimeValue<float> { switch(temp_408) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v3) > ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x1: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v3) >= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v3) == ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: return (RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v3) <= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<float>) (([=](auto temp_409) -> RuntimeValue<float> { switch(temp_409) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v4) > ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x1: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v4) >= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v4) == ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: return (RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v4) <= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<float>) (([=](auto temp_428) -> RuntimeValue<float> { switch(temp_428) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) > ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x1: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) >= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) == ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: return (RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) <= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<float>) (([=](auto temp_429) -> RuntimeValue<float> { switch(temp_429) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) > ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x1: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) >= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) == ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: return (RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) <= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<float>) (([=](auto temp_430) -> RuntimeValue<float> { switch(temp_430) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v3) > ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x1: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v3) >= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v3) == ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: return (RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v3) <= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<float>) (([=](auto temp_431) -> RuntimeValue<float> { switch(temp_431) { case 0x0: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v4) > ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x1: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v4) >= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); case 0x2: return (RuntimeValue<float>) ((RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v4) == ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0))))))); default: return (RuntimeValue<float>) (Ternary<bool, float>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v4) <= ((float) ((float) (0x0))))), (float) (Bitcast<int, float>((int) ((int) (-0x1)))), (float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
 				break;
 			}
 			case 0x3: {
 				auto v1 = ((RuntimeValue<double>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<double>(0x0))).Store();
 				auto v2 = ((RuntimeValue<double>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<double>(0x1))).Store();
 				VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (((RuntimeValue<int>) ((int) ((int) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<double>) (([=](auto temp_410) -> RuntimeValue<double> { switch(temp_410) { case 0x0: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) > ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x1: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) >= ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x2: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) == ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); default: return (RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) <= ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<double>) (([=](auto temp_411) -> RuntimeValue<double> { switch(temp_411) { case 0x0: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) > ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x1: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) >= ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x2: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) == ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); default: return (RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) <= ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<double>) (([=](auto temp_432) -> RuntimeValue<double> { switch(temp_432) { case 0x0: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) > ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x1: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) >= ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x2: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) == ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); default: return (RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v1) <= ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<double>) (([=](auto temp_433) -> RuntimeValue<double> { switch(temp_433) { case 0x0: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) > ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x1: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) >= ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); case 0x2: return (RuntimeValue<double>) ((RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) == ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0))))))); default: return (RuntimeValue<double>) (Ternary<bool, double>((RuntimeValue<bool>) ((RuntimeValue<bool>) ((v2) <= ((double) ((double) (0x0))))), (double) (Bitcast<long, double>((long) ((long) (-0x1)))), (double) (Bitcast<long, double>((long) ((long) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1)))))));
 				break;
 			}
 			default: {
@@ -1382,7 +1409,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_412) -> string { switch(temp_412) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_434) -> string { switch(temp_434) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				auto v1 = ((RuntimeValue<float>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x0))).Store();
@@ -1425,7 +1452,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto opc = (inst >> 3) & 0x1U;
-		auto r = (string) (([=](auto temp_413) -> string { switch(temp_413) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_435) -> string { switch(temp_435) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		auto zero = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("/0")) : (string("")));
 		switch(type) {
 			case 0x0: {
@@ -1454,12 +1481,12 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto cond = (inst >> 12) & 0xFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_414) -> string { switch(temp_414) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		auto condstr = (string) (([=](auto temp_415) -> string { switch(temp_415) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((RuntimeValue<bool>) (([=](auto temp_416) -> RuntimeValue<bool> { switch(temp_416) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_417 = DefineLabel(), temp_419 = DefineLabel(), temp_418 = DefineLabel();
-		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_417, temp_419);
-		Label(temp_417);
+		auto r = (string) (([=](auto temp_436) -> string { switch(temp_436) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto condstr = (string) (([=](auto temp_437) -> string { switch(temp_437) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((RuntimeValue<bool>) (([=](auto temp_438) -> RuntimeValue<bool> { switch(temp_438) { case 0x0: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR)); case 0x2: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_NR)); case 0x3: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_VR)); case 0x4: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (NZCV_CR))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (RuntimeValue<bool>) ((RuntimeValue<bool>) ((((RuntimeValue<bool>) ((RuntimeValue<bool>) (((RuntimeValue<bool>) (NZCV_NR)) == ((RuntimeValue<bool>) (NZCV_VR))))) & ((RuntimeValue<bool>) ((RuntimeValue<bool>) (!((RuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_439 = DefineLabel(), temp_441 = DefineLabel(), temp_440 = DefineLabel();
+		BranchIf((RuntimeValue<bool>) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((RuntimeValue<bool>) (!(result))) : (result)), temp_439, temp_441);
+		Label(temp_439);
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (RuntimeValue<float>) (VSR[(int) (rn)]);
@@ -1474,8 +1501,8 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 				break;
 			}
 		}
-		Branch(temp_418);
-		Label(temp_419);
+		Branch(temp_440);
+		Label(temp_441);
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (RuntimeValue<float>) (VSR[(int) (rm)]);
@@ -1490,8 +1517,8 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 				break;
 			}
 		}
-		Branch(temp_418);
-		Label(temp_418);
+		Branch(temp_440);
+		Label(temp_440);
 		return true;
 	}
 	/* FCVT */
@@ -1571,6 +1598,35 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		}
 		return true;
 	}
+	/* FCVTL[2] */
+	if((inst & 0xBFBFFC00U) == 0x0E217800U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x1U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto o2 = (string) ((Q != 0) ? (string("2")) : (string("")));
+		auto ta = (string) ((size != 0) ? (string("2D")) : (string("4S")));
+		auto tb = (string) (([=](auto temp_442) -> string { switch(temp_442) { case 0x0: return string("4H"); case 0x1: return string("8H"); case 0x2: return string("2S"); default: return string("4S"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto n = ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
+		VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (((RuntimeValue<byte>) ((byte) ((byte) (0x0)))).CreateVector());
+		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
+			case 0x2: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<double>) ((RuntimeValue<double>) ((RuntimeValue<float>) ((n).Element<float>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<double>) ((RuntimeValue<double>) ((RuntimeValue<float>) ((n).Element<float>(0x1)))));
+				break;
+			}
+			case 0x3: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<double>) ((RuntimeValue<double>) ((RuntimeValue<float>) ((n).Element<float>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<double>) ((RuntimeValue<double>) ((RuntimeValue<float>) ((n).Element<float>(0x3)))));
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
 	/* FCVTZS-scalar-fixedpoint */
 	if((inst & 0x7F3F0000U) == 0x1E180000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -1580,7 +1636,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto fbits = (ulong) (((ulong) (long) (0x40)) - ((ulong) (byte) (scale)));
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (([=](auto temp_420) -> string { switch(temp_420) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r2 = (string) (([=](auto temp_443) -> string { switch(temp_443) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch((byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))))) {
 			case 0x0: {
 				XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (Call<uint, float, int>(FloatToFixed32, (RuntimeValue<float>) (VSR[(int) (rn)]), (RuntimeValue<int>) (fbits))));
@@ -1683,7 +1739,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto fbits = (ulong) (((ulong) (long) (0x40)) - ((ulong) (byte) (scale)));
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (([=](auto temp_421) -> string { switch(temp_421) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r2 = (string) (([=](auto temp_444) -> string { switch(temp_444) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch((byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))))) {
 			case 0x0: {
 				XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (Call<uint, float, int>(FloatToFixed32, (RuntimeValue<float>) (VSR[(int) (rn)]), (RuntimeValue<int>) (fbits))));
@@ -1783,7 +1839,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_422) -> string { switch(temp_422) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_445) -> string { switch(temp_445) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x3: {
 				throw "Not implemented";
@@ -1804,13 +1860,65 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		}
 		return true;
 	}
+	/* FDIV-vector */
+	if((inst & 0xBFA0FC00U) == 0x2E20FC00U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x1U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto ts = (string) (([=](auto temp_446) -> string { switch(temp_446) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
+			case 0x0: {
+				VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) / ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)]))));
+				break;
+			}
+			case 0x1: {
+				VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) / ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])));
+				break;
+			}
+			case 0x3: {
+				VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<double>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) / (RuntimeValue<Vector128<double>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)]))));
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
+	/* FMADD */
+	if((inst & 0xFF208000U) == 0x1F000000U) {
+		auto type = (inst >> 22) & 0x3U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto ra = (inst >> 10) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto t = (string) (([=](auto temp_447) -> string { switch(temp_447) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x3: return string("H"); default: throw "Not implemented"; } })(type));
+		switch(type) {
+			case 0x0: {
+				VSR[(int) (rd)] = (RuntimeValue<float>) (((RuntimeValue<float>) (RuntimeValue<float>) ((RuntimeValue<float>) (((RuntimeValue<float>) (RuntimeValue<float>) ((RuntimeValue<float>) (VSR[(int) (rn)]))) * ((RuntimeValue<float>) (RuntimeValue<float>) ((RuntimeValue<float>) (VSR[(int) (rm)])))))) + ((RuntimeValue<float>) (RuntimeValue<float>) ((RuntimeValue<float>) (VSR[(int) (ra)]))));
+				break;
+			}
+			case 0x1: {
+				VDR[(int) (rd)] = (RuntimeValue<double>) (((RuntimeValue<double>) (RuntimeValue<double>) ((RuntimeValue<double>) (((RuntimeValue<double>) (RuntimeValue<double>) ((RuntimeValue<double>) (VDR[(int) (rn)]))) * ((RuntimeValue<double>) (RuntimeValue<double>) ((RuntimeValue<double>) (VDR[(int) (rm)])))))) + ((RuntimeValue<double>) (RuntimeValue<double>) ((RuntimeValue<double>) (VDR[(int) (ra)]))));
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
 	/* FMAX-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E204800U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_423) -> string { switch(temp_423) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_448) -> string { switch(temp_448) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = ((RuntimeValue<float>) (VSR[(int) (rn)])).Store();
@@ -1837,7 +1945,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_424) -> string { switch(temp_424) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_449) -> string { switch(temp_449) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = ((RuntimeValue<float>) (VSR[(int) (rn)])).Store();
@@ -1864,7 +1972,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_425) -> string { switch(temp_425) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_450) -> string { switch(temp_450) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = ((RuntimeValue<float>) (VSR[(int) (rn)])).Store();
@@ -1891,7 +1999,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_426) -> string { switch(temp_426) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_451) -> string { switch(temp_451) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = ((RuntimeValue<float>) (VSR[(int) (rn)])).Store();
@@ -1921,9 +2029,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_427) -> string { switch(temp_427) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_452) -> string { switch(temp_452) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint) (([=](auto temp_428) -> uint { switch(temp_428) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto index = (uint) (([=](auto temp_453) -> uint { switch(temp_453) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
 		if((sz) != 0) {
 			VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<double>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + (RuntimeValue<Vector128<double>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<double>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (RuntimeValue<Vector128<double>>) ((RuntimeValue<Vector128<float>>) (((RuntimeValue<double>) ((RuntimeValue<double>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector())))))));
 		} else {
@@ -1938,7 +2046,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_429) -> string { switch(temp_429) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto T = (string) (([=](auto temp_454) -> string { switch(temp_454) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
 		if((sz) != 0) {
 			VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<double>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + (RuntimeValue<Vector128<double>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<double>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (RuntimeValue<Vector128<double>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))));
 		} else {
@@ -2069,7 +2177,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto imm = (inst >> 13) & 0xFFU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_430) -> string { switch(temp_430) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_455) -> string { switch(temp_455) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		auto sv = (float) (Bitcast<uint, float>((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((bool) ((bool) (0x0)))) << 0)) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 1)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 2)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 3)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 4)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 5)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 6)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 7)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 8)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 9)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 10)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 11)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 12)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 13)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 14)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 15)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 16)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 17)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 18)))))) << 0)) | ((uint) (((uint) ((byte) ((byte) ((byte) ((((ulong) (imm)) & ((ulong) (0xF)))))))) << 19)))) | ((uint) (((uint) ((byte) ((byte) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x4)))) & ((ulong) (0x3)))))))) << 23)))) | ((uint) (((uint) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 0)) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 1)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 2)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 3)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 4)))))) << 25)))) | ((uint) (((uint) ((bool) (((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1))))) != 0 ? 0U : 1U))) << 30)))) | ((uint) (((uint) ((bool) ((bool) ((byte) ((imm) >> (uint) (0x7)))))) << 31))))));
 		switch(type) {
 			case 0x0: {
@@ -2083,6 +2191,43 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		}
 		return true;
 	}
+	/* FMOV-vector-immediate-single */
+	if((inst & 0xBFF8FC00U) == 0x0F00F400U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto a = (inst >> 18) & 0x1U;
+		auto b = (inst >> 17) & 0x1U;
+		auto c = (inst >> 16) & 0x1U;
+		auto d = (inst >> 9) & 0x1U;
+		auto e = (inst >> 8) & 0x1U;
+		auto f = (inst >> 7) & 0x1U;
+		auto g = (inst >> 6) & 0x1U;
+		auto h = (inst >> 5) & 0x1U;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto T = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
+		auto sv = (float) (Bitcast<uint, float>((uint) ((((uint) ((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((uint) ((uint) (0x0)))) << 0)) | ((uint) (((uint) (h)) << 19)))) | ((uint) (((uint) (g)) << 20)))) | ((uint) (((uint) (f)) << 21)))) | ((uint) (((uint) (e)) << 22)))) | ((uint) (((uint) (d)) << 23)))) | ((uint) (((uint) (c)) << 24)))) | ((uint) (((uint) (b)) << 25)))) | ((uint) (((uint) (b)) << 26)))) | ((uint) (((uint) (b)) << 27)))) | ((uint) (((uint) (b)) << 28)))) | ((uint) (((uint) (b)) << 29)))) | ((uint) (((uint) (b)) << 30)))) | ((uint) (((uint) (a)) << 31)))))) ^ ((uint) ((uint) (((uint) ((uint) (0x1))) << (uint) (0x1E))))))));
+		auto avec = ((RuntimeValue<Vector128<float>>) (((RuntimeValue<float>) (sv)).CreateVector())).Store();
+		if((Q) != 0) {
+			VR[(int) (rd)] = avec;
+		} else {
+			VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (avec);
+		}
+		return true;
+	}
+	/* FMOV-vector-immediate-double */
+	if((inst & 0xFFF8FC00U) == 0x6F00F400U) {
+		auto a = (inst >> 18) & 0x1U;
+		auto b = (inst >> 17) & 0x1U;
+		auto c = (inst >> 16) & 0x1U;
+		auto d = (inst >> 9) & 0x1U;
+		auto e = (inst >> 8) & 0x1U;
+		auto f = (inst >> 7) & 0x1U;
+		auto g = (inst >> 6) & 0x1U;
+		auto h = (inst >> 5) & 0x1U;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto sv = (double) (Bitcast<ulong, double>((ulong) ((((ulong) ((ulong) ((ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (((ulong) ((ulong) ((ulong) (0x0)))) << 0)) | ((ulong) (((ulong) (h)) << 48)))) | ((ulong) (((ulong) (g)) << 49)))) | ((ulong) (((ulong) (f)) << 50)))) | ((ulong) (((ulong) (e)) << 51)))) | ((ulong) (((ulong) (d)) << 52)))) | ((ulong) (((ulong) (c)) << 53)))) | ((ulong) (((ulong) (b)) << 54)))) | ((ulong) (((ulong) (b)) << 55)))) | ((ulong) (((ulong) (b)) << 56)))) | ((ulong) (((ulong) (b)) << 57)))) | ((ulong) (((ulong) (b)) << 58)))) | ((ulong) (((ulong) (b)) << 59)))) | ((ulong) (((ulong) (b)) << 60)))) | ((ulong) (((ulong) (b)) << 61)))) | ((ulong) (((ulong) (b)) << 62)))) | ((ulong) (((ulong) (a)) << 63)))))) ^ ((ulong) ((ulong) (((ulong) ((ulong) (0x1))) << (uint) (0x3E))))))));
+		VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (((RuntimeValue<double>) (sv)).CreateVector());
+		return true;
+	}
 	/* FMUL-by-element-vector-spdp */
 	if((inst & 0xBF80F400U) == 0x0F809000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -2092,9 +2237,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_431) -> string { switch(temp_431) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_456) -> string { switch(temp_456) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint) (([=](auto temp_432) -> uint { switch(temp_432) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto index = (uint) (([=](auto temp_457) -> uint { switch(temp_457) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
 		if((sz) != 0) {
 			VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<double>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (RuntimeValue<Vector128<double>>) ((RuntimeValue<Vector128<float>>) (((RuntimeValue<double>) ((RuntimeValue<double>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector()))));
 		} else {
@@ -2108,7 +2253,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_433) -> string { switch(temp_433) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_458) -> string { switch(temp_458) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (RuntimeValue<float>) (((RuntimeValue<float>) (RuntimeValue<float>) ((RuntimeValue<float>) (VSR[(int) (rn)]))) * ((RuntimeValue<float>) (RuntimeValue<float>) ((RuntimeValue<float>) (VSR[(int) (rm)]))));
@@ -2132,7 +2277,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_434) -> string { switch(temp_434) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_459) -> string { switch(temp_459) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)]))));
@@ -2158,7 +2303,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_435) -> string { switch(temp_435) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_460) -> string { switch(temp_460) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (RuntimeValue<float>) (-((RuntimeValue<float>) (VSR[(int) (rn)])));
@@ -2181,7 +2326,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_436) -> string { switch(temp_436) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_461) -> string { switch(temp_461) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (RuntimeValue<float>) (-((RuntimeValue<float>) (((RuntimeValue<float>) (RuntimeValue<float>) ((RuntimeValue<float>) (VSR[(int) (rn)]))) * ((RuntimeValue<float>) (RuntimeValue<float>) ((RuntimeValue<float>) (VSR[(int) (rm)]))))));
@@ -2198,14 +2343,80 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		}
 		return true;
 	}
+	/* FRINTA-scalar */
+	if((inst & 0xFF3FFC00U) == 0x1E264000U) {
+		auto type = (inst >> 22) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto r = (string) (([=](auto temp_462) -> string { switch(temp_462) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		switch(type) {
+			case 0x0: {
+				VSR[(int) (rd)] = (RuntimeValue<float>) (((RuntimeValue<float>) (VSR[(int) (rn)])).Round());
+				break;
+			}
+			case 0x1: {
+				VDR[(int) (rd)] = (RuntimeValue<double>) (((RuntimeValue<double>) (VDR[(int) (rn)])).Round());
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
+	/* FRINTM-scalar */
+	if((inst & 0xFF3FFC00U) == 0x1E254000U) {
+		auto type = (inst >> 22) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto r = (string) (([=](auto temp_463) -> string { switch(temp_463) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		switch(type) {
+			case 0x0: {
+				VSR[(int) (rd)] = (RuntimeValue<float>) (((RuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfDown());
+				break;
+			}
+			case 0x1: {
+				VDR[(int) (rd)] = (RuntimeValue<double>) (((RuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfDown());
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
+	/* FRINTP-scalar */
+	if((inst & 0xFF3FFC00U) == 0x1E24C000U) {
+		auto type = (inst >> 22) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto r = (string) (([=](auto temp_464) -> string { switch(temp_464) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		switch(type) {
+			case 0x0: {
+				VSR[(int) (rd)] = (RuntimeValue<float>) (((RuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfUp());
+				break;
+			}
+			case 0x1: {
+				VDR[(int) (rd)] = (RuntimeValue<double>) (((RuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfUp());
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
 	/* FRSQRTE-vector */
 	if((inst & 0xBFBFFC00U) == 0x2EA1D800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_437) -> string { switch(temp_437) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (([=](auto temp_438) -> RuntimeValue<Vector128<float>> { switch(temp_438) { case 0x0: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (RuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x20, 0x2))); case 0x1: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (RuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x20, 0x4))); case 0x3: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (RuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x40, 0x2))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_465) -> string { switch(temp_465) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (([=](auto temp_466) -> RuntimeValue<Vector128<float>> { switch(temp_466) { case 0x0: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (RuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x20, 0x2))); case 0x1: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (RuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x20, 0x4))); case 0x3: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (RuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x40, 0x2))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		return true;
 	}
 	/* FRSQRTS-vector */
@@ -2215,7 +2426,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_439) -> string { switch(temp_439) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_467) -> string { switch(temp_467) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) (((RuntimeValue<Vector128<float>>) (((RuntimeValue<Vector128<float>>) (((RuntimeValue<float>) ((float) ((float) (0x3)))).CreateVector())) - ((RuntimeValue<Vector128<float>>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))) / ((RuntimeValue<Vector128<float>>) (((RuntimeValue<float>) ((float) ((float) (0x2)))).CreateVector()))));
@@ -2241,7 +2452,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_440) -> string { switch(temp_440) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_468) -> string { switch(temp_468) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (RuntimeValue<float>) ((RuntimeValue<float>) ((RuntimeValue<double>) ((RuntimeValue<float>) (VSR[(int) (rn)]))).Sqrt());
@@ -2264,7 +2475,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_441) -> string { switch(temp_441) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_469) -> string { switch(temp_469) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (RuntimeValue<float>) (((RuntimeValue<float>) (RuntimeValue<float>) ((RuntimeValue<float>) (VSR[(int) (rn)]))) - ((RuntimeValue<float>) (RuntimeValue<float>) ((RuntimeValue<float>) (VSR[(int) (rm)]))));
@@ -2375,10 +2586,10 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) (address)).value));
+			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) (address)).value()));
 		} else {
 			auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-			XR[(int) rt] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) (address)).value);
+			XR[(int) rt] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) (address)).value());
 		}
 		return true;
 	}
@@ -2387,7 +2598,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value)));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value())));
 		return true;
 	}
 	/* LDARH */
@@ -2395,7 +2606,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value)));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value())));
 		return true;
 	}
 	/* LDAXB */
@@ -2405,9 +2616,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (Exclusive32R = ((RuntimePointer<uint>) (address)).value));
+			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (Exclusive32R = ((RuntimePointer<uint>) (address)).value()));
 		} else {
-			XR[(int) rt] = (RuntimeValue<ulong>) (Exclusive64R = ((RuntimePointer<ulong>) (address)).value);
+			XR[(int) rt] = (RuntimeValue<ulong>) (Exclusive64R = ((RuntimePointer<ulong>) (address)).value());
 		}
 		return true;
 	}
@@ -2416,7 +2627,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<byte>) (Exclusive8R = ((RuntimePointer<byte>) (address)).value)));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<byte>) (Exclusive8R = ((RuntimePointer<byte>) (address)).value())));
 		return true;
 	}
 	/* LDAXRH */
@@ -2424,7 +2635,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ushort>) (Exclusive16R = ((RuntimePointer<ushort>) (address)).value)));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ushort>) (Exclusive16R = ((RuntimePointer<ushort>) (address)).value())));
 		return true;
 	}
 	/* LDP-immediate-postindex */
@@ -2438,11 +2649,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rt1] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) (address)).value));
-			XR[(int) rt2] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value));
+			XR[(int) rt1] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) (address)).value()));
+			XR[(int) rt2] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value()));
 		} else {
-			XR[(int) rt1] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) (address)).value);
-			XR[(int) rt2] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value);
+			XR[(int) rt1] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) (address)).value());
+			XR[(int) rt2] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value());
 		}
 		if(rn == 31)
 			SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)));
@@ -2461,11 +2672,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)))).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rt1] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) (address)).value));
-			XR[(int) rt2] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value));
+			XR[(int) rt1] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) (address)).value()));
+			XR[(int) rt2] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value()));
 		} else {
-			XR[(int) rt1] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) (address)).value);
-			XR[(int) rt2] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value);
+			XR[(int) rt1] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) (address)).value());
+			XR[(int) rt2] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value());
 		}
 		return true;
 	}
@@ -2476,23 +2687,23 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_442) -> string { switch(temp_442) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_443) -> long { switch(temp_443) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		auto r = (string) (([=](auto temp_470) -> string { switch(temp_470) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_471) -> long { switch(temp_471) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		switch(opc) {
 			case 0x0: {
-				VSR[(int) (rt1)] = (RuntimeValue<float>) (((RuntimePointer<float>) (address)).value);
-				VSR[(int) (rt2)] = (RuntimeValue<float>) (((RuntimePointer<float>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value);
+				VSR[(int) (rt1)] = (RuntimeValue<float>) (((RuntimePointer<float>) (address)).value());
+				VSR[(int) (rt2)] = (RuntimeValue<float>) (((RuntimePointer<float>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value());
 				break;
 			}
 			case 0x1: {
-				VDR[(int) (rt1)] = (RuntimeValue<double>) (((RuntimePointer<double>) (address)).value);
-				VDR[(int) (rt2)] = (RuntimeValue<double>) (((RuntimePointer<double>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value);
+				VDR[(int) (rt1)] = (RuntimeValue<double>) (((RuntimePointer<double>) (address)).value());
+				VDR[(int) (rt2)] = (RuntimeValue<double>) (((RuntimePointer<double>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value());
 				break;
 			}
 			default: {
-				VR[(int) (rt1)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) (address)).value);
-				VR[(int) (rt2)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x10))))).value);
+				VR[(int) (rt1)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) (address)).value());
+				VR[(int) (rt2)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x10))))).value());
 				break;
 			}
 		}
@@ -2509,23 +2720,23 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_444) -> string { switch(temp_444) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_445) -> long { switch(temp_445) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		auto r = (string) (([=](auto temp_472) -> string { switch(temp_472) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_473) -> long { switch(temp_473) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)))).Store();
 		switch(opc) {
 			case 0x0: {
-				VSR[(int) (rt1)] = (RuntimeValue<float>) (((RuntimePointer<float>) (address)).value);
-				VSR[(int) (rt2)] = (RuntimeValue<float>) (((RuntimePointer<float>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value);
+				VSR[(int) (rt1)] = (RuntimeValue<float>) (((RuntimePointer<float>) (address)).value());
+				VSR[(int) (rt2)] = (RuntimeValue<float>) (((RuntimePointer<float>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value());
 				break;
 			}
 			case 0x1: {
-				VDR[(int) (rt1)] = (RuntimeValue<double>) (((RuntimePointer<double>) (address)).value);
-				VDR[(int) (rt2)] = (RuntimeValue<double>) (((RuntimePointer<double>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value);
+				VDR[(int) (rt1)] = (RuntimeValue<double>) (((RuntimePointer<double>) (address)).value());
+				VDR[(int) (rt2)] = (RuntimeValue<double>) (((RuntimePointer<double>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value());
 				break;
 			}
 			default: {
-				VR[(int) (rt1)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) (address)).value);
-				VR[(int) (rt2)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x10))))).value);
+				VR[(int) (rt1)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) (address)).value());
+				VR[(int) (rt2)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x10))))).value());
 				break;
 			}
 		}
@@ -2539,8 +2750,8 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) (0x2));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)))).Store();
-		XR[(int) rt1] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) (((RuntimePointer<uint>) (address)).value), 32))));
-		XR[(int) rt2] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value), 32))));
+		XR[(int) rt1] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) (((RuntimePointer<uint>) (address)).value()), 32))));
+		XR[(int) rt2] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value()), 32))));
 		return true;
 	}
 	/* LDR-immediate-preindex */
@@ -2553,9 +2764,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm)))).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) (address)).value));
+			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) (address)).value()));
 		} else {
-			XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) (address)).value);
+			XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) (address)).value());
 		}
 		if(rn == 31)
 			SPR = address;
@@ -2572,9 +2783,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value));
+			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value()));
 		} else {
-			XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value);
+			XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value());
 		}
 		if(rn == 31)
 			SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm)));
@@ -2591,9 +2802,24 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (ushort) ((rawimm) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value));
+			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value()));
 		} else {
-			XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value);
+			XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value());
+		}
+		return true;
+	}
+	/* LDR-literal */
+	if((inst & 0xBF000000U) == 0x18000000U) {
+		auto size = (inst >> 30) & 0x1U;
+		auto rawimm = (inst >> 5) & 0x7FFFFU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
+		auto offset = (long) (SignExt<long>((uint) ((uint) ((uint) ((rawimm) << (uint) (0x2)))), 21));
+		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) (offset)));
+		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
+			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) (addr)).value()));
+		} else {
+			XR[(int) rt] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) (addr)).value());
 		}
 		return true;
 	}
@@ -2605,27 +2831,27 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
-		auto r = (string) (([=](auto temp_446) -> string { switch(temp_446) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_474) -> string { switch(temp_474) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		switch((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
-				VBR[(int) (rt)] = (RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value);
+				VBR[(int) (rt)] = (RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value());
 				break;
 			}
 			case 0x2: {
-				VHR[(int) (rt)] = (RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value);
+				VHR[(int) (rt)] = (RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value());
 				break;
 			}
 			case 0x4: {
-				VSR[(int) (rt)] = (RuntimeValue<float>) (((RuntimePointer<float>) (address)).value);
+				VSR[(int) (rt)] = (RuntimeValue<float>) (((RuntimePointer<float>) (address)).value());
 				break;
 			}
 			case 0x6: {
-				VDR[(int) (rt)] = (RuntimeValue<double>) (((RuntimePointer<double>) (address)).value);
+				VDR[(int) (rt)] = (RuntimeValue<double>) (((RuntimePointer<double>) (address)).value());
 				break;
 			}
 			case 0x1: {
-				VR[(int) (rt)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) (address)).value);
+				VR[(int) (rt)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) (address)).value());
 				break;
 			}
 			default: {
@@ -2647,27 +2873,27 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
-		auto r = (string) (([=](auto temp_447) -> string { switch(temp_447) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_475) -> string { switch(temp_475) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)))).Store();
 		switch((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
-				VBR[(int) (rt)] = (RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value);
+				VBR[(int) (rt)] = (RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value());
 				break;
 			}
 			case 0x2: {
-				VHR[(int) (rt)] = (RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value);
+				VHR[(int) (rt)] = (RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value());
 				break;
 			}
 			case 0x4: {
-				VSR[(int) (rt)] = (RuntimeValue<float>) (((RuntimePointer<float>) (address)).value);
+				VSR[(int) (rt)] = (RuntimeValue<float>) (((RuntimePointer<float>) (address)).value());
 				break;
 			}
 			case 0x6: {
-				VDR[(int) (rt)] = (RuntimeValue<double>) (((RuntimePointer<double>) (address)).value);
+				VDR[(int) (rt)] = (RuntimeValue<double>) (((RuntimePointer<double>) (address)).value());
 				break;
 			}
 			case 0x1: {
-				VR[(int) (rt)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) (address)).value);
+				VR[(int) (rt)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) (address)).value());
 				break;
 			}
 			default: {
@@ -2690,27 +2916,54 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto opc = (byte) ((byte) (((byte) (((byte) ((bool) ((bool) (0x1)))) << 0)) | ((byte) (((byte) (ropc)) << 1))));
 		auto m = (byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_448) -> string { switch(temp_448) { case 0x1: return string("B"); case 0x5: return string("H"); case 0x9: return string("S"); case 0xD: return string("D"); default: return string("Q"); } })(m));
-		auto imm = (uint) (((uint) ((uint) (rawimm))) << (uint) ((long) (([=](auto temp_449) -> long { switch(temp_449) { case 0x1: return 0x0; case 0x5: return 0x1; case 0x9: return 0x2; case 0xD: return 0x3; default: return 0x4; } })(m))));
+		auto r = (string) (([=](auto temp_476) -> string { switch(temp_476) { case 0x1: return string("B"); case 0x5: return string("H"); case 0x9: return string("S"); case 0xD: return string("D"); default: return string("Q"); } })(m));
+		auto imm = (uint) (((uint) ((uint) (rawimm))) << (uint) ((long) (([=](auto temp_477) -> long { switch(temp_477) { case 0x1: return 0x0; case 0x5: return 0x1; case 0x9: return 0x2; case 0xD: return 0x3; default: return 0x4; } })(m))));
 		switch(m) {
 			case 0x1: {
-				VBR[(int) (rt)] = (RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<uint>) (imm))))).value);
+				VBR[(int) (rt)] = (RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<uint>) (imm))))).value());
 				break;
 			}
 			case 0x5: {
-				VHR[(int) (rt)] = (RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<uint>) (imm))))).value);
+				VHR[(int) (rt)] = (RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<uint>) (imm))))).value());
 				break;
 			}
 			case 0x9: {
-				VSR[(int) (rt)] = (RuntimeValue<float>) (((RuntimePointer<float>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<uint>) (imm))))).value);
+				VSR[(int) (rt)] = (RuntimeValue<float>) (((RuntimePointer<float>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<uint>) (imm))))).value());
 				break;
 			}
 			case 0xD: {
-				VDR[(int) (rt)] = (RuntimeValue<double>) (((RuntimePointer<double>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<uint>) (imm))))).value);
+				VDR[(int) (rt)] = (RuntimeValue<double>) (((RuntimePointer<double>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<uint>) (imm))))).value());
 				break;
 			}
 			default: {
-				VR[(int) (rt)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<uint>) (imm))))).value);
+				VR[(int) (rt)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<uint>) (imm))))).value());
+				break;
+			}
+		}
+		return true;
+	}
+	/* LDR-simd-literal */
+	if((inst & 0x3F000000U) == 0x1C000000U) {
+		auto size = (inst >> 30) & 0x3U;
+		auto imm = (inst >> 5) & 0x7FFFFU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto r = (string) (([=](auto temp_478) -> string { switch(temp_478) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(size));
+		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) (((uint) (((uint) ((byte) ((byte) (0x0)))) << 0)) | ((uint) (((uint) (imm)) << 2)))), 21)))));
+		switch(size) {
+			case 0x0: {
+				VSR[(int) (rt)] = (RuntimeValue<float>) (((RuntimePointer<float>) (addr)).value());
+				break;
+			}
+			case 0x1: {
+				VDR[(int) (rt)] = (RuntimeValue<double>) (((RuntimePointer<double>) (addr)).value());
+				break;
+			}
+			case 0x2: {
+				VR[(int) (rt)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) (addr)).value());
+				break;
+			}
+			default: {
+				throw "Not implemented";
 				break;
 			}
 		}
@@ -2725,27 +2978,27 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto scale = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r1 = (string) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (string("Q")) : ((string) (([=](auto temp_450) -> string { switch(temp_450) { case 0x0: return string("B"); case 0x1: return string("H"); case 0x2: return string("S"); case 0x3: return string("D"); default: throw "Not implemented"; } })(size))));
+		auto r1 = (string) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (string("Q")) : ((string) (([=](auto temp_479) -> string { switch(temp_479) { case 0x0: return string("B"); case 0x1: return string("H"); case 0x2: return string("S"); case 0x3: return string("D"); default: throw "Not implemented"; } })(size))));
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (([=](auto temp_451) -> string { switch(temp_451) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
-		auto amount = (ulong) (((ulong) (bool) (scale)) * ((ulong) (long) ((long) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (0x4) : ((long) (([=](auto temp_452) -> long { switch(temp_452) { case 0x0: return 0x1; case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: throw "Not implemented"; } })(size)))))));
-		auto offset = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (([=](auto temp_453) -> RuntimeValue<ulong> { switch(temp_453) { case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))); case 0x3: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())); case 0x6: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())), 32))))); case 0x7: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())); default: throw "Not implemented"; } })(option))) << (amount))).Store();
+		auto extend = (string) (([=](auto temp_480) -> string { switch(temp_480) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto amount = (ulong) (((ulong) (bool) (scale)) * ((ulong) (long) ((long) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (0x4) : ((long) (([=](auto temp_481) -> long { switch(temp_481) { case 0x0: return 0x1; case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: throw "Not implemented"; } })(size)))))));
+		auto offset = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (([=](auto temp_482) -> RuntimeValue<ulong> { switch(temp_482) { case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))); case 0x3: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())); case 0x6: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())), 32))))); case 0x7: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())); default: throw "Not implemented"; } })(option))) << (amount))).Store();
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset)))).Store();
 		switch((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
-				VBR[(int) (rt)] = (RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value);
+				VBR[(int) (rt)] = (RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value());
 				break;
 			}
 			case 0x4: {
-				VSR[(int) (rt)] = (RuntimeValue<float>) (((RuntimePointer<float>) (address)).value);
+				VSR[(int) (rt)] = (RuntimeValue<float>) (((RuntimePointer<float>) (address)).value());
 				break;
 			}
 			case 0x6: {
-				VDR[(int) (rt)] = (RuntimeValue<double>) (((RuntimePointer<double>) (address)).value);
+				VDR[(int) (rt)] = (RuntimeValue<double>) (((RuntimePointer<double>) (address)).value());
 				break;
 			}
 			case 0x1: {
-				VR[(int) (rt)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) (address)).value);
+				VR[(int) (rt)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) (address)).value());
 				break;
 			}
 			default: {
@@ -2766,12 +3019,12 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		auto extend = (string) (([=](auto temp_454) -> string { switch(temp_454) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto extend = (string) (([=](auto temp_483) -> string { switch(temp_483) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		auto offset = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((RuntimeValue<ulong>) (((byte) ((((ulong) (option)) & ((ulong) (0x1))))) != 0 ? ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value));
+			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value()));
 		} else {
-			XR[(int) rt] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value);
+			XR[(int) rt] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value());
 		}
 		return true;
 	}
@@ -2781,7 +3034,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value))));
+		XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value()))));
 		if(rn == 31)
 			SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm)));
 		else
@@ -2795,7 +3048,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm)))).Store();
-		XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value))));
+		XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value()))));
 		if(rn == 31)
 			SPR = address;
 		else
@@ -2807,7 +3060,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value)));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value())));
 		return true;
 	}
 	/* LDRB-register */
@@ -2818,9 +3071,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_455) -> string { switch(temp_455) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_484) -> string { switch(temp_484) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((RuntimeValue<ulong>) (((byte) ((((ulong) (option)) & ((ulong) (0x1))))) != 0 ? ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
-		XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value));
+		XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value()));
 		return true;
 	}
 	/* LDRH-immediate-postindex */
@@ -2830,7 +3083,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value)));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value())));
 		if(rn == 31)
 			SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm)));
 		else
@@ -2844,7 +3097,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm)))).Store();
-		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value)));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value())));
 		if(rn == 31)
 			SPR = address;
 		else
@@ -2857,7 +3110,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (ushort) ((rawimm) << (uint) (0x1));
-		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value)));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value())));
 		return true;
 	}
 	/* LDRH-register */
@@ -2868,9 +3121,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_456) -> string { switch(temp_456) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_485) -> string { switch(temp_485) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((RuntimeValue<ulong>) (((byte) ((((ulong) (option)) & ((ulong) (0x1))))) != 0 ? ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
-		XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value));
+		XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value()));
 		return true;
 	}
 	/* LDRSB-immediate-postindex */
@@ -2883,9 +3136,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
-			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value), 8)))));
+			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value()), 8)))));
 		} else {
-			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value), 8))));
+			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value()), 8))));
 		}
 		if(rn == 31)
 			SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm)));
@@ -2903,9 +3156,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm)))).Store();
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
-			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value), 8)))));
+			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value()), 8)))));
 		} else {
-			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value), 8))));
+			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value()), 8))));
 		}
 		if(rn == 31)
 			SPR = address;
@@ -2921,9 +3174,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
-			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value), 8)))));
+			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value()), 8)))));
 		} else {
-			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value), 8))));
+			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value()), 8))));
 		}
 		return true;
 	}
@@ -2936,12 +3189,12 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_457) -> string { switch(temp_457) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_486) -> string { switch(temp_486) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((RuntimeValue<ulong>) (((byte) ((((ulong) (option)) & ((ulong) (0x1))))) != 0 ? ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
-			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value), 8)))));
+			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value()), 8)))));
 		} else {
-			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value), 8))));
+			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value()), 8))));
 		}
 		return true;
 	}
@@ -2955,9 +3208,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
-			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value), 16)))));
+			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value()), 16)))));
 		} else {
-			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value), 16))));
+			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value()), 16))));
 		}
 		if(rn == 31)
 			SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm)));
@@ -2975,9 +3228,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm)))).Store();
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
-			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value), 16)))));
+			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value()), 16)))));
 		} else {
-			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value), 16))));
+			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) (address)).value()), 16))));
 		}
 		if(rn == 31)
 			SPR = address;
@@ -2994,9 +3247,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (ushort) ((rawimm) << (uint) (0x1));
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
-			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value), 16)))));
+			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value()), 16)))));
 		} else {
-			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value), 16))));
+			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value()), 16))));
 		}
 		return true;
 	}
@@ -3009,12 +3262,12 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_458) -> string { switch(temp_458) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_487) -> string { switch(temp_487) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((RuntimeValue<ulong>) (((byte) ((((ulong) (option)) & ((ulong) (0x1))))) != 0 ? ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
-			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value), 16)))));
+			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value()), 16)))));
 		} else {
-			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value), 16))));
+			XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value()), 16))));
 		}
 		return true;
 	}
@@ -3025,7 +3278,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) (((RuntimePointer<uint>) (address)).value), 32))));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) (((RuntimePointer<uint>) (address)).value()), 32))));
 		if(rn == 31)
 			SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm)));
 		else
@@ -3039,7 +3292,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm)))).Store();
-		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) (((RuntimePointer<uint>) (address)).value), 32))));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) (((RuntimePointer<uint>) (address)).value()), 32))));
 		if(rn == 31)
 			SPR = address;
 		else
@@ -3052,7 +3305,15 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (ushort) ((rawimm) << (uint) (0x2));
-		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value), 32))));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value()), 32))));
+		return true;
+	}
+	/* LDRSW-literal */
+	if((inst & 0xFF000000U) == 0x98000000U) {
+		auto imm = (inst >> 5) & 0x7FFFFU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) (((uint) (((uint) ((byte) ((byte) (0x0)))) << 0)) | ((uint) (((uint) (imm)) << 2)))), 21)))));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) (((RuntimePointer<uint>) (addr)).value()), 32))));
 		return true;
 	}
 	/* LDRSW-register */
@@ -3064,9 +3325,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0x2));
-		auto extend = (string) (([=](auto temp_459) -> string { switch(temp_459) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto extend = (string) (([=](auto temp_488) -> string { switch(temp_488) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		auto offset = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((RuntimeValue<ulong>) (((byte) ((((ulong) (option)) & ((ulong) (0x1))))) != 0 ? ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
-		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value), 32))));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value()), 32))));
 		return true;
 	}
 	/* LDUR */
@@ -3078,9 +3339,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value));
+			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value()));
 		} else {
-			XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value);
+			XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value());
 		}
 		return true;
 	}
@@ -3090,7 +3351,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		XR[(int) rd] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value)));
+		XR[(int) rd] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value())));
 		return true;
 	}
 	/* LDURH */
@@ -3099,7 +3360,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		XR[(int) rd] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value)));
+		XR[(int) rd] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value())));
 		return true;
 	}
 	/* LDURSB */
@@ -3111,9 +3372,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value), 8)))));
+			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value()), 8)))));
 		} else {
-			XR[(int) rd] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value), 8))));
+			XR[(int) rd] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) (((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value()), 8))));
 		}
 		return true;
 	}
@@ -3126,9 +3387,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value), 16)))));
+			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value()), 16)))));
 		} else {
-			XR[(int) rd] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value), 16))));
+			XR[(int) rd] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) (((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value()), 16))));
 		}
 		return true;
 	}
@@ -3138,7 +3399,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (long) (SignExt<long>(rawimm, 9));
-		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value), 32))));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) (((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm))))).value()), 32))));
 		return true;
 	}
 	/* LDUR-simd */
@@ -3148,24 +3409,24 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_460) -> string { switch(temp_460) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_489) -> string { switch(temp_489) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (imm)))).Store();
 		switch((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
-				VBR[(int) (rt)] = (RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value);
+				VBR[(int) (rt)] = (RuntimeValue<byte>) (((RuntimePointer<byte>) (address)).value());
 				break;
 			}
 			case 0x4: {
-				VSR[(int) (rt)] = (RuntimeValue<float>) (((RuntimePointer<float>) (address)).value);
+				VSR[(int) (rt)] = (RuntimeValue<float>) (((RuntimePointer<float>) (address)).value());
 				break;
 			}
 			case 0x6: {
-				VDR[(int) (rt)] = (RuntimeValue<double>) (((RuntimePointer<double>) (address)).value);
+				VDR[(int) (rt)] = (RuntimeValue<double>) (((RuntimePointer<double>) (address)).value());
 				break;
 			}
 			case 0x1: {
-				VR[(int) (rt)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) (address)).value);
+				VR[(int) (rt)] = (RuntimeValue<Vector128<float>>) (((RuntimePointer<Vector128<float>>) (address)).value());
 				break;
 			}
 		}
@@ -3178,9 +3439,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (Exclusive32R = ((RuntimePointer<uint>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value));
+			XR[(int) rt] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (Exclusive32R = ((RuntimePointer<uint>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value()));
 		} else {
-			XR[(int) rt] = (RuntimeValue<ulong>) (Exclusive64R = ((RuntimePointer<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value);
+			XR[(int) rt] = (RuntimeValue<ulong>) (Exclusive64R = ((RuntimePointer<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value());
 		}
 		return true;
 	}
@@ -3188,14 +3449,14 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 	if((inst & 0xFFFFFC00U) == 0x085F7C00U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<byte>) (Exclusive8R = ((RuntimePointer<byte>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value)));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<byte>) (Exclusive8R = ((RuntimePointer<byte>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value())));
 		return true;
 	}
 	/* LDXRH */
 	if((inst & 0xFFFFFC00U) == 0x485F7C00U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ushort>) (Exclusive16R = ((RuntimePointer<ushort>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value)));
+		XR[(int) rt] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ushort>) (Exclusive16R = ((RuntimePointer<ushort>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value())));
 		return true;
 	}
 	/* LSL-register */
@@ -3241,7 +3502,52 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	/* MOVI-32bit */
+	/* MOVI-scalar-64bit */
+	if((inst & 0xFFF8FC00U) == 0x2F00E400U) {
+		auto a = (inst >> 18) & 0x1U;
+		auto b = (inst >> 17) & 0x1U;
+		auto c = (inst >> 16) & 0x1U;
+		auto d = (inst >> 9) & 0x1U;
+		auto e = (inst >> 8) & 0x1U;
+		auto f = (inst >> 7) & 0x1U;
+		auto g = (inst >> 6) & 0x1U;
+		auto h = (inst >> 5) & 0x1U;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto imm8a = (byte) ((byte) ((long) ((a != 0) ? (0xFF) : (0x0))));
+		auto imm8b = (byte) ((byte) ((long) ((b != 0) ? (0xFF) : (0x0))));
+		auto imm8c = (byte) ((byte) ((long) ((c != 0) ? (0xFF) : (0x0))));
+		auto imm8d = (byte) ((byte) ((long) ((d != 0) ? (0xFF) : (0x0))));
+		auto imm8e = (byte) ((byte) ((long) ((e != 0) ? (0xFF) : (0x0))));
+		auto imm8f = (byte) ((byte) ((long) ((f != 0) ? (0xFF) : (0x0))));
+		auto imm8g = (byte) ((byte) ((long) ((g != 0) ? (0xFF) : (0x0))));
+		auto imm8h = (byte) ((byte) ((long) ((h != 0) ? (0xFF) : (0x0))));
+		auto imm = (ulong) ((ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (((ulong) (imm8h)) << 0)) | ((ulong) (((ulong) (imm8g)) << 8)))) | ((ulong) (((ulong) (imm8f)) << 16)))) | ((ulong) (((ulong) (imm8e)) << 24)))) | ((ulong) (((ulong) (imm8d)) << 32)))) | ((ulong) (((ulong) (imm8c)) << 40)))) | ((ulong) (((ulong) (imm8b)) << 48)))) | ((ulong) (((ulong) (imm8a)) << 56))));
+		VDR[(int) (rd)] = (double) (Bitcast<ulong, double>(imm));
+		return true;
+	}
+	/* MOVI-vector-8bit */
+	if((inst & 0xBFF8FC00U) == 0x0F00E400U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto a = (inst >> 18) & 0x1U;
+		auto b = (inst >> 17) & 0x1U;
+		auto c = (inst >> 16) & 0x1U;
+		auto d = (inst >> 9) & 0x1U;
+		auto e = (inst >> 8) & 0x1U;
+		auto f = (inst >> 7) & 0x1U;
+		auto g = (inst >> 6) & 0x1U;
+		auto h = (inst >> 5) & 0x1U;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto t = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
+		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto avec = ((RuntimeValue<Vector128<float>>) (((RuntimeValue<float>) ((float) (Bitcast<uint, float>((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) (imm)) << 0)) | ((uint) (((uint) (imm)) << 8)))) | ((uint) (((uint) (imm)) << 16)))) | ((uint) (((uint) (imm)) << 24)))))))).CreateVector())).Store();
+		if((Q) != 0) {
+			VR[(int) (rd)] = avec;
+		} else {
+			VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (avec);
+		}
+		return true;
+	}
+	/* MOVI-vector-32bit */
 	if((inst & 0xBFF89C00U) == 0x0F000400U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto a = (inst >> 18) & 0x1U;
@@ -3255,7 +3561,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-		auto amount = (long) (([=](auto temp_461) -> long { switch(temp_461) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
+		auto amount = (long) (([=](auto temp_490) -> long { switch(temp_490) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
 		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
 		auto avec = ((RuntimeValue<Vector128<float>>) (((RuntimeValue<float>) ((float) (Bitcast<uint, float>((uint) (((uint) ((uint) (imm))) << (uint) (amount)))))).CreateVector())).Store();
 		if((Q) != 0) {
@@ -3373,10 +3679,10 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto rm = (byte) (((bool) (((size) == (0x2)) ? 1U : 0U) != 0) ? ((byte) ((byte) (((byte) (((byte) (rv)) << 0)) | ((byte) (((byte) (M)) << 4))))) : (rv));
-		auto t = (string) (([=](auto temp_462) -> string { switch(temp_462) { case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto ts = (string) (([=](auto temp_463) -> string { switch(temp_463) { case 0x1: return string("H"); case 0x2: return string("S"); default: throw "Not implemented"; } })(size));
-		auto index = (byte) (([=](auto temp_464) -> byte { switch(temp_464) { case 0x1: return (byte) ((byte) (((byte) (byte) (((byte) (((byte) (M)) << 0)) | ((byte) (((byte) (L)) << 1)))) | ((byte) (((byte) (H)) << 2)))); case 0x2: return (byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))); default: throw "Not implemented"; } })(size));
-		auto v = ((RuntimeValue<Vector128<float>>) (([=](auto temp_465) -> RuntimeValue<Vector128<float>> { switch(temp_465) { case 0x1: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<ushort>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((RuntimeValue<ushort>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<ushort>(index)))))); case 0x2: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<uint>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((RuntimeValue<uint>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint>(index)))))); default: throw "Not implemented"; } })(size))).Store();
+		auto t = (string) (([=](auto temp_491) -> string { switch(temp_491) { case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_492) -> string { switch(temp_492) { case 0x1: return string("H"); case 0x2: return string("S"); default: throw "Not implemented"; } })(size));
+		auto index = (byte) (([=](auto temp_493) -> byte { switch(temp_493) { case 0x1: return (byte) ((byte) (((byte) (byte) (((byte) (((byte) (M)) << 0)) | ((byte) (((byte) (L)) << 1)))) | ((byte) (((byte) (H)) << 2)))); case 0x2: return (byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))); default: throw "Not implemented"; } })(size));
+		auto v = ((RuntimeValue<Vector128<float>>) (([=](auto temp_494) -> RuntimeValue<Vector128<float>> { switch(temp_494) { case 0x1: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<ushort>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((RuntimeValue<ushort>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<ushort>(index)))))); case 0x2: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<uint>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((RuntimeValue<uint>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint>(index)))))); default: throw "Not implemented"; } })(size))).Store();
 		VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((RuntimeValue<Vector128<float>>) (v)));
 		return true;
 	}
@@ -3387,9 +3693,95 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_466) -> string { switch(temp_466) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto v = ((RuntimeValue<Vector128<float>>) (([=](auto temp_467) -> RuntimeValue<Vector128<float>> { switch(temp_467) { case 0x0: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<byte>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((RuntimeValue<Vector128<byte>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x1: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<ushort>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((RuntimeValue<Vector128<ushort>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x2: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<uint>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((RuntimeValue<Vector128<uint>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); default: throw "Not implemented"; } })(size))).Store();
+		auto t = (string) (([=](auto temp_495) -> string { switch(temp_495) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto v = ((RuntimeValue<Vector128<float>>) (([=](auto temp_496) -> RuntimeValue<Vector128<float>> { switch(temp_496) { case 0x0: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<byte>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((RuntimeValue<Vector128<byte>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x1: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<ushort>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((RuntimeValue<Vector128<ushort>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x2: return (RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<uint>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((RuntimeValue<Vector128<uint>>) ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); default: throw "Not implemented"; } })(size))).Store();
 		VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((RuntimeValue<Vector128<float>>) (v)));
+		return true;
+	}
+	/* NEG-vector */
+	if((inst & 0xBF3FFC00U) == 0x2E20B800U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto t = (string) (([=](auto temp_497) -> string { switch(temp_497) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto n = ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
+		VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (((RuntimeValue<byte>) ((byte) ((byte) (0x0)))).CreateVector());
+		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
+			case 0x0: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x4)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x5)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x6)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x7)))));
+				break;
+			}
+			case 0x1: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x4)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x5)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x6)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x7)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x8, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x8)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x9, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0x9)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xA, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0xA)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xB, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0xB)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xC, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0xC)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xD, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0xD)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xE, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0xE)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xF, (RuntimeValue<sbyte>) (-((RuntimeValue<sbyte>) ((n).Element<sbyte>(0xF)))));
+				break;
+			}
+			case 0x2: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<short>) (-((RuntimeValue<short>) ((n).Element<short>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<short>) (-((RuntimeValue<short>) ((n).Element<short>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<short>) (-((RuntimeValue<short>) ((n).Element<short>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<short>) (-((RuntimeValue<short>) ((n).Element<short>(0x3)))));
+				break;
+			}
+			case 0x3: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<short>) (-((RuntimeValue<short>) ((n).Element<short>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<short>) (-((RuntimeValue<short>) ((n).Element<short>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<short>) (-((RuntimeValue<short>) ((n).Element<short>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<short>) (-((RuntimeValue<short>) ((n).Element<short>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (RuntimeValue<short>) (-((RuntimeValue<short>) ((n).Element<short>(0x4)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (RuntimeValue<short>) (-((RuntimeValue<short>) ((n).Element<short>(0x5)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (RuntimeValue<short>) (-((RuntimeValue<short>) ((n).Element<short>(0x6)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (RuntimeValue<short>) (-((RuntimeValue<short>) ((n).Element<short>(0x7)))));
+				break;
+			}
+			case 0x4: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<float>) (-((RuntimeValue<float>) ((n).Element<float>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<float>) (-((RuntimeValue<float>) ((n).Element<float>(0x1)))));
+				break;
+			}
+			case 0x5: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<float>) (-((RuntimeValue<float>) ((n).Element<float>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<float>) (-((RuntimeValue<float>) ((n).Element<float>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<float>) (-((RuntimeValue<float>) ((n).Element<float>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<float>) (-((RuntimeValue<float>) ((n).Element<float>(0x3)))));
+				break;
+			}
+			case 0x7: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<double>) (-((RuntimeValue<double>) ((n).Element<double>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<double>) (-((RuntimeValue<double>) ((n).Element<double>(0x1)))));
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
+	/* NOP */
+	if((inst & 0xFFFFFFFFU) == 0xD503201FU) {
 		return true;
 	}
 	/* ORN-shifted-register */
@@ -3401,11 +3793,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_468) -> string { switch(temp_468) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_498) -> string { switch(temp_498) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) | ((RuntimeValue<uint>) ((RuntimeValue<uint>) (~((RuntimeValue<uint>) (([=](auto temp_469) -> RuntimeValue<uint> { switch(temp_469) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))))))));
+			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) | ((RuntimeValue<uint>) ((RuntimeValue<uint>) (~((RuntimeValue<uint>) (([=](auto temp_499) -> RuntimeValue<uint> { switch(temp_499) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))))))));
 		} else {
-			XR[(int) rd] = (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) | ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (~((RuntimeValue<ulong>) (([=](auto temp_470) -> RuntimeValue<ulong> { switch(temp_470) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))))));
+			XR[(int) rd] = (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) | ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (~((RuntimeValue<ulong>) (([=](auto temp_500) -> RuntimeValue<ulong> { switch(temp_500) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))))));
 		}
 		return true;
 	}
@@ -3441,11 +3833,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_471) -> string { switch(temp_471) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_501) -> string { switch(temp_501) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) | ((RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_472) -> RuntimeValue<uint> { switch(temp_472) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))))));
+			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) | ((RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_502) -> RuntimeValue<uint> { switch(temp_502) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))))));
 		} else {
-			XR[(int) rd] = (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) | ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_473) -> RuntimeValue<ulong> { switch(temp_473) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))));
+			XR[(int) rd] = (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) | ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_503) -> RuntimeValue<ulong> { switch(temp_503) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))));
 		}
 		return true;
 	}
@@ -3679,7 +4071,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	/* SCVTF-vector-integer */
+	/* SCVTF-scalar */
 	if((inst & 0xFFBFFC00U) == 0x5E21D800U) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
@@ -3689,6 +4081,40 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 			VSR[(int) (rd)] = (RuntimeValue<float>) ((RuntimeValue<float>) ((RuntimeValue<int>) (((RuntimeValue<float>) (VSR[(int) (rn)])).Bitcast<int>())));
 		} else {
 			VDR[(int) (rd)] = (RuntimeValue<double>) ((RuntimeValue<double>) ((RuntimeValue<long>) (((RuntimeValue<double>) (VDR[(int) (rn)])).Bitcast<long>())));
+		}
+		return true;
+	}
+	/* SCVTF-vector */
+	if((inst & 0xBFBFFC00U) == 0x0E21D800U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x1U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto t = (string) (([=](auto temp_504) -> string { switch(temp_504) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto n = ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
+		VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (((RuntimeValue<byte>) ((byte) ((byte) (0x0)))).CreateVector());
+		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
+			case 0x0: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<float>) ((RuntimeValue<float>) ((RuntimeValue<int>) ((n).Element<int>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<float>) ((RuntimeValue<float>) ((RuntimeValue<int>) ((n).Element<int>(0x1)))));
+				break;
+			}
+			case 0x1: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<float>) ((RuntimeValue<float>) ((RuntimeValue<int>) ((n).Element<int>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<float>) ((RuntimeValue<float>) ((RuntimeValue<int>) ((n).Element<int>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<float>) ((RuntimeValue<float>) ((RuntimeValue<int>) ((n).Element<int>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<float>) ((RuntimeValue<float>) ((RuntimeValue<int>) ((n).Element<int>(0x3)))));
+				break;
+			}
+			case 0x3: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<double>) ((RuntimeValue<double>) ((RuntimeValue<long>) ((n).Element<long>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<double>) ((RuntimeValue<double>) ((RuntimeValue<long>) ((n).Element<long>(0x1)))));
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
 		}
 		return true;
 	}
@@ -3790,9 +4216,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			((RuntimePointer<uint>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value = (RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]()));
+			((RuntimePointer<uint>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value((RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]())));
 		} else {
-			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value = (RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]());
+			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]()));
 		}
 		return true;
 	}
@@ -3801,7 +4227,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-		((RuntimePointer<byte>) (address)).value = (RuntimeValue<byte>) ((RuntimeValue<byte>) ((RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]()))));
+		((RuntimePointer<byte>) (address)).value((RuntimeValue<byte>) ((RuntimeValue<byte>) ((RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]())))));
 		return true;
 	}
 	/* STLRH */
@@ -3809,7 +4235,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-		((RuntimePointer<ushort>) (address)).value = (RuntimeValue<ushort>) ((RuntimeValue<ushort>) ((RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]()))));
+		((RuntimePointer<ushort>) (address)).value((RuntimeValue<ushort>) ((RuntimeValue<ushort>) ((RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]())))));
 		return true;
 	}
 	/* STLXR */
@@ -3821,9 +4247,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			((RuntimePointer<uint>) (address)).value = (RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]()));
+			((RuntimePointer<uint>) (address)).value((RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]())));
 		} else {
-			((RuntimePointer<ulong>) (address)).value = (RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]());
+			((RuntimePointer<ulong>) (address)).value((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]()));
 		}
 		XR[(int) rs] = (RuntimeValue<ulong>) (RuntimeValue<uint>) (0x0);
 		return true;
@@ -3834,7 +4260,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-		((RuntimePointer<byte>) (address)).value = (RuntimeValue<byte>) ((RuntimeValue<byte>) ((RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]()))));
+		((RuntimePointer<byte>) (address)).value((RuntimeValue<byte>) ((RuntimeValue<byte>) ((RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]())))));
 		XR[(int) rs] = (RuntimeValue<ulong>) (RuntimeValue<uint>) (0x0);
 		return true;
 	}
@@ -3849,11 +4275,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		auto address = ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]())).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			((RuntimePointer<uint>) (address)).value = (RuntimeValue<uint>) ((rt1) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt1]()));
-			((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value = (RuntimeValue<uint>) ((rt2) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt2]()));
+			((RuntimePointer<uint>) (address)).value((RuntimeValue<uint>) ((rt1) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt1]())));
+			((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value((RuntimeValue<uint>) ((rt2) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt2]())));
 		} else {
-			((RuntimePointer<ulong>) (address)).value = (RuntimeValue<ulong>) ((rt1) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt1]());
-			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value = (RuntimeValue<ulong>) ((rt2) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt2]());
+			((RuntimePointer<ulong>) (address)).value((RuntimeValue<ulong>) ((rt1) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt1]()));
+			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value((RuntimeValue<ulong>) ((rt2) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt2]()));
 		}
 		if(rd == 31)
 			SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)));
@@ -3872,11 +4298,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)))).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			((RuntimePointer<uint>) (address)).value = (RuntimeValue<uint>) ((rt1) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt1]()));
-			((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value = (RuntimeValue<uint>) ((rt2) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt2]()));
+			((RuntimePointer<uint>) (address)).value((RuntimeValue<uint>) ((rt1) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt1]())));
+			((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value((RuntimeValue<uint>) ((rt2) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt2]())));
 		} else {
-			((RuntimePointer<ulong>) (address)).value = (RuntimeValue<ulong>) ((rt1) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt1]());
-			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value = (RuntimeValue<ulong>) ((rt2) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt2]());
+			((RuntimePointer<ulong>) (address)).value((RuntimeValue<ulong>) ((rt1) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt1]()));
+			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value((RuntimeValue<ulong>) ((rt2) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt2]()));
 		}
 		if(rd == 31)
 			SPR = address;
@@ -3895,11 +4321,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)))).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			((RuntimePointer<uint>) (address)).value = (RuntimeValue<uint>) ((rt1) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt1]()));
-			((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value = (RuntimeValue<uint>) ((rt2) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt2]()));
+			((RuntimePointer<uint>) (address)).value((RuntimeValue<uint>) ((rt1) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt1]())));
+			((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value((RuntimeValue<uint>) ((rt2) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt2]())));
 		} else {
-			((RuntimePointer<ulong>) (address)).value = (RuntimeValue<ulong>) ((rt1) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt1]());
-			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value = (RuntimeValue<ulong>) ((rt2) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt2]());
+			((RuntimePointer<ulong>) (address)).value((RuntimeValue<ulong>) ((rt1) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt1]()));
+			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value((RuntimeValue<ulong>) ((rt2) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt2]()));
 		}
 		return true;
 	}
@@ -3910,23 +4336,23 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_474) -> string { switch(temp_474) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_475) -> long { switch(temp_475) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_505) -> string { switch(temp_505) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_506) -> long { switch(temp_506) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		auto address = ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]())).Store();
 		switch(opc) {
 			case 0x0: {
-				((RuntimePointer<float>) (address)).value = (RuntimeValue<float>) (VSR[(int) (rt1)]);
-				((RuntimePointer<float>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value = (RuntimeValue<float>) (VSR[(int) (rt2)]);
+				((RuntimePointer<float>) (address)).value((RuntimeValue<float>) (VSR[(int) (rt1)]));
+				((RuntimePointer<float>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value((RuntimeValue<float>) (VSR[(int) (rt2)]));
 				break;
 			}
 			case 0x1: {
-				((RuntimePointer<double>) (address)).value = (RuntimeValue<double>) (VDR[(int) (rt1)]);
-				((RuntimePointer<double>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value = (RuntimeValue<double>) (VDR[(int) (rt2)]);
+				((RuntimePointer<double>) (address)).value((RuntimeValue<double>) (VDR[(int) (rt1)]));
+				((RuntimePointer<double>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value((RuntimeValue<double>) (VDR[(int) (rt2)]));
 				break;
 			}
 			case 0x2: {
-				((RuntimePointer<Vector128<float>>) (address)).value = (RuntimeValue<Vector128<float>>) (VR[(int) (rt1)]);
-				((RuntimePointer<Vector128<float>>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x10))))).value = (RuntimeValue<Vector128<float>>) (VR[(int) (rt2)]);
+				((RuntimePointer<Vector128<float>>) (address)).value((RuntimeValue<Vector128<float>>) (VR[(int) (rt1)]));
+				((RuntimePointer<Vector128<float>>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x10))))).value((RuntimeValue<Vector128<float>>) (VR[(int) (rt2)]));
 				break;
 			}
 			default: {
@@ -3947,23 +4373,23 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_476) -> string { switch(temp_476) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_477) -> long { switch(temp_477) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_507) -> string { switch(temp_507) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_508) -> long { switch(temp_508) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)))).Store();
 		switch(opc) {
 			case 0x0: {
-				((RuntimePointer<float>) (address)).value = (RuntimeValue<float>) (VSR[(int) (rt1)]);
-				((RuntimePointer<float>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value = (RuntimeValue<float>) (VSR[(int) (rt2)]);
+				((RuntimePointer<float>) (address)).value((RuntimeValue<float>) (VSR[(int) (rt1)]));
+				((RuntimePointer<float>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value((RuntimeValue<float>) (VSR[(int) (rt2)]));
 				break;
 			}
 			case 0x1: {
-				((RuntimePointer<double>) (address)).value = (RuntimeValue<double>) (VDR[(int) (rt1)]);
-				((RuntimePointer<double>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value = (RuntimeValue<double>) (VDR[(int) (rt2)]);
+				((RuntimePointer<double>) (address)).value((RuntimeValue<double>) (VDR[(int) (rt1)]));
+				((RuntimePointer<double>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value((RuntimeValue<double>) (VDR[(int) (rt2)]));
 				break;
 			}
 			case 0x2: {
-				((RuntimePointer<Vector128<float>>) (address)).value = (RuntimeValue<Vector128<float>>) (VR[(int) (rt1)]);
-				((RuntimePointer<Vector128<float>>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x10))))).value = (RuntimeValue<Vector128<float>>) (VR[(int) (rt2)]);
+				((RuntimePointer<Vector128<float>>) (address)).value((RuntimeValue<Vector128<float>>) (VR[(int) (rt1)]));
+				((RuntimePointer<Vector128<float>>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x10))))).value((RuntimeValue<Vector128<float>>) (VR[(int) (rt2)]));
 				break;
 			}
 			default: {
@@ -3984,23 +4410,23 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_478) -> string { switch(temp_478) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_479) -> long { switch(temp_479) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_509) -> string { switch(temp_509) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_510) -> long { switch(temp_510) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)))).Store();
 		switch(opc) {
 			case 0x0: {
-				((RuntimePointer<float>) (address)).value = (RuntimeValue<float>) (VSR[(int) (rt1)]);
-				((RuntimePointer<float>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value = (RuntimeValue<float>) (VSR[(int) (rt2)]);
+				((RuntimePointer<float>) (address)).value((RuntimeValue<float>) (VSR[(int) (rt1)]));
+				((RuntimePointer<float>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x4))))).value((RuntimeValue<float>) (VSR[(int) (rt2)]));
 				break;
 			}
 			case 0x1: {
-				((RuntimePointer<double>) (address)).value = (RuntimeValue<double>) (VDR[(int) (rt1)]);
-				((RuntimePointer<double>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value = (RuntimeValue<double>) (VDR[(int) (rt2)]);
+				((RuntimePointer<double>) (address)).value((RuntimeValue<double>) (VDR[(int) (rt1)]));
+				((RuntimePointer<double>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x8))))).value((RuntimeValue<double>) (VDR[(int) (rt2)]));
 				break;
 			}
 			case 0x2: {
-				((RuntimePointer<Vector128<float>>) (address)).value = (RuntimeValue<Vector128<float>>) (VR[(int) (rt1)]);
-				((RuntimePointer<Vector128<float>>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x10))))).value = (RuntimeValue<Vector128<float>>) (VR[(int) (rt2)]);
+				((RuntimePointer<Vector128<float>>) (address)).value((RuntimeValue<Vector128<float>>) (VR[(int) (rt1)]));
+				((RuntimePointer<Vector128<float>>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (0x10))))).value((RuntimeValue<Vector128<float>>) (VR[(int) (rt2)]));
 				break;
 			}
 			default: {
@@ -4020,9 +4446,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto address = ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]())).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			((RuntimePointer<uint>) (address)).value = (RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]()));
+			((RuntimePointer<uint>) (address)).value((RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]())));
 		} else {
-			((RuntimePointer<ulong>) (address)).value = (RuntimeValue<ulong>) ((rs) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rs]());
+			((RuntimePointer<ulong>) (address)).value((RuntimeValue<ulong>) ((rs) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rs]()));
 		}
 		if(rd == 31)
 			SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)));
@@ -4040,9 +4466,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)))).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			((RuntimePointer<uint>) (address)).value = (RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]()));
+			((RuntimePointer<uint>) (address)).value((RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]())));
 		} else {
-			((RuntimePointer<ulong>) (address)).value = (RuntimeValue<ulong>) ((rs) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rs]());
+			((RuntimePointer<ulong>) (address)).value((RuntimeValue<ulong>) ((rs) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rs]()));
 		}
 		if(rd == 31)
 			SPR = address;
@@ -4059,9 +4485,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto pimm = (ulong) (((ulong) ((ulong) (imm))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (pimm))))).value = (RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]()));
+			((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (pimm))))).value((RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]())));
 		} else {
-			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (pimm))))).value = (RuntimeValue<ulong>) ((rs) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rs]());
+			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (pimm))))).value((RuntimeValue<ulong>) ((rs) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rs]()));
 		}
 		return true;
 	}
@@ -4076,12 +4502,12 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		auto extend = (string) (([=](auto temp_480) -> string { switch(temp_480) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto extend = (string) (([=](auto temp_511) -> string { switch(temp_511) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		auto offset = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((RuntimeValue<ulong>) (((byte) ((((ulong) (option)) & ((ulong) (0x1))))) != 0 ? ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value = (RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]()));
+			((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value((RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]())));
 		} else {
-			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value = (RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]());
+			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]()));
 		}
 		return true;
 	}
@@ -4093,28 +4519,28 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_481) -> string { switch(temp_481) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_512) -> string { switch(temp_512) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto address = ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		switch(rop) {
 			case 0x0: {
-				((RuntimePointer<float>) (address)).value = (RuntimeValue<float>) (VBR[(int) (rt)]);
+				((RuntimePointer<float>) (address)).value((RuntimeValue<float>) (VBR[(int) (rt)]));
 				break;
 			}
 			case 0x4: {
-				((RuntimePointer<ushort>) (address)).value = (RuntimeValue<ushort>) (VHR[(int) (rt)]);
+				((RuntimePointer<ushort>) (address)).value((RuntimeValue<ushort>) (VHR[(int) (rt)]));
 				break;
 			}
 			case 0x8: {
-				((RuntimePointer<float>) (address)).value = (RuntimeValue<float>) (VSR[(int) (rt)]);
+				((RuntimePointer<float>) (address)).value((RuntimeValue<float>) (VSR[(int) (rt)]));
 				break;
 			}
 			case 0xC: {
-				((RuntimePointer<double>) (address)).value = (RuntimeValue<double>) (VDR[(int) (rt)]);
+				((RuntimePointer<double>) (address)).value((RuntimeValue<double>) (VDR[(int) (rt)]));
 				break;
 			}
 			case 0x2: {
-				((RuntimePointer<Vector128<float>>) (address)).value = (RuntimeValue<Vector128<float>>) (VR[(int) (rt)]);
+				((RuntimePointer<Vector128<float>>) (address)).value((RuntimeValue<Vector128<float>>) (VR[(int) (rt)]));
 				break;
 			}
 			default: {
@@ -4136,29 +4562,29 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_482) -> string { switch(temp_482) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_513) -> string { switch(temp_513) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto scale = (byte) ((byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (opc)) << 2))));
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)))).Store();
 		switch(rop) {
 			case 0x0: {
-				((RuntimePointer<float>) (address)).value = (RuntimeValue<float>) (VBR[(int) (rt)]);
+				((RuntimePointer<float>) (address)).value((RuntimeValue<float>) (VBR[(int) (rt)]));
 				break;
 			}
 			case 0x4: {
-				((RuntimePointer<ushort>) (address)).value = (RuntimeValue<ushort>) (VHR[(int) (rt)]);
+				((RuntimePointer<ushort>) (address)).value((RuntimeValue<ushort>) (VHR[(int) (rt)]));
 				break;
 			}
 			case 0x8: {
-				((RuntimePointer<float>) (address)).value = (RuntimeValue<float>) (VSR[(int) (rt)]);
+				((RuntimePointer<float>) (address)).value((RuntimeValue<float>) (VSR[(int) (rt)]));
 				break;
 			}
 			case 0xC: {
-				((RuntimePointer<double>) (address)).value = (RuntimeValue<double>) (VDR[(int) (rt)]);
+				((RuntimePointer<double>) (address)).value((RuntimeValue<double>) (VDR[(int) (rt)]));
 				break;
 			}
 			case 0x2: {
-				((RuntimePointer<Vector128<float>>) (address)).value = (RuntimeValue<Vector128<float>>) (VR[(int) (rt)]);
+				((RuntimePointer<Vector128<float>>) (address)).value((RuntimeValue<Vector128<float>>) (VR[(int) (rt)]));
 				break;
 			}
 			default: {
@@ -4180,28 +4606,28 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_483) -> string { switch(temp_483) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_514) -> string { switch(temp_514) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto scale = (byte) ((byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (opc)) << 2))));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) ((ushort) ((imm) << (uint) (scale)))))).Store();
 		switch(rop) {
 			case 0x0: {
-				((RuntimePointer<float>) (address)).value = (RuntimeValue<float>) (VBR[(int) (rt)]);
+				((RuntimePointer<float>) (address)).value((RuntimeValue<float>) (VBR[(int) (rt)]));
 				break;
 			}
 			case 0x4: {
-				((RuntimePointer<ushort>) (address)).value = (RuntimeValue<ushort>) (VHR[(int) (rt)]);
+				((RuntimePointer<ushort>) (address)).value((RuntimeValue<ushort>) (VHR[(int) (rt)]));
 				break;
 			}
 			case 0x8: {
-				((RuntimePointer<float>) (address)).value = (RuntimeValue<float>) (VSR[(int) (rt)]);
+				((RuntimePointer<float>) (address)).value((RuntimeValue<float>) (VSR[(int) (rt)]));
 				break;
 			}
 			case 0xC: {
-				((RuntimePointer<double>) (address)).value = (RuntimeValue<double>) (VDR[(int) (rt)]);
+				((RuntimePointer<double>) (address)).value((RuntimeValue<double>) (VDR[(int) (rt)]));
 				break;
 			}
 			case 0x2: {
-				((RuntimePointer<Vector128<float>>) (address)).value = (RuntimeValue<Vector128<float>>) (VR[(int) (rt)]);
+				((RuntimePointer<Vector128<float>>) (address)).value((RuntimeValue<Vector128<float>>) (VR[(int) (rt)]));
 				break;
 			}
 			default: {
@@ -4221,31 +4647,31 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r1 = (string) (([=](auto temp_484) -> string { switch(temp_484) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r1 = (string) (([=](auto temp_515) -> string { switch(temp_515) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (([=](auto temp_485) -> long { switch(temp_485) { case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: return (long) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (0x4) : (0x0)); } })(size))));
-		auto extend = (string) (([=](auto temp_486) -> string { switch(temp_486) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (([=](auto temp_516) -> long { switch(temp_516) { case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: return (long) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (0x4) : (0x0)); } })(size))));
+		auto extend = (string) (([=](auto temp_517) -> string { switch(temp_517) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		auto offset = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((RuntimeValue<ulong>) (((byte) ((((ulong) (option)) & ((ulong) (0x1))))) != 0 ? ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset)))).Store();
 		switch(rop) {
 			case 0x0: {
-				((RuntimePointer<float>) (address)).value = (RuntimeValue<float>) (VBR[(int) (rt)]);
+				((RuntimePointer<float>) (address)).value((RuntimeValue<float>) (VBR[(int) (rt)]));
 				break;
 			}
 			case 0x4: {
-				((RuntimePointer<ushort>) (address)).value = (RuntimeValue<ushort>) (VHR[(int) (rt)]);
+				((RuntimePointer<ushort>) (address)).value((RuntimeValue<ushort>) (VHR[(int) (rt)]));
 				break;
 			}
 			case 0x8: {
-				((RuntimePointer<float>) (address)).value = (RuntimeValue<float>) (VSR[(int) (rt)]);
+				((RuntimePointer<float>) (address)).value((RuntimeValue<float>) (VSR[(int) (rt)]));
 				break;
 			}
 			case 0xC: {
-				((RuntimePointer<double>) (address)).value = (RuntimeValue<double>) (VDR[(int) (rt)]);
+				((RuntimePointer<double>) (address)).value((RuntimeValue<double>) (VDR[(int) (rt)]));
 				break;
 			}
 			case 0x2: {
-				((RuntimePointer<Vector128<float>>) (address)).value = (RuntimeValue<Vector128<float>>) (VR[(int) (rt)]);
+				((RuntimePointer<Vector128<float>>) (address)).value((RuntimeValue<Vector128<float>>) (VR[(int) (rt)]));
 				break;
 			}
 			default: {
@@ -4262,7 +4688,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rs = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto address = ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]())).Store();
-		((RuntimePointer<byte>) (address)).value = (RuntimeValue<byte>) ((RuntimeValue<byte>) ((RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]()))));
+		((RuntimePointer<byte>) (address)).value((RuntimeValue<byte>) ((RuntimeValue<byte>) ((RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]())))));
 		if(rd == 31)
 			SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)));
 		else
@@ -4276,7 +4702,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rs = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)))).Store();
-		((RuntimePointer<byte>) (address)).value = (RuntimeValue<byte>) ((RuntimeValue<byte>) ((RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]()))));
+		((RuntimePointer<byte>) (address)).value((RuntimeValue<byte>) ((RuntimeValue<byte>) ((RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]())))));
 		if(rd == 31)
 			SPR = address;
 		else
@@ -4288,7 +4714,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value = (RuntimeValue<byte>) ((RuntimeValue<byte>) ((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]())));
+		((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value((RuntimeValue<byte>) ((RuntimeValue<byte>) ((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]()))));
 		return true;
 	}
 	/* STRB-register */
@@ -4299,9 +4725,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_487) -> string { switch(temp_487) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_518) -> string { switch(temp_518) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((RuntimeValue<ulong>) (((byte) ((((ulong) (option)) & ((ulong) (0x1))))) != 0 ? ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
-		((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value = (RuntimeValue<byte>) ((RuntimeValue<byte>) ((RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]()))));
+		((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value((RuntimeValue<byte>) ((RuntimeValue<byte>) ((RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]())))));
 		return true;
 	}
 	/* STRH-immediate-postindex */
@@ -4311,7 +4737,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rs = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto address = ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]())).Store();
-		((RuntimePointer<ushort>) (address)).value = (RuntimeValue<ushort>) ((RuntimeValue<ushort>) ((RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]()))));
+		((RuntimePointer<ushort>) (address)).value((RuntimeValue<ushort>) ((RuntimeValue<ushort>) ((RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]())))));
 		if(rd == 31)
 			SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) (address)) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)));
 		else
@@ -4325,7 +4751,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rs = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rd) == 31 ? SPR() : XR[(int) rd]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)))).Store();
-		((RuntimePointer<ushort>) (address)).value = (RuntimeValue<ushort>) ((RuntimeValue<ushort>) ((RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]()))));
+		((RuntimePointer<ushort>) (address)).value((RuntimeValue<ushort>) ((RuntimeValue<ushort>) ((RuntimeValue<uint>) ((rs) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rs]())))));
 		if(rd == 31)
 			SPR = address;
 		else
@@ -4338,7 +4764,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto imm = (ushort) ((rawimm) << (uint) (0x1));
-		((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value = (RuntimeValue<ushort>) ((RuntimeValue<ushort>) ((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]())));
+		((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ushort>) (imm))))).value((RuntimeValue<ushort>) ((RuntimeValue<ushort>) ((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]()))));
 		return true;
 	}
 	/* STRH-register */
@@ -4349,9 +4775,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_488) -> string { switch(temp_488) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_519) -> string { switch(temp_519) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((RuntimeValue<ulong>) (((byte) ((((ulong) (option)) & ((ulong) (0x1))))) != 0 ? ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
-		((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value = (RuntimeValue<ushort>) ((RuntimeValue<ushort>) ((RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]()))));
+		((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<ulong>) (offset))))).value((RuntimeValue<ushort>) ((RuntimeValue<ushort>) ((RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]())))));
 		return true;
 	}
 	/* STUR */
@@ -4363,9 +4789,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto offset = (long) (SignExt<long>(imm, 9));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (offset))))).value = (RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]()));
+			((RuntimePointer<uint>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (offset))))).value((RuntimeValue<uint>) ((rt) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rt]())));
 		} else {
-			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (offset))))).value = (RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]());
+			((RuntimePointer<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (offset))))).value((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]()));
 		}
 		return true;
 	}
@@ -4377,28 +4803,28 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_489) -> string { switch(temp_489) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_520) -> string { switch(temp_520) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto address = ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (simm)))).Store();
 		switch(rop) {
 			case 0x0: {
-				((RuntimePointer<float>) (address)).value = (RuntimeValue<float>) (VBR[(int) (rt)]);
+				((RuntimePointer<float>) (address)).value((RuntimeValue<float>) (VBR[(int) (rt)]));
 				break;
 			}
 			case 0x4: {
-				((RuntimePointer<ushort>) (address)).value = (RuntimeValue<ushort>) (VHR[(int) (rt)]);
+				((RuntimePointer<ushort>) (address)).value((RuntimeValue<ushort>) (VHR[(int) (rt)]));
 				break;
 			}
 			case 0x8: {
-				((RuntimePointer<float>) (address)).value = (RuntimeValue<float>) (VSR[(int) (rt)]);
+				((RuntimePointer<float>) (address)).value((RuntimeValue<float>) (VSR[(int) (rt)]));
 				break;
 			}
 			case 0xC: {
-				((RuntimePointer<double>) (address)).value = (RuntimeValue<double>) (VDR[(int) (rt)]);
+				((RuntimePointer<double>) (address)).value((RuntimeValue<double>) (VDR[(int) (rt)]));
 				break;
 			}
 			case 0x2: {
-				((RuntimePointer<Vector128<float>>) (address)).value = (RuntimeValue<Vector128<float>>) (VR[(int) (rt)]);
+				((RuntimePointer<Vector128<float>>) (address)).value((RuntimeValue<Vector128<float>>) (VR[(int) (rt)]));
 				break;
 			}
 			default: {
@@ -4414,7 +4840,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto offset = (long) (SignExt<long>(imm, 9));
-		((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (offset))))).value = (RuntimeValue<byte>) ((RuntimeValue<byte>) ((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]())));
+		((RuntimePointer<byte>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (offset))))).value((RuntimeValue<byte>) ((RuntimeValue<byte>) ((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]()))));
 		return true;
 	}
 	/* STURH */
@@ -4423,7 +4849,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto offset = (long) (SignExt<long>(imm, 9));
-		((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (offset))))).value = (RuntimeValue<ushort>) ((RuntimeValue<ushort>) ((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]())));
+		((RuntimePointer<ushort>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((RuntimeValue<ulong>) (RuntimeValue<long>) (offset))))).value((RuntimeValue<ushort>) ((RuntimeValue<ushort>) ((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]()))));
 		return true;
 	}
 	/* STXR */
@@ -4468,13 +4894,13 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_490) -> string { switch(temp_490) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_491) -> string { switch(temp_491) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_521) -> string { switch(temp_521) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_522) -> string { switch(temp_522) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))).Store();
 			if(rd == 31)
-				SPR = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (([=](auto temp_492) -> RuntimeValue<uint> { switch(temp_492) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x4: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
+				SPR = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (([=](auto temp_523) -> RuntimeValue<uint> { switch(temp_523) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x4: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
 			else
-				XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (([=](auto temp_493) -> RuntimeValue<uint> { switch(temp_493) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x4: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
+				XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (([=](auto temp_524) -> RuntimeValue<uint> { switch(temp_524) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x4: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
 		} else {
 			if(((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U)) != 0) {
 				if(rd == 31)
@@ -4484,9 +4910,9 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 			} else {
 				auto m = ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))).Store();
 				if(rd == 31)
-					SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (([=](auto temp_494) -> RuntimeValue<ulong> { switch(temp_494) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFFFFFF))))); case 0x4: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); case 0x6: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>(m, 64))))); default: return m; } })(option))) << (imm)))));
+					SPR = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (([=](auto temp_525) -> RuntimeValue<ulong> { switch(temp_525) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFFFFFF))))); case 0x4: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); case 0x6: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>(m, 64))))); default: return m; } })(option))) << (imm)))));
 				else
-					XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (([=](auto temp_495) -> RuntimeValue<ulong> { switch(temp_495) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFFFFFF))))); case 0x4: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); case 0x6: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>(m, 64))))); default: return m; } })(option))) << (imm)))));
+					XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (([=](auto temp_526) -> RuntimeValue<ulong> { switch(temp_526) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFFFFFF))))); case 0x4: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); case 0x6: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>(m, 64))))); default: return m; } })(option))) << (imm)))));
 			}
 		}
 		return true;
@@ -4500,11 +4926,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_496) -> string { switch(temp_496) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_527) -> string { switch(temp_527) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) - ((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_497) -> RuntimeValue<uint> { switch(temp_497) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))));
+			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]())))) - ((RuntimeValue<uint>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (([=](auto temp_528) -> RuntimeValue<uint> { switch(temp_528) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))));
 		} else {
-			XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) - ((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_498) -> RuntimeValue<ulong> { switch(temp_498) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))));
+			XR[(int) rd] = (RuntimeValue<ulong>) (((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))) - ((RuntimeValue<ulong>) (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (([=](auto temp_529) -> RuntimeValue<ulong> { switch(temp_529) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift)))));
 		}
 		return true;
 	}
@@ -4518,12 +4944,12 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_499) -> string { switch(temp_499) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_500) -> string { switch(temp_500) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_530) -> string { switch(temp_530) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_531) -> string { switch(temp_531) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))).Store();
 			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (([=]() -> RuntimeValue<uint> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? SPR() : XR[(int) rn]())))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) (~((RuntimeValue<uint>) (((RuntimeValue<uint>) (([=](auto temp_501) -> RuntimeValue<uint> { switch(temp_501) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x4: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); default: return m; } })(option))) << (imm))))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) (~((RuntimeValue<uint>) (((RuntimeValue<uint>) (([=](auto temp_532) -> RuntimeValue<uint> { switch(temp_532) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x4: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (SignExtRuntime<int>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); default: return m; } })(option))) << (imm))))))).Store();
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint) ((uint) (0x1));
 					auto bits = (int) (32);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -4555,7 +4981,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 				auto m = ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))).Store();
 				XR[(int) rd] = (RuntimeValue<ulong>) (([=]() -> RuntimeValue<ulong> {
 						auto __macro_add_with_carry_set_nzcv_common_operand1 = ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? SPR() : XR[(int) rn]())))).Store();
-						auto __macro_add_with_carry_set_nzcv_common_operand2 = ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (~((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (([=](auto temp_502) -> RuntimeValue<ulong> { switch(temp_502) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFFFFFF))))); case 0x4: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); case 0x6: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>(m, 64))))); default: return m; } })(option))) << (imm))))))).Store();
+						auto __macro_add_with_carry_set_nzcv_common_operand2 = ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (~((RuntimeValue<ulong>) (((RuntimeValue<ulong>) (([=](auto temp_533) -> RuntimeValue<ulong> { switch(temp_533) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFF))))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFF))))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) (m)) & ((RuntimeValue<ulong>) (0xFFFFFFFF))))); case 0x4: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<byte>) ((RuntimeValue<byte>) (m)), 8))))); case 0x5: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>((RuntimeValue<ushort>) ((RuntimeValue<ushort>) (m)), 16))))); case 0x6: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (SignExtRuntime<long>(m, 64))))); default: return m; } })(option))) << (imm))))))).Store();
 						auto __macro_add_with_carry_set_nzcv_common_carryIn = (ulong) ((ulong) (0x1));
 						auto bits = (int) (64);
 						auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -4581,11 +5007,11 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto mode32 = (bool) (((size) == (0x0)) ? 1U : 0U);
 		auto r = (string) ((mode32 != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_503) -> string { switch(temp_503) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_534) -> string { switch(temp_534) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if((mode32) != 0) {
 			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (([=]() -> RuntimeValue<uint> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rn) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rn]()))))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) (~((RuntimeValue<uint>) (([=](auto temp_504) -> RuntimeValue<uint> { switch(temp_504) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) (~((RuntimeValue<uint>) (([=](auto temp_535) -> RuntimeValue<uint> { switch(temp_535) { case 0x0: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (RuntimeValue<uint>) ((RuntimeValue<uint>) (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<uint>) ((RuntimeValue<int>) (((RuntimeValue<int>) ((RuntimeValue<int>) ((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (RuntimeValue<uint>) ((((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) << ((RuntimeValue<uint>) (32 - (imm)))) | (((RuntimeValue<uint>) ((rm) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) rm]()))) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint) ((uint) (0x1));
 					auto bits = (int) (32);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -4600,7 +5026,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		} else {
 			XR[(int) rd] = (RuntimeValue<ulong>) (([=]() -> RuntimeValue<ulong> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]())))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (~((RuntimeValue<ulong>) (([=](auto temp_505) -> RuntimeValue<ulong> { switch(temp_505) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (~((RuntimeValue<ulong>) (([=](auto temp_536) -> RuntimeValue<ulong> { switch(temp_536) { case 0x0: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<long>) (((RuntimeValue<long>) ((RuntimeValue<long>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((RuntimeValue<uint>) (64 - (imm)))) | (((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((RuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (ulong) ((ulong) (0x1));
 					auto bits = (int) (64);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -4623,7 +5049,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_506) -> string { switch(temp_506) { case 0x0: return string("LSL #0"); case 0x1: return string("LSL #12"); default: throw "Not implemented"; } })(shift));
+		auto shiftstr = (string) (([=](auto temp_537) -> string { switch(temp_537) { case 0x0: return string("LSL #0"); case 0x1: return string("LSL #12"); default: throw "Not implemented"; } })(shift));
 		auto rimm = (uint) ((shift != 0) ? ((uint) (((uint) ((uint) (imm))) << (uint) (0xC))) : (imm));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ((RuntimeValue<uint>) (([=]() -> RuntimeValue<uint> {
@@ -4680,17 +5106,17 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto offset = (inst >> 5) & 0x3FFFU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((upper) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (bool) ((((byte) ((bool) ((upper) << (uint) (0x5)))) | ((byte) (bottom))));
+		auto imm = (uint) ((((uint) ((uint) (((uint) ((uint) (upper))) << (uint) (0x5)))) | ((uint) ((uint) ((uint) (bottom))))));
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((ushort) (((ushort) ((ushort) (offset))) << (uint) (0x2)), 16)))));
-		LabelTag temp_507 = DefineLabel(), temp_509 = DefineLabel(), temp_508 = DefineLabel();
-		BranchIf((RuntimeValue<bool>) (((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]())) >> (imm)))) & ((RuntimeValue<ulong>) (0x1))))) == (0x0)), temp_507, temp_509);
-		Label(temp_507);
-		Branch(addr);
-		Branch(temp_508);
-		Label(temp_509);
+		LabelTag temp_538 = DefineLabel(), temp_540 = DefineLabel(), temp_539 = DefineLabel();
+		BranchIf((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]())) >> (imm)))) & ((RuntimeValue<ulong>) (0x1)))), temp_538, temp_540);
+		Label(temp_538);
 		Branch(pc + 4);
-		Branch(temp_508);
-		Label(temp_508);
+		Branch(temp_539);
+		Label(temp_540);
+		Branch(addr);
+		Branch(temp_539);
+		Label(temp_539);
 		return true;
 	}
 	/* TBNZ */
@@ -4700,17 +5126,17 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto offset = (inst >> 5) & 0x3FFFU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((upper) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (bool) ((((byte) ((bool) ((upper) << (uint) (0x5)))) | ((byte) (bottom))));
+		auto imm = (uint) ((((uint) ((uint) (((uint) ((uint) (upper))) << (uint) (0x5)))) | ((uint) ((uint) ((uint) (bottom))))));
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((ushort) (((ushort) ((ushort) (offset))) << (uint) (0x2)), 16)))));
-		LabelTag temp_510 = DefineLabel(), temp_512 = DefineLabel(), temp_511 = DefineLabel();
-		BranchIf((RuntimeValue<bool>) (((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]())) >> (imm)))) & ((RuntimeValue<ulong>) (0x1))))) != (0x0)), temp_510, temp_512);
-		Label(temp_510);
+		LabelTag temp_541 = DefineLabel(), temp_543 = DefineLabel(), temp_542 = DefineLabel();
+		BranchIf((RuntimeValue<ulong>) ((((RuntimeValue<ulong>) ((RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((rt) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rt]())) >> (imm)))) & ((RuntimeValue<ulong>) (0x1)))), temp_541, temp_543);
+		Label(temp_541);
 		Branch(addr);
-		Branch(temp_511);
-		Label(temp_512);
+		Branch(temp_542);
+		Label(temp_543);
 		Branch(pc + 4);
-		Branch(temp_511);
-		Label(temp_511);
+		Branch(temp_542);
+		Label(temp_542);
 		return true;
 	}
 	/* UADDLV */
@@ -4719,8 +5145,8 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_513) -> string { switch(temp_513) { case 0x0: return string("H"); case 0x1: return string("S"); case 0x2: return string("D"); default: throw "Not implemented"; } })(size));
-		auto t = (string) (([=](auto temp_514) -> string { switch(temp_514) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_544) -> string { switch(temp_544) { case 0x0: return string("H"); case 0x1: return string("S"); case 0x2: return string("D"); default: throw "Not implemented"; } })(size));
+		auto t = (string) (([=](auto temp_545) -> string { switch(temp_545) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto esize = (long) ((0x8) << (uint) (size));
 		auto count = (long) (((long) (long) ((long) ((Q != 0) ? (0x80) : (0x40)))) / ((long) (long) (esize)));
 		switch(size) {
@@ -4767,7 +5193,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	/* UCVTF-scalar-integer */
+	/* UCVTF-scalar-gpr-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E230000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto type = (inst >> 22) & 0x3U;
@@ -4836,7 +5262,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	/* UCVTF-vector-integer */
+	/* UCVTF-scalar-integer */
 	if((inst & 0xFFBFFC00U) == 0x7E21D800U) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
@@ -4846,6 +5272,40 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 			VSR[(int) (rd)] = (RuntimeValue<float>) ((RuntimeValue<float>) ((RuntimeValue<uint>) (((RuntimeValue<float>) (VSR[(int) (rn)])).Bitcast<uint>())));
 		} else {
 			VDR[(int) (rd)] = (RuntimeValue<double>) ((RuntimeValue<double>) ((RuntimeValue<ulong>) (((RuntimeValue<double>) (VDR[(int) (rn)])).Bitcast<ulong>())));
+		}
+		return true;
+	}
+	/* UCVTF-vector */
+	if((inst & 0xBFBFFC00U) == 0x2E21D800U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x1U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto t = (string) (([=](auto temp_546) -> string { switch(temp_546) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto n = ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
+		VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (((RuntimeValue<byte>) ((byte) ((byte) (0x0)))).CreateVector());
+		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
+			case 0x0: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<float>) ((RuntimeValue<float>) ((RuntimeValue<uint>) ((n).Element<uint>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<float>) ((RuntimeValue<float>) ((RuntimeValue<uint>) ((n).Element<uint>(0x1)))));
+				break;
+			}
+			case 0x1: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<float>) ((RuntimeValue<float>) ((RuntimeValue<uint>) ((n).Element<uint>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<float>) ((RuntimeValue<float>) ((RuntimeValue<uint>) ((n).Element<uint>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<float>) ((RuntimeValue<float>) ((RuntimeValue<uint>) ((n).Element<uint>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<float>) ((RuntimeValue<float>) ((RuntimeValue<uint>) ((n).Element<uint>(0x3)))));
+				break;
+			}
+			case 0x3: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<double>) ((RuntimeValue<double>) ((RuntimeValue<ulong>) ((n).Element<ulong>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<double>) ((RuntimeValue<double>) ((RuntimeValue<ulong>) ((n).Element<ulong>(0x1)))));
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
 		}
 		return true;
 	}
@@ -4882,13 +5342,97 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		XR[(int) rd] = (RuntimeValue<ulong>) ((RuntimeValue<ulong>) ((RuntimeValue<UInt128>) (((RuntimeValue<UInt128>) (((RuntimeValue<UInt128>) (RuntimeValue<UInt128>) ((RuntimeValue<UInt128>) ((RuntimeValue<UInt128>) ((RuntimeValue<ulong>) ((rn) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rn]()))))) * ((RuntimeValue<UInt128>) (RuntimeValue<UInt128>) ((RuntimeValue<UInt128>) ((RuntimeValue<UInt128>) ((RuntimeValue<ulong>) ((rm) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) rm]()))))))) >> (0x40))));
 		return true;
 	}
+	/* USHL-vector */
+	if((inst & 0xBF20FC00U) == 0x2E204400U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x3U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto t = (string) (([=](auto temp_547) -> string { switch(temp_547) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto n = ((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
+		auto m = ((RuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Store();
+		VR[(int) (rd)] = (RuntimeValue<Vector128<float>>) (((RuntimeValue<byte>) ((byte) ((byte) (0x0)))).CreateVector());
+		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
+			case 0x0: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x0))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x1))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x2))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x3))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x4))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x4)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x5))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x5)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x6))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x6)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x7))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x7)))));
+				break;
+			}
+			case 0x1: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x0))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x1))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x2))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x3))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x4))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x4)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x5))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x5)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x6))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x6)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x7))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x7)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x8, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x8))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x8)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x9, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0x9))) << ((RuntimeValue<byte>) ((m).Element<byte>(0x9)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xA, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0xA))) << ((RuntimeValue<byte>) ((m).Element<byte>(0xA)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xB, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0xB))) << ((RuntimeValue<byte>) ((m).Element<byte>(0xB)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xC, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0xC))) << ((RuntimeValue<byte>) ((m).Element<byte>(0xC)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xD, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0xD))) << ((RuntimeValue<byte>) ((m).Element<byte>(0xD)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xE, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0xE))) << ((RuntimeValue<byte>) ((m).Element<byte>(0xE)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xF, (RuntimeValue<byte>) (((RuntimeValue<byte>) ((n).Element<byte>(0xF))) << ((RuntimeValue<byte>) ((m).Element<byte>(0xF)))));
+				break;
+			}
+			case 0x2: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<ushort>) (((RuntimeValue<ushort>) ((n).Element<ushort>(0x0))) << ((RuntimeValue<ushort>) ((m).Element<ushort>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<ushort>) (((RuntimeValue<ushort>) ((n).Element<ushort>(0x1))) << ((RuntimeValue<ushort>) ((m).Element<ushort>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<ushort>) (((RuntimeValue<ushort>) ((n).Element<ushort>(0x2))) << ((RuntimeValue<ushort>) ((m).Element<ushort>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<ushort>) (((RuntimeValue<ushort>) ((n).Element<ushort>(0x3))) << ((RuntimeValue<ushort>) ((m).Element<ushort>(0x3)))));
+				break;
+			}
+			case 0x3: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<ushort>) (((RuntimeValue<ushort>) ((n).Element<ushort>(0x0))) << ((RuntimeValue<ushort>) ((m).Element<ushort>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<ushort>) (((RuntimeValue<ushort>) ((n).Element<ushort>(0x1))) << ((RuntimeValue<ushort>) ((m).Element<ushort>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<ushort>) (((RuntimeValue<ushort>) ((n).Element<ushort>(0x2))) << ((RuntimeValue<ushort>) ((m).Element<ushort>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<ushort>) (((RuntimeValue<ushort>) ((n).Element<ushort>(0x3))) << ((RuntimeValue<ushort>) ((m).Element<ushort>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (RuntimeValue<ushort>) (((RuntimeValue<ushort>) ((n).Element<ushort>(0x4))) << ((RuntimeValue<ushort>) ((m).Element<ushort>(0x4)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (RuntimeValue<ushort>) (((RuntimeValue<ushort>) ((n).Element<ushort>(0x5))) << ((RuntimeValue<ushort>) ((m).Element<ushort>(0x5)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (RuntimeValue<ushort>) (((RuntimeValue<ushort>) ((n).Element<ushort>(0x6))) << ((RuntimeValue<ushort>) ((m).Element<ushort>(0x6)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (RuntimeValue<ushort>) (((RuntimeValue<ushort>) ((n).Element<ushort>(0x7))) << ((RuntimeValue<ushort>) ((m).Element<ushort>(0x7)))));
+				break;
+			}
+			case 0x4: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<uint>) (((RuntimeValue<uint>) ((n).Element<uint>(0x0))) << ((RuntimeValue<uint>) ((m).Element<uint>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<uint>) (((RuntimeValue<uint>) ((n).Element<uint>(0x1))) << ((RuntimeValue<uint>) ((m).Element<uint>(0x1)))));
+				break;
+			}
+			case 0x5: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<uint>) (((RuntimeValue<uint>) ((n).Element<uint>(0x0))) << ((RuntimeValue<uint>) ((m).Element<uint>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<uint>) (((RuntimeValue<uint>) ((n).Element<uint>(0x1))) << ((RuntimeValue<uint>) ((m).Element<uint>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (RuntimeValue<uint>) (((RuntimeValue<uint>) ((n).Element<uint>(0x2))) << ((RuntimeValue<uint>) ((m).Element<uint>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (RuntimeValue<uint>) (((RuntimeValue<uint>) ((n).Element<uint>(0x3))) << ((RuntimeValue<uint>) ((m).Element<uint>(0x3)))));
+				break;
+			}
+			case 0x7: {
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((n).Element<ulong>(0x0))) << ((RuntimeValue<ulong>) ((m).Element<ulong>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (RuntimeValue<ulong>) (((RuntimeValue<ulong>) ((n).Element<ulong>(0x1))) << ((RuntimeValue<ulong>) ((m).Element<ulong>(0x1)))));
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
 	/* XTN */
 	if((inst & 0xFF3FFC00U) == 0x0E212800U) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto tb = (string) (([=](auto temp_515) -> string { switch(temp_515) { case 0x0: return string("8B"); case 0x1: return string("4H"); case 0x2: return string("2S"); default: throw "Not implemented"; } })(size));
-		auto ta = (string) (([=](auto temp_516) -> string { switch(temp_516) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto tb = (string) (([=](auto temp_548) -> string { switch(temp_548) { case 0x0: return string("8B"); case 0x1: return string("4H"); case 0x2: return string("2S"); default: throw "Not implemented"; } })(size));
+		auto ta = (string) (([=](auto temp_549) -> string { switch(temp_549) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x0: {
 				auto a = ((RuntimeValue<ushort>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<ushort>(0x0))).Store();
@@ -4928,8 +5472,8 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto tb = (string) (([=](auto temp_517) -> string { switch(temp_517) { case 0x0: return string("16B"); case 0x1: return string("8H"); case 0x2: return string("4S"); default: throw "Not implemented"; } })(size));
-		auto ta = (string) (([=](auto temp_518) -> string { switch(temp_518) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto tb = (string) (([=](auto temp_550) -> string { switch(temp_550) { case 0x0: return string("16B"); case 0x1: return string("8H"); case 0x2: return string("4S"); default: throw "Not implemented"; } })(size));
+		auto ta = (string) (([=](auto temp_551) -> string { switch(temp_551) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x0: {
 				auto a = ((RuntimeValue<ushort>) (((RuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<ushort>(0x0))).Store();

@@ -4,7 +4,16 @@
 #include "common.h"
 #include "state.h"
 
-class Interpreter {
+inline Vector128<float> LoadVector(ulong addr) {
+    if(addr & 0xF) {
+        Vector128<float> ret;
+        memcpy(&ret, (void*) addr, 16);
+        return ret;
+    }
+    return *(Vector128<float>*) addr;
+}
+
+class EXPORTED Interpreter {
 public:
     Interpreter();
     void run(ulong pc, ulong sp);

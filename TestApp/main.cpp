@@ -23,9 +23,11 @@ public:
     }
     bool Svc(uint32_t svc, CpuState* state) override {
         assert(false);
+        return false;
     }
     uint64_t SR(uint32_t op0, uint32_t op1, uint32_t crn, uint32_t crm, uint32_t op2) override {
         assert(false);
+        return 0UL;
     }
     void SR(uint32_t op0, uint32_t op1, uint32_t crn, uint32_t crm, uint32_t op2, uint64_t value) override {
         assert(false);

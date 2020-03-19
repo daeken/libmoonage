@@ -56,13 +56,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_111) -> string { switch(temp_111) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_112) -> string { switch(temp_112) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_122) -> string { switch(temp_122) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_123) -> string { switch(temp_123) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = (uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]);
 			if(rd == 31)
-				state->SP = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (((uint) (([=](auto temp_113) -> uint { switch(temp_113) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
+				state->SP = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (((uint) (([=](auto temp_124) -> uint { switch(temp_124) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
 			else
-				state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (((uint) (([=](auto temp_114) -> uint { switch(temp_114) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
+				state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (((uint) (([=](auto temp_125) -> uint { switch(temp_125) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
 		} else {
 			if(((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U)) != 0) {
 				if(rd == 31)
@@ -72,9 +72,9 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			} else {
 				auto m = (ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])));
 				if(rd == 31)
-					state->SP = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_115) -> ulong { switch(temp_115) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>((uint) ((uint) (m)), 32)))); default: return m; } })(option))) << (uint) (imm)))));
+					state->SP = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_126) -> ulong { switch(temp_126) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>((uint) ((uint) (m)), 32)))); default: return m; } })(option))) << (uint) (imm)))));
 				else
-					state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_116) -> ulong { switch(temp_116) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>((uint) ((uint) (m)), 32)))); default: return m; } })(option))) << (uint) (imm)))));
+					state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_127) -> ulong { switch(temp_127) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>((uint) ((uint) (m)), 32)))); default: return m; } })(option))) << (uint) (imm)))));
 			}
 		}
 		return true;
@@ -111,17 +111,17 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_117) -> string { switch(temp_117) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_128) -> string { switch(temp_128) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			if(rd == 31)
-				state->SP = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (([=](auto temp_118) -> uint { switch(temp_118) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (int) (imm))); } })(shift))))));
+				state->SP = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (([=](auto temp_129) -> uint { switch(temp_129) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (int) (imm))); } })(shift))))));
 			else
-				state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (([=](auto temp_119) -> uint { switch(temp_119) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (int) (imm))); } })(shift))))));
+				state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (([=](auto temp_130) -> uint { switch(temp_130) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (int) (imm))); } })(shift))))));
 		} else {
 			if(rd == 31)
-				state->SP = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (([=](auto temp_120) -> ulong { switch(temp_120) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (int) (imm))); } })(shift)))));
+				state->SP = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (([=](auto temp_131) -> ulong { switch(temp_131) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (int) (imm))); } })(shift)))));
 			else
-				state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (([=](auto temp_121) -> ulong { switch(temp_121) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (int) (imm))); } })(shift)))));
+				state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (([=](auto temp_132) -> ulong { switch(temp_132) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (int) (imm))); } })(shift)))));
 		}
 		return true;
 	}
@@ -132,8 +132,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_122) -> string { switch(temp_122) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto v = (Vector128<float>) (([=](auto temp_123) -> Vector128<float> { switch(temp_123) { case 0x0: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rm]))))); case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rm]))))); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rm]))))); case 0x3: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ulong>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<ulong>>((Vector128<float>) (state->V[rm]))))); default: throw "Not implemented"; } })(size));
+		auto ts = (string) (([=](auto temp_133) -> string { switch(temp_133) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto v = (Vector128<float>) (([=](auto temp_134) -> Vector128<float> { switch(temp_134) { case 0x0: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rm]))))); case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rm]))))); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rm]))))); case 0x3: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ulong>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<ulong>>((Vector128<float>) (state->V[rm]))))); default: throw "Not implemented"; } })(size));
 		state->V[rd] = (Vector128<float>) ((Q != 0) ? (v) : ((Vector128<float>) (v)));
 		return true;
 	}
@@ -189,11 +189,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_124) -> string { switch(temp_124) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_135) -> string { switch(temp_135) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			state->X[(int) rd] = (ulong) (uint) ((uint) (([=]() -> uint {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = (uint) ((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn])));
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = (uint) ((uint) ((uint) (([=](auto temp_125) -> uint { switch(temp_125) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))));
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = (uint) ((uint) ((uint) (([=](auto temp_136) -> uint { switch(temp_136) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))));
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint) ((uint) (0x0));
 					auto bits = (int) (32);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -208,7 +208,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		} else {
 			state->X[(int) rd] = (ulong) (([=]() -> ulong {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = (ulong) ((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn])));
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = (ulong) ((ulong) ((ulong) (([=](auto temp_126) -> ulong { switch(temp_126) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))));
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = (ulong) ((ulong) ((ulong) (([=](auto temp_137) -> ulong { switch(temp_137) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))));
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (ulong) ((ulong) (0x0));
 					auto bits = (int) (64);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -221,6 +221,16 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 					return usum;
 				})());
 		}
+		return true;
+	}
+	/* ADR */
+	if((inst & 0x9F000000U) == 0x10000000U) {
+		auto immlo = (inst >> 29) & 0x3U;
+		auto immhi = (inst >> 5) & 0x7FFFFU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto imm = (long) (SignExt<long>((uint) ((uint) (((uint) (((uint) (immlo)) << 0)) | ((uint) (((uint) (immhi)) << 2)))), 21));
+		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) (imm)));
+		state->X[(int) rd] = addr;
 		return true;
 	}
 	/* ADRP */
@@ -265,12 +275,23 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_127) -> string { switch(temp_127) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_138) -> string { switch(temp_138) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) & ((uint) ((uint) (([=](auto temp_128) -> uint { switch(temp_128) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))));
+			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) & ((uint) ((uint) (([=](auto temp_139) -> uint { switch(temp_139) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))));
 		} else {
-			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) & ((ulong) ((ulong) (([=](auto temp_129) -> ulong { switch(temp_129) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) & ((ulong) ((ulong) (([=](auto temp_140) -> ulong { switch(temp_140) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 		}
+		return true;
+	}
+	/* AND-vector */
+	if((inst & 0xBFE0FC00U) == 0x0E201C00U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto ts = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
+		auto v = (Vector128<float>) ((Vector128<float>) (reinterpret_cast<Vector128<float>>((reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rn])) & reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rm]))))));
+		state->V[rd] = (Vector128<float>) ((Q != 0) ? (v) : ((Vector128<float>) (v)));
 		return true;
 	}
 	/* ANDS-shifted-register */
@@ -282,16 +303,16 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_130) -> string { switch(temp_130) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_141) -> string { switch(temp_141) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			auto result = (uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) & ((uint) ((uint) (([=](auto temp_131) -> uint { switch(temp_131) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+			auto result = (uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) & ((uint) ((uint) (([=](auto temp_142) -> uint { switch(temp_142) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 			state->X[(int) rd] = (ulong) (uint) (result);
 			state->NZCV_N = (uint) ((result) >> (uint) (0x1F));
 			state->NZCV_Z = (bool) (((result) == (0x0)) ? 1U : 0U);
 			state->NZCV_C = 0x0;
 			state->NZCV_V = 0x0;
 		} else {
-			auto result = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) & ((ulong) ((ulong) (([=](auto temp_132) -> ulong { switch(temp_132) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+			auto result = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) & ((ulong) ((ulong) (([=](auto temp_143) -> ulong { switch(temp_143) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 			state->X[(int) rd] = result;
 			state->NZCV_N = (ulong) ((result) >> (uint) (0x3F));
 			state->NZCV_Z = (bool) (((result) == (0x0)) ? 1U : 0U);
@@ -353,8 +374,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto cond = (inst >> 0) & 0xFU;
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) (((uint) ((uint) (imm))) << (uint) (0x2)), 21)))));
-		auto condstr = (string) (([=](auto temp_133) -> string { switch(temp_133) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_134) -> bool { switch(temp_134) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_144) -> string { switch(temp_144) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_145) -> bool { switch(temp_145) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			Branch(addr);
 		} else {
@@ -397,11 +418,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_135) -> string { switch(temp_135) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_146) -> string { switch(temp_146) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) & ((uint) ((uint) (~((uint) (([=](auto temp_136) -> uint { switch(temp_136) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))))));
+			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) & ((uint) ((uint) (~((uint) (([=](auto temp_147) -> uint { switch(temp_147) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))))));
 		} else {
-			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) & ((ulong) ((ulong) (~((ulong) (([=](auto temp_137) -> ulong { switch(temp_137) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
+			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) & ((ulong) ((ulong) (~((ulong) (([=](auto temp_148) -> ulong { switch(temp_148) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
 		}
 		return true;
 	}
@@ -438,6 +459,12 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 	if((inst & 0xFFFFFC1FU) == 0xD61F0000U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		BranchRegister(rn);
+		return true;
+	}
+	/* BRK */
+	if((inst & 0xFFE0001FU) == 0xD4200000U) {
+		auto imm = (inst >> 5) & 0xFFFFU;
+		Branch(-0xE0E0E0E0D0D0D0E);
 		return true;
 	}
 	/* CASP */
@@ -568,8 +595,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_138) -> string { switch(temp_138) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_139) -> bool { switch(temp_139) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_149) -> string { switch(temp_149) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_150) -> bool { switch(temp_150) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 				state->X[(int) 0x1F] = (ulong) (uint) ((uint) (([=]() -> uint {
@@ -615,8 +642,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_140) -> string { switch(temp_140) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_141) -> bool { switch(temp_141) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_151) -> string { switch(temp_151) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_152) -> bool { switch(temp_152) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 				state->X[(int) 0x1F] = (ulong) (uint) ((uint) (([=]() -> uint {
@@ -662,8 +689,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_142) -> string { switch(temp_142) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_143) -> bool { switch(temp_143) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_153) -> string { switch(temp_153) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_154) -> bool { switch(temp_154) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 				state->X[(int) 0x1F] = (ulong) (uint) ((uint) (([=]() -> uint {
@@ -725,8 +752,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_144) -> string { switch(temp_144) { case 0x0: return string("8B"); case 0x1: return string("16B"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		state->V[rd] = (Vector128<float>) (VectorCountBits((Vector128<float>) (state->V[rn]), (long) (([=](auto temp_145) -> long { switch(temp_145) { case 0x0: return 0x8; default: return 0x10; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))))));
+		auto t = (string) (([=](auto temp_155) -> string { switch(temp_155) { case 0x0: return string("8B"); case 0x1: return string("16B"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		state->V[rd] = (Vector128<float>) (VectorCountBits((Vector128<float>) (state->V[rn]), (long) (([=](auto temp_156) -> long { switch(temp_156) { case 0x0: return 0x8; default: return 0x10; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))))));
 		return true;
 	}
 	/* CSEL */
@@ -737,8 +764,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_146) -> string { switch(temp_146) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_147) -> bool { switch(temp_147) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_157) -> string { switch(temp_157) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_158) -> bool { switch(temp_158) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 				state->X[(int) rd] = (ulong) (uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]));
@@ -762,8 +789,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_148) -> string { switch(temp_148) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_149) -> bool { switch(temp_149) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_159) -> string { switch(temp_159) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_160) -> bool { switch(temp_160) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 				state->X[(int) rd] = (ulong) (uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]));
@@ -787,8 +814,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_150) -> string { switch(temp_150) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_151) -> bool { switch(temp_151) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_161) -> string { switch(temp_161) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_162) -> bool { switch(temp_162) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 				state->X[(int) rd] = (ulong) (uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]));
@@ -812,8 +839,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_152) -> string { switch(temp_152) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_153) -> bool { switch(temp_153) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_163) -> string { switch(temp_163) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_164) -> bool { switch(temp_164) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 				state->X[(int) rd] = (ulong) (uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]));
@@ -832,13 +859,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 	/* DMB */
 	if((inst & 0xFFFFF0FFU) == 0xD50330BFU) {
 		auto m = (inst >> 8) & 0xFU;
-		auto option = (string) (([=](auto temp_154) -> string { switch(temp_154) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(m));
+		auto option = (string) (([=](auto temp_165) -> string { switch(temp_165) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(m));
 		return true;
 	}
 	/* DSB */
 	if((inst & 0xFFFFF0FFU) == 0xD503309FU) {
 		auto crm = (inst >> 8) & 0xFU;
-		auto option = (string) (([=](auto temp_155) -> string { switch(temp_155) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(crm));
+		auto option = (string) (([=](auto temp_166) -> string { switch(temp_166) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(crm));
 		return true;
 	}
 	/* DUP-general */
@@ -920,11 +947,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_156) -> string { switch(temp_156) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_167) -> string { switch(temp_167) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) ^ ((uint) ((uint) (~((uint) (([=](auto temp_157) -> uint { switch(temp_157) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))))));
+			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) ^ ((uint) ((uint) (~((uint) (([=](auto temp_168) -> uint { switch(temp_168) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))))));
 		} else {
-			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) ^ ((ulong) ((ulong) (~((ulong) (([=](auto temp_158) -> ulong { switch(temp_158) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
+			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) ^ ((ulong) ((ulong) (~((ulong) (([=](auto temp_169) -> ulong { switch(temp_169) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
 		}
 		return true;
 	}
@@ -960,11 +987,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_159) -> string { switch(temp_159) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_170) -> string { switch(temp_170) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) ^ ((uint) ((uint) (([=](auto temp_160) -> uint { switch(temp_160) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))));
+			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) ^ ((uint) ((uint) (([=](auto temp_171) -> uint { switch(temp_171) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))));
 		} else {
-			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) ^ ((ulong) ((ulong) (([=](auto temp_161) -> ulong { switch(temp_161) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) ^ ((ulong) ((ulong) (([=](auto temp_172) -> ulong { switch(temp_172) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 		}
 		return true;
 	}
@@ -1000,7 +1027,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_162) -> string { switch(temp_162) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_173) -> string { switch(temp_173) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (fabs((float) (state->V[rn][0]))), 0, 0, 0 };
@@ -1023,7 +1050,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_163) -> string { switch(temp_163) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_174) -> string { switch(temp_174) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				auto a = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x0]);
@@ -1066,7 +1093,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_164) -> string { switch(temp_164) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_175) -> string { switch(temp_175) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x3: {
 				state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<ushort>) { (ushort) ((ushort) ((ushort) (((ushort) (ushort) ((ushort) (reinterpret_cast<Vector128<ushort>>(state->V[rn])[0]))) + ((ushort) (ushort) ((ushort) (reinterpret_cast<Vector128<ushort>>(state->V[rm])[0])))))), 0, 0, 0, 0, 0, 0, 0 });
@@ -1094,7 +1121,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_165) -> string { switch(temp_165) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_176) -> string { switch(temp_176) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				state->V[rd] = (Vector128<float>) ((Vector128<float>) (((Vector128<float>) (state->V[rn])) + ((Vector128<float>) (state->V[rm]))));
@@ -1135,7 +1162,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_166) -> string { switch(temp_166) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_177) -> string { switch(temp_177) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				auto a = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x0]);
@@ -1187,9 +1214,9 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto cond = (inst >> 12) & 0xFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
-		auto r = (string) (([=](auto temp_167) -> string { switch(temp_167) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		auto condstr = (string) (([=](auto temp_168) -> string { switch(temp_168) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_169) -> bool { switch(temp_169) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto r = (string) (([=](auto temp_178) -> string { switch(temp_178) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto condstr = (string) (([=](auto temp_179) -> string { switch(temp_179) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_180) -> bool { switch(temp_180) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			switch(type) {
 				case 0x0: {
@@ -1224,8 +1251,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto ac = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto top = (string) (([=](auto temp_170) -> string { switch(temp_170) { case 0x0: return string("EQ"); case 0x2: return string("GE"); case 0x3: return string("GE"); case 0x6: return string("GT"); case 0x7: return string("GT"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
-		auto t = (string) (([=](auto temp_171) -> string { switch(temp_171) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto top = (string) (([=](auto temp_181) -> string { switch(temp_181) { case 0x0: return string("EQ"); case 0x2: return string("GE"); case 0x3: return string("GE"); case 0x6: return string("GT"); case 0x7: return string("GT"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+		auto t = (string) (([=](auto temp_182) -> string { switch(temp_182) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				auto a1 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x0]);
@@ -1233,8 +1260,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				auto b1 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rm]))[0x0]);
 				auto b2 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rm]))[0x1]);
 				state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((int) ((int) (0x0))) - (Vector128<int>) {}));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_172) -> float { switch(temp_172) { case 0x0: return (float) (((bool) (((a1) == (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a1) >= (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a1))) >= ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a1) > (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a1))) > ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_173) -> float { switch(temp_173) { case 0x0: return (float) (((bool) (((a2) == (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a2) >= (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a2))) >= ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a2) > (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a2))) > ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_183) -> float { switch(temp_183) { case 0x0: return (float) (((bool) (((a1) == (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a1) >= (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a1))) >= ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a1) > (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a1))) > ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_184) -> float { switch(temp_184) { case 0x0: return (float) (((bool) (((a2) == (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a2) >= (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a2))) >= ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a2) > (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a2))) > ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
 				break;
 			}
 			case 0x1: {
@@ -1247,10 +1274,10 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				auto b3 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rm]))[0x2]);
 				auto b4 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rm]))[0x3]);
 				state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((int) ((int) (0x0))) - (Vector128<int>) {}));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_174) -> float { switch(temp_174) { case 0x0: return (float) (((bool) (((a1) == (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a1) >= (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a1))) >= ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a1) > (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a1))) > ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_175) -> float { switch(temp_175) { case 0x0: return (float) (((bool) (((a2) == (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a2) >= (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a2))) >= ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a2) > (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a2))) > ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x2] = (float) (([=](auto temp_176) -> float { switch(temp_176) { case 0x0: return (float) (((bool) (((a3) == (b3)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a3) >= (b3)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a3))) >= ((float) (fabs(b3)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a3) > (b3)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a3))) > ((float) (fabs(b3)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x3] = (float) (([=](auto temp_177) -> float { switch(temp_177) { case 0x0: return (float) (((bool) (((a4) == (b4)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a4) >= (b4)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a4))) >= ((float) (fabs(b4)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a4) > (b4)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a4))) > ((float) (fabs(b4)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_185) -> float { switch(temp_185) { case 0x0: return (float) (((bool) (((a1) == (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a1) >= (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a1))) >= ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a1) > (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a1))) > ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_186) -> float { switch(temp_186) { case 0x0: return (float) (((bool) (((a2) == (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a2) >= (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a2))) >= ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a2) > (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a2))) > ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x2] = (float) (([=](auto temp_187) -> float { switch(temp_187) { case 0x0: return (float) (((bool) (((a3) == (b3)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a3) >= (b3)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a3))) >= ((float) (fabs(b3)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a3) > (b3)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a3))) > ((float) (fabs(b3)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x3] = (float) (([=](auto temp_188) -> float { switch(temp_188) { case 0x0: return (float) (((bool) (((a4) == (b4)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a4) >= (b4)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a4))) >= ((float) (fabs(b4)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a4) > (b4)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a4))) > ((float) (fabs(b4)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
 				break;
 			}
 			case 0x3: {
@@ -1259,8 +1286,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				auto b1 = (double) (reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rm]))[0x0]);
 				auto b2 = (double) (reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rm]))[0x1]);
 				state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((int) ((int) (0x0))) - (Vector128<int>) {}));
-				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x0] = (double) (([=](auto temp_178) -> double { switch(temp_178) { case 0x0: return (double) (((bool) (((a1) == (b1)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((a1) >= (b1)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x3: return (double) (((bool) ((((double) (fabs(a1))) >= ((double) (fabs(b1)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x6: return (double) (((bool) (((a1) > (b1)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x7: return (double) (((bool) ((((double) (fabs(a1))) > ((double) (fabs(b1)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
-				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x1] = (double) (([=](auto temp_179) -> double { switch(temp_179) { case 0x0: return (double) (((bool) (((a2) == (b2)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((a2) >= (b2)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x3: return (double) (((bool) ((((double) (fabs(a2))) >= ((double) (fabs(b2)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x6: return (double) (((bool) (((a2) > (b2)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x7: return (double) (((bool) ((((double) (fabs(a2))) > ((double) (fabs(b2)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x0] = (double) (([=](auto temp_189) -> double { switch(temp_189) { case 0x0: return (double) (((bool) (((a1) == (b1)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((a1) >= (b1)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x3: return (double) (((bool) ((((double) (fabs(a1))) >= ((double) (fabs(b1)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x6: return (double) (((bool) (((a1) > (b1)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x7: return (double) (((bool) ((((double) (fabs(a1))) > ((double) (fabs(b1)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x1] = (double) (([=](auto temp_190) -> double { switch(temp_190) { case 0x0: return (double) (((bool) (((a2) == (b2)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((a2) >= (b2)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x3: return (double) (((bool) ((((double) (fabs(a2))) >= ((double) (fabs(b2)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x6: return (double) (((bool) (((a2) > (b2)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x7: return (double) (((bool) ((((double) (fabs(a2))) > ((double) (fabs(b2)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
 				break;
 			}
 			default: {
@@ -1278,15 +1305,15 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto op = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto top = (string) (([=](auto temp_180) -> string { switch(temp_180) { case 0x0: return string("GT"); case 0x1: return string("GE"); case 0x2: return string("EQ"); default: return string("LE"); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
-		auto t = (string) (([=](auto temp_181) -> string { switch(temp_181) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto top = (string) (([=](auto temp_191) -> string { switch(temp_191) { case 0x0: return string("GT"); case 0x1: return string("GE"); case 0x2: return string("EQ"); default: return string("LE"); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+		auto t = (string) (([=](auto temp_192) -> string { switch(temp_192) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				auto v1 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x0]);
 				auto v2 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x1]);
 				state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((int) ((int) (0x0))) - (Vector128<int>) {}));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_182) -> float { switch(temp_182) { case 0x0: return (float) (((bool) (((v1) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v1) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v1) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v1) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_183) -> float { switch(temp_183) { case 0x0: return (float) (((bool) (((v2) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v2) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v2) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v2) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_193) -> float { switch(temp_193) { case 0x0: return (float) (((bool) (((v1) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v1) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v1) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v1) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_194) -> float { switch(temp_194) { case 0x0: return (float) (((bool) (((v2) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v2) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v2) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v2) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
 				break;
 			}
 			case 0x1: {
@@ -1295,18 +1322,18 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				auto v3 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x2]);
 				auto v4 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x3]);
 				state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((int) ((int) (0x0))) - (Vector128<int>) {}));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_184) -> float { switch(temp_184) { case 0x0: return (float) (((bool) (((v1) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v1) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v1) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v1) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_185) -> float { switch(temp_185) { case 0x0: return (float) (((bool) (((v2) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v2) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v2) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v2) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x2] = (float) (([=](auto temp_186) -> float { switch(temp_186) { case 0x0: return (float) (((bool) (((v3) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v3) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v3) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v3) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x3] = (float) (([=](auto temp_187) -> float { switch(temp_187) { case 0x0: return (float) (((bool) (((v4) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v4) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v4) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v4) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_195) -> float { switch(temp_195) { case 0x0: return (float) (((bool) (((v1) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v1) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v1) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v1) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_196) -> float { switch(temp_196) { case 0x0: return (float) (((bool) (((v2) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v2) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v2) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v2) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x2] = (float) (([=](auto temp_197) -> float { switch(temp_197) { case 0x0: return (float) (((bool) (((v3) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v3) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v3) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v3) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x3] = (float) (([=](auto temp_198) -> float { switch(temp_198) { case 0x0: return (float) (((bool) (((v4) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v4) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v4) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v4) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
 				break;
 			}
 			case 0x3: {
 				auto v1 = (double) (reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rn]))[0x0]);
 				auto v2 = (double) (reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rn]))[0x1]);
 				state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((int) ((int) (0x0))) - (Vector128<int>) {}));
-				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x0] = (double) (([=](auto temp_188) -> double { switch(temp_188) { case 0x0: return (double) (((bool) (((v1) > ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x1: return (double) (((bool) (((v1) >= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((v1) == ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: return (double) (((bool) (((v1) <= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
-				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x1] = (double) (([=](auto temp_189) -> double { switch(temp_189) { case 0x0: return (double) (((bool) (((v2) > ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x1: return (double) (((bool) (((v2) >= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((v2) == ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: return (double) (((bool) (((v2) <= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x0] = (double) (([=](auto temp_199) -> double { switch(temp_199) { case 0x0: return (double) (((bool) (((v1) > ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x1: return (double) (((bool) (((v1) >= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((v1) == ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: return (double) (((bool) (((v1) <= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x1] = (double) (([=](auto temp_200) -> double { switch(temp_200) { case 0x0: return (double) (((bool) (((v2) > ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x1: return (double) (((bool) (((v2) >= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((v2) == ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: return (double) (((bool) (((v2) <= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
 				break;
 			}
 			default: {
@@ -1322,7 +1349,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_190) -> string { switch(temp_190) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_201) -> string { switch(temp_201) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				auto v1 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x0]);
@@ -1365,7 +1392,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto opc = (inst >> 3) & 0x1U;
-		auto r = (string) (([=](auto temp_191) -> string { switch(temp_191) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_202) -> string { switch(temp_202) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		auto zero = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("/0")) : (string("")));
 		switch(type) {
 			case 0x0: {
@@ -1394,9 +1421,9 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto cond = (inst >> 12) & 0xFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_192) -> string { switch(temp_192) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		auto condstr = (string) (([=](auto temp_193) -> string { switch(temp_193) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_194) -> bool { switch(temp_194) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto r = (string) (([=](auto temp_203) -> string { switch(temp_203) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto condstr = (string) (([=](auto temp_204) -> string { switch(temp_204) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_205) -> bool { switch(temp_205) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			switch(type) {
 				case 0x0: {
@@ -1507,6 +1534,35 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
+	/* FCVTL[2] */
+	if((inst & 0xBFBFFC00U) == 0x0E217800U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x1U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto o2 = (string) ((Q != 0) ? (string("2")) : (string("")));
+		auto ta = (string) ((size != 0) ? (string("2D")) : (string("4S")));
+		auto tb = (string) (([=](auto temp_206) -> string { switch(temp_206) { case 0x0: return string("4H"); case 0x1: return string("8H"); case 0x2: return string("2S"); default: return string("4S"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto n = (Vector128<float>) (state->V[rn]);
+		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
+			case 0x2: {
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x0] = (double) ((double) ((float) (reinterpret_cast<Vector128<float>>(n)[0x0])));
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x1] = (double) ((double) ((float) (reinterpret_cast<Vector128<float>>(n)[0x1])));
+				break;
+			}
+			case 0x3: {
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x0] = (double) ((double) ((float) (reinterpret_cast<Vector128<float>>(n)[0x2])));
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x1] = (double) ((double) ((float) (reinterpret_cast<Vector128<float>>(n)[0x3])));
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
 	/* FCVTZS-scalar-fixedpoint */
 	if((inst & 0x7F3F0000U) == 0x1E180000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -1516,7 +1572,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto fbits = (ulong) (((ulong) (long) (0x40)) - ((ulong) (byte) (scale)));
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (([=](auto temp_195) -> string { switch(temp_195) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r2 = (string) (([=](auto temp_207) -> string { switch(temp_207) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch((byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))))) {
 			case 0x0: {
 				state->X[(int) rd] = (ulong) (uint) ((uint) (FloatToFixed32((float) (state->V[rn][0]), (int) (fbits))));
@@ -1619,7 +1675,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto fbits = (ulong) (((ulong) (long) (0x40)) - ((ulong) (byte) (scale)));
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (([=](auto temp_196) -> string { switch(temp_196) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r2 = (string) (([=](auto temp_208) -> string { switch(temp_208) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch((byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))))) {
 			case 0x0: {
 				state->X[(int) rd] = (ulong) (uint) ((uint) (FloatToFixed32((float) (state->V[rn][0]), (int) (fbits))));
@@ -1719,7 +1775,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_197) -> string { switch(temp_197) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_209) -> string { switch(temp_209) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x3: {
 				throw "Not implemented";
@@ -1740,13 +1796,65 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
+	/* FDIV-vector */
+	if((inst & 0xBFA0FC00U) == 0x2E20FC00U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x1U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto ts = (string) (([=](auto temp_210) -> string { switch(temp_210) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
+			case 0x0: {
+				state->V[rd] = (Vector128<float>) ((Vector128<float>) (((Vector128<float>) (state->V[rn])) / ((Vector128<float>) (state->V[rm]))));
+				break;
+			}
+			case 0x1: {
+				state->V[rd] = (Vector128<float>) (((Vector128<float>) (state->V[rn])) / ((Vector128<float>) (state->V[rm])));
+				break;
+			}
+			case 0x3: {
+				state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rn])) / reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rm]))));
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
+	/* FMADD */
+	if((inst & 0xFF208000U) == 0x1F000000U) {
+		auto type = (inst >> 22) & 0x3U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto ra = (inst >> 10) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto t = (string) (([=](auto temp_211) -> string { switch(temp_211) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x3: return string("H"); default: throw "Not implemented"; } })(type));
+		switch(type) {
+			case 0x0: {
+				state->V[(int) (rd)] = (Vector128<float>) { (float) (((float) (float) ((float) (((float) (float) ((float) (state->V[rn][0]))) * ((float) (float) ((float) (state->V[rm][0])))))) + ((float) (float) ((float) (state->V[ra][0])))), 0, 0, 0 };
+				break;
+			}
+			case 0x1: {
+				state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (((double) (double) ((double) (((double) (double) ((double) (reinterpret_cast<Vector128<double>>(state->V[rn])[0]))) * ((double) (double) ((double) (reinterpret_cast<Vector128<double>>(state->V[rm])[0])))))) + ((double) (double) ((double) (reinterpret_cast<Vector128<double>>(state->V[ra])[0])))), 0 });
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
 	/* FMAX-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E204800U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_198) -> string { switch(temp_198) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_212) -> string { switch(temp_212) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = (float) (state->V[rn][0]);
@@ -1773,7 +1881,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_199) -> string { switch(temp_199) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_213) -> string { switch(temp_213) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = (float) (state->V[rn][0]);
@@ -1800,7 +1908,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_200) -> string { switch(temp_200) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_214) -> string { switch(temp_214) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = (float) (state->V[rn][0]);
@@ -1827,7 +1935,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_201) -> string { switch(temp_201) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_215) -> string { switch(temp_215) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = (float) (state->V[rn][0]);
@@ -1857,9 +1965,9 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_202) -> string { switch(temp_202) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_216) -> string { switch(temp_216) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint) (([=](auto temp_203) -> uint { switch(temp_203) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto index = (uint) (([=](auto temp_217) -> uint { switch(temp_217) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
 		if((sz) != 0) {
 			state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rd])) + reinterpret_cast<Vector128<double>>((Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rn])) * reinterpret_cast<Vector128<double>>((Vector128<float>) (reinterpret_cast<Vector128<float>>(((double) (reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rm]))[index])) - (Vector128<double>) {}))))))));
 		} else {
@@ -1874,7 +1982,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_204) -> string { switch(temp_204) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto T = (string) (([=](auto temp_218) -> string { switch(temp_218) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
 		if((sz) != 0) {
 			state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rd])) + reinterpret_cast<Vector128<double>>((Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rn])) * reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rm])))))));
 		} else {
@@ -2005,7 +2113,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto imm = (inst >> 13) & 0xFFU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_205) -> string { switch(temp_205) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_219) -> string { switch(temp_219) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		auto sv = (float) (Bitcast<uint, float>((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((bool) ((bool) (0x0)))) << 0)) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 1)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 2)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 3)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 4)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 5)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 6)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 7)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 8)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 9)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 10)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 11)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 12)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 13)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 14)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 15)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 16)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 17)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 18)))))) << 0)) | ((uint) (((uint) ((byte) ((byte) ((byte) ((((ulong) (imm)) & ((ulong) (0xF)))))))) << 19)))) | ((uint) (((uint) ((byte) ((byte) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x4)))) & ((ulong) (0x3)))))))) << 23)))) | ((uint) (((uint) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 0)) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 1)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 2)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 3)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 4)))))) << 25)))) | ((uint) (((uint) ((bool) (((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1))))) != 0 ? 0U : 1U))) << 30)))) | ((uint) (((uint) ((bool) ((bool) ((byte) ((imm) >> (uint) (0x7)))))) << 31))))));
 		switch(type) {
 			case 0x0: {
@@ -2019,6 +2127,43 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
+	/* FMOV-vector-immediate-single */
+	if((inst & 0xBFF8FC00U) == 0x0F00F400U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto a = (inst >> 18) & 0x1U;
+		auto b = (inst >> 17) & 0x1U;
+		auto c = (inst >> 16) & 0x1U;
+		auto d = (inst >> 9) & 0x1U;
+		auto e = (inst >> 8) & 0x1U;
+		auto f = (inst >> 7) & 0x1U;
+		auto g = (inst >> 6) & 0x1U;
+		auto h = (inst >> 5) & 0x1U;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto T = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
+		auto sv = (float) (Bitcast<uint, float>((uint) ((((uint) ((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((uint) ((uint) (0x0)))) << 0)) | ((uint) (((uint) (h)) << 19)))) | ((uint) (((uint) (g)) << 20)))) | ((uint) (((uint) (f)) << 21)))) | ((uint) (((uint) (e)) << 22)))) | ((uint) (((uint) (d)) << 23)))) | ((uint) (((uint) (c)) << 24)))) | ((uint) (((uint) (b)) << 25)))) | ((uint) (((uint) (b)) << 26)))) | ((uint) (((uint) (b)) << 27)))) | ((uint) (((uint) (b)) << 28)))) | ((uint) (((uint) (b)) << 29)))) | ((uint) (((uint) (b)) << 30)))) | ((uint) (((uint) (a)) << 31)))))) ^ ((uint) ((uint) (((uint) ((uint) (0x1))) << (uint) (0x1E))))))));
+		auto avec = (Vector128<float>) (reinterpret_cast<Vector128<float>>((sv) - (Vector128<float>) {}));
+		if((Q) != 0) {
+			state->V[rd] = avec;
+		} else {
+			state->V[rd] = (Vector128<float>) (avec);
+		}
+		return true;
+	}
+	/* FMOV-vector-immediate-double */
+	if((inst & 0xFFF8FC00U) == 0x6F00F400U) {
+		auto a = (inst >> 18) & 0x1U;
+		auto b = (inst >> 17) & 0x1U;
+		auto c = (inst >> 16) & 0x1U;
+		auto d = (inst >> 9) & 0x1U;
+		auto e = (inst >> 8) & 0x1U;
+		auto f = (inst >> 7) & 0x1U;
+		auto g = (inst >> 6) & 0x1U;
+		auto h = (inst >> 5) & 0x1U;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto sv = (double) (Bitcast<ulong, double>((ulong) ((((ulong) ((ulong) ((ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (((ulong) ((ulong) ((ulong) (0x0)))) << 0)) | ((ulong) (((ulong) (h)) << 48)))) | ((ulong) (((ulong) (g)) << 49)))) | ((ulong) (((ulong) (f)) << 50)))) | ((ulong) (((ulong) (e)) << 51)))) | ((ulong) (((ulong) (d)) << 52)))) | ((ulong) (((ulong) (c)) << 53)))) | ((ulong) (((ulong) (b)) << 54)))) | ((ulong) (((ulong) (b)) << 55)))) | ((ulong) (((ulong) (b)) << 56)))) | ((ulong) (((ulong) (b)) << 57)))) | ((ulong) (((ulong) (b)) << 58)))) | ((ulong) (((ulong) (b)) << 59)))) | ((ulong) (((ulong) (b)) << 60)))) | ((ulong) (((ulong) (b)) << 61)))) | ((ulong) (((ulong) (b)) << 62)))) | ((ulong) (((ulong) (a)) << 63)))))) ^ ((ulong) ((ulong) (((ulong) ((ulong) (0x1))) << (uint) (0x3E))))))));
+		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>((sv) - (Vector128<double>) {}));
+		return true;
+	}
 	/* FMUL-by-element-vector-spdp */
 	if((inst & 0xBF80F400U) == 0x0F809000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -2028,9 +2173,9 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_206) -> string { switch(temp_206) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_220) -> string { switch(temp_220) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint) (([=](auto temp_207) -> uint { switch(temp_207) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto index = (uint) (([=](auto temp_221) -> uint { switch(temp_221) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
 		if((sz) != 0) {
 			state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rn])) * reinterpret_cast<Vector128<double>>((Vector128<float>) (reinterpret_cast<Vector128<float>>(((double) (reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rm]))[index])) - (Vector128<double>) {})))));
 		} else {
@@ -2044,7 +2189,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_208) -> string { switch(temp_208) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_222) -> string { switch(temp_222) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (((float) (float) ((float) (state->V[rn][0]))) * ((float) (float) ((float) (state->V[rm][0])))), 0, 0, 0 };
@@ -2068,7 +2213,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_209) -> string { switch(temp_209) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_223) -> string { switch(temp_223) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				state->V[rd] = (Vector128<float>) ((Vector128<float>) (((Vector128<float>) (state->V[rn])) * ((Vector128<float>) (state->V[rm]))));
@@ -2094,7 +2239,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_210) -> string { switch(temp_210) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_224) -> string { switch(temp_224) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (-((float) (state->V[rn][0]))), 0, 0, 0 };
@@ -2117,7 +2262,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_211) -> string { switch(temp_211) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_225) -> string { switch(temp_225) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (-((float) (((float) (float) ((float) (state->V[rn][0]))) * ((float) (float) ((float) (state->V[rm][0])))))), 0, 0, 0 };
@@ -2134,14 +2279,80 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
+	/* FRINTA-scalar */
+	if((inst & 0xFF3FFC00U) == 0x1E264000U) {
+		auto type = (inst >> 22) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto r = (string) (([=](auto temp_226) -> string { switch(temp_226) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		switch(type) {
+			case 0x0: {
+				state->V[(int) (rd)] = (Vector128<float>) { (float) (roundf((float) (state->V[rn][0]))), 0, 0, 0 };
+				break;
+			}
+			case 0x1: {
+				state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (round((double) (reinterpret_cast<Vector128<double>>(state->V[rn])[0]))), 0 });
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
+	/* FRINTM-scalar */
+	if((inst & 0xFF3FFC00U) == 0x1E254000U) {
+		auto type = (inst >> 22) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto r = (string) (([=](auto temp_227) -> string { switch(temp_227) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		switch(type) {
+			case 0x0: {
+				state->V[(int) (rd)] = (Vector128<float>) { (float) (ceilf(((float) (state->V[rn][0])) - 0.5f)), 0, 0, 0 };
+				break;
+			}
+			case 0x1: {
+				state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (ceil(((double) (reinterpret_cast<Vector128<double>>(state->V[rn])[0])) - 0.5)), 0 });
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
+	/* FRINTP-scalar */
+	if((inst & 0xFF3FFC00U) == 0x1E24C000U) {
+		auto type = (inst >> 22) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto r = (string) (([=](auto temp_228) -> string { switch(temp_228) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		switch(type) {
+			case 0x0: {
+				state->V[(int) (rd)] = (Vector128<float>) { (float) (floorf(((float) (state->V[rn][0])) + 0.5f)), 0, 0, 0 };
+				break;
+			}
+			case 0x1: {
+				state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (floor(((double) (reinterpret_cast<Vector128<double>>(state->V[rn])[0])) + 0.5)), 0 });
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
 	/* FRSQRTE-vector */
 	if((inst & 0xBFBFFC00U) == 0x2EA1D800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_212) -> string { switch(temp_212) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		state->V[rd] = (Vector128<float>) (([=](auto temp_213) -> Vector128<float> { switch(temp_213) { case 0x0: return (Vector128<float>) (VectorFrsqrte((Vector128<float>) (state->V[rn]), 0x20, 0x2)); case 0x1: return (Vector128<float>) (VectorFrsqrte((Vector128<float>) (state->V[rn]), 0x20, 0x4)); case 0x3: return (Vector128<float>) (VectorFrsqrte((Vector128<float>) (state->V[rn]), 0x40, 0x2)); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_229) -> string { switch(temp_229) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		state->V[rd] = (Vector128<float>) (([=](auto temp_230) -> Vector128<float> { switch(temp_230) { case 0x0: return (Vector128<float>) (VectorFrsqrte((Vector128<float>) (state->V[rn]), 0x20, 0x2)); case 0x1: return (Vector128<float>) (VectorFrsqrte((Vector128<float>) (state->V[rn]), 0x20, 0x4)); case 0x3: return (Vector128<float>) (VectorFrsqrte((Vector128<float>) (state->V[rn]), 0x40, 0x2)); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		return true;
 	}
 	/* FRSQRTS-vector */
@@ -2151,7 +2362,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_214) -> string { switch(temp_214) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_231) -> string { switch(temp_231) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				state->V[rd] = (Vector128<float>) ((Vector128<float>) (((Vector128<float>) (((Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) ((float) (0x3))) - (Vector128<float>) {}))) - ((Vector128<float>) (((Vector128<float>) (state->V[rn])) * ((Vector128<float>) (state->V[rm])))))) / ((Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) ((float) (0x2))) - (Vector128<float>) {})))));
@@ -2177,7 +2388,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_215) -> string { switch(temp_215) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_232) -> string { switch(temp_232) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) ((float) sqrt((double) ((float) (state->V[rn][0])))), 0, 0, 0 };
@@ -2200,7 +2411,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_216) -> string { switch(temp_216) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_233) -> string { switch(temp_233) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (((float) (float) ((float) (state->V[rn][0]))) - ((float) (float) ((float) (state->V[rm][0])))), 0, 0, 0 };
@@ -2412,8 +2623,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_217) -> string { switch(temp_217) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_218) -> long { switch(temp_218) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		auto r = (string) (([=](auto temp_234) -> string { switch(temp_234) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_235) -> long { switch(temp_235) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		switch(opc) {
 			case 0x0: {
@@ -2427,8 +2638,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				break;
 			}
 			default: {
-				state->V[rt1] = (Vector128<float>) (*(Vector128<float>*) (address));
-				state->V[rt2] = (Vector128<float>) (*(Vector128<float>*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x10)))));
+				state->V[rt1] = (Vector128<float>) (LoadVector(address));
+				state->V[rt2] = (Vector128<float>) (LoadVector((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x10)))));
 				break;
 			}
 		}
@@ -2445,8 +2656,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_219) -> string { switch(temp_219) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_220) -> long { switch(temp_220) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		auto r = (string) (([=](auto temp_236) -> string { switch(temp_236) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_237) -> long { switch(temp_237) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (simm)));
 		switch(opc) {
 			case 0x0: {
@@ -2460,8 +2671,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				break;
 			}
 			default: {
-				state->V[rt1] = (Vector128<float>) (*(Vector128<float>*) (address));
-				state->V[rt2] = (Vector128<float>) (*(Vector128<float>*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x10)))));
+				state->V[rt1] = (Vector128<float>) (LoadVector(address));
+				state->V[rt2] = (Vector128<float>) (LoadVector((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x10)))));
 				break;
 			}
 		}
@@ -2533,6 +2744,21 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
+	/* LDR-literal */
+	if((inst & 0xBF000000U) == 0x18000000U) {
+		auto size = (inst >> 30) & 0x1U;
+		auto rawimm = (inst >> 5) & 0x7FFFFU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
+		auto offset = (long) (SignExt<long>((uint) ((uint) ((uint) ((rawimm) << (uint) (0x2)))), 21));
+		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) (offset)));
+		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
+			state->X[(int) rt] = (ulong) (uint) ((uint) (*(uint*) (addr)));
+		} else {
+			state->X[(int) rt] = (ulong) (*(ulong*) (addr));
+		}
+		return true;
+	}
 	/* LDR-simd-immediate-postindex */
 	if((inst & 0x3F600C00U) == 0x3C400400U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -2541,7 +2767,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
-		auto r = (string) (([=](auto temp_221) -> string { switch(temp_221) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_238) -> string { switch(temp_238) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		switch((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
@@ -2561,7 +2787,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				break;
 			}
 			case 0x1: {
-				state->V[rt] = (Vector128<float>) (*(Vector128<float>*) (address));
+				state->V[rt] = (Vector128<float>) (LoadVector(address));
 				break;
 			}
 			default: {
@@ -2583,7 +2809,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
-		auto r = (string) (([=](auto temp_222) -> string { switch(temp_222) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_239) -> string { switch(temp_239) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (simm)));
 		switch((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
@@ -2603,7 +2829,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				break;
 			}
 			case 0x1: {
-				state->V[rt] = (Vector128<float>) (*(Vector128<float>*) (address));
+				state->V[rt] = (Vector128<float>) (LoadVector(address));
 				break;
 			}
 			default: {
@@ -2626,8 +2852,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto opc = (byte) ((byte) (((byte) (((byte) ((bool) ((bool) (0x1)))) << 0)) | ((byte) (((byte) (ropc)) << 1))));
 		auto m = (byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_223) -> string { switch(temp_223) { case 0x1: return string("B"); case 0x5: return string("H"); case 0x9: return string("S"); case 0xD: return string("D"); default: return string("Q"); } })(m));
-		auto imm = (uint) (((uint) ((uint) (rawimm))) << (uint) ((long) (([=](auto temp_224) -> long { switch(temp_224) { case 0x1: return 0x0; case 0x5: return 0x1; case 0x9: return 0x2; case 0xD: return 0x3; default: return 0x4; } })(m))));
+		auto r = (string) (([=](auto temp_240) -> string { switch(temp_240) { case 0x1: return string("B"); case 0x5: return string("H"); case 0x9: return string("S"); case 0xD: return string("D"); default: return string("Q"); } })(m));
+		auto imm = (uint) (((uint) ((uint) (rawimm))) << (uint) ((long) (([=](auto temp_241) -> long { switch(temp_241) { case 0x1: return 0x0; case 0x5: return 0x1; case 0x9: return 0x2; case 0xD: return 0x3; default: return 0x4; } })(m))));
 		switch(m) {
 			case 0x1: {
 				state->V[(int) (rt)] = reinterpret_cast<Vector128<float>>((Vector128<byte>) { (byte) (*(byte*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (uint) (imm))))), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
@@ -2646,7 +2872,34 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				break;
 			}
 			default: {
-				state->V[rt] = (Vector128<float>) (*(Vector128<float>*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (uint) (imm)))));
+				state->V[rt] = (Vector128<float>) (LoadVector((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (uint) (imm)))));
+				break;
+			}
+		}
+		return true;
+	}
+	/* LDR-simd-literal */
+	if((inst & 0x3F000000U) == 0x1C000000U) {
+		auto size = (inst >> 30) & 0x3U;
+		auto imm = (inst >> 5) & 0x7FFFFU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto r = (string) (([=](auto temp_242) -> string { switch(temp_242) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(size));
+		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) (((uint) (((uint) ((byte) ((byte) (0x0)))) << 0)) | ((uint) (((uint) (imm)) << 2)))), 21)))));
+		switch(size) {
+			case 0x0: {
+				state->V[(int) (rt)] = (Vector128<float>) { (float) (*(float*) (addr)), 0, 0, 0 };
+				break;
+			}
+			case 0x1: {
+				state->V[(int) (rt)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (*(double*) (addr)), 0 });
+				break;
+			}
+			case 0x2: {
+				state->V[rt] = (Vector128<float>) (LoadVector(addr));
+				break;
+			}
+			default: {
+				throw "Not implemented";
 				break;
 			}
 		}
@@ -2661,11 +2914,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto scale = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r1 = (string) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (string("Q")) : ((string) (([=](auto temp_225) -> string { switch(temp_225) { case 0x0: return string("B"); case 0x1: return string("H"); case 0x2: return string("S"); case 0x3: return string("D"); default: throw "Not implemented"; } })(size))));
+		auto r1 = (string) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (string("Q")) : ((string) (([=](auto temp_243) -> string { switch(temp_243) { case 0x0: return string("B"); case 0x1: return string("H"); case 0x2: return string("S"); case 0x3: return string("D"); default: throw "Not implemented"; } })(size))));
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (([=](auto temp_226) -> string { switch(temp_226) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
-		auto amount = (ulong) (((ulong) (bool) (scale)) * ((ulong) (long) ((long) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (0x4) : ((long) (([=](auto temp_227) -> long { switch(temp_227) { case 0x0: return 0x1; case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: throw "Not implemented"; } })(size)))))));
-		auto offset = (ulong) (((ulong) (([=](auto temp_228) -> ulong { switch(temp_228) { case 0x2: return (ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]))); case 0x3: return (ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32)))); case 0x7: return (ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]); default: throw "Not implemented"; } })(option))) << (uint) (amount));
+		auto extend = (string) (([=](auto temp_244) -> string { switch(temp_244) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto amount = (ulong) (((ulong) (bool) (scale)) * ((ulong) (long) ((long) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (0x4) : ((long) (([=](auto temp_245) -> long { switch(temp_245) { case 0x0: return 0x1; case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: throw "Not implemented"; } })(size)))))));
+		auto offset = (ulong) (((ulong) (([=](auto temp_246) -> ulong { switch(temp_246) { case 0x2: return (ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]))); case 0x3: return (ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32)))); case 0x7: return (ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]); default: throw "Not implemented"; } })(option))) << (uint) (amount));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset)));
 		switch((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
@@ -2681,7 +2934,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				break;
 			}
 			case 0x1: {
-				state->V[rt] = (Vector128<float>) (*(Vector128<float>*) (address));
+				state->V[rt] = (Vector128<float>) (LoadVector(address));
 				break;
 			}
 			default: {
@@ -2702,7 +2955,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		auto extend = (string) (([=](auto temp_229) -> string { switch(temp_229) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto extend = (string) (([=](auto temp_247) -> string { switch(temp_247) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			state->X[(int) rt] = (ulong) (uint) ((uint) (*(uint*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset))))));
@@ -2754,7 +3007,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_230) -> string { switch(temp_230) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_248) -> string { switch(temp_248) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		state->X[(int) rt] = (ulong) (uint) ((byte) (*(byte*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset))))));
 		return true;
@@ -2804,7 +3057,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_231) -> string { switch(temp_231) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_249) -> string { switch(temp_249) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		state->X[(int) rt] = (ulong) (uint) ((ushort) (*(ushort*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset))))));
 		return true;
@@ -2872,7 +3125,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_232) -> string { switch(temp_232) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_250) -> string { switch(temp_250) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
 			state->X[(int) rt] = (ulong) (uint) ((uint) ((uint) ((int) (SignExt<int>((byte) (*(byte*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset))))), 8)))));
@@ -2945,7 +3198,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_233) -> string { switch(temp_233) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_251) -> string { switch(temp_251) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
 			state->X[(int) rt] = (ulong) (uint) ((uint) ((uint) ((int) (SignExt<int>((ushort) (*(ushort*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset))))), 16)))));
@@ -2991,6 +3244,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rt] = (ulong) ((ulong) ((long) (SignExt<long>((uint) (*(uint*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ushort) (imm))))), 32))));
 		return true;
 	}
+	/* LDRSW-literal */
+	if((inst & 0xFF000000U) == 0x98000000U) {
+		auto imm = (inst >> 5) & 0x7FFFFU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) (((uint) (((uint) ((byte) ((byte) (0x0)))) << 0)) | ((uint) (((uint) (imm)) << 2)))), 21)))));
+		state->X[(int) rt] = (ulong) ((ulong) ((long) (SignExt<long>((uint) (*(uint*) (addr)), 32))));
+		return true;
+	}
 	/* LDRSW-register */
 	if((inst & 0xFFE00C00U) == 0xB8A00800U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -3000,7 +3261,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0x2));
-		auto extend = (string) (([=](auto temp_234) -> string { switch(temp_234) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto extend = (string) (([=](auto temp_252) -> string { switch(temp_252) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		state->X[(int) rt] = (ulong) ((ulong) ((long) (SignExt<long>((uint) (*(uint*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset))))), 32))));
 		return true;
@@ -3084,7 +3345,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_235) -> string { switch(temp_235) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_253) -> string { switch(temp_253) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (imm)));
 		switch((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
@@ -3101,7 +3362,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				break;
 			}
 			case 0x1: {
-				state->V[rt] = (Vector128<float>) (*(Vector128<float>*) (address));
+				state->V[rt] = (Vector128<float>) (LoadVector(address));
 				break;
 			}
 		}
@@ -3177,7 +3438,52 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	/* MOVI-32bit */
+	/* MOVI-scalar-64bit */
+	if((inst & 0xFFF8FC00U) == 0x2F00E400U) {
+		auto a = (inst >> 18) & 0x1U;
+		auto b = (inst >> 17) & 0x1U;
+		auto c = (inst >> 16) & 0x1U;
+		auto d = (inst >> 9) & 0x1U;
+		auto e = (inst >> 8) & 0x1U;
+		auto f = (inst >> 7) & 0x1U;
+		auto g = (inst >> 6) & 0x1U;
+		auto h = (inst >> 5) & 0x1U;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto imm8a = (byte) ((byte) ((long) ((a != 0) ? (0xFF) : (0x0))));
+		auto imm8b = (byte) ((byte) ((long) ((b != 0) ? (0xFF) : (0x0))));
+		auto imm8c = (byte) ((byte) ((long) ((c != 0) ? (0xFF) : (0x0))));
+		auto imm8d = (byte) ((byte) ((long) ((d != 0) ? (0xFF) : (0x0))));
+		auto imm8e = (byte) ((byte) ((long) ((e != 0) ? (0xFF) : (0x0))));
+		auto imm8f = (byte) ((byte) ((long) ((f != 0) ? (0xFF) : (0x0))));
+		auto imm8g = (byte) ((byte) ((long) ((g != 0) ? (0xFF) : (0x0))));
+		auto imm8h = (byte) ((byte) ((long) ((h != 0) ? (0xFF) : (0x0))));
+		auto imm = (ulong) ((ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (((ulong) (imm8h)) << 0)) | ((ulong) (((ulong) (imm8g)) << 8)))) | ((ulong) (((ulong) (imm8f)) << 16)))) | ((ulong) (((ulong) (imm8e)) << 24)))) | ((ulong) (((ulong) (imm8d)) << 32)))) | ((ulong) (((ulong) (imm8c)) << 40)))) | ((ulong) (((ulong) (imm8b)) << 48)))) | ((ulong) (((ulong) (imm8a)) << 56))));
+		state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (Bitcast<ulong, double>(imm)), 0 });
+		return true;
+	}
+	/* MOVI-vector-8bit */
+	if((inst & 0xBFF8FC00U) == 0x0F00E400U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto a = (inst >> 18) & 0x1U;
+		auto b = (inst >> 17) & 0x1U;
+		auto c = (inst >> 16) & 0x1U;
+		auto d = (inst >> 9) & 0x1U;
+		auto e = (inst >> 8) & 0x1U;
+		auto f = (inst >> 7) & 0x1U;
+		auto g = (inst >> 6) & 0x1U;
+		auto h = (inst >> 5) & 0x1U;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto t = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
+		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto avec = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) (Bitcast<uint, float>((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) (imm)) << 0)) | ((uint) (((uint) (imm)) << 8)))) | ((uint) (((uint) (imm)) << 16)))) | ((uint) (((uint) (imm)) << 24))))))) - (Vector128<float>) {}));
+		if((Q) != 0) {
+			state->V[rd] = avec;
+		} else {
+			state->V[rd] = (Vector128<float>) (avec);
+		}
+		return true;
+	}
+	/* MOVI-vector-32bit */
 	if((inst & 0xBFF89C00U) == 0x0F000400U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto a = (inst >> 18) & 0x1U;
@@ -3191,7 +3497,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-		auto amount = (long) (([=](auto temp_236) -> long { switch(temp_236) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
+		auto amount = (long) (([=](auto temp_254) -> long { switch(temp_254) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
 		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
 		auto avec = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) (Bitcast<uint, float>((uint) (((uint) ((uint) (imm))) << (uint) (amount))))) - (Vector128<float>) {}));
 		if((Q) != 0) {
@@ -3309,10 +3615,10 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto rm = (byte) (((bool) (((size) == (0x2)) ? 1U : 0U) != 0) ? ((byte) ((byte) (((byte) (((byte) (rv)) << 0)) | ((byte) (((byte) (M)) << 4))))) : (rv));
-		auto t = (string) (([=](auto temp_237) -> string { switch(temp_237) { case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto ts = (string) (([=](auto temp_238) -> string { switch(temp_238) { case 0x1: return string("H"); case 0x2: return string("S"); default: throw "Not implemented"; } })(size));
-		auto index = (byte) (([=](auto temp_239) -> byte { switch(temp_239) { case 0x1: return (byte) ((byte) (((byte) (byte) (((byte) (((byte) (M)) << 0)) | ((byte) (((byte) (L)) << 1)))) | ((byte) (((byte) (H)) << 2)))); case 0x2: return (byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))); default: throw "Not implemented"; } })(size));
-		auto v = (Vector128<float>) (([=](auto temp_240) -> Vector128<float> { switch(temp_240) { case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn])) * (((ushort) (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rm]))[index]))))); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rn])) * (((uint) (reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rm]))[index]))))); default: throw "Not implemented"; } })(size));
+		auto t = (string) (([=](auto temp_255) -> string { switch(temp_255) { case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_256) -> string { switch(temp_256) { case 0x1: return string("H"); case 0x2: return string("S"); default: throw "Not implemented"; } })(size));
+		auto index = (byte) (([=](auto temp_257) -> byte { switch(temp_257) { case 0x1: return (byte) ((byte) (((byte) (byte) (((byte) (((byte) (M)) << 0)) | ((byte) (((byte) (L)) << 1)))) | ((byte) (((byte) (H)) << 2)))); case 0x2: return (byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))); default: throw "Not implemented"; } })(size));
+		auto v = (Vector128<float>) (([=](auto temp_258) -> Vector128<float> { switch(temp_258) { case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn])) * (((ushort) (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rm]))[index]))))); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rn])) * (((uint) (reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rm]))[index]))))); default: throw "Not implemented"; } })(size));
 		state->V[rd] = (Vector128<float>) ((Q != 0) ? (v) : ((Vector128<float>) (v)));
 		return true;
 	}
@@ -3323,9 +3629,95 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_241) -> string { switch(temp_241) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto v = (Vector128<float>) (([=](auto temp_242) -> Vector128<float> { switch(temp_242) { case 0x0: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rn])) * (reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rm]))))); case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn])) * (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rm]))))); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rn])) * (reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rm]))))); default: throw "Not implemented"; } })(size));
+		auto t = (string) (([=](auto temp_259) -> string { switch(temp_259) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto v = (Vector128<float>) (([=](auto temp_260) -> Vector128<float> { switch(temp_260) { case 0x0: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rn])) * (reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rm]))))); case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn])) * (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rm]))))); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rn])) * (reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rm]))))); default: throw "Not implemented"; } })(size));
 		state->V[rd] = (Vector128<float>) ((Q != 0) ? (v) : ((Vector128<float>) (v)));
+		return true;
+	}
+	/* NEG-vector */
+	if((inst & 0xBF3FFC00U) == 0x2E20B800U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto t = (string) (([=](auto temp_261) -> string { switch(temp_261) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto n = (Vector128<float>) (state->V[rn]);
+		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
+			case 0x0: {
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x0] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x0])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x1] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x1])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x2] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x2])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x3] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x3])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x4] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x4])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x5] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x5])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x6] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x6])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x7] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x7])));
+				break;
+			}
+			case 0x1: {
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x0] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x0])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x1] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x1])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x2] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x2])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x3] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x3])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x4] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x4])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x5] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x5])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x6] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x6])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x7] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x7])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x8] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x8])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0x9] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0x9])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0xA] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0xA])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0xB] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0xB])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0xC] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0xC])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0xD] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0xD])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0xE] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0xE])));
+				reinterpret_cast<Vector128<sbyte>*>(&(state->V[(int) (rd)]))[0][0xF] = (sbyte) (-((sbyte) (reinterpret_cast<Vector128<sbyte>>(n)[0xF])));
+				break;
+			}
+			case 0x2: {
+				reinterpret_cast<Vector128<short>*>(&(state->V[(int) (rd)]))[0][0x0] = (short) (-((short) (reinterpret_cast<Vector128<short>>(n)[0x0])));
+				reinterpret_cast<Vector128<short>*>(&(state->V[(int) (rd)]))[0][0x1] = (short) (-((short) (reinterpret_cast<Vector128<short>>(n)[0x1])));
+				reinterpret_cast<Vector128<short>*>(&(state->V[(int) (rd)]))[0][0x2] = (short) (-((short) (reinterpret_cast<Vector128<short>>(n)[0x2])));
+				reinterpret_cast<Vector128<short>*>(&(state->V[(int) (rd)]))[0][0x3] = (short) (-((short) (reinterpret_cast<Vector128<short>>(n)[0x3])));
+				break;
+			}
+			case 0x3: {
+				reinterpret_cast<Vector128<short>*>(&(state->V[(int) (rd)]))[0][0x0] = (short) (-((short) (reinterpret_cast<Vector128<short>>(n)[0x0])));
+				reinterpret_cast<Vector128<short>*>(&(state->V[(int) (rd)]))[0][0x1] = (short) (-((short) (reinterpret_cast<Vector128<short>>(n)[0x1])));
+				reinterpret_cast<Vector128<short>*>(&(state->V[(int) (rd)]))[0][0x2] = (short) (-((short) (reinterpret_cast<Vector128<short>>(n)[0x2])));
+				reinterpret_cast<Vector128<short>*>(&(state->V[(int) (rd)]))[0][0x3] = (short) (-((short) (reinterpret_cast<Vector128<short>>(n)[0x3])));
+				reinterpret_cast<Vector128<short>*>(&(state->V[(int) (rd)]))[0][0x4] = (short) (-((short) (reinterpret_cast<Vector128<short>>(n)[0x4])));
+				reinterpret_cast<Vector128<short>*>(&(state->V[(int) (rd)]))[0][0x5] = (short) (-((short) (reinterpret_cast<Vector128<short>>(n)[0x5])));
+				reinterpret_cast<Vector128<short>*>(&(state->V[(int) (rd)]))[0][0x6] = (short) (-((short) (reinterpret_cast<Vector128<short>>(n)[0x6])));
+				reinterpret_cast<Vector128<short>*>(&(state->V[(int) (rd)]))[0][0x7] = (short) (-((short) (reinterpret_cast<Vector128<short>>(n)[0x7])));
+				break;
+			}
+			case 0x4: {
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (-((float) (reinterpret_cast<Vector128<float>>(n)[0x0])));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (-((float) (reinterpret_cast<Vector128<float>>(n)[0x1])));
+				break;
+			}
+			case 0x5: {
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (-((float) (reinterpret_cast<Vector128<float>>(n)[0x0])));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (-((float) (reinterpret_cast<Vector128<float>>(n)[0x1])));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x2] = (float) (-((float) (reinterpret_cast<Vector128<float>>(n)[0x2])));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x3] = (float) (-((float) (reinterpret_cast<Vector128<float>>(n)[0x3])));
+				break;
+			}
+			case 0x7: {
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x0] = (double) (-((double) (reinterpret_cast<Vector128<double>>(n)[0x0])));
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x1] = (double) (-((double) (reinterpret_cast<Vector128<double>>(n)[0x1])));
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
+	/* NOP */
+	if((inst & 0xFFFFFFFFU) == 0xD503201FU) {
 		return true;
 	}
 	/* ORN-shifted-register */
@@ -3337,11 +3729,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_243) -> string { switch(temp_243) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_262) -> string { switch(temp_262) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) | ((uint) ((uint) (~((uint) (([=](auto temp_244) -> uint { switch(temp_244) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))))));
+			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) | ((uint) ((uint) (~((uint) (([=](auto temp_263) -> uint { switch(temp_263) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))))));
 		} else {
-			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) | ((ulong) ((ulong) (~((ulong) (([=](auto temp_245) -> ulong { switch(temp_245) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
+			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) | ((ulong) ((ulong) (~((ulong) (([=](auto temp_264) -> ulong { switch(temp_264) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
 		}
 		return true;
 	}
@@ -3377,11 +3769,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_246) -> string { switch(temp_246) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_265) -> string { switch(temp_265) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) | ((uint) ((uint) (([=](auto temp_247) -> uint { switch(temp_247) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))));
+			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) | ((uint) ((uint) (([=](auto temp_266) -> uint { switch(temp_266) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))));
 		} else {
-			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) | ((ulong) ((ulong) (([=](auto temp_248) -> ulong { switch(temp_248) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) | ((ulong) ((ulong) (([=](auto temp_267) -> ulong { switch(temp_267) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 		}
 		return true;
 	}
@@ -3615,7 +4007,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	/* SCVTF-vector-integer */
+	/* SCVTF-scalar */
 	if((inst & 0xFFBFFC00U) == 0x5E21D800U) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
@@ -3625,6 +4017,40 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->V[(int) (rd)] = (Vector128<float>) { (float) ((float) ((int) (Bitcast<float, int>((float) (state->V[rn][0]))))), 0, 0, 0 };
 		} else {
 			state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) ((double) ((long) (Bitcast<double, long>((double) (reinterpret_cast<Vector128<double>>(state->V[rn])[0]))))), 0 });
+		}
+		return true;
+	}
+	/* SCVTF-vector */
+	if((inst & 0xBFBFFC00U) == 0x0E21D800U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x1U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto t = (string) (([=](auto temp_268) -> string { switch(temp_268) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto n = (Vector128<float>) (state->V[rn]);
+		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
+			case 0x0: {
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) ((float) ((int) (reinterpret_cast<Vector128<int>>(n)[0x0])));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) ((float) ((int) (reinterpret_cast<Vector128<int>>(n)[0x1])));
+				break;
+			}
+			case 0x1: {
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) ((float) ((int) (reinterpret_cast<Vector128<int>>(n)[0x0])));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) ((float) ((int) (reinterpret_cast<Vector128<int>>(n)[0x1])));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x2] = (float) ((float) ((int) (reinterpret_cast<Vector128<int>>(n)[0x2])));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x3] = (float) ((float) ((int) (reinterpret_cast<Vector128<int>>(n)[0x3])));
+				break;
+			}
+			case 0x3: {
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x0] = (double) ((double) ((long) (reinterpret_cast<Vector128<long>>(n)[0x0])));
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x1] = (double) ((double) ((long) (reinterpret_cast<Vector128<long>>(n)[0x1])));
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
 		}
 		return true;
 	}
@@ -3846,8 +4272,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_249) -> string { switch(temp_249) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_250) -> long { switch(temp_250) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_269) -> string { switch(temp_269) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_270) -> long { switch(temp_270) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		auto address = (ulong) ((rd) == 31 ? state->SP : state->X[(int) rd]);
 		switch(opc) {
 			case 0x0: {
@@ -3883,8 +4309,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_251) -> string { switch(temp_251) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_252) -> long { switch(temp_252) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_271) -> string { switch(temp_271) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_272) -> long { switch(temp_272) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rd) == 31 ? state->SP : state->X[(int) rd]))) + ((ulong) (long) (simm)));
 		switch(opc) {
 			case 0x0: {
@@ -3920,8 +4346,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_253) -> string { switch(temp_253) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_254) -> long { switch(temp_254) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_273) -> string { switch(temp_273) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_274) -> long { switch(temp_274) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rd) == 31 ? state->SP : state->X[(int) rd]))) + ((ulong) (long) (simm)));
 		switch(opc) {
 			case 0x0: {
@@ -4012,7 +4438,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		auto extend = (string) (([=](auto temp_255) -> string { switch(temp_255) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto extend = (string) (([=](auto temp_275) -> string { switch(temp_275) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			*(uint*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset)))) = (uint) ((rt) == 31 ? 0U : (uint) state->X[(int) rt]);
@@ -4029,7 +4455,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_256) -> string { switch(temp_256) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_276) -> string { switch(temp_276) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		switch(rop) {
@@ -4072,7 +4498,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_257) -> string { switch(temp_257) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_277) -> string { switch(temp_277) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto scale = (byte) ((byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (opc)) << 2))));
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (simm)));
@@ -4116,7 +4542,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_258) -> string { switch(temp_258) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_278) -> string { switch(temp_278) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto scale = (byte) ((byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (opc)) << 2))));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ushort) ((ushort) ((imm) << (uint) (scale)))));
 		switch(rop) {
@@ -4157,10 +4583,10 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r1 = (string) (([=](auto temp_259) -> string { switch(temp_259) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r1 = (string) (([=](auto temp_279) -> string { switch(temp_279) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (([=](auto temp_260) -> long { switch(temp_260) { case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: return (long) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (0x4) : (0x0)); } })(size))));
-		auto extend = (string) (([=](auto temp_261) -> string { switch(temp_261) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (([=](auto temp_280) -> long { switch(temp_280) { case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: return (long) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (0x4) : (0x0)); } })(size))));
+		auto extend = (string) (([=](auto temp_281) -> string { switch(temp_281) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset)));
 		switch(rop) {
@@ -4235,7 +4661,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_262) -> string { switch(temp_262) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_282) -> string { switch(temp_282) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		*(byte*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset)))) = (byte) ((byte) ((uint) ((rt) == 31 ? 0U : (uint) state->X[(int) rt])));
 		return true;
@@ -4285,7 +4711,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_263) -> string { switch(temp_263) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_283) -> string { switch(temp_283) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		*(ushort*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset)))) = (ushort) ((ushort) ((uint) ((rt) == 31 ? 0U : (uint) state->X[(int) rt])));
 		return true;
@@ -4313,7 +4739,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_264) -> string { switch(temp_264) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_284) -> string { switch(temp_284) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (simm)));
 		switch(rop) {
@@ -4404,13 +4830,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_265) -> string { switch(temp_265) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_266) -> string { switch(temp_266) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_285) -> string { switch(temp_285) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_286) -> string { switch(temp_286) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = (uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]);
 			if(rd == 31)
-				state->SP = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) - ((uint) (uint) ((uint) (((uint) (([=](auto temp_267) -> uint { switch(temp_267) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
+				state->SP = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) - ((uint) (uint) ((uint) (((uint) (([=](auto temp_287) -> uint { switch(temp_287) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
 			else
-				state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) - ((uint) (uint) ((uint) (((uint) (([=](auto temp_268) -> uint { switch(temp_268) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
+				state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) - ((uint) (uint) ((uint) (((uint) (([=](auto temp_288) -> uint { switch(temp_288) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
 		} else {
 			if(((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U)) != 0) {
 				if(rd == 31)
@@ -4420,9 +4846,9 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			} else {
 				auto m = (ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])));
 				if(rd == 31)
-					state->SP = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) - ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_269) -> ulong { switch(temp_269) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>(m, 64)))); default: return m; } })(option))) << (uint) (imm)))));
+					state->SP = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) - ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_289) -> ulong { switch(temp_289) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>(m, 64)))); default: return m; } })(option))) << (uint) (imm)))));
 				else
-					state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) - ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_270) -> ulong { switch(temp_270) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>(m, 64)))); default: return m; } })(option))) << (uint) (imm)))));
+					state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) - ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_290) -> ulong { switch(temp_290) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>(m, 64)))); default: return m; } })(option))) << (uint) (imm)))));
 			}
 		}
 		return true;
@@ -4436,11 +4862,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_271) -> string { switch(temp_271) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_291) -> string { switch(temp_291) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) - ((uint) (uint) ((uint) (([=](auto temp_272) -> uint { switch(temp_272) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+			state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) - ((uint) (uint) ((uint) (([=](auto temp_292) -> uint { switch(temp_292) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 		} else {
-			state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) - ((ulong) (ulong) ((ulong) (([=](auto temp_273) -> ulong { switch(temp_273) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift)))));
+			state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) - ((ulong) (ulong) ((ulong) (([=](auto temp_293) -> ulong { switch(temp_293) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift)))));
 		}
 		return true;
 	}
@@ -4454,12 +4880,12 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_274) -> string { switch(temp_274) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_275) -> string { switch(temp_275) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_294) -> string { switch(temp_294) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_295) -> string { switch(temp_295) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = (uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]);
 			state->X[(int) rd] = (ulong) (uint) ((uint) (([=]() -> uint {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = (uint) ((uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL))));
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = (uint) ((uint) ((uint) (~((uint) (((uint) (([=](auto temp_276) -> uint { switch(temp_276) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = (uint) ((uint) ((uint) (~((uint) (((uint) (([=](auto temp_296) -> uint { switch(temp_296) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint) ((uint) (0x1));
 					auto bits = (int) (32);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -4491,7 +4917,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				auto m = (ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])));
 				state->X[(int) rd] = (ulong) (([=]() -> ulong {
 						auto __macro_add_with_carry_set_nzcv_common_operand1 = (ulong) ((ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn])));
-						auto __macro_add_with_carry_set_nzcv_common_operand2 = (ulong) ((ulong) ((ulong) (~((ulong) (((ulong) (([=](auto temp_277) -> ulong { switch(temp_277) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>(m, 64)))); default: return m; } })(option))) << (uint) (imm))))));
+						auto __macro_add_with_carry_set_nzcv_common_operand2 = (ulong) ((ulong) ((ulong) (~((ulong) (((ulong) (([=](auto temp_297) -> ulong { switch(temp_297) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>(m, 64)))); default: return m; } })(option))) << (uint) (imm))))));
 						auto __macro_add_with_carry_set_nzcv_common_carryIn = (ulong) ((ulong) (0x1));
 						auto bits = (int) (64);
 						auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -4517,11 +4943,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto mode32 = (bool) (((size) == (0x0)) ? 1U : 0U);
 		auto r = (string) ((mode32 != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_278) -> string { switch(temp_278) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_298) -> string { switch(temp_298) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if((mode32) != 0) {
 			state->X[(int) rd] = (ulong) (uint) ((uint) (([=]() -> uint {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = (uint) ((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn])));
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = (uint) ((uint) ((uint) (~((uint) (([=](auto temp_279) -> uint { switch(temp_279) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = (uint) ((uint) ((uint) (~((uint) (([=](auto temp_299) -> uint { switch(temp_299) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint) ((uint) (0x1));
 					auto bits = (int) (32);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -4536,7 +4962,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		} else {
 			state->X[(int) rd] = (ulong) (([=]() -> ulong {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = (ulong) ((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn])));
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = (ulong) ((ulong) ((ulong) (~((ulong) (([=](auto temp_280) -> ulong { switch(temp_280) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = (ulong) ((ulong) ((ulong) (~((ulong) (([=](auto temp_300) -> ulong { switch(temp_300) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (ulong) ((ulong) (0x1));
 					auto bits = (int) (64);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -4559,7 +4985,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_281) -> string { switch(temp_281) { case 0x0: return string("LSL #0"); case 0x1: return string("LSL #12"); default: throw "Not implemented"; } })(shift));
+		auto shiftstr = (string) (([=](auto temp_301) -> string { switch(temp_301) { case 0x0: return string("LSL #0"); case 0x1: return string("LSL #12"); default: throw "Not implemented"; } })(shift));
 		auto rimm = (uint) ((shift != 0) ? ((uint) (((uint) ((uint) (imm))) << (uint) (0xC))) : (imm));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			state->X[(int) rd] = (ulong) (uint) ((uint) (([=]() -> uint {
@@ -4616,12 +5042,12 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto offset = (inst >> 5) & 0x3FFFU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((upper) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (bool) ((((byte) ((bool) ((upper) << (uint) (0x5)))) | ((byte) (bottom))));
+		auto imm = (uint) ((((uint) ((uint) (((uint) ((uint) (upper))) << (uint) (0x5)))) | ((uint) ((uint) ((uint) (bottom))))));
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((ushort) (((ushort) ((ushort) (offset))) << (uint) (0x2)), 16)))));
-		if(((bool) ((((ulong) ((((ulong) ((ulong) (((ulong) ((rt) == 31 ? 0UL : state->X[(int) rt])) >> (uint) (imm)))) & ((ulong) (0x1))))) == (0x0)) ? 1U : 0U)) != 0) {
-			Branch(addr);
-		} else {
+		if(((ulong) ((((ulong) ((ulong) (((ulong) ((rt) == 31 ? 0UL : state->X[(int) rt])) >> (uint) (imm)))) & ((ulong) (0x1))))) != 0) {
 			Branch(pc + 4);
+		} else {
+			Branch(addr);
 		}
 		return true;
 	}
@@ -4632,9 +5058,9 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto offset = (inst >> 5) & 0x3FFFU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((upper) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (bool) ((((byte) ((bool) ((upper) << (uint) (0x5)))) | ((byte) (bottom))));
+		auto imm = (uint) ((((uint) ((uint) (((uint) ((uint) (upper))) << (uint) (0x5)))) | ((uint) ((uint) ((uint) (bottom))))));
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((ushort) (((ushort) ((ushort) (offset))) << (uint) (0x2)), 16)))));
-		if(((bool) ((((ulong) ((((ulong) ((ulong) (((ulong) ((rt) == 31 ? 0UL : state->X[(int) rt])) >> (uint) (imm)))) & ((ulong) (0x1))))) != (0x0)) ? 1U : 0U)) != 0) {
+		if(((ulong) ((((ulong) ((ulong) (((ulong) ((rt) == 31 ? 0UL : state->X[(int) rt])) >> (uint) (imm)))) & ((ulong) (0x1))))) != 0) {
 			Branch(addr);
 		} else {
 			Branch(pc + 4);
@@ -4647,8 +5073,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_282) -> string { switch(temp_282) { case 0x0: return string("H"); case 0x1: return string("S"); case 0x2: return string("D"); default: throw "Not implemented"; } })(size));
-		auto t = (string) (([=](auto temp_283) -> string { switch(temp_283) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_302) -> string { switch(temp_302) { case 0x0: return string("H"); case 0x1: return string("S"); case 0x2: return string("D"); default: throw "Not implemented"; } })(size));
+		auto t = (string) (([=](auto temp_303) -> string { switch(temp_303) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto esize = (long) ((0x8) << (uint) (size));
 		auto count = (long) (((long) (long) ((long) ((Q != 0) ? (0x80) : (0x40)))) / ((long) (long) (esize)));
 		switch(size) {
@@ -4695,7 +5121,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	/* UCVTF-scalar-integer */
+	/* UCVTF-scalar-gpr-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E230000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto type = (inst >> 22) & 0x3U;
@@ -4764,7 +5190,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	/* UCVTF-vector-integer */
+	/* UCVTF-scalar-integer */
 	if((inst & 0xFFBFFC00U) == 0x7E21D800U) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
@@ -4774,6 +5200,40 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->V[(int) (rd)] = (Vector128<float>) { (float) ((float) ((uint) (Bitcast<float, uint>((float) (state->V[rn][0]))))), 0, 0, 0 };
 		} else {
 			state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) ((double) ((ulong) (Bitcast<double, ulong>((double) (reinterpret_cast<Vector128<double>>(state->V[rn])[0]))))), 0 });
+		}
+		return true;
+	}
+	/* UCVTF-vector */
+	if((inst & 0xBFBFFC00U) == 0x2E21D800U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x1U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto t = (string) (([=](auto temp_304) -> string { switch(temp_304) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto n = (Vector128<float>) (state->V[rn]);
+		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
+			case 0x0: {
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) ((float) ((uint) (reinterpret_cast<Vector128<uint>>(n)[0x0])));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) ((float) ((uint) (reinterpret_cast<Vector128<uint>>(n)[0x1])));
+				break;
+			}
+			case 0x1: {
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) ((float) ((uint) (reinterpret_cast<Vector128<uint>>(n)[0x0])));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) ((float) ((uint) (reinterpret_cast<Vector128<uint>>(n)[0x1])));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x2] = (float) ((float) ((uint) (reinterpret_cast<Vector128<uint>>(n)[0x2])));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x3] = (float) ((float) ((uint) (reinterpret_cast<Vector128<uint>>(n)[0x3])));
+				break;
+			}
+			case 0x3: {
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x0] = (double) ((double) ((ulong) (reinterpret_cast<Vector128<ulong>>(n)[0x0])));
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x1] = (double) ((double) ((ulong) (reinterpret_cast<Vector128<ulong>>(n)[0x1])));
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
 		}
 		return true;
 	}
@@ -4810,13 +5270,97 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rd] = (ulong) ((ulong) ((UInt128) (((UInt128) (((UInt128) (UInt128) ((UInt128) ((UInt128) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))))) * ((UInt128) (UInt128) ((UInt128) ((UInt128) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))))))) >> (uint) (0x40))));
 		return true;
 	}
+	/* USHL-vector */
+	if((inst & 0xBF20FC00U) == 0x2E204400U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x3U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto t = (string) (([=](auto temp_305) -> string { switch(temp_305) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto n = (Vector128<float>) (state->V[rn]);
+		auto m = (Vector128<float>) (state->V[rm]);
+		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
+			case 0x0: {
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x0] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x0])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x0])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x1] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x1])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x1])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x2] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x2])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x2])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x3] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x3])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x3])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x4] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x4])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x4])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x5] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x5])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x5])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x6] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x6])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x6])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x7] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x7])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x7])));
+				break;
+			}
+			case 0x1: {
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x0] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x0])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x0])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x1] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x1])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x1])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x2] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x2])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x2])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x3] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x3])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x3])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x4] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x4])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x4])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x5] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x5])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x5])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x6] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x6])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x6])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x7] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x7])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x7])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x8] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x8])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x8])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x9] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0x9])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0x9])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xA] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0xA])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0xA])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xB] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0xB])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0xB])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xC] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0xC])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0xC])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xD] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0xD])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0xD])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xE] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0xE])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0xE])));
+				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xF] = (byte) (((byte) (reinterpret_cast<Vector128<byte>>(n)[0xF])) << (uint) ((byte) (reinterpret_cast<Vector128<byte>>(m)[0xF])));
+				break;
+			}
+			case 0x2: {
+				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x0] = (ushort) (((ushort) (reinterpret_cast<Vector128<ushort>>(n)[0x0])) << (uint) ((ushort) (reinterpret_cast<Vector128<ushort>>(m)[0x0])));
+				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x1] = (ushort) (((ushort) (reinterpret_cast<Vector128<ushort>>(n)[0x1])) << (uint) ((ushort) (reinterpret_cast<Vector128<ushort>>(m)[0x1])));
+				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x2] = (ushort) (((ushort) (reinterpret_cast<Vector128<ushort>>(n)[0x2])) << (uint) ((ushort) (reinterpret_cast<Vector128<ushort>>(m)[0x2])));
+				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x3] = (ushort) (((ushort) (reinterpret_cast<Vector128<ushort>>(n)[0x3])) << (uint) ((ushort) (reinterpret_cast<Vector128<ushort>>(m)[0x3])));
+				break;
+			}
+			case 0x3: {
+				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x0] = (ushort) (((ushort) (reinterpret_cast<Vector128<ushort>>(n)[0x0])) << (uint) ((ushort) (reinterpret_cast<Vector128<ushort>>(m)[0x0])));
+				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x1] = (ushort) (((ushort) (reinterpret_cast<Vector128<ushort>>(n)[0x1])) << (uint) ((ushort) (reinterpret_cast<Vector128<ushort>>(m)[0x1])));
+				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x2] = (ushort) (((ushort) (reinterpret_cast<Vector128<ushort>>(n)[0x2])) << (uint) ((ushort) (reinterpret_cast<Vector128<ushort>>(m)[0x2])));
+				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x3] = (ushort) (((ushort) (reinterpret_cast<Vector128<ushort>>(n)[0x3])) << (uint) ((ushort) (reinterpret_cast<Vector128<ushort>>(m)[0x3])));
+				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x4] = (ushort) (((ushort) (reinterpret_cast<Vector128<ushort>>(n)[0x4])) << (uint) ((ushort) (reinterpret_cast<Vector128<ushort>>(m)[0x4])));
+				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x5] = (ushort) (((ushort) (reinterpret_cast<Vector128<ushort>>(n)[0x5])) << (uint) ((ushort) (reinterpret_cast<Vector128<ushort>>(m)[0x5])));
+				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x6] = (ushort) (((ushort) (reinterpret_cast<Vector128<ushort>>(n)[0x6])) << (uint) ((ushort) (reinterpret_cast<Vector128<ushort>>(m)[0x6])));
+				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x7] = (ushort) (((ushort) (reinterpret_cast<Vector128<ushort>>(n)[0x7])) << (uint) ((ushort) (reinterpret_cast<Vector128<ushort>>(m)[0x7])));
+				break;
+			}
+			case 0x4: {
+				reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x0] = (uint) (((uint) (reinterpret_cast<Vector128<uint>>(n)[0x0])) << (uint) ((uint) (reinterpret_cast<Vector128<uint>>(m)[0x0])));
+				reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x1] = (uint) (((uint) (reinterpret_cast<Vector128<uint>>(n)[0x1])) << (uint) ((uint) (reinterpret_cast<Vector128<uint>>(m)[0x1])));
+				break;
+			}
+			case 0x5: {
+				reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x0] = (uint) (((uint) (reinterpret_cast<Vector128<uint>>(n)[0x0])) << (uint) ((uint) (reinterpret_cast<Vector128<uint>>(m)[0x0])));
+				reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x1] = (uint) (((uint) (reinterpret_cast<Vector128<uint>>(n)[0x1])) << (uint) ((uint) (reinterpret_cast<Vector128<uint>>(m)[0x1])));
+				reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x2] = (uint) (((uint) (reinterpret_cast<Vector128<uint>>(n)[0x2])) << (uint) ((uint) (reinterpret_cast<Vector128<uint>>(m)[0x2])));
+				reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x3] = (uint) (((uint) (reinterpret_cast<Vector128<uint>>(n)[0x3])) << (uint) ((uint) (reinterpret_cast<Vector128<uint>>(m)[0x3])));
+				break;
+			}
+			case 0x7: {
+				reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x0] = (ulong) (((ulong) (reinterpret_cast<Vector128<ulong>>(n)[0x0])) << (uint) ((ulong) (reinterpret_cast<Vector128<ulong>>(m)[0x0])));
+				reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x1] = (ulong) (((ulong) (reinterpret_cast<Vector128<ulong>>(n)[0x1])) << (uint) ((ulong) (reinterpret_cast<Vector128<ulong>>(m)[0x1])));
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
 	/* XTN */
 	if((inst & 0xFF3FFC00U) == 0x0E212800U) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto tb = (string) (([=](auto temp_284) -> string { switch(temp_284) { case 0x0: return string("8B"); case 0x1: return string("4H"); case 0x2: return string("2S"); default: throw "Not implemented"; } })(size));
-		auto ta = (string) (([=](auto temp_285) -> string { switch(temp_285) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto tb = (string) (([=](auto temp_306) -> string { switch(temp_306) { case 0x0: return string("8B"); case 0x1: return string("4H"); case 0x2: return string("2S"); default: throw "Not implemented"; } })(size));
+		auto ta = (string) (([=](auto temp_307) -> string { switch(temp_307) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x0: {
 				auto a = (ushort) (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn]))[0x0]);
@@ -4856,8 +5400,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto tb = (string) (([=](auto temp_286) -> string { switch(temp_286) { case 0x0: return string("16B"); case 0x1: return string("8H"); case 0x2: return string("4S"); default: throw "Not implemented"; } })(size));
-		auto ta = (string) (([=](auto temp_287) -> string { switch(temp_287) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto tb = (string) (([=](auto temp_308) -> string { switch(temp_308) { case 0x0: return string("16B"); case 0x1: return string("8H"); case 0x2: return string("4S"); default: throw "Not implemented"; } })(size));
+		auto ta = (string) (([=](auto temp_309) -> string { switch(temp_309) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x0: {
 				auto a = (ushort) (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn]))[0x0]);

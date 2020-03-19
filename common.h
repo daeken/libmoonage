@@ -1,5 +1,4 @@
 #pragma once
-#include <atomic>
 #include <cmath>
 #include <cstdint>
 #include <tuple>
@@ -8,6 +7,7 @@
 #include <llvm/IR/IRBuilder.h>
 #include "property.h"
 
+#define EXPORTED __attribute__ ((visibility ("default")))
 using std::tuple;
 using std::get;
 
@@ -19,7 +19,7 @@ typedef int8_t sbyte;
 typedef __uint128_t UInt128;
 typedef __int128_t Int128;
 
-template<typename T> using Vector128 = T __attribute__((ext_vector_type(16 / sizeof(T))));
+template<typename T> using Vector128 = T __attribute__((ext_vector_type(16 / sizeof(T)), unaligned));
 template<typename T> constexpr bool is_vector_t() { return sizeof(T) == 16 && !(std::is_same<T, UInt128>() || std::is_same<T, Int128>()); }
 template<typename T> using element_t = typeof(((T) {})[0]);
 template<typename T> constexpr bool is_int_ptr_vec_t() {
@@ -52,10 +52,10 @@ struct is_instantiation_of< Template, Template<Args...> > : std::true_type {};
 template<typename T>
 using is_std_function = is_instantiation_of<std::function, T>;
 
-extern thread_local llvm::LLVMContext Context;
-extern thread_local llvm::IRBuilder<> Builder;
+extern EXPORTED thread_local llvm::LLVMContext Context;
+extern EXPORTED thread_local llvm::IRBuilder<> Builder;
 class Recompiler;
-extern thread_local Recompiler RecompilerInstance;
+extern EXPORTED thread_local Recompiler RecompilerInstance;
 llvm::Module* getModule();
 void emitted();
 
@@ -77,7 +77,7 @@ inline Dest Bitcast(const Source& source) {
 }
 
 inline ulong Ones(uint bits) {
-    return bits == 64 ? (ulong) -1LL : (1ULL << (bits + 1)) - 1;
+    return bits == 64 ? (ulong) -1LL : (1ULL << bits) - 1;
 }
 
 inline ulong ZeroExtend(ulong v, int bits) {
@@ -246,6 +246,5 @@ inline ulong FloatToFixed64(double fvalue, int fbits) {
 
 template <class T>
 inline byte CompareAndSwap(T* ptr, T value, T comparand) {
-    auto atomic = std::atomic(*ptr);
-    return std::atomic_compare_exchange_strong(&atomic, &value, comparand) ? 1 : 0;
+    return __atomic_compare_exchange_n(ptr, &comparand, value, false, __ATOMIC_RELAXED, __ATOMIC_RELAXED) ? 0 : 1;
 }
