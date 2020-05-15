@@ -124,7 +124,7 @@ namespace Generator {
 				list => $"({GenerateType(list.Type)}) sqrt((double) ({GenerateExpression(list[1])}))",
 				list => $"({GenerateType(list.Type)}) (({GenerateType(new EFloat(64).AsRuntime(list[1].Type.Runtime))}) ({GenerateExpression(list[1])})).Sqrt()");
 			
-			Expression("frinta", list => list[1].Type, 
+			Expression("frinti", list => list[1].Type, 
 				list => $"round{(list[1].Type is EFloat(var size) && size == 32 ? "f" : "")}({GenerateExpression(list[1])})", 
 				list => $"({GenerateExpression(list[1])}).Round()");
 			
@@ -135,6 +135,14 @@ namespace Generator {
 			Expression("frintp", list => list[1].Type, 
 				list => $"floor{(list[1].Type is EFloat(var size) && size == 32 ? "f" : "")}(({GenerateExpression(list[1])}) + 0.5{(list[1].Type is EFloat(var _size) && _size == 32 ? "f" : "")})", 
 				list => $"({GenerateExpression(list[1])}).RoundHalfUp()");
+			
+			Expression("ceil", list => list[1].Type, 
+				list => $"ceil{(list[1].Type is EFloat(var size) && size == 32 ? "f" : "")}({GenerateExpression(list[1])})", 
+				list => $"({GenerateExpression(list[1])}).Ceil()");
+			
+			Expression("floor", list => list[1].Type, 
+				list => $"floor{(list[1].Type is EFloat(var size) && size == 32 ? "f" : "")}({GenerateExpression(list[1])})", 
+				list => $"({GenerateExpression(list[1])}).Floor()");
 			
 			Expression("bitwidth", _ => new EInt(true, 32),
 				list => {
@@ -149,6 +157,33 @@ namespace Generator {
 			Expression("NaN?", list => new EInt(false, 1).AsRuntime(list[1].Type.Runtime),
 				list => $"isnan({GenerateExpression(list[1])}) ? 1U : 0U",
 				list => $"({GenerateExpression(list[1])}).IsNaN()");
+
+			long Evaluate(PTree elem) {
+				switch(elem) {
+					case PInt(var value):
+						return value;
+					case PList list:
+						var name = list[0] is PName pn ? pn.Name : throw new NotSupportedException();
+						var args = list.Skip(1).Select(Evaluate).ToList();
+						switch(name) {
+							case "+": return args.Aggregate((a, b) => a + b);
+							case "-": return args.Aggregate((a, b) => a - b);
+							case "*": return args.Aggregate((a, b) => a * b);
+							case "/": return args.Aggregate((a, b) => a / b);
+							case ">>": return args.Aggregate((a, b) => a >> (int) b);
+							case "<<": return args.Aggregate((a, b) => a << (int) b);
+							case "&": return args.Aggregate((a, b) => a & b);
+							case "|": return args.Aggregate((a, b) => a | b);
+							case "^": return args.Aggregate((a, b) => a ^ b);
+							default: throw new NotSupportedException($"Cannot evaluate list expression {name}");
+						}
+					default:
+						throw new NotSupportedException($"Cannot evaluate value {elem}");
+				}
+			}
+
+			Expression("literal", list => list[1].Type,
+				list => GenerateExpression(new PInt(Evaluate(list[1])) { Type = list[1].Type }));
 		}
 	}
 }

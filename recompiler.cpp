@@ -23,6 +23,7 @@ long _LabelTag::inc;
 Recompiler::Recompiler() {
     memset((void*) &state, 0, sizeof(CpuState));
     noLocalBranches = false;
+    //noLocalBranches = true;
 }
 
 bool initialized = false;
@@ -41,12 +42,12 @@ llvm::Module* getModule() { return RecompilerInstance.module.get(); }
 void emitted() { RecompilerInstance.justBranched = false; }
 
 void Recompiler::run(ulong pc, ulong sp) {
-    assert(globalInterface != nullptr);
+    assert(interface != nullptr);
     state.SP = sp;
     while(true) {
         auto block = Cache.GetBlock(pc);
         if(block->func == nullptr) {
-            if(!globalInterface->isValidCodePointer(pc, (CpuState*) &state))
+            if(!interface->isValidCodePointer(isOptimizer, pc, (CpuState*) &state))
                 return;
             block->mutex.lock();
             if(block->func == nullptr)
@@ -56,9 +57,9 @@ void Recompiler::run(ulong pc, ulong sp) {
         assert(block->func != nullptr);
 
         state.BranchTo = -1UL;
-        cout << "Running block for " << hex << pc << endl;
+        //cout << "Running block for " << hex << pc << endl;
         block->func((CpuState*) &state);
-        cout << "Finished block at " << hex << state.PC << endl;
+        //cout << "Finished block at " << hex << state.PC << endl;
         state.PC = pc = state.BranchTo;
         //assert(pc != -1UL);
         if((pc & 3) != 0) {
@@ -68,11 +69,19 @@ void Recompiler::run(ulong pc, ulong sp) {
     }
 }
 
+void Recompiler::runOne(Block* block) {
+    //assert(block->func != nullptr);
+    //cout << "Running block for " << hex << pc << endl;
+    block->func((CpuState*) &state);
+    //cout << "Finished block at " << hex << state.PC << endl;
+    state.PC = state.BranchTo;
+}
+
 void Recompiler::runOne() {
     auto pc = state.PC;
     auto block = Cache.GetBlock(pc);
     if(block->func == nullptr) {
-        if(!globalInterface->isValidCodePointer(pc, (CpuState*) &state))
+        if(!interface->isValidCodePointer(isOptimizer, pc, (CpuState*) &state))
             return;
         block->mutex.lock();
         if(block->func == nullptr)
@@ -87,10 +96,10 @@ void Recompiler::runOne() {
 }
 
 void Recompiler::precompile(ulong pc) {
-    assert(globalInterface != nullptr);
+    assert(interface != nullptr);
     auto block = Cache.GetBlock(pc);
     if(block->func == nullptr) {
-        if(!globalInterface->isValidCodePointer(pc, (CpuState*) &state))
+        if(!interface->isValidCodePointer(isOptimizer, pc, (CpuState*) &state))
             return;
         block->mutex.lock();
         if(block->func == nullptr)
@@ -102,6 +111,8 @@ void Recompiler::precompile(ulong pc) {
 
 void Recompiler::recompileMultiple(Block *block) {
     initialize();
+
+    //cout << "Recompiling block at " << hex << block->addr << endl;
 
     auto name = (boost::format("_%1$#x") % block->addr).str();
     module = std::make_unique<llvm::Module>("moonage", Builder.getContext());
@@ -164,7 +175,7 @@ void Recompiler::recompileMultiple(Block *block) {
             if(recompiled.count(pc)) break;
             recompiled.insert(pc);
             Label(label);
-            if(!globalInterface->isValidCodePointer(pc, nullptr)) {
+            if(!interface->isValidCodePointer(isOptimizer, pc, nullptr)) {
                 BranchToR = pc;
                 Branch(std::get<0>(storeRegistersLabels[0]));
                 break;
@@ -176,10 +187,8 @@ void Recompiler::recompileMultiple(Block *block) {
             if(!recompile(*(uint*) pc, pc)) {
                 if(noLocalBranches)
                     throw "Recompilation failed";
-                else {
-                    cout << "Instruction at 0x" << hex << pc << " (" << hex << *((uint*) pc) << ") failed to recompile" << endl;
-                    assert(false);
-                }
+                else
+                    interface->Error((boost::format("Recompilation failed at %1$#x --- %2$#x") % pc % *((uint*) pc)).str());
             }
             pc += 4;
         }
@@ -207,10 +216,10 @@ void Recompiler::recompileMultiple(Block *block) {
     //function->dump();
     llvm::verifyFunction(*function, &llvm::outs());
     assert(!llvm::verifyFunction(*function));
-    pm.run(*function);
+    /*pm.run(*function);
     //function->dump();
     llvm::verifyFunction(*function, &llvm::outs());
-    assert(!llvm::verifyFunction(*function));
+    assert(!llvm::verifyFunction(*function));*/
 
     string error;
     llvm::EngineBuilder eb(std::move(module));
@@ -229,14 +238,17 @@ void Recompiler::recompileMultiple(Block *block) {
 #undef STORE
 }
 
-int Svc(uint svc, ulong state) {
-    return globalInterface->Svc(svc, (CpuState*) state);
+int Svc(ulong recompilerPtr, uint svc, ulong state) {
+    auto recompiler = (Recompiler*) recompilerPtr;
+    return recompiler->interface->Svc(svc, (CpuState*) state);
 }
 
-ulong SR(uint op0, uint op1, uint crn, uint crm, uint op2) {
-    return globalInterface->SR(op0, op1, crn, crm, op2);
+ulong SR(ulong recompilerPtr, uint op0, uint op1, uint crn, uint crm, uint op2) {
+    auto recompiler = (Recompiler*) recompilerPtr;
+    return recompiler->interface->SR(op0, op1, crn, crm, op2);
 }
 
-void SR(uint op0, uint op1, uint crn, uint crm, uint op2, ulong value) {
-    globalInterface->SR(op0, op1, crn, crm, op2, value);
+void SR(ulong recompilerPtr, uint op0, uint op1, uint crn, uint crm, uint op2, ulong value) {
+    auto recompiler = (Recompiler*) recompilerPtr;
+    recompiler->interface->SR(op0, op1, crn, crm, op2, value);
 }

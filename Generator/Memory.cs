@@ -20,8 +20,12 @@ namespace Generator {
 					$"Exclusive{(list.Type is EInt(_, var width) ? width : throw new NotSupportedException())}R = ((RuntimePointer<{GenerateType(list.Type.AsCompiletime())}>) ({GenerateExpression(list[1])})).value()");
 			
 			Expression("store", _ => EType.Unit.AsRuntime(),
-				list => 
-					$"*({GenerateType(list[2].Type)}*) ({GenerateExpression(list[1])}) = {GenerateExpression(list[2])}",
+				list => {
+					var type = GenerateType(list[2].Type);
+					if(type == "Vector128<float>")
+						return $"StoreVector({GenerateExpression(list[1])}, {GenerateExpression(list[2])})";
+					return $"*({GenerateType(list[2].Type)}*) ({GenerateExpression(list[1])}) = {GenerateExpression(list[2])}";
+				},
 				list =>
 					$"((RuntimePointer<{GenerateType(list[2].Type.AsCompiletime())}>) ({GenerateExpression(list[1])})).value({GenerateExpression(list[2])})");
 			

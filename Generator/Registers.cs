@@ -57,7 +57,7 @@ namespace Generator {
 			
 			Expression("sr", _ => new EInt(false, 64).AsRuntime(), 
 				list => $"SR({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[4])}, {GenerateExpression(list[5])})", 
-				list => $"Call<ulong, uint, uint, uint, uint, uint>(SR, {GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[4])}, {GenerateExpression(list[5])})");
+				list => $"Call<ulong, ulong, uint, uint, uint, uint, uint>(SR, (ulong) this, {GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[4])}, {GenerateExpression(list[5])})");
 		}
 	}
 }

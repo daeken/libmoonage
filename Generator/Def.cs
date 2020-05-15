@@ -76,6 +76,10 @@ namespace Generator {
 							case "block":
 								InferList(list);
 								return list.Last().Type;
+							case "for":
+								locals[((PName) ((PList) list[1])[0]).Name] = new EInt(true, 32);
+								list.Skip(2).ForEach(x => InferType(x));
+								return EType.Unit;
 							case "let":
 								locals[((PName) list[1]).Name] = InferType(list[2]);
 								list.Skip(3).ForEach(x => InferType(x));

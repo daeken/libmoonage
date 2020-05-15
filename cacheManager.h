@@ -15,7 +15,8 @@ public:
     const ulong addr;
     mutex mutex;
     BlockFunc func;
-    inline Block(ulong addr) : addr(addr), func(nullptr) { }
+    std::atomic<int> hitCount;
+    inline Block(ulong addr) : addr(addr), func(nullptr), hitCount(0) { }
 };
 
 class CacheManager {

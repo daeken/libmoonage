@@ -1,10 +1,20 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using MoreLinq.Extensions;
 
 namespace Generator {
 	class ControlFlow : Builtin {
 		public override void Define() {
+			Statement("requires", list => EType.Unit,
+				(c, list) => {
+					c += $"if({string.Join(" && ", list.Skip(1).Select(x => $"!({GenerateExpression(x)})"))})";
+					c++;
+					c += $"goto {Program.NextLabel};";
+					c--;
+				});
+			
 			Statement("block", list => list.Last().Type,
 				(c, list) => list.Skip(1).ForEach(x => GenerateStatement(c, (PList) x)));
 			
@@ -99,6 +109,61 @@ namespace Generator {
 				if(!b.StartsWith("throw")) b = $"({b})";
 				return $"({GenerateExpression(list[1])}) != 0 ? {a} : {b}";
 			});
+			
+			Statement("for", _ => EType.Unit,
+				(c, list) => {
+					if(!(list[1] is PList dlist) || !(dlist[0] is PName vname)) throw new NotSupportedException();
+					int start = 0, end = 0, step = 1;
+					var name = vname.Name;
+					if(dlist.Count == 2) {
+						if (!(dlist[1] is PInt ei)) throw new NotSupportedException();
+						end = (int) ei.Value;
+					} else if(dlist.Count == 3) {
+						if (!(dlist[1] is PInt si) || !(dlist[2] is PInt ei)) throw new NotSupportedException();
+						start = (int) si.Value;
+						end = (int) ei.Value;
+					} else if(dlist.Count == 4) {
+						if(!(dlist[1] is PInt si) || !(dlist[2] is PInt ei) || !(dlist[3] is PInt ti))
+							throw new NotSupportedException();
+						start = (int) ei.Value;
+						end = (int) ei.Value;
+						step = (int) ti.Value;
+					}
+					else
+						throw new NotSupportedException();
+
+					for(var i = start; i < end; i += step) {
+						var pi = new PInt(i);
+						pi.Type = new EInt(true, 32);
+						list.Skip(2).ForEach(x => GenerateStatement(c, ((PList) x).MapLeaves(y => y is PName pn && pn.Name == name ? pi : y)));
+					}
+				});
+			
+			Statement("when", _ => EType.Unit,
+				(c, list) => {
+					c += $"if(({GenerateExpression(list[1])}) != 0) {{";
+					c++;
+					list.Skip(2).ForEach(x => GenerateStatement(c, (PList) x));
+					c--;
+					c += "}";
+				}, (c, list) => {
+					if(list[1].Type.Runtime) {
+						var if_label = TempName();
+						var end_label = TempName();
+						c += $"LabelTag {if_label} = DefineLabel(), {end_label} = DefineLabel();";
+						c += $"BranchIf({GenerateExpression(list[1])}, {if_label}, {end_label});";
+						c += $"Label({if_label});";
+						list.Skip(2).ForEach(x => GenerateStatement(c, (PList) x));
+						c += $"Branch({end_label});";
+						c += $"Label({end_label});";
+					} else {
+						c += $"if(({GenerateExpression(list[1])}) != 0) {{";
+						c++;
+						list.Skip(2).ForEach(x => GenerateStatement(c, (PList) x));
+						c--;
+						c += "}";
+					}
+				});
 			
 			Statement("match", list => list.Count == 3 ? list[2].Type : list[3].Type,
 				(c, list) => {

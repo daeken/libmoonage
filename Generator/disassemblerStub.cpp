@@ -11,6 +11,7 @@ typedef uint8_t byte;
 const int instructionClassCount = /*%IC_COUNT%*/+0;
 
 const char* getInstructionClass(uint inst) {
+    ulong pc = 0;
 /*%IC_CODE%*/
     return nullptr;
 }

@@ -87,7 +87,7 @@ namespace Generator {
 								c--;
 								return;
 							case PName("sr"):
-								c += $"Call<void, uint, uint, uint, uint, uint, ulong>(SR, {GenerateExpression(sub[1])}, {GenerateExpression(sub[2])}, {GenerateExpression(sub[3])}, {GenerateExpression(sub[4])}, {GenerateExpression(sub[5])}, {GenerateExpression(list[2])});";
+								c += $"Call<void, ulong, uint, uint, uint, uint, uint, ulong>(SR, (ulong) this, {GenerateExpression(sub[1])}, {GenerateExpression(sub[2])}, {GenerateExpression(sub[3])}, {GenerateExpression(sub[4])}, {GenerateExpression(sub[5])}, {GenerateExpression(list[2])});";
 								return;
 						}
 

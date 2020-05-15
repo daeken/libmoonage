@@ -4,6 +4,7 @@
 #include "state.h"
 #include "cacheManager.h"
 #include "runtimeValue.h"
+#include "interface.h"
 
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/IRBuilder.h>
@@ -42,20 +43,23 @@ struct BlockContext {
     ulong LR = -1UL;
 };
 
-int Svc(uint svc, ulong state);
-ulong SR(uint op0, uint op1, uint crn, uint crm, uint op2);
-void SR(uint op0, uint op1, uint crn, uint crm, uint op2, ulong value);
+int Svc(ulong recompilerPtr, uint svc, ulong state);
+ulong SR(ulong recompilerPtr, uint op0, uint op1, uint crn, uint crm, uint op2);
+void SR(ulong recompilerPtr, uint op0, uint op1, uint crn, uint crm, uint op2, ulong value);
 
 class EXPORTED Recompiler {
 public:
     Recompiler();
     bool recompile(uint inst, ulong pc);
     void run(ulong pc, ulong sp);
+    void runOne(Block* block);
     void runOne();
     void precompile(ulong pc);
     void recompileMultiple(Block* block);
 
     volatile CpuState state;
+    bool isOptimizer = false;
+    CpuInterface* interface;
     ulong currentPC;
     void* stateLocals[sizeof(CpuState)];
     template<typename T>
@@ -236,7 +240,7 @@ public:
         loadRegistersLabels.push_back({ preLoad, postLoad });
         Branch(preStore);
         Label(postStore);
-        auto cont = Call<int, uint, ulong>(Svc, svc, CpuStateRef);
+        auto cont = Call<int, ulong, uint, ulong>(Svc, (ulong) this, svc, CpuStateRef);
         BranchIf(cont == 1, preLoad, std::get<1>(storeRegistersLabels[0]));
         Label(postLoad);
     }
@@ -333,6 +337,8 @@ public:
             );
         });
     }
+
+#include "recompiler.generated.h"
 };
 
 template<typename CondT, typename ValueT>

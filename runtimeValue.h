@@ -334,6 +334,16 @@ public:
     inline RuntimeValue<T> RoundHalfUp() const {
         RV(T, (CallIntrinsic<T, T>(llvm::Intrinsic::ID::floor, __this + (T) 0.5)));
     }
+
+    template<typename U = T, typename = std::enable_if_t<std::is_floating_point_v<U>>>
+    inline RuntimeValue<T> Ceil() const {
+        RV(T, (CallIntrinsic<T, T>(llvm::Intrinsic::ID::ceil, __this)));
+    }
+
+    template<typename U = T, typename = std::enable_if_t<std::is_floating_point_v<U>>>
+    inline RuntimeValue<T> Floor() const {
+        RV(T, (CallIntrinsic<T, T>(llvm::Intrinsic::ID::floor, __this)));
+    }
 };
 
 template<typename T>

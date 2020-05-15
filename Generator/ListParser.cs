@@ -90,6 +90,27 @@ namespace Generator {
 		public override string ToString() => $"({(Type.Runtime ? "~runtime~ " : "")}{string.Join(' ', Children.Select(x => x.ToString()))})";
 
 		public bool AnyRuntime => Type.Runtime || Children.Any(x => x.Type.Runtime);
+
+		public PList MapLeaves(Func<PTree, PTree> mapper) {
+			var c = new List<PTree>();
+			var modified = false;
+
+			foreach(var child in this) {
+				if(child is PList list) {
+					var sub = list.MapLeaves(mapper);
+					c.Add(sub);
+					if(!ReferenceEquals(list, sub))
+						modified = true;
+				} else {
+					var sub = mapper(child);
+					c.Add(sub);
+					if(!ReferenceEquals(child, sub))
+						modified = true;
+				}
+			}
+			
+			return modified ? new PList(c) { Type = Type } : this;
+		}
 	}
 
 	public class PName : PTree {

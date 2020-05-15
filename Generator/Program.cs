@@ -46,6 +46,7 @@ namespace Generator {
 	}
 	
 	static class Program {
+		public static string NextLabel;
 		static void Main(string[] args) {
 			AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes())
 				.Where(x => x.IsSubclassOf(typeof(Builtin)))
@@ -172,7 +173,7 @@ namespace Generator {
 							default: return "float";
 						}
 					case EVector _: return "Vector128<float>";
-					default: throw new NotImplementedException();
+					default: throw new NotImplementedException($"Type {type.ToString()}");
 				}
 			}
 
@@ -255,6 +256,8 @@ namespace Generator {
 			c += 1;
 			var ic = new CodeBuilder();
 			ic += 1;
+
+			var labelNum = 0;
 			
 			foreach(var def in defs) {
 				Console.WriteLine(def.Name + "...");
@@ -280,15 +283,18 @@ namespace Generator {
 							args.Add(name);
 							return $"%{args.Count}%";
 						});
-				
+
+				NextLabel = $"insn_{++labelNum}";
 				c += $"/* {def.Name} */";
 				c += $"if((inst & 0x{def.Mask:X8}U) == 0x{def.Match:X8}U) {{";
-				ic += $"if((inst & 0x{def.Mask:X8}U) == 0x{def.Match:X8}U)";
+				ic += $"if((inst & 0x{def.Mask:X8}U) == 0x{def.Match:X8}U) {{";
 				c++;
 				ic++;
-				ic += $"return \"{def.Name}\";";
 				GenerateFields(c, def);
 				GenerateStatement(c, def.Decode);
+				GenerateFields(ic, def);
+				GenerateStatement(ic, def.Decode);
+				ic += $"return \"{def.Name}\";";
 				var line = $"return (boost::format(\"{RewriteFormat(def.Disassembly)}\")";
 				foreach(var arg in args)
 					line += " % " + arg;
@@ -296,6 +302,9 @@ namespace Generator {
 				c--;
 				ic--;
 				c += "}";
+				ic += "}";
+				c += $"{NextLabel}:";
+				ic += $"{NextLabel}:";
 			}
 			
 			using var fp = File.Open("../disassembler.generated.cpp", FileMode.Truncate);
@@ -311,8 +320,10 @@ namespace Generator {
 			
 			var c = new CodeBuilder();
 			c += 1;
+			var labelNum = 0;
 			
 			foreach(var def in defs) {
+				NextLabel = $"insn_{++labelNum}";
 				c += $"/* {def.Name} */";
 				c += $"if((inst & 0x{def.Mask:X8}U) == 0x{def.Match:X8}U) {{";
 				c++;
@@ -322,6 +333,7 @@ namespace Generator {
 				c += "return true;";
 				c--;
 				c += "}";
+				c += $"{NextLabel}:";
 			}
 
 			using var fp = File.Open("../interpreter.generated.cpp", FileMode.Truncate);
@@ -330,27 +342,52 @@ namespace Generator {
 		}
 		
 		static void BuildRecompiler(List<Def> defs) {
+			string Rename(string name) => name.Replace('-', '_').Replace('.', '_').Replace('[', '_').Replace(']', '_');
 			Context = ContextTypes.Recompiler;
 			
 			var c = new CodeBuilder();
-			c += 1;
+			c++;
 			
 			foreach(var def in defs) {
-				c += $"/* {def.Name} */";
 				c += $"if((inst & 0x{def.Mask:X8}U) == 0x{def.Match:X8}U) {{";
 				c++;
 				//c += $"printf(\"Instruction: {def.Name}\\n\");";
-				GenerateFields(c, def);
-				GenerateStatement(c, def.Decode);
-				GenerateStatement(c, def.Eval);
-				c += "return true;";
+				c += $"if({Rename(def.Name)}(inst, pc)) return true;";
 				c--;
 				c += "}";
 			}
 			
+			var fc = new CodeBuilder();
+
+			var dfp = File.Open("../recompiler.generated.h", FileMode.Truncate);
+			var dsw = new StreamWriter(dfp);
+			foreach (var def in defs) {
+				NextLabel = "unimplemented";
+				fc += "";
+				fc += $"/* {def.Name} */";
+				fc += $"bool Recompiler::{Rename(def.Name)}(uint inst, ulong pc) {{";
+				dsw.WriteLine($"bool {Rename(def.Name)}(uint inst, ulong pc);");
+				fc++;
+				fc += "{";
+				fc++;
+				GenerateFields(fc, def);
+				GenerateStatement(fc, def.Decode);
+				GenerateStatement(fc, def.Eval);
+				fc += "return true;";
+				fc--;
+				fc += "}";
+				fc--;
+				fc += "unimplemented:";
+				fc++;
+				fc += "return false;";
+				fc--;
+				fc += "}";
+			}
+			
 			using var fp = File.Open("../recompiler.generated.cpp", FileMode.Truncate);
 			using var sw = new StreamWriter(fp);
-			sw.Write(File.ReadAllText("recompilerStub.cpp").Replace("/*%CODE%*/", c.Code));
+			sw.Write(File.ReadAllText("recompilerStub.cpp").Replace("/*%CODE%*/", c.Code).Replace("/*%FUNCS%*/", fc.Code));
+			dsw.Close();
 		}
 	}
 }

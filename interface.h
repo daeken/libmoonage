@@ -12,7 +12,8 @@ class CpuInterface {
 public:
     // This will get hit before each instruction fetch; keep it lightweight
     // When fetching a new block, state will be valid; otherwise, nullptr
-    virtual bool isValidCodePointer(uint64_t addr, CpuState* state) = 0;
+    // fromOptimizer will be true if this is being invoked from the optimizer, otherwise false
+    virtual bool isValidCodePointer(bool fromOptimizer, uint64_t addr, CpuState* state) = 0;
 
     // Called when a svc occurs. Returning false will halt emulation, true will continue
     virtual bool Svc(uint32_t svc, CpuState* state) = 0;
@@ -20,7 +21,7 @@ public:
     // Called to read or write system registers, respectively
     virtual uint64_t SR(uint32_t op0, uint32_t op1, uint32_t crn, uint32_t crm, uint32_t op2) = 0;
     virtual void SR(uint32_t op0, uint32_t op1, uint32_t crn, uint32_t crm, uint32_t op2, uint64_t value) = 0;
-};
 
-extern CpuInterface* globalInterface;
-EXPORTED void registerCpuInterface(CpuInterface* interface);
+    virtual void Log(const std::string& message) = 0;
+    virtual void Error(const std::string& message) = 0;
+};

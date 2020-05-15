@@ -9,3 +9,4 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 /*%CODE%*/
     return false;
 }
+/*%FUNCS%*/
