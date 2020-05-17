@@ -399,13 +399,29 @@
 
 (def BIC-vector-register
     "0 Q 0 01110 01 1 mmmmm 00011 1 nnnnn ddddd"
-    "bic V$rd.$t, V$rn.$t, V$rm.$t"
+    "bic V$rd.$T, V$rn.$T, V$rm.$T"
     (names (Q Q) (rm m) (rn n) (rd d))
-    (let t (if (== Q 1) "16B" "8B"))
+    (let T (if (== Q 1) "16B" "8B"))
     (let v (vec&~ (vec rn) (vec rm))
-        (if (== Q 1)
-            (= (vec rd) v)
-            (= (vec rd) (vector-zero-top v)))))
+        (= (vec rd) (if Q v (vector-zero-top v)))))
+
+(def BIC-vector-immediate-16bit
+    "0 Q 1 0111100000 a b c 10x1 0 1 d e f g h rrrrr"
+    "bic V$rd.$T, #$imm, LSL #$amount"
+    (names (Q Q) (a a) (b b) (c c) (cmode x) (d d) (e e) (f f) (g g) (h h) (rd r))
+    (mlet (T (if (== Q 1) "16B" "8B") amount (if cmode 8 0))
+        (let imm (: a b c d e f g h)))
+    (let v (vec&~ (vec rd) (vector-all (<< (u16 imm) amount)))
+        (= (vec rd) (if Q v (vector-zero-top v)))))
+
+(def BIC-vector-immediate-32bit
+    "0 Q 1 0111100000 a b c 0xx1 0 1 d e f g h rrrrr"
+    "bic V$rd.$T, #$imm, LSL #$amount"
+    (names (Q Q) (a a) (b b) (c c) (cmode x) (d d) (e e) (f f) (g g) (h h) (rd r))
+    (mlet (T (if (== Q 1) "16B" "8B") amount (<< cmode 3))
+        (let imm (: a b c d e f g h)))
+    (let v (vec&~ (vec rd) (vector-all (<< (u32 imm) amount)))
+        (= (vec rd) (if Q v (vector-zero-top v)))))
 
 (def BICS
     "f 11 01010 ss 1 mmmmm iiiiii nnnnn ddddd"
@@ -451,6 +467,14 @@
     (names (imm i))
     (block)
     (branch 0xf1f1f1f1f2f2f2f2))
+
+(def BSL
+    "0 Q 1 01110 01 1 mmmmm 00011 1 nnnnn ddddd"
+    "bsl V$rd.$T, V$rn.$T, V$rm.$T"
+    (names (Q Q) (rm m) (rn n) (rd d))
+    (let T (if Q "16B" "8B"))
+    (mlet (d (vec rd) a (vec rn) b (vec rm))
+        (= (vec rd) (vec^ b (vec& (vec^ b a) d)))))
 
 (def CASP
     "0 f 001000 0 0 1 sssss 0 11111 nnnnn ttttt"
@@ -663,7 +687,7 @@
         0b11 "D"
         (unimplemented)))
     (match size
-        0b11 (= (vec-d rd) (bitcast (if (== (vec-d rn) (vec-d rm)) (u64 0xFFFFFFFF_FFFFFFFF) (u64 0)) f64))
+        0b11 (= (vec-d rd) (bitcast (if (== (bitcast (vec-d rn) u64) (bitcast (vec-d rm) u64)) (u64 0xFFFFFFFF_FFFFFFFF) (u64 0)) f64))
         (unimplemented)))
 
 (defm cmeq-sub (index type)
@@ -686,42 +710,13 @@
         (= (vec rd) (vector-all (u8 0)))
         (match size
             0b00 (mlet (one (u8 0xFF) zero (u8 0))
-                    (cmeq-sub 0 u8)
-                    (cmeq-sub 1 u8)
-                    (cmeq-sub 2 u8)
-                    (cmeq-sub 3 u8)
-                    (cmeq-sub 4 u8)
-                    (cmeq-sub 5 u8)
-                    (cmeq-sub 6 u8)
-                    (cmeq-sub 7 u8)
-                    (when Q
-                        (cmeq-sub  8 u8)
-                        (cmeq-sub  9 u8)
-                        (cmeq-sub 10 u8)
-                        (cmeq-sub 11 u8)
-                        (cmeq-sub 12 u8)
-                        (cmeq-sub 13 u8)
-                        (cmeq-sub 14 u8)
-                        (cmeq-sub 15 u8)))
+                    (qfor i 8 16 (cmeq-sub i u8)))
             0b01 (mlet (one (u16 0xFFFF) zero (u16 0))
-                    (cmeq-sub 0 u16)
-                    (cmeq-sub 1 u16)
-                    (cmeq-sub 2 u16)
-                    (cmeq-sub 3 u16)
-                    (when Q
-                        (cmeq-sub 4 u16)
-                        (cmeq-sub 5 u16)
-                        (cmeq-sub 6 u16)
-                        (cmeq-sub 7 u16)))
+                    (qfor i 4 8 (cmeq-sub i u16)))
             0b10 (mlet (one (u32 0xFFFFFFFF) zero (u32 0))
-                    (cmeq-sub 0 f32)
-                    (cmeq-sub 1 f32)
-                    (when Q
-                        (cmeq-sub 2 f32)
-                        (cmeq-sub 3 f32)))
+                    (qfor i 2 4 (cmeq-sub i u32)))
                  (mlet (one (u64 0xFFFFFFFF_FFFFFFFF) zero (u64 0))
-                    (cmeq-sub 0 f64)
-                    (when Q (cmeq-sub 1 f64))))))
+                    (qfor i 1 2 (cmeq-sub i u64))))))
 
 (def CMEQ-zero-scalar
     "01 0 11110 ss 10000 0100 1 10 nnnnn ddddd"
@@ -731,7 +726,7 @@
         0b11 "D"
         (unimplemented)))
     (match size
-        0b11 (= (vec-d rd) (bitcast (if (== (bitcast (vec-d rn) i64) (i64 0)) (u64 0xFFFFFFFF_FFFFFFFF) (u64 0)) f64))
+        0b11 (= (vec-d rd) (bitcast (if (== (bitcast (vec-d rn) u64) (u64 0)) (u64 0xFFFFFFFF_FFFFFFFF) (u64 0)) f64))
         (unimplemented)))
 
 (defm cmeqz-sub (index type)
@@ -754,42 +749,91 @@
         (= (vec rd) (vector-all (u8 0)))
         (match size
             0b00 (mlet (one (u8 0xFF) zero (u8 0))
-                    (cmeqz-sub 0 u8)
-                    (cmeqz-sub 1 u8)
-                    (cmeqz-sub 2 u8)
-                    (cmeqz-sub 3 u8)
-                    (cmeqz-sub 4 u8)
-                    (cmeqz-sub 5 u8)
-                    (cmeqz-sub 6 u8)
-                    (cmeqz-sub 7 u8)
-                    (when Q
-                        (cmeqz-sub  8 u8)
-                        (cmeqz-sub  9 u8)
-                        (cmeqz-sub 10 u8)
-                        (cmeqz-sub 11 u8)
-                        (cmeqz-sub 12 u8)
-                        (cmeqz-sub 13 u8)
-                        (cmeqz-sub 14 u8)
-                        (cmeqz-sub 15 u8)))
+                    (qfor i 8 16 (cmeqz-sub i u8)))
             0b01 (mlet (one (u16 0xFFFF) zero (u16 0))
-                    (cmeqz-sub 0 u16)
-                    (cmeqz-sub 1 u16)
-                    (cmeqz-sub 2 u16)
-                    (cmeqz-sub 3 u16)
-                    (when Q
-                        (cmeqz-sub 4 u16)
-                        (cmeqz-sub 5 u16)
-                        (cmeqz-sub 6 u16)
-                        (cmeqz-sub 7 u16)))
+                    (qfor i 4 8 (cmeqz-sub i u16)))
             0b10 (mlet (one (u32 0xFFFFFFFF) zero (u32 0))
-                    (cmeqz-sub 0 u32)
-                    (cmeqz-sub 1 u32)
-                    (when Q
-                        (cmeqz-sub 2 u32)
-                        (cmeqz-sub 3 u32)))
+                    (qfor i 2 4 (cmeqz-sub i u32)))
                  (mlet (one (u64 0xFFFFFFFF_FFFFFFFF) zero (u64 0))
-                    (cmeqz-sub 0 u64)
-                    (when Q (cmeqz-sub 1 u64))))))
+                    (qfor i 1 2 (cmeqz-sub i u64))))))
+
+(def CMGT-register-scalar
+    "01 0 11110 ss 1 mmmmm 0011 0 1 nnnnn ddddd"
+    "cmgt $V$rd, $V$rn, $V$rm"
+    (names (size s) (rm m) (rn n) (rd d))
+    (let V (match size
+        0b11 "D"
+        (unimplemented)))
+    (match size
+        0b11 (= (vec-d rd) (bitcast (if (> (bitcast (vec-d rn) i64) (bitcast (vec-d rm) i64)) (u64 0xFFFFFFFF_FFFFFFFF) (u64 0)) f64))
+        (unimplemented)))
+
+(defm cmgt-sub (index type)
+    (vector-insert rd index (if (> (vector-element a index type) (vector-element b index type)) one zero)))
+
+(def CMGT-register-vector
+    "0 Q 0 01110 ss 1 mmmmm 0011 0 1 nnnnn ddddd"
+    "cmgt V$rd.$T, V$rn.$T, V$rm.$T"
+    (names (Q Q) (size s) (rm m) (rn n) (rd d))
+    (let T (match (: size Q)
+        0b00_0 "8B"
+        0b00_1 "16B"
+        0b01_0 "4H"
+        0b01_1 "8H"
+        0b10_0 "2S"
+        0b10_1 "4S"
+        0b11_1 "2D"
+        (unimplemented)))
+    (mlet (a (vec rn) b (vec rm))
+        (= (vec rd) (vector-all (u8 0)))
+        (match size
+            0b00 (mlet (one (u8 0xFF) zero (u8 0))
+                    (qfor i 8 16 (cmgt-sub i i8)))
+            0b01 (mlet (one (u16 0xFFFF) zero (u16 0))
+                    (qfor i 4 8 (cmgt-sub i i16)))
+            0b10 (mlet (one (u32 0xFFFFFFFF) zero (u32 0))
+                    (qfor i 2 4 (cmgt-sub i i32)))
+                 (mlet (one (u64 0xFFFFFFFF_FFFFFFFF) zero (u64 0))
+                    (qfor i 1 2 (cmgt-sub i i64))))))
+
+(def CMGT-zero-scalar
+    "01 0 11110 ss 10000 0100 0 10 nnnnn ddddd"
+    "cmgt $V$rd, $V$rn, #0"
+    (names (size s) (rn n) (rd d))
+    (let V (match size
+        0b11 "D"
+        (unimplemented)))
+    (match size
+        0b11 (= (vec-d rd) (bitcast (if (> (bitcast (vec-d rn) i64) (i64 0)) (u64 0xFFFFFFFF_FFFFFFFF) (u64 0)) f64))
+        (unimplemented)))
+
+(defm cmgtz-sub (index type)
+    (vector-insert rd index (if (> (vector-element a index type) (type 0)) one zero)))
+
+(def CMGT-zero-vector
+    "0 Q 0 01110 ss 10000 0100 0 10 nnnnn ddddd"
+    "cmeq V$rd.$T, V$rn.$T, #0"
+    (names (Q Q) (size s) (rn n) (rd d))
+    (let T (match (: size Q)
+        0b00_0 "8B"
+        0b00_1 "16B"
+        0b01_0 "4H"
+        0b01_1 "8H"
+        0b10_0 "2S"
+        0b10_1 "4S"
+        0b11_1 "2D"
+        (unimplemented)))
+    (let a (vec rn)
+        (= (vec rd) (vector-all (u8 0)))
+        (match size
+            0b00 (mlet (one (u8 0xFF) zero (u8 0))
+                    (qfor i 8 16 (cmgtz-sub i i8)))
+            0b01 (mlet (one (u16 0xFFFF) zero (u16 0))
+                    (qfor i 4 8 (cmgtz-sub i i16)))
+            0b10 (mlet (one (u32 0xFFFFFFFF) zero (u32 0))
+                    (qfor i 2 4 (cmgtz-sub i i32)))
+                 (mlet (one (u64 0xFFFFFFFF_FFFFFFFF) zero (u64 0))
+                    (qfor i 1 2 (cmgtz-sub i i64))))))
 
 (def CNT
     "0 q 0 01110 ss 10000 00101 10 nnnnn ddddd"
@@ -1851,6 +1895,38 @@
         (= (vec rd) (vec+ (vec rd) (vec* (vec rn) (vec rm) 64) 64))
         (= (vec rd) (vec+ (vec rd) (vec* (vec rn) (vec rm) 32) 32))))
 
+(def FMLS-by-element-vector-spdp
+    "0 Q 0 01111 1 s L mmmmm 0 1 01 H 0 nnnnn ddddd"
+    "fmls V$rd.$T, V$rn.$T, V$rm.$Ts[$index]"
+    (names (Q Q) (sz s) (L L) (rm m) (H H) (rn n) (rd d))
+    (block
+        (let T (match (: Q sz)
+            0b00 "2S"
+            0b10 "4S"
+            0b11 "2D"
+            (unimplemented)))
+        (let Ts (if sz "D" "S"))
+        (let index (match (: sz L)
+            0b10 (u32 H)
+            0b11 (unimplemented)
+            (u32 (: H L)))))
+    (if sz
+        (= (vec rd) (vec- (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f64)) 64) 64))
+        (= (vec rd) (vec- (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f32)) 32) 32))))
+
+(def FMLS-vector
+    "0 Q 0 01110 1 s 1 mmmmm 11001 1 nnnnn ddddd"
+    "fmls V$rd.$T, V$rn.$T, V$rm.$T"
+    (names (Q Q) (sz s) (rm m) (rn n) (rd d))
+    (let T (match (: sz Q)
+        0b00 "2S"
+        0b01 "4S"
+        0b11 "2D"
+        (unimplemented)))
+    (if sz
+        (= (vec rd) (vec- (vec rd) (vec* (vec rn) (vec rm) 64) 64))
+        (= (vec rd) (vec- (vec rd) (vec* (vec rn) (vec rm) 32) 32))))
+
 (def FMOV-general
     "f 0 0 11110 tt 1 0m 11o 000000 nnnnn ddddd"
     "fmov $r1$rd$index1, $r2$rn$index2"
@@ -2300,6 +2376,137 @@
                 (vector-insert rd index1 (vector-element (vec rn) index2 f32))
                 (vector-insert rd index1 (vector-element (vec rn) index2 f64))))))
 
+(defm ld1-sub (register size type offset)
+    (vector-insert register i (load (+ address (+ (literal (* i size)) offset)) type)))
+
+(def LD1-multi-no-offset-one-register
+    "0 Q 0011000 1 000000 0111 ss nnnnn ttttt"
+    "ld1 { V$rt.$T }, [X$rn]"
+    (names (Q Q) (size s) (rn n) (rt t))
+    (let T (match (: size Q)
+        0b00_0 "8B"
+        0b00_1 "16B"
+        0b01_0 "4H"
+        0b01_1 "8H"
+        0b10_0 "2S"
+        0b10_1 "4S"
+        0b11_0 "1D"
+               "2D"))
+    (let address (gpr-or-sp64 rn)
+        (= (vec rt) (vector-all (u8 0)))
+        (match size
+            0b00 (qfor i 8 16 (ld1-sub rt 1 u8  0))
+            0b01 (qfor i 4  8 (ld1-sub rt 2 u16 0))
+            0b10 (qfor i 2  4 (ld1-sub rt 4 f32 0))
+                 (qfor i 1  2 (ld1-sub rt 8 f64 0)))))
+
+(def LD1-multi-no-offset-two-registers
+    "0 Q 0011000 1 000000 1010 ss nnnnn ttttt"
+    "ld1 { V$rt.$T, V$rt2.$T }, [X$rn]"
+    (names (Q Q) (size s) (rn n) (rt t))
+    (let rt2 (% (+ rt 1) 32)
+        (let T (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_0 "2S"
+            0b10_1 "4S"
+            0b11_0 "1D"
+                   "2D")))
+    (let address (gpr-or-sp64 rn)
+        (= (vec rt) (vector-all (u8 0)))
+        (= (vec rt2) (vector-all (u8 0)))
+        (match size
+            0b00 (qfor i 8 16 (ld1-sub rt 1 u8  0))
+            0b01 (qfor i 4  8 (ld1-sub rt 2 u16 0))
+            0b10 (qfor i 2  4 (ld1-sub rt 4 f32 0))
+                 (qfor i 1  2 (ld1-sub rt 8 f64 0)))
+        (let offset (if Q 16 8)
+            (match size
+                0b00 (qfor i 8 16 (ld1-sub rt2 1 u8  offset))
+                0b01 (qfor i 4  8 (ld1-sub rt2 2 u16 offset))
+                0b10 (qfor i 2  4 (ld1-sub rt2 4 f32 offset))
+                     (qfor i 1  2 (ld1-sub rt2 8 f64 offset))))))
+
+(def LD1-multi-no-offset-three-registers
+    "0 Q 0011000 1 000000 0110 ss nnnnn ttttt"
+    "ld1 { V$rt.$T, V$rt2.$T, V$rt3.$T }, [X$rn]"
+    (names (Q Q) (size s) (rn n) (rt t))
+    (mlet (rt2 (% (+ rt 1) 32) rt3 (% (+ rt 2) 32))
+        (let T (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_0 "2S"
+            0b10_1 "4S"
+            0b11_0 "1D"
+                   "2D")))
+    (let address (gpr-or-sp64 rn)
+        (= (vec rt) (vector-all (u8 0)))
+        (= (vec rt2) (vector-all (u8 0)))
+        (= (vec rt3) (vector-all (u8 0)))
+        (match size
+            0b00 (qfor i 8 16 (ld1-sub rt 1 u8  0))
+            0b01 (qfor i 4  8 (ld1-sub rt 2 u16 0))
+            0b10 (qfor i 2  4 (ld1-sub rt 4 f32 0))
+                 (qfor i 1  2 (ld1-sub rt 8 f64 0)))
+        (let offset (if Q 16 8)
+            (match size
+                0b00 (qfor i 8 16 (ld1-sub rt2 1 u8  offset))
+                0b01 (qfor i 4  8 (ld1-sub rt2 2 u16 offset))
+                0b10 (qfor i 2  4 (ld1-sub rt2 4 f32 offset))
+                     (qfor i 1  2 (ld1-sub rt2 8 f64 offset)))
+            (= offset (if Q 32 16))
+            (match size
+                0b00 (qfor i 8 16 (ld1-sub rt3 1 u8  offset))
+                0b01 (qfor i 4  8 (ld1-sub rt3 2 u16 offset))
+                0b10 (qfor i 2  4 (ld1-sub rt3 4 f32 offset))
+                     (qfor i 1  2 (ld1-sub rt3 8 f64 offset))))))
+
+(def LD1-multi-no-offset-four-registers
+    "0 Q 0011000 1 000000 0010 ss nnnnn ttttt"
+    "ld1 { V$rt.$T, V$rt2.$T, V$rt3.$T, V$rt4.$T }, [X$rn]"
+    (names (Q Q) (size s) (rn n) (rt t))
+    (mlet (rt2 (% (+ rt 1) 32) rt3 (% (+ rt 2) 32) rt4 (% (+ rt 3) 32))
+        (let T (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_0 "2S"
+            0b10_1 "4S"
+            0b11_0 "1D"
+                   "2D")))
+    (let address (gpr-or-sp64 rn)
+        (= (vec rt) (vector-all (u8 0)))
+        (= (vec rt2) (vector-all (u8 0)))
+        (= (vec rt3) (vector-all (u8 0)))
+        (match size
+            0b00 (qfor i 8 16 (ld1-sub rt 1 u8  0))
+            0b01 (qfor i 4  8 (ld1-sub rt 2 u16 0))
+            0b10 (qfor i 2  4 (ld1-sub rt 4 f32 0))
+                 (qfor i 1  2 (ld1-sub rt 8 f64 0)))
+        (let offset (if Q 16 8)
+            (match size
+                0b00 (qfor i 8 16 (ld1-sub rt2 1 u8  offset))
+                0b01 (qfor i 4  8 (ld1-sub rt2 2 u16 offset))
+                0b10 (qfor i 2  4 (ld1-sub rt2 4 f32 offset))
+                     (qfor i 1  2 (ld1-sub rt2 8 f64 offset)))
+            (= offset (if Q 32 16))
+            (match size
+                0b00 (qfor i 8 16 (ld1-sub rt3 1 u8  offset))
+                0b01 (qfor i 4  8 (ld1-sub rt3 2 u16 offset))
+                0b10 (qfor i 2  4 (ld1-sub rt3 4 f32 offset))
+                     (qfor i 1  2 (ld1-sub rt3 8 f64 offset)))
+            (= offset (if Q 48 24))
+            (match size
+                0b00 (qfor i 8 16 (ld1-sub rt4 1 u8  offset))
+                0b01 (qfor i 4  8 (ld1-sub rt4 2 u16 offset))
+                0b10 (qfor i 2  4 (ld1-sub rt4 4 f32 offset))
+                     (qfor i 1  2 (ld1-sub rt4 8 f64 offset))))))
+
 (def LD1-single-no-offset
     "0 Q 0011010 1 0 00000 xx0 S zz nnnnn ttttt"
     "ld1 { V$rt.$t }[$index], [X$rn]"
@@ -2332,60 +2539,6 @@
                 (vector-insert rt index (load address f32))
                 (vector-insert rt index (load address f64)))
             (unimplemented))))
-
-(def LD1-multi-no-offset
-    "0 Q 0011000 1 000000 0111 ss nnnnn ttttt"
-    "ld1 { V$rt.$t }, [X$rn]"
-    (names (Q Q) (size s) (rn n) (rt t))
-    (let t (match (: size Q)
-        0b00_0 "8B"
-        0b00_1 "16B"
-        0b01_0 "4H"
-        0b01_1 "8H"
-        0b10_0 "2S"
-        0b10_1 "4S"
-        0b11_0 "1D"
-               "2D"))
-    (let address (gpr-or-sp64 rn)
-        (= (vec rt) (vector-all (u8 0)))
-        (match size
-            0b00 (block
-                    (vector-insert rt 0 (load address u8))
-                    (vector-insert rt 1 (load (+ address 1) u8))
-                    (vector-insert rt 2 (load (+ address 2) u8))
-                    (vector-insert rt 3 (load (+ address 3) u8))
-                    (vector-insert rt 4 (load (+ address 4) u8))
-                    (vector-insert rt 5 (load (+ address 5) u8))
-                    (vector-insert rt 6 (load (+ address 6) u8))
-                    (vector-insert rt 7 (load (+ address 7) u8))
-                    (when Q
-                        (vector-insert rt  8 (load (+ address  8) u8))
-                        (vector-insert rt  9 (load (+ address  9) u8))
-                        (vector-insert rt 10 (load (+ address 10) u8))
-                        (vector-insert rt 11 (load (+ address 11) u8))
-                        (vector-insert rt 12 (load (+ address 12) u8))
-                        (vector-insert rt 13 (load (+ address 13) u8))
-                        (vector-insert rt 14 (load (+ address 14) u8))
-                        (vector-insert rt 15 (load (+ address 15) u8))))
-            0b01 (block
-                    (vector-insert rt 0 (load address u6))
-                    (vector-insert rt 1 (load (+ address 2) u16))
-                    (vector-insert rt 2 (load (+ address 4) u16))
-                    (vector-insert rt 3 (load (+ address 6) u16))
-                    (when Q
-                        (vector-insert rt 4 (load (+ address  8) u16))
-                        (vector-insert rt 5 (load (+ address 10) u16))
-                        (vector-insert rt 6 (load (+ address 12) u16))
-                        (vector-insert rt 7 (load (+ address 14) u16))))
-            0b10 (block
-                    (vector-insert rt 0 (load address u32))
-                    (vector-insert rt 1 (load (+ address 4) u32))
-                    (when Q
-                        (vector-insert rt 2 (load (+ address 8) u32))
-                        (vector-insert rt 3 (load (+ address 12) u32))))
-                 (block
-                    (vector-insert rt 0 (load address u64))
-                    (when Q (vector-insert rt 1 (load (+ address 8) u64)))))))
 
 (def LD1R-single-no-offset
     "0 Q 0011010 1 0 00000 110 0 zz nnnnn ttttt"
@@ -3402,6 +3555,20 @@
     (block)
     (= (gpr64 rt) (cast (load-exclusive (gpr-or-sp64 rn) u16) u64)))
 
+(def LDXP
+    "1 s 001000 0 1 1 11111 0 uuuuu nnnnn ttttt"
+    "ldxp $r$rt, $r$rt2, [X$rn]"
+    (names (size s) (rt2 u) (rn n) (rt t))
+    (let r (if (== size 0) "W" "X"))
+    (let address (gpr-or-sp64 rn)
+        (if (== size 0)
+            (block
+                (= (gpr32 rt) (load-exclusive address u32))
+                (= (gpr32 rt2) (load-exclusive (+ address 4) u32)))
+            (block
+                (= (gpr64 rt) (load-exclusive address u64))
+                (= (gpr64 rt2) (load-exclusive (+ address 8) u64))))))
+
 (def LSL-register
     "s 0 0 11010110 mmmmm 0010 00 nnnnn ddddd"
     "lsl $r$rd, $r$rn, $r$rm"
@@ -3588,6 +3755,44 @@
             0b10 (vec-uint* (vec rn) (vec rm) 32)
             (unimplemented))
         (= (vec rd) (if Q v (vector-zero-top v)))))
+
+(def MVNI-vector-16bit
+    "0 Q 1 0111100000 a b c 10m0 0 1 d e f g h rrrrr"
+    "mvni V$rd.$t, #$imm, LSL #$amount"
+    (names (Q Q) (cmode m) (a a) (b b) (c c) (d d) (e e) (f f) (g g) (h h) (rd r))
+    (block
+        (let t (if Q "8H" "4H"))
+        (let imm (: a b c d e f g h))
+        (let amount (if cmode 8 0)))
+    (let avec (vector-all (u16 (~ (<< (u16 imm) amount))))
+        (= (vec rd) (if Q avec (vector-zero-top avec)))))
+
+(def MVNI-vector-32bit-LSL
+    "0 Q 1 0111100000 a b c 0mm0 0 1 d e f g h rrrrr"
+    "mvni V$rd.$t, #$imm, LSL #$amount"
+    (names (Q Q) (cmode m) (a a) (b b) (c c) (d d) (e e) (f f) (g g) (h h) (rd r))
+    (block
+        (let t (if Q "4S" "2S"))
+        (let amount (match cmode
+            0b00 0
+            0b01 8
+            0b10 16
+            0b11 24
+            (unimplemented)))
+        (let imm (: a b c d e f g h)))
+    (let avec (vector-all (~ (<< (u32 imm) amount)))
+        (= (vec rd) (if Q avec (vector-zero-top avec)))))
+
+(def MVNI-vector-32bit-MSL
+    "0 Q 1 0111100000 a b c 111m 0 1 d e f g h rrrrr"
+    "mvni V$rd.$t, #$imm, MSL #$amount"
+    (names (Q Q) (cmode m) (a a) (b b) (c c) (d d) (e e) (f f) (g g) (h h) (rd r))
+    (block
+        (let t (if Q "4S" "2S"))
+        (let amount (if cmode 16 8))
+        (let imm (: a b c d e f g h)))
+    (let avec (vector-all (~ (| (<< (u32 imm) amount) (u32 (if cmode 0xFFFF 0xFF)))))
+        (= (vec rd) (if Q avec (vector-zero-top avec)))))
 
 (def NEG-vector
     "0 Q 1 01110 ss 10000 01011 10 nnnnn ddddd"
@@ -3953,6 +4158,401 @@
             (sshll-elem 0 2 i32 i64)
             (sshll-elem 1 2 i32 i64))
         (unimplemented))))))
+
+(defm st1-sub (size type) (store (+ address (literal (* i size))) (vector-element v i type)))
+
+(def ST1-multi-no-offset-one-register
+    "0 Q 0011000 0 000000 0111 ss nnnnn ttttt"
+    "st1 { V$rt.$T }, [X$rn]"
+    (names (Q Q) (size s) (rn n) (rt t))
+    (let T (match (: size Q)
+        0b00_0 "8B"
+        0b00_1 "16B"
+        0b01_0 "4H"
+        0b01_1 "8H"
+        0b10_0 "2S"
+        0b10_1 "4S"
+        0b11_1 "2D"
+        (unimplemented)))
+    (mlet (address (gpr-or-sp64 rn) v (vec rt))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))))
+
+(def ST1-multi-postindex-immediate-one-register
+    "0 Q 0011001 0 0 mmmmm 0111 ss nnnnn ttttt"
+    "st1 { V$rt.$T }, [X$rn], #$imm"
+    (names (Q Q) (rm m) (size s) (rn n) (rt t))
+    (let imm (u8 (if Q 32 16))
+        (requires (== rm 0b11111))
+        (let T (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_0 "2S"
+            0b10_1 "4S"
+            0b11_1 "2D"
+            (unimplemented))))
+    (mlet (address (gpr-or-sp64 rn) v (vec rt))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= (gpr-or-sp64 rn) (+ address imm))))
+
+(def ST1-multi-postindex-register-one-register
+    "0 Q 0011001 0 0 mmmmm 0111 ss nnnnn ttttt"
+    "st1 { V$rt.$T }, [X$rn], X$rm"
+    (names (Q Q) (rm m) (size s) (rn n) (rt t))
+    (block
+        (requires (!= rm 0b11111))
+        (let T (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_0 "2S"
+            0b10_1 "4S"
+            0b11_1 "2D"
+            (unimplemented))))
+    (mlet (address (gpr-or-sp64 rn) v (vec rt))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= (gpr-or-sp64 rn) (+ address (gpr64 rm)))))
+
+(def ST1-multi-no-offset-two-registers
+    "0 Q 0011000 0 000000 1010 ss nnnnn ttttt"
+    "st1 { V$rt.$T, V$rt2.$T }, [X$rn]"
+    (names (Q Q) (size s) (rn n) (rt t))
+    (let rt2 (% (+ rt 1) 32)
+        (let T (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_0 "2S"
+            0b10_1 "4S"
+            0b11_1 "2D"
+            (unimplemented))))
+    (mlet (address (gpr-or-sp64 rn) v (vec rt))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt2))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))))
+
+(def ST1-multi-postindex-immediate-two-registers
+    "0 Q 0011001 0 0 mmmmm 1010 ss nnnnn ttttt"
+    "st1 { V$rt.$T, V$rt2.$T }, [X$rn], #$imm"
+    (names (Q Q) (rm m) (size s) (rn n) (rt t))
+    (mlet (imm (u8 (if Q 32 16)) rt2 (% (+ rt 1) 32))
+        (requires (== rm 0b11111))
+        (let T (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_0 "2S"
+            0b10_1 "4S"
+            0b11_1 "2D"
+            (unimplemented))))
+    (mlet (address (gpr-or-sp64 rn) v (vec rt))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt2))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= (gpr-or-sp64 rn) (+ address (if Q 16 8)))))
+
+(def ST1-multi-postindex-register-two-registers
+    "0 Q 0011001 0 0 mmmmm 1010 ss nnnnn ttttt"
+    "st1 { V$rt.$T, V$rt2.$T }, [X$rn], X$rm"
+    (names (Q Q) (rm m) (size s) (rn n) (rt t))
+    (let rt2 (% (+ rt 1) 32)
+        (requires (!= rm 0b11111))
+        (let T (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_0 "2S"
+            0b10_1 "4S"
+            0b11_1 "2D"
+            (unimplemented))))
+    (mlet (address (gpr-or-sp64 rn) oaddress address v (vec rt))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt2))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= (gpr-or-sp64 rn) (+ oaddress (gpr64 rm)))))
+
+(def ST1-multi-no-offset-three-registers
+    "0 Q 0011000 0 000000 0110 ss nnnnn ttttt"
+    "st1 { V$rt.$T, V$rt2.$T, V$rt3.$T }, [X$rn]"
+    (names (Q Q) (size s) (rn n) (rt t))
+    (mlet (rt2 (% (+ rt 1) 32) rt3 (% (+ rt 2) 32))
+        (let T (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_0 "2S"
+            0b10_1 "4S"
+            0b11_1 "2D"
+            (unimplemented))))
+    (mlet (address (gpr-or-sp64 rn) v (vec rt))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt2))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt3))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))))
+
+(def ST1-multi-postindex-immediate-three-registers
+    "0 Q 0011001 0 0 mmmmm 0110 ss nnnnn ttttt"
+    "st1 { V$rt.$T, V$rt2.$T, V$rt3.$T }, [X$rn], #$imm"
+    (names (Q Q) (rm m) (size s) (rn n) (rt t))
+    (mlet (imm (u8 (if Q 48 24)) rt2 (% (+ rt 1) 32) rt3 (% (+ rt 2) 32))
+        (requires (== rm 0b11111))
+        (let T (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_0 "2S"
+            0b10_1 "4S"
+            0b11_1 "2D"
+            (unimplemented))))
+    (mlet (address (gpr-or-sp64 rn) v (vec rt))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt2))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt3))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= (gpr-or-sp64 rn) (+ address (if Q 16 8)))))
+
+(def ST1-multi-postindex-register-three-registers
+    "0 Q 0011001 0 0 mmmmm 0110 ss nnnnn ttttt"
+    "st1 { V$rt.$T, V$rt2.$T, V$rt3.$T }, [X$rn], X$rm"
+    (names (Q Q) (rm m) (size s) (rn n) (rt t))
+    (mlet (rt2 (% (+ rt 1) 32) rt3 (% (+ rt 2) 32))
+        (requires (!= rm 0b11111))
+        (let T (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_0 "2S"
+            0b10_1 "4S"
+            0b11_1 "2D"
+            (unimplemented))))
+    (mlet (address (gpr-or-sp64 rn) oaddress address v (vec rt))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt2))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt3))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= (gpr-or-sp64 rn) (+ oaddress (gpr64 rm)))))
+
+(def ST1-multi-no-offset-four-registers
+    "0 Q 0011000 0 000000 0010 ss nnnnn ttttt"
+    "st1 { V$rt.$T, V$rt2.$T, V$rt3.$T, V$rt4.$T }, [X$rn]"
+    (names (Q Q) (size s) (rn n) (rt t))
+    (mlet (rt2 (% (+ rt 1) 32) rt3 (% (+ rt 2) 32) rt4 (% (+ rt 3) 32))
+        (let T (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_0 "2S"
+            0b10_1 "4S"
+            0b11_1 "2D"
+            (unimplemented))))
+    (mlet (address (gpr-or-sp64 rn) v (vec rt))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt2))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt3))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt4))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))))
+
+(def ST1-multi-postindex-immediate-four-registers
+    "0 Q 0011001 0 0 mmmmm 0010 ss nnnnn ttttt"
+    "st1 { V$rt.$T, V$rt2.$T, V$rt3.$T, V$rt4.$T }, [X$rn], #$imm"
+    (names (Q Q) (rm m) (size s) (rn n) (rt t))
+    (mlet (imm (u8 (if Q 64 32)) rt2 (% (+ rt 1) 32) rt3 (% (+ rt 2) 32) rt4 (% (+ rt 3) 32))
+        (requires (== rm 0b11111))
+        (let T (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_0 "2S"
+            0b10_1 "4S"
+            0b11_1 "2D"
+            (unimplemented))))
+    (mlet (address (gpr-or-sp64 rn) v (vec rt))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt2))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt3))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt4))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= (gpr-or-sp64 rn) (+ address (if Q 16 8)))))
+
+(def ST1-multi-postindex-register-four-registers
+    "0 Q 0011001 0 0 mmmmm 0010 ss nnnnn ttttt"
+    "st1 { V$rt.$T, V$rt2.$T, V$rt3.$T, V$rt4.$T }, [X$rn], X$rm"
+    (names (Q Q) (rm m) (size s) (rn n) (rt t))
+    (mlet (rt2 (% (+ rt 1) 32) rt3 (% (+ rt 2) 32) rt4 (% (+ rt 3) 32))
+        (requires (!= rm 0b11111))
+        (let T (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b01_0 "4H"
+            0b01_1 "8H"
+            0b10_0 "2S"
+            0b10_1 "4S"
+            0b11_1 "2D"
+            (unimplemented))))
+    (mlet (address (gpr-or-sp64 rn) oaddress address v (vec rt))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt2))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt3))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= address (+ address (if Q 16 8)))
+        (= v (vec rt4))
+        (match size
+            0b00 (qfor i 8 16 (st1-sub 1 u8))
+            0b01 (qfor i 4  8 (st1-sub 2 u16))
+            0b10 (qfor i 2  4 (st1-sub 4 f32))
+                 (for (i 2)   (st1-sub 8 f64)))
+        (= (gpr-or-sp64 rn) (+ oaddress (gpr64 rm)))))
 
 (def ST1-single-no-offset
     "0 Q 0011010 0 0 00000 xx0 S zz nnnnn ttttt"
@@ -4674,6 +5274,21 @@
             (store-exclusive (gpr-or-sp64 rn) (gpr32 rt))
             (store-exclusive (gpr-or-sp64 rn) (gpr64 rt)))))
 
+(def STXP
+    "1 f 001000 0 0 1 sssss 0 uuuuu nnnnn ttttt"
+    "stxp W$rs, $r$rt, $r$rt2, [X$rn]"
+    (names (size f) (rs s) (rt2 u) (rn n) (rt t))
+    (let r (if (== size 0) "W" "X"))
+    (let address (gpr-or-sp64 rn)
+        (= (gpr32 rs)
+            (if (== size 0)
+                (|
+                    (store-exclusive address (gpr32 rt))
+                    (store-exclusive (+ address 4) (gpr32 rt)))
+                (|
+                    (store-exclusive address (gpr64 rt))
+                    (store-exclusive (+ address 8) (gpr64 rt)))))))
+
 (def SUB-immediate
     "f 1 0 10001 0s iiiiiiiiiiii nnnnn ddddd"
     "sub $r$rd, $r$rn, #$imm, LSL #$shift"
@@ -4998,6 +5613,29 @@
     (block)
     (= (gpr64 rd) (+ (gpr64 ra) (* (u64 (gpr32 rn)) (u64 (gpr32 rm))))))
 
+(def UMOV
+    "0 Q 0 01110000 iiiii 0 01 1 1 1 nnnnn ddddd"
+    "umov $r$rd, V$rn.$T[$index]"
+    (names (Q Q) (imm i) (rn n) (rd d))
+    (mlet (T "" index 0
+            r (if Q "X" "W")
+            size (if Q 64
+                    (if (== (& imm 0b1) 0b1) 8
+                    (if (== (& imm 0b11) 0b10) 16
+                    32))))
+        (match size
+            8  (block (= T "B") (= index (>> imm 1)))
+            16 (block (= T "H") (= index (>> imm 2)))
+            32 (block (= T "S") (= index (>> imm 3)))
+               (block (= T "D") (= index (>> imm 4)))))
+    (let v (vec rn)
+        (if Q
+            (= (gpr64 rd) (vector-element v index u64))
+            (= (gpr32 rd) (match size
+                8  (u32 (vector-element v index u8))
+                16 (u32 (vector-element v index u8))
+                        (vector-element v index u32))))))
+
 (def UMULH
     "1 00 11011 1 10 mmmmm 0 11111 nnnnn ddddd"
     "umulh X$rd, X$rn, X$rm"
@@ -5131,6 +5769,13 @@
         0b10 (let a (vector-element (vec rn) 0 u64)
             (vector-insert rd 2 (u32 a)))
         (unimplemented)))
+
+(def YIELD
+    "1101010100 0 00 011 0010 0000 001 11111"
+    "yield"
+    (names)
+    (block)
+    (block))
 
 (def ZIP
     "0 Q 001110 ss 0 mmmmm 0 o 11 10 nnnnn ddddd"

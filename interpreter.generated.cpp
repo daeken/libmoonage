@@ -57,13 +57,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_334) -> string { switch(temp_334) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_335) -> string { switch(temp_335) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_380) -> string { switch(temp_380) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_381) -> string { switch(temp_381) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = (uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]);
 			if(rd == 31)
-				state->SP = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (((uint) (([=](auto temp_336) -> uint { switch(temp_336) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
+				state->SP = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (((uint) (([=](auto temp_382) -> uint { switch(temp_382) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
 			else
-				state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (((uint) (([=](auto temp_337) -> uint { switch(temp_337) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
+				state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (((uint) (([=](auto temp_383) -> uint { switch(temp_383) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
 		} else {
 			if(((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U)) != 0) {
 				if(rd == 31)
@@ -73,9 +73,9 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			} else {
 				auto m = (ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])));
 				if(rd == 31)
-					state->SP = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_338) -> ulong { switch(temp_338) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>((uint) ((uint) (m)), 32)))); default: return m; } })(option))) << (uint) (imm)))));
+					state->SP = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_384) -> ulong { switch(temp_384) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>((uint) ((uint) (m)), 32)))); default: return m; } })(option))) << (uint) (imm)))));
 				else
-					state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_339) -> ulong { switch(temp_339) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>((uint) ((uint) (m)), 32)))); default: return m; } })(option))) << (uint) (imm)))));
+					state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_385) -> ulong { switch(temp_385) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>((uint) ((uint) (m)), 32)))); default: return m; } })(option))) << (uint) (imm)))));
 			}
 		}
 		return true;
@@ -114,17 +114,17 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_340) -> string { switch(temp_340) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_386) -> string { switch(temp_386) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			if(rd == 31)
-				state->SP = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (([=](auto temp_341) -> uint { switch(temp_341) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (int) (imm))); } })(shift))))));
+				state->SP = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (([=](auto temp_387) -> uint { switch(temp_387) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (int) (imm))); } })(shift))))));
 			else
-				state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (([=](auto temp_342) -> uint { switch(temp_342) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (int) (imm))); } })(shift))))));
+				state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) + ((uint) (uint) ((uint) (([=](auto temp_388) -> uint { switch(temp_388) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? state->SP : (state->X[(int) rm] & 0xFFFFFFFFUL))) >> (int) (imm))); } })(shift))))));
 		} else {
 			if(rd == 31)
-				state->SP = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (([=](auto temp_343) -> ulong { switch(temp_343) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (int) (imm))); } })(shift)))));
+				state->SP = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (([=](auto temp_389) -> ulong { switch(temp_389) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (int) (imm))); } })(shift)))));
 			else
-				state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (([=](auto temp_344) -> ulong { switch(temp_344) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (int) (imm))); } })(shift)))));
+				state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) ((ulong) (([=](auto temp_390) -> ulong { switch(temp_390) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? state->SP : state->X[(int) rm])) >> (int) (imm))); } })(shift)))));
 		}
 		return true;
 	}
@@ -136,8 +136,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_345) -> string { switch(temp_345) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto v = (Vector128<float>) (([=](auto temp_346) -> Vector128<float> { switch(temp_346) { case 0x0: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rm]))))); case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rm]))))); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rm]))))); case 0x3: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ulong>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<ulong>>((Vector128<float>) (state->V[rm]))))); default: throw "Not implemented"; } })(size));
+		auto ts = (string) (([=](auto temp_391) -> string { switch(temp_391) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto v = (Vector128<float>) (([=](auto temp_392) -> Vector128<float> { switch(temp_392) { case 0x0: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rm]))))); case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rm]))))); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rm]))))); case 0x3: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ulong>>((Vector128<float>) (state->V[rn])) + (reinterpret_cast<Vector128<ulong>>((Vector128<float>) (state->V[rm]))))); default: throw "Not implemented"; } })(size));
 		state->V[rd] = (Vector128<float>) ((Q != 0) ? (v) : ((Vector128<float>) (v)));
 		return true;
 	}
@@ -152,12 +152,12 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_347) -> string { switch(temp_347) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_348) -> string { switch(temp_348) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_393) -> string { switch(temp_393) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_394) -> string { switch(temp_394) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = (uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]);
 			state->X[(int) rd] = (ulong) (uint) ((uint) (([=]() -> uint {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = (uint) ((uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL))));
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = (uint) ((uint) ((uint) (~((uint) (((uint) (([=](auto temp_349) -> uint { switch(temp_349) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = (uint) ((uint) ((uint) (~((uint) (((uint) (([=](auto temp_395) -> uint { switch(temp_395) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint) ((uint) (0x1));
 					auto bits = (int) (32);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -189,7 +189,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				auto m = (ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])));
 				state->X[(int) rd] = (ulong) (([=]() -> ulong {
 						auto __macro_add_with_carry_set_nzcv_common_operand1 = (ulong) ((ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn])));
-						auto __macro_add_with_carry_set_nzcv_common_operand2 = (ulong) ((ulong) ((ulong) (((ulong) (([=](auto temp_350) -> ulong { switch(temp_350) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>(m, 64)))); default: return m; } })(option))) << (uint) (imm))));
+						auto __macro_add_with_carry_set_nzcv_common_operand2 = (ulong) ((ulong) ((ulong) (((ulong) (([=](auto temp_396) -> ulong { switch(temp_396) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>(m, 64)))); default: return m; } })(option))) << (uint) (imm))));
 						auto __macro_add_with_carry_set_nzcv_common_carryIn = (ulong) ((ulong) (0x0));
 						auto bits = (int) (64);
 						auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -259,11 +259,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_351) -> string { switch(temp_351) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_397) -> string { switch(temp_397) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			state->X[(int) rd] = (ulong) (uint) ((uint) (([=]() -> uint {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = (uint) ((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn])));
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = (uint) ((uint) ((uint) (([=](auto temp_352) -> uint { switch(temp_352) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))));
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = (uint) ((uint) ((uint) (([=](auto temp_398) -> uint { switch(temp_398) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))));
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint) ((uint) (0x0));
 					auto bits = (int) (32);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -278,7 +278,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		} else {
 			state->X[(int) rd] = (ulong) (([=]() -> ulong {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = (ulong) ((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn])));
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = (ulong) ((ulong) ((ulong) (([=](auto temp_353) -> ulong { switch(temp_353) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))));
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = (ulong) ((ulong) ((ulong) (([=](auto temp_399) -> ulong { switch(temp_399) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))));
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (ulong) ((ulong) (0x0));
 					auto bits = (int) (64);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -349,11 +349,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_354) -> string { switch(temp_354) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_400) -> string { switch(temp_400) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) & ((uint) ((uint) (([=](auto temp_355) -> uint { switch(temp_355) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))));
+			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) & ((uint) ((uint) (([=](auto temp_401) -> uint { switch(temp_401) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))));
 		} else {
-			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) & ((ulong) ((ulong) (([=](auto temp_356) -> ulong { switch(temp_356) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) & ((ulong) ((ulong) (([=](auto temp_402) -> ulong { switch(temp_402) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 		}
 		return true;
 	}
@@ -379,16 +379,16 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_357) -> string { switch(temp_357) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_403) -> string { switch(temp_403) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			auto result = (uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) & ((uint) ((uint) (([=](auto temp_358) -> uint { switch(temp_358) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+			auto result = (uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) & ((uint) ((uint) (([=](auto temp_404) -> uint { switch(temp_404) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 			state->X[(int) rd] = (ulong) (uint) (result);
 			state->NZCV_N = (uint) ((result) >> (uint) (0x1F));
 			state->NZCV_Z = (bool) (((result) == (0x0)) ? 1U : 0U);
 			state->NZCV_C = 0x0;
 			state->NZCV_V = 0x0;
 		} else {
-			auto result = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) & ((ulong) ((ulong) (([=](auto temp_359) -> ulong { switch(temp_359) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+			auto result = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) & ((ulong) ((ulong) (([=](auto temp_405) -> ulong { switch(temp_405) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 			state->X[(int) rd] = result;
 			state->NZCV_N = (ulong) ((result) >> (uint) (0x3F));
 			state->NZCV_Z = (bool) (((result) == (0x0)) ? 1U : 0U);
@@ -454,8 +454,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto cond = (inst >> 0) & 0xFU;
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) (((uint) ((uint) (imm))) << (uint) (0x2)), 21)))));
-		auto condstr = (string) (([=](auto temp_360) -> string { switch(temp_360) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_361) -> bool { switch(temp_361) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_406) -> string { switch(temp_406) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_407) -> bool { switch(temp_407) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			Branch(addr);
 		} else {
@@ -500,11 +500,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_362) -> string { switch(temp_362) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_408) -> string { switch(temp_408) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) & ((uint) ((uint) (~((uint) (([=](auto temp_363) -> uint { switch(temp_363) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))))));
+			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) & ((uint) ((uint) (~((uint) (([=](auto temp_409) -> uint { switch(temp_409) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))))));
 		} else {
-			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) & ((ulong) ((ulong) (~((ulong) (([=](auto temp_364) -> ulong { switch(temp_364) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
+			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) & ((ulong) ((ulong) (~((ulong) (([=](auto temp_410) -> ulong { switch(temp_410) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
 		}
 		return true;
 	}
@@ -515,16 +515,54 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
+		auto T = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
 		auto v = (Vector128<float>) (reinterpret_cast<Vector128<float>>(~(reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rn])) & reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rm])))));
-		if(((bool) (((Q) == (0x1)) ? 1U : 0U)) != 0) {
-			state->V[rd] = v;
-		} else {
-			state->V[rd] = (Vector128<float>) (v);
-		}
+		state->V[rd] = (Vector128<float>) ((Q != 0) ? (v) : ((Vector128<float>) (v)));
 		return true;
 	}
 	insn_21:
+	/* BIC-vector-immediate-16bit */
+	if((inst & 0xBFF8DC00U) == 0x2F009400U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto a = (inst >> 18) & 0x1U;
+		auto b = (inst >> 17) & 0x1U;
+		auto c = (inst >> 16) & 0x1U;
+		auto cmode = (inst >> 13) & 0x1U;
+		auto d = (inst >> 9) & 0x1U;
+		auto e = (inst >> 8) & 0x1U;
+		auto f = (inst >> 7) & 0x1U;
+		auto g = (inst >> 6) & 0x1U;
+		auto h = (inst >> 5) & 0x1U;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto T = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
+		auto amount = (long) ((cmode != 0) ? (0x8) : (0x0));
+		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto v = (Vector128<float>) (reinterpret_cast<Vector128<float>>(~(reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rd])) & reinterpret_cast<Vector128<byte>>((Vector128<float>) (reinterpret_cast<Vector128<float>>(((ushort) (((ushort) ((ushort) (imm))) << (uint) (amount))) - (Vector128<ushort>) {}))))));
+		state->V[rd] = (Vector128<float>) ((Q != 0) ? (v) : ((Vector128<float>) (v)));
+		return true;
+	}
+	insn_22:
+	/* BIC-vector-immediate-32bit */
+	if((inst & 0xBFF89C00U) == 0x2F001400U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto a = (inst >> 18) & 0x1U;
+		auto b = (inst >> 17) & 0x1U;
+		auto c = (inst >> 16) & 0x1U;
+		auto cmode = (inst >> 13) & 0x3U;
+		auto d = (inst >> 9) & 0x1U;
+		auto e = (inst >> 8) & 0x1U;
+		auto f = (inst >> 7) & 0x1U;
+		auto g = (inst >> 6) & 0x1U;
+		auto h = (inst >> 5) & 0x1U;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto T = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
+		auto amount = (byte) ((cmode) << (uint) (0x3));
+		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto v = (Vector128<float>) (reinterpret_cast<Vector128<float>>(~(reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rd])) & reinterpret_cast<Vector128<byte>>((Vector128<float>) (reinterpret_cast<Vector128<float>>(((uint) (((uint) ((uint) (imm))) << (uint) (amount))) - (Vector128<uint>) {}))))));
+		state->V[rd] = (Vector128<float>) ((Q != 0) ? (v) : ((Vector128<float>) (v)));
+		return true;
+	}
+	insn_23:
 	/* BICS */
 	if((inst & 0x7F200000U) == 0x6A200000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -534,19 +572,19 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_365) -> string { switch(temp_365) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_411) -> string { switch(temp_411) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			auto val = (uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) & ((uint) ((uint) (~((uint) (([=](auto temp_366) -> uint { switch(temp_366) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
+			auto val = (uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) & ((uint) ((uint) (~((uint) (([=](auto temp_412) -> uint { switch(temp_412) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
 			state->X[(int) rd] = (ulong) (uint) (val);
 			NZCV = (ulong) ((((ulong) ((ulong) (((ulong) ((ulong) ((uint) ((val) >> (uint) (0x1F))))) << (uint) (0x1F)))) | ((ulong) ((ulong) (((ulong) ((ulong) ((bool) (((val) == (0x0)) ? 1U : 0U)))) << (uint) (0x1E))))));
 		} else {
-			auto val = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) & ((ulong) ((ulong) (~((ulong) (([=](auto temp_367) -> ulong { switch(temp_367) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
+			auto val = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) & ((ulong) ((ulong) (~((ulong) (([=](auto temp_413) -> ulong { switch(temp_413) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
 			state->X[(int) rd] = val;
 			NZCV = (ulong) ((((ulong) ((ulong) (((ulong) ((ulong) ((ulong) ((val) >> (uint) (0x3F))))) << (uint) (0x1F)))) | ((ulong) ((ulong) (((ulong) ((ulong) ((bool) (((val) == (0x0)) ? 1U : 0U)))) << (uint) (0x1E))))));
 		}
 		return true;
 	}
-	insn_22:
+	insn_24:
 	/* BL */
 	if((inst & 0xFC000000U) == 0x94000000U) {
 		auto imm = (inst >> 0) & 0x3FFFFFFU;
@@ -555,28 +593,42 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		BranchLinked(addr);
 		return true;
 	}
-	insn_23:
+	insn_25:
 	/* BLR */
 	if((inst & 0xFFFFFC1FU) == 0xD63F0000U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		BranchLinkedRegister(rn);
 		return true;
 	}
-	insn_24:
+	insn_26:
 	/* BR */
 	if((inst & 0xFFFFFC1FU) == 0xD61F0000U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		BranchRegister(rn);
 		return true;
 	}
-	insn_25:
+	insn_27:
 	/* BRK */
 	if((inst & 0xFFE0001FU) == 0xD4200000U) {
 		auto imm = (inst >> 5) & 0xFFFFU;
 		Branch(-0xE0E0E0E0D0D0D0E);
 		return true;
 	}
-	insn_26:
+	insn_28:
+	/* BSL */
+	if((inst & 0xBFE0FC00U) == 0x2E601C00U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto T = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
+		auto d = (Vector128<float>) (state->V[rd]);
+		auto a = (Vector128<float>) (state->V[rn]);
+		auto b = (Vector128<float>) (state->V[rm]);
+		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>((reinterpret_cast<Vector128<byte>>(b) ^ reinterpret_cast<Vector128<byte>>((Vector128<float>) (reinterpret_cast<Vector128<float>>((reinterpret_cast<Vector128<byte>>((Vector128<float>) (reinterpret_cast<Vector128<float>>((reinterpret_cast<Vector128<byte>>(b) ^ reinterpret_cast<Vector128<byte>>(a))))) & reinterpret_cast<Vector128<byte>>(d))))))));
+		return true;
+	}
+	insn_29:
 	/* CASP */
 	if((inst & 0xBFE0FC00U) == 0x08207C00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -589,7 +641,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		throw "Not implemented";
 		return true;
 	}
-	insn_27:
+	insn_30:
 	/* CASPA */
 	if((inst & 0xBFE0FC00U) == 0x08607C00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -602,7 +654,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		throw "Not implemented";
 		return true;
 	}
-	insn_28:
+	insn_31:
 	/* CASPAL */
 	if((inst & 0xBFE0FC00U) == 0x0860FC00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -643,7 +695,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_29:
+	insn_32:
 	/* CASPL */
 	if((inst & 0xBFE0FC00U) == 0x0820FC00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -656,7 +708,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		throw "Not implemented";
 		return true;
 	}
-	insn_30:
+	insn_33:
 	/* CBNZ */
 	if((inst & 0x7F000000U) == 0x35000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -679,7 +731,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_31:
+	insn_34:
 	/* CBZ */
 	if((inst & 0x7F000000U) == 0x34000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -702,7 +754,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_32:
+	insn_35:
 	/* CCMN-immediate */
 	if((inst & 0x7FE00C10U) == 0x3A400800U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -711,8 +763,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_368) -> string { switch(temp_368) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_369) -> bool { switch(temp_369) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_414) -> string { switch(temp_414) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_415) -> bool { switch(temp_415) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 				state->X[(int) 0x1F] = (ulong) (uint) ((uint) (([=]() -> uint {
@@ -750,7 +802,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_33:
+	insn_36:
 	/* CCMP-immediate */
 	if((inst & 0x7FE00C10U) == 0x7A400800U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -759,8 +811,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_370) -> string { switch(temp_370) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_371) -> bool { switch(temp_371) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_416) -> string { switch(temp_416) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_417) -> bool { switch(temp_417) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 				state->X[(int) 0x1F] = (ulong) (uint) ((uint) (([=]() -> uint {
@@ -798,7 +850,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_34:
+	insn_37:
 	/* CCMP-register */
 	if((inst & 0x7FE00C10U) == 0x7A400000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -807,8 +859,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_372) -> string { switch(temp_372) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_373) -> bool { switch(temp_373) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_418) -> string { switch(temp_418) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_419) -> bool { switch(temp_419) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 				state->X[(int) 0x1F] = (ulong) (uint) ((uint) (([=]() -> uint {
@@ -846,13 +898,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_35:
+	insn_38:
 	/* CLREX */
 	if((inst & 0xFFFFF0FFU) == 0xD503305FU) {
 		auto crm = (inst >> 8) & 0xFU;
 		return true;
 	}
-	insn_36:
+	insn_39:
 	/* CLZ */
 	if((inst & 0x7FFFFC00U) == 0x5AC01000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -866,17 +918,17 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_37:
+	insn_40:
 	/* CMEQ-register-scalar */
 	if((inst & 0xFF20FC00U) == 0x7E208C00U) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto V = (string) (([=](auto temp_374) -> string { switch(temp_374) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
+		auto V = (string) (([=](auto temp_420) -> string { switch(temp_420) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x3: {
-				state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (Bitcast<ulong, double>((ulong) (((bool) ((((double) (reinterpret_cast<Vector128<double>>(state->V[rn])[0])) == ((double) (reinterpret_cast<Vector128<double>>(state->V[rm])[0]))) ? 1U : 0U) != 0) ? ((ulong) ((ulong) (-0x1))) : ((ulong) ((ulong) (0x0)))))), 0 });
+				state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (Bitcast<ulong, double>((ulong) (((bool) ((((ulong) (Bitcast<double, ulong>((double) (reinterpret_cast<Vector128<double>>(state->V[rn])[0])))) == ((ulong) (Bitcast<double, ulong>((double) (reinterpret_cast<Vector128<double>>(state->V[rm])[0]))))) ? 1U : 0U) != 0) ? ((ulong) ((ulong) (-0x1))) : ((ulong) ((ulong) (0x0)))))), 0 });
 				break;
 			}
 			default: {
@@ -886,7 +938,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_38:
+	insn_41:
 	/* CMEQ-register-vector */
 	if((inst & 0xBF20FC00U) == 0x2E208C00U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -894,7 +946,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_375) -> string { switch(temp_375) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_421) -> string { switch(temp_421) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto a = (Vector128<float>) (state->V[rn]);
 		auto b = (Vector128<float>) (state->V[rm]);
 		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
@@ -902,15 +954,15 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			case 0x0: {
 				auto one = (byte) ((byte) (0xFF));
 				auto zero = (byte) ((byte) (0x0));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x0] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x0])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x1] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x1])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x2] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x2])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x2]))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x3] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x3])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x3]))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x4] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x4])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x4]))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x5] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x5])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x5]))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x6] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x6])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x6]))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x7] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x7])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x7]))) ? 1U : 0U) != 0) ? (one) : (zero));
 				if((Q) != 0) {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x0] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x0])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x1] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x1])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x2] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x2])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x2]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x3] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x3])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x3]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x4] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x4])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x4]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x5] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x5])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x5]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x6] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x6])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x6]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x7] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x7])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x7]))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x8] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x8])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x8]))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x9] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x9])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x9]))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xA] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0xA])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0xA]))) ? 1U : 0U) != 0) ? (one) : (zero));
@@ -919,57 +971,76 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xD] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0xD])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0xD]))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xE] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0xE])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0xE]))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xF] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0xF])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0xF]))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x0] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x0])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x1] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x1])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x2] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x2])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x2]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x3] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x3])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x3]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x4] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x4])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x4]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x5] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x5])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x5]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x6] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x6])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x6]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x7] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x7])) == ((byte) (reinterpret_cast<Vector128<byte>>(b)[0x7]))) ? 1U : 0U) != 0) ? (one) : (zero));
 				}
 				break;
 			}
 			case 0x1: {
 				auto one = (ushort) ((ushort) (0xFFFF));
 				auto zero = (ushort) ((ushort) (0x0));
-				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x0] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x0])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x1] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x1])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x2] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x2])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x2]))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x3] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x3])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x3]))) ? 1U : 0U) != 0) ? (one) : (zero));
 				if((Q) != 0) {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x0] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x0])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x1] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x1])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x2] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x2])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x2]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x3] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x3])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x3]))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x4] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x4])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x4]))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x5] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x5])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x5]))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x6] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x6])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x6]))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x7] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x7])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x7]))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x0] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x0])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x1] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x1])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x2] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x2])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x2]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x3] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x3])) == ((ushort) (reinterpret_cast<Vector128<ushort>>(b)[0x3]))) ? 1U : 0U) != 0) ? (one) : (zero));
 				}
 				break;
 			}
 			case 0x2: {
 				auto one = (uint) ((uint) (0xFFFFFFFF));
 				auto zero = (uint) ((uint) (0x0));
-				reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x0] = (uint) (((bool) ((((float) (reinterpret_cast<Vector128<float>>(a)[0x0])) == ((float) (reinterpret_cast<Vector128<float>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x1] = (uint) (((bool) ((((float) (reinterpret_cast<Vector128<float>>(a)[0x1])) == ((float) (reinterpret_cast<Vector128<float>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
 				if((Q) != 0) {
-					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x2] = (uint) (((bool) ((((float) (reinterpret_cast<Vector128<float>>(a)[0x2])) == ((float) (reinterpret_cast<Vector128<float>>(b)[0x2]))) ? 1U : 0U) != 0) ? (one) : (zero));
-					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x3] = (uint) (((bool) ((((float) (reinterpret_cast<Vector128<float>>(a)[0x3])) == ((float) (reinterpret_cast<Vector128<float>>(b)[0x3]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x0] = (uint) (((bool) ((((uint) (reinterpret_cast<Vector128<uint>>(a)[0x0])) == ((uint) (reinterpret_cast<Vector128<uint>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x1] = (uint) (((bool) ((((uint) (reinterpret_cast<Vector128<uint>>(a)[0x1])) == ((uint) (reinterpret_cast<Vector128<uint>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x2] = (uint) (((bool) ((((uint) (reinterpret_cast<Vector128<uint>>(a)[0x2])) == ((uint) (reinterpret_cast<Vector128<uint>>(b)[0x2]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x3] = (uint) (((bool) ((((uint) (reinterpret_cast<Vector128<uint>>(a)[0x3])) == ((uint) (reinterpret_cast<Vector128<uint>>(b)[0x3]))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x0] = (uint) (((bool) ((((uint) (reinterpret_cast<Vector128<uint>>(a)[0x0])) == ((uint) (reinterpret_cast<Vector128<uint>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x1] = (uint) (((bool) ((((uint) (reinterpret_cast<Vector128<uint>>(a)[0x1])) == ((uint) (reinterpret_cast<Vector128<uint>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
 				}
 				break;
 			}
 			default: {
 				auto one = (ulong) ((ulong) (-0x1));
 				auto zero = (ulong) ((ulong) (0x0));
-				reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x0] = (ulong) (((bool) ((((double) (reinterpret_cast<Vector128<double>>(a)[0x0])) == ((double) (reinterpret_cast<Vector128<double>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
 				if((Q) != 0) {
-					reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x1] = (ulong) (((bool) ((((double) (reinterpret_cast<Vector128<double>>(a)[0x1])) == ((double) (reinterpret_cast<Vector128<double>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x0] = (ulong) (((bool) ((((ulong) (reinterpret_cast<Vector128<ulong>>(a)[0x0])) == ((ulong) (reinterpret_cast<Vector128<ulong>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x1] = (ulong) (((bool) ((((ulong) (reinterpret_cast<Vector128<ulong>>(a)[0x1])) == ((ulong) (reinterpret_cast<Vector128<ulong>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x0] = (ulong) (((bool) ((((ulong) (reinterpret_cast<Vector128<ulong>>(a)[0x0])) == ((ulong) (reinterpret_cast<Vector128<ulong>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
 				}
 				break;
 			}
 		}
 		return true;
 	}
-	insn_39:
+	insn_42:
 	/* CMEQ-zero-scalar */
 	if((inst & 0xFF3FFC00U) == 0x5E209800U) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto V = (string) (([=](auto temp_376) -> string { switch(temp_376) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
+		auto V = (string) (([=](auto temp_422) -> string { switch(temp_422) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x3: {
-				state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (Bitcast<ulong, double>((ulong) (((bool) ((((long) (Bitcast<double, long>((double) (reinterpret_cast<Vector128<double>>(state->V[rn])[0])))) == ((long) ((long) (0x0)))) ? 1U : 0U) != 0) ? ((ulong) ((ulong) (-0x1))) : ((ulong) ((ulong) (0x0)))))), 0 });
+				state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (Bitcast<ulong, double>((ulong) (((bool) ((((ulong) (Bitcast<double, ulong>((double) (reinterpret_cast<Vector128<double>>(state->V[rn])[0])))) == ((ulong) ((ulong) (0x0)))) ? 1U : 0U) != 0) ? ((ulong) ((ulong) (-0x1))) : ((ulong) ((ulong) (0x0)))))), 0 });
 				break;
 			}
 			default: {
@@ -979,29 +1050,29 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_40:
+	insn_43:
 	/* CMEQ-zero-vector */
 	if((inst & 0xBF3FFC00U) == 0x0E209800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_377) -> string { switch(temp_377) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_423) -> string { switch(temp_423) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto a = (Vector128<float>) (state->V[rn]);
 		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
 		switch(size) {
 			case 0x0: {
 				auto one = (byte) ((byte) (0xFF));
 				auto zero = (byte) ((byte) (0x0));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x0] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x0])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x1] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x1])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x2] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x2])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x3] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x3])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x4] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x4])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x5] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x5])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x6] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x6])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x7] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x7])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 				if((Q) != 0) {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x0] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x0])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x1] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x1])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x2] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x2])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x3] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x3])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x4] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x4])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x5] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x5])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x6] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x6])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x7] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x7])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x8] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x8])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x9] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x9])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xA] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0xA])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
@@ -1010,59 +1081,301 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xD] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0xD])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xE] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0xE])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xF] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0xF])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x0] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x0])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x1] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x1])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x2] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x2])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x3] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x3])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x4] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x4])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x5] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x5])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x6] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x6])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x7] = (byte) (((bool) ((((byte) (reinterpret_cast<Vector128<byte>>(a)[0x7])) == ((byte) ((byte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 				}
 				break;
 			}
 			case 0x1: {
 				auto one = (ushort) ((ushort) (0xFFFF));
 				auto zero = (ushort) ((ushort) (0x0));
-				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x0] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x0])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x1] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x1])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x2] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x2])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x3] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x3])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 				if((Q) != 0) {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x0] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x0])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x1] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x1])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x2] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x2])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x3] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x3])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x4] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x4])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x5] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x5])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x6] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x6])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x7] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x7])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x0] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x0])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x1] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x1])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x2] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x2])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x3] = (ushort) (((bool) ((((ushort) (reinterpret_cast<Vector128<ushort>>(a)[0x3])) == ((ushort) ((ushort) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 				}
 				break;
 			}
 			case 0x2: {
 				auto one = (uint) ((uint) (0xFFFFFFFF));
 				auto zero = (uint) ((uint) (0x0));
-				reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x0] = (uint) (((bool) ((((uint) (reinterpret_cast<Vector128<uint>>(a)[0x0])) == ((uint) ((uint) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
-				reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x1] = (uint) (((bool) ((((uint) (reinterpret_cast<Vector128<uint>>(a)[0x1])) == ((uint) ((uint) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 				if((Q) != 0) {
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x0] = (uint) (((bool) ((((uint) (reinterpret_cast<Vector128<uint>>(a)[0x0])) == ((uint) ((uint) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x1] = (uint) (((bool) ((((uint) (reinterpret_cast<Vector128<uint>>(a)[0x1])) == ((uint) ((uint) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x2] = (uint) (((bool) ((((uint) (reinterpret_cast<Vector128<uint>>(a)[0x2])) == ((uint) ((uint) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x3] = (uint) (((bool) ((((uint) (reinterpret_cast<Vector128<uint>>(a)[0x3])) == ((uint) ((uint) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x0] = (uint) (((bool) ((((uint) (reinterpret_cast<Vector128<uint>>(a)[0x0])) == ((uint) ((uint) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x1] = (uint) (((bool) ((((uint) (reinterpret_cast<Vector128<uint>>(a)[0x1])) == ((uint) ((uint) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 				}
 				break;
 			}
 			default: {
 				auto one = (ulong) ((ulong) (-0x1));
 				auto zero = (ulong) ((ulong) (0x0));
-				reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x0] = (ulong) (((bool) ((((ulong) (reinterpret_cast<Vector128<ulong>>(a)[0x0])) == ((ulong) ((ulong) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 				if((Q) != 0) {
+					reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x0] = (ulong) (((bool) ((((ulong) (reinterpret_cast<Vector128<ulong>>(a)[0x0])) == ((ulong) ((ulong) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 					reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x1] = (ulong) (((bool) ((((ulong) (reinterpret_cast<Vector128<ulong>>(a)[0x1])) == ((ulong) ((ulong) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x0] = (ulong) (((bool) ((((ulong) (reinterpret_cast<Vector128<ulong>>(a)[0x0])) == ((ulong) ((ulong) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
 				}
 				break;
 			}
 		}
 		return true;
 	}
-	insn_41:
+	insn_44:
+	/* CMGT-register-scalar */
+	if((inst & 0xFF20FC00U) == 0x5E203400U) {
+		auto size = (inst >> 22) & 0x3U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto V = (string) (([=](auto temp_424) -> string { switch(temp_424) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
+		switch(size) {
+			case 0x3: {
+				state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (Bitcast<ulong, double>((ulong) (((bool) ((((long) (Bitcast<double, long>((double) (reinterpret_cast<Vector128<double>>(state->V[rn])[0])))) > ((long) (Bitcast<double, long>((double) (reinterpret_cast<Vector128<double>>(state->V[rm])[0]))))) ? 1U : 0U) != 0) ? ((ulong) ((ulong) (-0x1))) : ((ulong) ((ulong) (0x0)))))), 0 });
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
+	insn_45:
+	/* CMGT-register-vector */
+	if((inst & 0xBF20FC00U) == 0x0E203400U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x3U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto T = (string) (([=](auto temp_425) -> string { switch(temp_425) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto a = (Vector128<float>) (state->V[rn]);
+		auto b = (Vector128<float>) (state->V[rm]);
+		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		switch(size) {
+			case 0x0: {
+				auto one = (byte) ((byte) (0xFF));
+				auto zero = (byte) ((byte) (0x0));
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x0] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x0])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x1] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x1])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x2] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x2])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x2]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x3] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x3])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x3]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x4] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x4])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x4]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x5] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x5])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x5]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x6] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x6])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x6]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x7] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x7])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x7]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x8] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x8])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x8]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x9] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x9])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x9]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xA] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0xA])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0xA]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xB] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0xB])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0xB]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xC] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0xC])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0xC]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xD] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0xD])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0xD]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xE] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0xE])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0xE]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xF] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0xF])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0xF]))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x0] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x0])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x1] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x1])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x2] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x2])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x2]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x3] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x3])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x3]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x4] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x4])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x4]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x5] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x5])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x5]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x6] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x6])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x6]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x7] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x7])) > ((sbyte) (reinterpret_cast<Vector128<sbyte>>(b)[0x7]))) ? 1U : 0U) != 0) ? (one) : (zero));
+				}
+				break;
+			}
+			case 0x1: {
+				auto one = (ushort) ((ushort) (0xFFFF));
+				auto zero = (ushort) ((ushort) (0x0));
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x0] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x0])) > ((short) (reinterpret_cast<Vector128<short>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x1] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x1])) > ((short) (reinterpret_cast<Vector128<short>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x2] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x2])) > ((short) (reinterpret_cast<Vector128<short>>(b)[0x2]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x3] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x3])) > ((short) (reinterpret_cast<Vector128<short>>(b)[0x3]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x4] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x4])) > ((short) (reinterpret_cast<Vector128<short>>(b)[0x4]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x5] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x5])) > ((short) (reinterpret_cast<Vector128<short>>(b)[0x5]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x6] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x6])) > ((short) (reinterpret_cast<Vector128<short>>(b)[0x6]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x7] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x7])) > ((short) (reinterpret_cast<Vector128<short>>(b)[0x7]))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x0] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x0])) > ((short) (reinterpret_cast<Vector128<short>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x1] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x1])) > ((short) (reinterpret_cast<Vector128<short>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x2] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x2])) > ((short) (reinterpret_cast<Vector128<short>>(b)[0x2]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x3] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x3])) > ((short) (reinterpret_cast<Vector128<short>>(b)[0x3]))) ? 1U : 0U) != 0) ? (one) : (zero));
+				}
+				break;
+			}
+			case 0x2: {
+				auto one = (uint) ((uint) (0xFFFFFFFF));
+				auto zero = (uint) ((uint) (0x0));
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x0] = (uint) (((bool) ((((int) (reinterpret_cast<Vector128<int>>(a)[0x0])) > ((int) (reinterpret_cast<Vector128<int>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x1] = (uint) (((bool) ((((int) (reinterpret_cast<Vector128<int>>(a)[0x1])) > ((int) (reinterpret_cast<Vector128<int>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x2] = (uint) (((bool) ((((int) (reinterpret_cast<Vector128<int>>(a)[0x2])) > ((int) (reinterpret_cast<Vector128<int>>(b)[0x2]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x3] = (uint) (((bool) ((((int) (reinterpret_cast<Vector128<int>>(a)[0x3])) > ((int) (reinterpret_cast<Vector128<int>>(b)[0x3]))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x0] = (uint) (((bool) ((((int) (reinterpret_cast<Vector128<int>>(a)[0x0])) > ((int) (reinterpret_cast<Vector128<int>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x1] = (uint) (((bool) ((((int) (reinterpret_cast<Vector128<int>>(a)[0x1])) > ((int) (reinterpret_cast<Vector128<int>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
+				}
+				break;
+			}
+			default: {
+				auto one = (ulong) ((ulong) (-0x1));
+				auto zero = (ulong) ((ulong) (0x0));
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x0] = (ulong) (((bool) ((((long) (reinterpret_cast<Vector128<long>>(a)[0x0])) > ((long) (reinterpret_cast<Vector128<long>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x1] = (ulong) (((bool) ((((long) (reinterpret_cast<Vector128<long>>(a)[0x1])) > ((long) (reinterpret_cast<Vector128<long>>(b)[0x1]))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x0] = (ulong) (((bool) ((((long) (reinterpret_cast<Vector128<long>>(a)[0x0])) > ((long) (reinterpret_cast<Vector128<long>>(b)[0x0]))) ? 1U : 0U) != 0) ? (one) : (zero));
+				}
+				break;
+			}
+		}
+		return true;
+	}
+	insn_46:
+	/* CMGT-zero-scalar */
+	if((inst & 0xFF3FFC00U) == 0x5E208800U) {
+		auto size = (inst >> 22) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto V = (string) (([=](auto temp_426) -> string { switch(temp_426) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
+		switch(size) {
+			case 0x3: {
+				state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (Bitcast<ulong, double>((ulong) (((bool) ((((long) (Bitcast<double, long>((double) (reinterpret_cast<Vector128<double>>(state->V[rn])[0])))) > ((long) ((long) (0x0)))) ? 1U : 0U) != 0) ? ((ulong) ((ulong) (-0x1))) : ((ulong) ((ulong) (0x0)))))), 0 });
+				break;
+			}
+			default: {
+				throw "Not implemented";
+				break;
+			}
+		}
+		return true;
+	}
+	insn_47:
+	/* CMGT-zero-vector */
+	if((inst & 0xBF3FFC00U) == 0x0E208800U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto T = (string) (([=](auto temp_427) -> string { switch(temp_427) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto a = (Vector128<float>) (state->V[rn]);
+		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		switch(size) {
+			case 0x0: {
+				auto one = (byte) ((byte) (0xFF));
+				auto zero = (byte) ((byte) (0x0));
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x0] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x0])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x1] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x1])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x2] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x2])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x3] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x3])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x4] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x4])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x5] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x5])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x6] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x6])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x7] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x7])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x8] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x8])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x9] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x9])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xA] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0xA])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xB] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0xB])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xC] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0xC])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xD] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0xD])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xE] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0xE])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0xF] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0xF])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x0] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x0])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x1] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x1])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x2] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x2])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x3] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x3])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x4] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x4])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x5] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x5])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x6] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x6])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rd)]))[0][0x7] = (byte) (((bool) ((((sbyte) (reinterpret_cast<Vector128<sbyte>>(a)[0x7])) > ((sbyte) ((sbyte) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+				}
+				break;
+			}
+			case 0x1: {
+				auto one = (ushort) ((ushort) (0xFFFF));
+				auto zero = (ushort) ((ushort) (0x0));
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x0] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x0])) > ((short) ((short) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x1] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x1])) > ((short) ((short) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x2] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x2])) > ((short) ((short) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x3] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x3])) > ((short) ((short) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x4] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x4])) > ((short) ((short) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x5] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x5])) > ((short) ((short) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x6] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x6])) > ((short) ((short) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x7] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x7])) > ((short) ((short) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x0] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x0])) > ((short) ((short) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x1] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x1])) > ((short) ((short) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x2] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x2])) > ((short) ((short) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rd)]))[0][0x3] = (ushort) (((bool) ((((short) (reinterpret_cast<Vector128<short>>(a)[0x3])) > ((short) ((short) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+				}
+				break;
+			}
+			case 0x2: {
+				auto one = (uint) ((uint) (0xFFFFFFFF));
+				auto zero = (uint) ((uint) (0x0));
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x0] = (uint) (((bool) ((((int) (reinterpret_cast<Vector128<int>>(a)[0x0])) > ((int) ((int) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x1] = (uint) (((bool) ((((int) (reinterpret_cast<Vector128<int>>(a)[0x1])) > ((int) ((int) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x2] = (uint) (((bool) ((((int) (reinterpret_cast<Vector128<int>>(a)[0x2])) > ((int) ((int) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x3] = (uint) (((bool) ((((int) (reinterpret_cast<Vector128<int>>(a)[0x3])) > ((int) ((int) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x0] = (uint) (((bool) ((((int) (reinterpret_cast<Vector128<int>>(a)[0x0])) > ((int) ((int) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rd)]))[0][0x1] = (uint) (((bool) ((((int) (reinterpret_cast<Vector128<int>>(a)[0x1])) > ((int) ((int) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+				}
+				break;
+			}
+			default: {
+				auto one = (ulong) ((ulong) (-0x1));
+				auto zero = (ulong) ((ulong) (0x0));
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x0] = (ulong) (((bool) ((((long) (reinterpret_cast<Vector128<long>>(a)[0x0])) > ((long) ((long) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+					reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x1] = (ulong) (((bool) ((((long) (reinterpret_cast<Vector128<long>>(a)[0x1])) > ((long) ((long) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+				} else {
+					reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rd)]))[0][0x0] = (ulong) (((bool) ((((long) (reinterpret_cast<Vector128<long>>(a)[0x0])) > ((long) ((long) (0x0)))) ? 1U : 0U) != 0) ? (one) : (zero));
+				}
+				break;
+			}
+		}
+		return true;
+	}
+	insn_48:
 	/* CNT */
 	if((inst & 0xBF3FFC00U) == 0x0E205800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_378) -> string { switch(temp_378) { case 0x0: return string("8B"); case 0x1: return string("16B"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		state->V[rd] = (Vector128<float>) (VectorCountBits((Vector128<float>) (state->V[rn]), (long) (([=](auto temp_379) -> long { switch(temp_379) { case 0x0: return 0x8; default: return 0x10; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))))));
+		auto t = (string) (([=](auto temp_428) -> string { switch(temp_428) { case 0x0: return string("8B"); case 0x1: return string("16B"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		state->V[rd] = (Vector128<float>) (VectorCountBits((Vector128<float>) (state->V[rn]), (long) (([=](auto temp_429) -> long { switch(temp_429) { case 0x0: return 0x8; default: return 0x10; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))))));
 		return true;
 	}
-	insn_42:
+	insn_49:
 	/* CSEL */
 	if((inst & 0x7FE00C00U) == 0x1A800000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -1071,8 +1384,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_380) -> string { switch(temp_380) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_381) -> bool { switch(temp_381) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_430) -> string { switch(temp_430) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_431) -> bool { switch(temp_431) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 				state->X[(int) rd] = (ulong) (uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]));
@@ -1088,7 +1401,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_43:
+	insn_50:
 	/* CSINC */
 	if((inst & 0x7FE00C00U) == 0x1A800400U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -1097,8 +1410,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_382) -> string { switch(temp_382) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_383) -> bool { switch(temp_383) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_432) -> string { switch(temp_432) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_433) -> bool { switch(temp_433) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 				state->X[(int) rd] = (ulong) (uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]));
@@ -1114,7 +1427,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_44:
+	insn_51:
 	/* CSINV */
 	if((inst & 0x7FE00C00U) == 0x5A800000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -1123,8 +1436,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_384) -> string { switch(temp_384) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_385) -> bool { switch(temp_385) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_434) -> string { switch(temp_434) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_435) -> bool { switch(temp_435) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 				state->X[(int) rd] = (ulong) (uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]));
@@ -1140,7 +1453,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_45:
+	insn_52:
 	/* CSNEG */
 	if((inst & 0x7FE00C00U) == 0x5A800400U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -1149,8 +1462,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_386) -> string { switch(temp_386) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_387) -> bool { switch(temp_387) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto condstr = (string) (([=](auto temp_436) -> string { switch(temp_436) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_437) -> bool { switch(temp_437) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 				state->X[(int) rd] = (ulong) (uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]));
@@ -1166,21 +1479,21 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_46:
+	insn_53:
 	/* DMB */
 	if((inst & 0xFFFFF0FFU) == 0xD50330BFU) {
 		auto m = (inst >> 8) & 0xFU;
-		auto option = (string) (([=](auto temp_388) -> string { switch(temp_388) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(m));
+		auto option = (string) (([=](auto temp_438) -> string { switch(temp_438) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(m));
 		return true;
 	}
-	insn_47:
+	insn_54:
 	/* DSB */
 	if((inst & 0xFFFFF0FFU) == 0xD503309FU) {
 		auto crm = (inst >> 8) & 0xFU;
-		auto option = (string) (([=](auto temp_389) -> string { switch(temp_389) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(crm));
+		auto option = (string) (([=](auto temp_439) -> string { switch(temp_439) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(crm));
 		return true;
 	}
-	insn_48:
+	insn_55:
 	/* DUP-element-scalar */
 	if((inst & 0xFFE0FC00U) == 0x5E000400U) {
 		auto imm = (inst >> 16) & 0x1FU;
@@ -1235,7 +1548,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_49:
+	insn_56:
 	/* DUP-element-vector */
 	if((inst & 0xBFE0FC00U) == 0x0E000400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -1276,11 +1589,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			}
 		}
 		auto sv = (Vector128<float>) (state->V[rn]);
-		auto tv = (Vector128<float>) (([=](auto temp_390) -> Vector128<float> { switch(temp_390) { case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) (reinterpret_cast<Vector128<byte>>(sv)[index])) - (Vector128<byte>) {})); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((ushort) (reinterpret_cast<Vector128<ushort>>(sv)[index])) - (Vector128<ushort>) {})); case 0x4: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) (reinterpret_cast<Vector128<float>>(sv)[index])) - (Vector128<float>) {})); default: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((double) (reinterpret_cast<Vector128<double>>(sv)[index])) - (Vector128<double>) {})); } })(size));
+		auto tv = (Vector128<float>) (([=](auto temp_440) -> Vector128<float> { switch(temp_440) { case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) (reinterpret_cast<Vector128<byte>>(sv)[index])) - (Vector128<byte>) {})); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((ushort) (reinterpret_cast<Vector128<ushort>>(sv)[index])) - (Vector128<ushort>) {})); case 0x4: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) (reinterpret_cast<Vector128<float>>(sv)[index])) - (Vector128<float>) {})); default: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((double) (reinterpret_cast<Vector128<double>>(sv)[index])) - (Vector128<double>) {})); } })(size));
 		state->V[rd] = (Vector128<float>) ((Q != 0) ? (tv) : ((Vector128<float>) (tv)));
 		return true;
 	}
-	insn_50:
+	insn_57:
 	/* DUP-general */
 	if((inst & 0xBFE0FC00U) == 0x0E000C00U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -1294,7 +1607,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->V[rd] = (Vector128<float>) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x1))))) == (0x1)) ? 1U : 0U) != 0) ? ((Vector128<float>) ((Q != 0) ? ((Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (src))) - (Vector128<byte>) {}))) : ((Vector128<float>) ((Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (src))) - (Vector128<byte>) {})))))) : ((Vector128<float>) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x3))))) == (0x2)) ? 1U : 0U) != 0) ? ((Vector128<float>) ((Q != 0) ? ((Vector128<float>) (reinterpret_cast<Vector128<float>>(((ushort) ((ushort) (src))) - (Vector128<ushort>) {}))) : ((Vector128<float>) ((Vector128<float>) (reinterpret_cast<Vector128<float>>(((ushort) ((ushort) (src))) - (Vector128<ushort>) {})))))) : ((Vector128<float>) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x7))))) == (0x4)) ? 1U : 0U) != 0) ? ((Vector128<float>) ((Q != 0) ? ((Vector128<float>) (reinterpret_cast<Vector128<float>>(((uint) ((uint) (src))) - (Vector128<uint>) {}))) : ((Vector128<float>) ((Vector128<float>) (reinterpret_cast<Vector128<float>>(((uint) ((uint) (src))) - (Vector128<uint>) {})))))) : ((Vector128<float>) ((Q != 0) ? ((Vector128<float>) (reinterpret_cast<Vector128<float>>((src) - (Vector128<ulong>) {}))) : throw "Not implemented")))))));
 		return true;
 	}
-	insn_51:
+	insn_58:
 	/* EON-shifted-register */
 	if((inst & 0x7F200000U) == 0x4A200000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -1304,15 +1617,15 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_391) -> string { switch(temp_391) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_441) -> string { switch(temp_441) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) ^ ((uint) ((uint) (~((uint) (([=](auto temp_392) -> uint { switch(temp_392) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))))));
+			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) ^ ((uint) ((uint) (~((uint) (([=](auto temp_442) -> uint { switch(temp_442) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))))));
 		} else {
-			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) ^ ((ulong) ((ulong) (~((ulong) (([=](auto temp_393) -> ulong { switch(temp_393) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
+			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) ^ ((ulong) ((ulong) (~((ulong) (([=](auto temp_443) -> ulong { switch(temp_443) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
 		}
 		return true;
 	}
-	insn_52:
+	insn_59:
 	/* EOR-immediate */
 	if((inst & 0x7F800000U) == 0x52000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -1336,7 +1649,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_53:
+	insn_60:
 	/* EOR-shifted-register */
 	if((inst & 0x7F200000U) == 0x4A000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -1346,15 +1659,15 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_394) -> string { switch(temp_394) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_444) -> string { switch(temp_444) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) ^ ((uint) ((uint) (([=](auto temp_395) -> uint { switch(temp_395) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))));
+			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) ^ ((uint) ((uint) (([=](auto temp_445) -> uint { switch(temp_445) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))));
 		} else {
-			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) ^ ((ulong) ((ulong) (([=](auto temp_396) -> ulong { switch(temp_396) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) ^ ((ulong) ((ulong) (([=](auto temp_446) -> ulong { switch(temp_446) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 		}
 		return true;
 	}
-	insn_54:
+	insn_61:
 	/* EOR-vector */
 	if((inst & 0xBFE0FC00U) == 0x2E201C00U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -1366,7 +1679,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->V[rd] = (Vector128<float>) ((Q != 0) ? (v) : ((Vector128<float>) (v)));
 		return true;
 	}
-	insn_55:
+	insn_62:
 	/* EXT */
 	if((inst & 0xBFE08400U) == 0x2E000000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -1378,7 +1691,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->V[rd] = (Vector128<float>) (VectorExtract((Vector128<float>) (state->V[rn]), (Vector128<float>) (state->V[rm]), Q, index));
 		return true;
 	}
-	insn_56:
+	insn_63:
 	/* EXTR */
 	if((inst & 0x7FA00000U) == 0x13800000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -1395,14 +1708,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_57:
+	insn_64:
 	/* FABD-scalar */
 	if((inst & 0xFFA0FC00U) == 0x7EA0D400U) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_397) -> string { switch(temp_397) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(size));
+		auto r = (string) (([=](auto temp_447) -> string { switch(temp_447) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (fabs((float) (((float) (float) ((float) (state->V[rn][0]))) - ((float) (float) ((float) (state->V[rm][0])))))), 0, 0, 0 };
@@ -1419,13 +1732,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_58:
+	insn_65:
 	/* FABS-scalar */
 	if((inst & 0xFF3FFC00U) == 0x1E20C000U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_398) -> string { switch(temp_398) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_448) -> string { switch(temp_448) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (fabs((float) (state->V[rn][0]))), 0, 0, 0 };
@@ -1442,14 +1755,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_59:
+	insn_66:
 	/* FABS-vector */
 	if((inst & 0xBFBFFC00U) == 0x0EA0F800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_399) -> string { switch(temp_399) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_449) -> string { switch(temp_449) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				auto a = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x0]);
@@ -1486,14 +1799,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_60:
+	insn_67:
 	/* FADD-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E202800U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_400) -> string { switch(temp_400) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_450) -> string { switch(temp_450) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x3: {
 				state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<ushort>) { (ushort) ((ushort) ((ushort) (((ushort) (ushort) ((ushort) (reinterpret_cast<Vector128<ushort>>(state->V[rn])[0]))) + ((ushort) (ushort) ((ushort) (reinterpret_cast<Vector128<ushort>>(state->V[rm])[0])))))), 0, 0, 0, 0, 0, 0, 0 });
@@ -1514,7 +1827,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_61:
+	insn_68:
 	/* FADD-vector */
 	if((inst & 0xBFA0FC00U) == 0x0E20D400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -1522,7 +1835,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_401) -> string { switch(temp_401) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_451) -> string { switch(temp_451) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				state->V[rd] = (Vector128<float>) ((Vector128<float>) (((Vector128<float>) (state->V[rn])) + ((Vector128<float>) (state->V[rm]))));
@@ -1543,7 +1856,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_62:
+	insn_69:
 	/* FADDP-scalar */
 	if((inst & 0xFFBFFC00U) == 0x7E30D800U) {
 		auto size = (inst >> 22) & 0x1U;
@@ -1557,7 +1870,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_63:
+	insn_70:
 	/* FADDP-vector */
 	if((inst & 0xBFA0FC00U) == 0x2E20D400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -1565,7 +1878,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_402) -> string { switch(temp_402) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_452) -> string { switch(temp_452) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				auto a = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x0]);
@@ -1610,7 +1923,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_64:
+	insn_71:
 	/* FCCMP */
 	if((inst & 0xFF200C10U) == 0x1E200400U) {
 		auto type = (inst >> 22) & 0x3U;
@@ -1618,9 +1931,9 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto cond = (inst >> 12) & 0xFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
-		auto r = (string) (([=](auto temp_403) -> string { switch(temp_403) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		auto condstr = (string) (([=](auto temp_404) -> string { switch(temp_404) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_405) -> bool { switch(temp_405) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto r = (string) (([=](auto temp_453) -> string { switch(temp_453) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto condstr = (string) (([=](auto temp_454) -> string { switch(temp_454) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_455) -> bool { switch(temp_455) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			switch(type) {
 				case 0x0: {
@@ -1645,7 +1958,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_65:
+	insn_72:
 	/* FCMxx-register-vector */
 	if((inst & 0x9F20F400U) == 0x0E20E400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -1656,8 +1969,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto ac = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto top = (string) (([=](auto temp_406) -> string { switch(temp_406) { case 0x0: return string("EQ"); case 0x2: return string("GE"); case 0x3: return string("GE"); case 0x6: return string("GT"); case 0x7: return string("GT"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
-		auto t = (string) (([=](auto temp_407) -> string { switch(temp_407) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto top = (string) (([=](auto temp_456) -> string { switch(temp_456) { case 0x0: return string("EQ"); case 0x2: return string("GE"); case 0x3: return string("GE"); case 0x6: return string("GT"); case 0x7: return string("GT"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+		auto t = (string) (([=](auto temp_457) -> string { switch(temp_457) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				auto a1 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x0]);
@@ -1665,8 +1978,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				auto b1 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rm]))[0x0]);
 				auto b2 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rm]))[0x1]);
 				state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((int) ((int) (0x0))) - (Vector128<int>) {}));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_408) -> float { switch(temp_408) { case 0x0: return (float) (((bool) (((a1) == (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a1) >= (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a1))) >= ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a1) > (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a1))) > ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_409) -> float { switch(temp_409) { case 0x0: return (float) (((bool) (((a2) == (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a2) >= (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a2))) >= ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a2) > (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a2))) > ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_458) -> float { switch(temp_458) { case 0x0: return (float) (((bool) (((a1) == (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a1) >= (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a1))) >= ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a1) > (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a1))) > ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_459) -> float { switch(temp_459) { case 0x0: return (float) (((bool) (((a2) == (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a2) >= (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a2))) >= ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a2) > (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a2))) > ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
 				break;
 			}
 			case 0x1: {
@@ -1679,10 +1992,10 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				auto b3 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rm]))[0x2]);
 				auto b4 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rm]))[0x3]);
 				state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((int) ((int) (0x0))) - (Vector128<int>) {}));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_410) -> float { switch(temp_410) { case 0x0: return (float) (((bool) (((a1) == (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a1) >= (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a1))) >= ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a1) > (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a1))) > ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_411) -> float { switch(temp_411) { case 0x0: return (float) (((bool) (((a2) == (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a2) >= (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a2))) >= ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a2) > (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a2))) > ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x2] = (float) (([=](auto temp_412) -> float { switch(temp_412) { case 0x0: return (float) (((bool) (((a3) == (b3)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a3) >= (b3)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a3))) >= ((float) (fabs(b3)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a3) > (b3)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a3))) > ((float) (fabs(b3)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x3] = (float) (([=](auto temp_413) -> float { switch(temp_413) { case 0x0: return (float) (((bool) (((a4) == (b4)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a4) >= (b4)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a4))) >= ((float) (fabs(b4)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a4) > (b4)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a4))) > ((float) (fabs(b4)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_460) -> float { switch(temp_460) { case 0x0: return (float) (((bool) (((a1) == (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a1) >= (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a1))) >= ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a1) > (b1)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a1))) > ((float) (fabs(b1)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_461) -> float { switch(temp_461) { case 0x0: return (float) (((bool) (((a2) == (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a2) >= (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a2))) >= ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a2) > (b2)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a2))) > ((float) (fabs(b2)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x2] = (float) (([=](auto temp_462) -> float { switch(temp_462) { case 0x0: return (float) (((bool) (((a3) == (b3)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a3) >= (b3)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a3))) >= ((float) (fabs(b3)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a3) > (b3)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a3))) > ((float) (fabs(b3)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x3] = (float) (([=](auto temp_463) -> float { switch(temp_463) { case 0x0: return (float) (((bool) (((a4) == (b4)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((a4) >= (b4)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x3: return (float) (((bool) ((((float) (fabs(a4))) >= ((float) (fabs(b4)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x6: return (float) (((bool) (((a4) > (b4)) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x7: return (float) (((bool) ((((float) (fabs(a4))) > ((float) (fabs(b4)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
 				break;
 			}
 			case 0x3: {
@@ -1691,8 +2004,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				auto b1 = (double) (reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rm]))[0x0]);
 				auto b2 = (double) (reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rm]))[0x1]);
 				state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((int) ((int) (0x0))) - (Vector128<int>) {}));
-				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x0] = (double) (([=](auto temp_414) -> double { switch(temp_414) { case 0x0: return (double) (((bool) (((a1) == (b1)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((a1) >= (b1)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x3: return (double) (((bool) ((((double) (fabs(a1))) >= ((double) (fabs(b1)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x6: return (double) (((bool) (((a1) > (b1)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x7: return (double) (((bool) ((((double) (fabs(a1))) > ((double) (fabs(b1)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
-				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x1] = (double) (([=](auto temp_415) -> double { switch(temp_415) { case 0x0: return (double) (((bool) (((a2) == (b2)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((a2) >= (b2)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x3: return (double) (((bool) ((((double) (fabs(a2))) >= ((double) (fabs(b2)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x6: return (double) (((bool) (((a2) > (b2)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x7: return (double) (((bool) ((((double) (fabs(a2))) > ((double) (fabs(b2)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x0] = (double) (([=](auto temp_464) -> double { switch(temp_464) { case 0x0: return (double) (((bool) (((a1) == (b1)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((a1) >= (b1)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x3: return (double) (((bool) ((((double) (fabs(a1))) >= ((double) (fabs(b1)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x6: return (double) (((bool) (((a1) > (b1)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x7: return (double) (((bool) ((((double) (fabs(a1))) > ((double) (fabs(b1)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x1] = (double) (([=](auto temp_465) -> double { switch(temp_465) { case 0x0: return (double) (((bool) (((a2) == (b2)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((a2) >= (b2)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x3: return (double) (((bool) ((((double) (fabs(a2))) >= ((double) (fabs(b2)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x6: return (double) (((bool) (((a2) > (b2)) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x7: return (double) (((bool) ((((double) (fabs(a2))) > ((double) (fabs(b2)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
 				break;
 			}
 			default: {
@@ -1702,7 +2015,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_66:
+	insn_73:
 	/* FCMxx-zero-vector */
 	if((inst & 0x9FBFEC00U) == 0x0EA0C800U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -1711,15 +2024,15 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto op = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto top = (string) (([=](auto temp_416) -> string { switch(temp_416) { case 0x0: return string("GT"); case 0x1: return string("GE"); case 0x2: return string("EQ"); default: return string("LE"); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
-		auto t = (string) (([=](auto temp_417) -> string { switch(temp_417) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto top = (string) (([=](auto temp_466) -> string { switch(temp_466) { case 0x0: return string("GT"); case 0x1: return string("GE"); case 0x2: return string("EQ"); default: return string("LE"); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+		auto t = (string) (([=](auto temp_467) -> string { switch(temp_467) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				auto v1 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x0]);
 				auto v2 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x1]);
 				state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((int) ((int) (0x0))) - (Vector128<int>) {}));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_418) -> float { switch(temp_418) { case 0x0: return (float) (((bool) (((v1) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v1) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v1) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v1) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_419) -> float { switch(temp_419) { case 0x0: return (float) (((bool) (((v2) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v2) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v2) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v2) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_468) -> float { switch(temp_468) { case 0x0: return (float) (((bool) (((v1) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v1) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v1) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v1) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_469) -> float { switch(temp_469) { case 0x0: return (float) (((bool) (((v2) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v2) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v2) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v2) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
 				break;
 			}
 			case 0x1: {
@@ -1728,18 +2041,18 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				auto v3 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x2]);
 				auto v4 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x3]);
 				state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((int) ((int) (0x0))) - (Vector128<int>) {}));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_420) -> float { switch(temp_420) { case 0x0: return (float) (((bool) (((v1) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v1) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v1) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v1) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_421) -> float { switch(temp_421) { case 0x0: return (float) (((bool) (((v2) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v2) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v2) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v2) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x2] = (float) (([=](auto temp_422) -> float { switch(temp_422) { case 0x0: return (float) (((bool) (((v3) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v3) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v3) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v3) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
-				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x3] = (float) (([=](auto temp_423) -> float { switch(temp_423) { case 0x0: return (float) (((bool) (((v4) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v4) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v4) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v4) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x0] = (float) (([=](auto temp_470) -> float { switch(temp_470) { case 0x0: return (float) (((bool) (((v1) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v1) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v1) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v1) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x1] = (float) (([=](auto temp_471) -> float { switch(temp_471) { case 0x0: return (float) (((bool) (((v2) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v2) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v2) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v2) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x2] = (float) (([=](auto temp_472) -> float { switch(temp_472) { case 0x0: return (float) (((bool) (((v3) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v3) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v3) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v3) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rd)]))[0][0x3] = (float) (([=](auto temp_473) -> float { switch(temp_473) { case 0x0: return (float) (((bool) (((v4) > ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x1: return (float) (((bool) (((v4) >= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); case 0x2: return (float) (((bool) (((v4) == ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); default: return (float) (((bool) (((v4) <= ((float) ((float) (0x0)))) ? 1U : 0U) != 0) ? ((float) (Bitcast<int, float>((int) ((int) (-0x1))))) : ((float) (Bitcast<int, float>((int) ((int) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
 				break;
 			}
 			case 0x3: {
 				auto v1 = (double) (reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rn]))[0x0]);
 				auto v2 = (double) (reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rn]))[0x1]);
 				state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((int) ((int) (0x0))) - (Vector128<int>) {}));
-				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x0] = (double) (([=](auto temp_424) -> double { switch(temp_424) { case 0x0: return (double) (((bool) (((v1) > ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x1: return (double) (((bool) (((v1) >= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((v1) == ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: return (double) (((bool) (((v1) <= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
-				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x1] = (double) (([=](auto temp_425) -> double { switch(temp_425) { case 0x0: return (double) (((bool) (((v2) > ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x1: return (double) (((bool) (((v2) >= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((v2) == ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: return (double) (((bool) (((v2) <= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x0] = (double) (([=](auto temp_474) -> double { switch(temp_474) { case 0x0: return (double) (((bool) (((v1) > ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x1: return (double) (((bool) (((v1) >= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((v1) == ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: return (double) (((bool) (((v1) <= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
+				reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rd)]))[0][0x1] = (double) (([=](auto temp_475) -> double { switch(temp_475) { case 0x0: return (double) (((bool) (((v2) > ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x1: return (double) (((bool) (((v2) >= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); case 0x2: return (double) (((bool) (((v2) == ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); default: return (double) (((bool) (((v2) <= ((double) ((double) (0x0)))) ? 1U : 0U) != 0) ? ((double) (Bitcast<long, double>((long) ((long) (-0x1))))) : ((double) (Bitcast<long, double>((long) ((long) (0x0)))))); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
 				break;
 			}
 			default: {
@@ -1749,14 +2062,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_67:
+	insn_74:
 	/* FCMLT-zero-vector */
 	if((inst & 0xBFBFFC00U) == 0x0EA0E800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_426) -> string { switch(temp_426) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_476) -> string { switch(temp_476) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				auto v1 = (float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rn]))[0x0]);
@@ -1793,14 +2106,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_68:
+	insn_75:
 	/* FCMP */
 	if((inst & 0xFF20FC17U) == 0x1E202000U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto opc = (inst >> 3) & 0x1U;
-		auto r = (string) (([=](auto temp_427) -> string { switch(temp_427) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_477) -> string { switch(temp_477) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		auto zero = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("/0")) : (string("")));
 		switch(type) {
 			case 0x0: {
@@ -1822,7 +2135,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_69:
+	insn_76:
 	/* FCSEL */
 	if((inst & 0xFF200C00U) == 0x1E200C00U) {
 		auto type = (inst >> 22) & 0x3U;
@@ -1830,9 +2143,9 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto cond = (inst >> 12) & 0xFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_428) -> string { switch(temp_428) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		auto condstr = (string) (([=](auto temp_429) -> string { switch(temp_429) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = (bool) (([=](auto temp_430) -> bool { switch(temp_430) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
+		auto r = (string) (([=](auto temp_478) -> string { switch(temp_478) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto condstr = (string) (([=](auto temp_479) -> string { switch(temp_479) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = (bool) (([=](auto temp_480) -> bool { switch(temp_480) { case 0x0: return (bool) (state->NZCV_Z); case 0x1: return (bool) (state->NZCV_C); case 0x2: return (bool) (state->NZCV_N); case 0x3: return (bool) (state->NZCV_V); case 0x4: return (bool) ((((bool) ((bool) (state->NZCV_C))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); case 0x5: return (bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U); case 0x6: return (bool) ((((bool) ((bool) ((((bool) (state->NZCV_N)) == ((bool) (state->NZCV_V))) ? 1U : 0U))) & ((bool) ((bool) (((bool) (state->NZCV_Z)) != 0 ? 0U : 1U))))); default: return 0x1; } })((byte) ((cond) >> (uint) (0x1))));
 		if(((bool) (((byte) ((((byte) ((byte) ((((ulong) (cond)) & ((ulong) (0x1)))))) & ((byte) ((bool) (((cond) != (0xF)) ? 1U : 0U))))) != 0) ? ((bool) ((result) != 0 ? 0U : 1U)) : (result))) != 0) {
 			switch(type) {
 				case 0x0: {
@@ -1866,7 +2179,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_70:
+	insn_77:
 	/* FCVT */
 	if((inst & 0xFF3E7C00U) == 0x1E224000U) {
 		auto type = (inst >> 22) & 0x3U;
@@ -1944,7 +2257,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_71:
+	insn_78:
 	/* FCVTAS-scalar-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E240000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -2014,7 +2327,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_72:
+	insn_79:
 	/* FCVTAU-scalar-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E250000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -2084,7 +2397,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_73:
+	insn_80:
 	/* FCVTL[2] */
 	if((inst & 0xBFBFFC00U) == 0x0E217800U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -2093,7 +2406,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto o2 = (string) ((Q != 0) ? (string("2")) : (string("")));
 		auto ta = (string) ((size != 0) ? (string("2D")) : (string("4S")));
-		auto tb = (string) (([=](auto temp_431) -> string { switch(temp_431) { case 0x0: return string("4H"); case 0x1: return string("8H"); case 0x2: return string("2S"); default: return string("4S"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto tb = (string) (([=](auto temp_481) -> string { switch(temp_481) { case 0x0: return string("4H"); case 0x1: return string("8H"); case 0x2: return string("2S"); default: return string("4S"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto n = (Vector128<float>) (state->V[rn]);
 		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
@@ -2114,7 +2427,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_74:
+	insn_81:
 	/* FCVTMS-scalar-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E300000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -2184,7 +2497,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_75:
+	insn_82:
 	/* FCVTMU-scalar-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E310000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -2254,7 +2567,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_76:
+	insn_83:
 	/* FCVTN */
 	if((inst & 0xFFBFFC00U) == 0x0E216800U) {
 		auto size = (inst >> 22) & 0x1U;
@@ -2292,7 +2605,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_77:
+	insn_84:
 	/* FCVTN2 */
 	if((inst & 0xFFBFFC00U) == 0x4E216800U) {
 		auto size = (inst >> 22) & 0x1U;
@@ -2329,7 +2642,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_78:
+	insn_85:
 	/* FCVTPS-scalar-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E280000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -2399,7 +2712,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_79:
+	insn_86:
 	/* FCVTPU-scalar-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E290000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -2469,7 +2782,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_80:
+	insn_87:
 	/* FCVTZS-scalar-fixedpoint */
 	if((inst & 0x7F3F0000U) == 0x1E180000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -2479,7 +2792,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto fbits = (ulong) (((ulong) (long) (0x40)) - ((ulong) (byte) (scale)));
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (([=](auto temp_432) -> string { switch(temp_432) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r2 = (string) (([=](auto temp_482) -> string { switch(temp_482) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch((byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))))) {
 			case 0x0: {
 				state->X[(int) rd] = (ulong) (uint) ((uint) (FloatToFixed32((float) (state->V[rn][0]), (int) (fbits))));
@@ -2504,7 +2817,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_81:
+	insn_88:
 	/* FCVTZS-scalar-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E380000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -2574,7 +2887,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_82:
+	insn_89:
 	/* FCVTZU-scalar-fixedpoint */
 	if((inst & 0x7F3F0000U) == 0x1E190000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -2584,7 +2897,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto fbits = (ulong) (((ulong) (long) (0x40)) - ((ulong) (byte) (scale)));
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (([=](auto temp_433) -> string { switch(temp_433) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r2 = (string) (([=](auto temp_483) -> string { switch(temp_483) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch((byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))))) {
 			case 0x0: {
 				state->X[(int) rd] = (ulong) (uint) ((uint) (FloatToFixed32((float) (state->V[rn][0]), (int) (fbits))));
@@ -2609,7 +2922,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_83:
+	insn_90:
 	/* FCVTZU-scalar-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E390000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -2679,14 +2992,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_84:
+	insn_91:
 	/* FDIV-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E201800U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_434) -> string { switch(temp_434) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_484) -> string { switch(temp_484) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x3: {
 				throw "Not implemented";
@@ -2707,7 +3020,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_85:
+	insn_92:
 	/* FDIV-vector */
 	if((inst & 0xBFA0FC00U) == 0x2E20FC00U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -2715,7 +3028,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_435) -> string { switch(temp_435) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_485) -> string { switch(temp_485) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				state->V[rd] = (Vector128<float>) ((Vector128<float>) (((Vector128<float>) (state->V[rn])) / ((Vector128<float>) (state->V[rm]))));
@@ -2736,7 +3049,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_86:
+	insn_93:
 	/* FMADD */
 	if((inst & 0xFF208000U) == 0x1F000000U) {
 		auto type = (inst >> 22) & 0x3U;
@@ -2744,7 +3057,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto ra = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_436) -> string { switch(temp_436) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x3: return string("H"); default: throw "Not implemented"; } })(type));
+		auto t = (string) (([=](auto temp_486) -> string { switch(temp_486) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x3: return string("H"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (((float) (float) ((float) (((float) (float) ((float) (state->V[rn][0]))) * ((float) (float) ((float) (state->V[rm][0])))))) + ((float) (float) ((float) (state->V[ra][0])))), 0, 0, 0 };
@@ -2761,14 +3074,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_87:
+	insn_94:
 	/* FMAX-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E204800U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_437) -> string { switch(temp_437) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_487) -> string { switch(temp_487) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = (float) (state->V[rn][0]);
@@ -2789,14 +3102,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_88:
+	insn_95:
 	/* FMAXNM-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E206800U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_438) -> string { switch(temp_438) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_488) -> string { switch(temp_488) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = (float) (state->V[rn][0]);
@@ -2817,14 +3130,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_89:
+	insn_96:
 	/* FMIN-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E205800U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_439) -> string { switch(temp_439) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_489) -> string { switch(temp_489) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = (float) (state->V[rn][0]);
@@ -2845,14 +3158,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_90:
+	insn_97:
 	/* FMINNM-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E207800U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_440) -> string { switch(temp_440) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_490) -> string { switch(temp_490) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = (float) (state->V[rn][0]);
@@ -2873,7 +3186,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_91:
+	insn_98:
 	/* FMLA-by-element-vector-spdp */
 	if((inst & 0xBF80F400U) == 0x0F801000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -2883,9 +3196,9 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_441) -> string { switch(temp_441) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_491) -> string { switch(temp_491) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint) (([=](auto temp_442) -> uint { switch(temp_442) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto index = (uint) (([=](auto temp_492) -> uint { switch(temp_492) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
 		if((sz) != 0) {
 			state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rd])) + reinterpret_cast<Vector128<double>>((Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rn])) * reinterpret_cast<Vector128<double>>((Vector128<float>) (reinterpret_cast<Vector128<float>>(((double) (reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rm]))[index])) - (Vector128<double>) {}))))))));
 		} else {
@@ -2893,7 +3206,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_92:
+	insn_99:
 	/* FMLA-vector */
 	if((inst & 0xBFA0FC00U) == 0x0E20CC00U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -2901,7 +3214,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_443) -> string { switch(temp_443) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto T = (string) (([=](auto temp_493) -> string { switch(temp_493) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
 		if((sz) != 0) {
 			state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rd])) + reinterpret_cast<Vector128<double>>((Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rn])) * reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rm])))))));
 		} else {
@@ -2909,7 +3222,43 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_93:
+	insn_100:
+	/* FMLS-by-element-vector-spdp */
+	if((inst & 0xBF80F400U) == 0x0F805000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto sz = (inst >> 22) & 0x1U;
+		auto L = (inst >> 21) & 0x1U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto H = (inst >> 11) & 0x1U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto T = (string) (([=](auto temp_494) -> string { switch(temp_494) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
+		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
+		auto index = (uint) (([=](auto temp_495) -> uint { switch(temp_495) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		if((sz) != 0) {
+			state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rd])) - reinterpret_cast<Vector128<double>>((Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rn])) * reinterpret_cast<Vector128<double>>((Vector128<float>) (reinterpret_cast<Vector128<float>>(((double) (reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rm]))[index])) - (Vector128<double>) {}))))))));
+		} else {
+			state->V[rd] = (Vector128<float>) (((Vector128<float>) (state->V[rd])) - ((Vector128<float>) (((Vector128<float>) (state->V[rn])) * ((Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) (reinterpret_cast<Vector128<float>>((Vector128<float>) (state->V[rm]))[index])) - (Vector128<float>) {}))))));
+		}
+		return true;
+	}
+	insn_101:
+	/* FMLS-vector */
+	if((inst & 0xBFA0FC00U) == 0x0EA0CC00U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto sz = (inst >> 22) & 0x1U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto T = (string) (([=](auto temp_496) -> string { switch(temp_496) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		if((sz) != 0) {
+			state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rd])) - reinterpret_cast<Vector128<double>>((Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rn])) * reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rm])))))));
+		} else {
+			state->V[rd] = (Vector128<float>) (((Vector128<float>) (state->V[rd])) - ((Vector128<float>) (((Vector128<float>) (state->V[rn])) * ((Vector128<float>) (state->V[rm])))));
+		}
+		return true;
+	}
+	insn_102:
 	/* FMOV-general */
 	if((inst & 0x7F36FC00U) == 0x1E260000U) {
 		auto sf = (inst >> 31) & 0x1U;
@@ -3028,13 +3377,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_94:
+	insn_103:
 	/* FMOV-scalar-immediate */
 	if((inst & 0xFF201FE0U) == 0x1E201000U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto imm = (inst >> 13) & 0xFFU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_444) -> string { switch(temp_444) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_497) -> string { switch(temp_497) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		auto sv = (float) (Bitcast<uint, float>((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((bool) ((bool) (0x0)))) << 0)) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 1)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 2)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 3)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 4)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 5)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 6)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 7)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 8)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 9)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 10)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 11)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 12)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 13)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 14)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 15)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 16)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 17)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 18)))))) << 0)) | ((uint) (((uint) ((byte) ((byte) ((byte) ((((ulong) (imm)) & ((ulong) (0xF)))))))) << 19)))) | ((uint) (((uint) ((byte) ((byte) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x4)))) & ((ulong) (0x3)))))))) << 23)))) | ((uint) (((uint) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 0)) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 1)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 2)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 3)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 4)))))) << 25)))) | ((uint) (((uint) ((bool) (((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1))))) != 0 ? 0U : 1U))) << 30)))) | ((uint) (((uint) ((bool) ((bool) ((byte) ((imm) >> (uint) (0x7)))))) << 31))))));
 		switch(type) {
 			case 0x0: {
@@ -3048,7 +3397,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_95:
+	insn_104:
 	/* FMOV-vector-immediate-single */
 	if((inst & 0xBFF8FC00U) == 0x0F00F400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -3071,7 +3420,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_96:
+	insn_105:
 	/* FMOV-vector-immediate-double */
 	if((inst & 0xFFF8FC00U) == 0x6F00F400U) {
 		auto a = (inst >> 18) & 0x1U;
@@ -3087,7 +3436,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>((sv) - (Vector128<double>) {}));
 		return true;
 	}
-	insn_97:
+	insn_106:
 	/* FMSUB */
 	if((inst & 0xFF208000U) == 0x1F008000U) {
 		auto type = (inst >> 22) & 0x3U;
@@ -3095,7 +3444,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto ra = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_445) -> string { switch(temp_445) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x3: return string("H"); default: throw "Not implemented"; } })(type));
+		auto t = (string) (([=](auto temp_498) -> string { switch(temp_498) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x3: return string("H"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (((float) (float) ((float) (state->V[ra][0]))) - ((float) (float) ((float) (((float) (float) ((float) (state->V[rn][0]))) * ((float) (float) ((float) (state->V[rm][0]))))))), 0, 0, 0 };
@@ -3112,7 +3461,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_98:
+	insn_107:
 	/* FMUL-by-element-scalar-spdp */
 	if((inst & 0xFF80F400U) == 0x5F809000U) {
 		auto sz = (inst >> 22) & 0x1U;
@@ -3122,7 +3471,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint) (([=](auto temp_446) -> uint { switch(temp_446) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto index = (uint) (([=](auto temp_499) -> uint { switch(temp_499) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
 		if((sz) != 0) {
 			state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (((double) (double) ((double) (reinterpret_cast<Vector128<double>>(state->V[rn])[0]))) * ((double) (double) ((double) (reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rm]))[index])))), 0 });
 		} else {
@@ -3130,7 +3479,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_99:
+	insn_108:
 	/* FMUL-by-element-vector-spdp */
 	if((inst & 0xBF80F400U) == 0x0F809000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -3140,9 +3489,9 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_447) -> string { switch(temp_447) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_500) -> string { switch(temp_500) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint) (([=](auto temp_448) -> uint { switch(temp_448) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto index = (uint) (([=](auto temp_501) -> uint { switch(temp_501) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
 		if((sz) != 0) {
 			state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rn])) * reinterpret_cast<Vector128<double>>((Vector128<float>) (reinterpret_cast<Vector128<float>>(((double) (reinterpret_cast<Vector128<double>>((Vector128<float>) (state->V[rm]))[index])) - (Vector128<double>) {})))));
 		} else {
@@ -3150,14 +3499,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_100:
+	insn_109:
 	/* FMUL-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E200800U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_449) -> string { switch(temp_449) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_502) -> string { switch(temp_502) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (((float) (float) ((float) (state->V[rn][0]))) * ((float) (float) ((float) (state->V[rm][0])))), 0, 0, 0 };
@@ -3174,7 +3523,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_101:
+	insn_110:
 	/* FMUL-vector */
 	if((inst & 0xBFA0FC00U) == 0x2E20DC00U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -3182,7 +3531,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_450) -> string { switch(temp_450) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_503) -> string { switch(temp_503) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				state->V[rd] = (Vector128<float>) ((Vector128<float>) (((Vector128<float>) (state->V[rn])) * ((Vector128<float>) (state->V[rm]))));
@@ -3203,13 +3552,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_102:
+	insn_111:
 	/* FNEG-scalar */
 	if((inst & 0xFF3FFC00U) == 0x1E214000U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_451) -> string { switch(temp_451) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_504) -> string { switch(temp_504) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (-((float) (state->V[rn][0]))), 0, 0, 0 };
@@ -3226,14 +3575,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_103:
+	insn_112:
 	/* FNEG-vector */
 	if((inst & 0xBFBFFC00U) == 0x2EA0F800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_452) -> string { switch(temp_452) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_505) -> string { switch(temp_505) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto sv = (Vector128<float>) (state->V[rn]);
 		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
@@ -3261,7 +3610,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_104:
+	insn_113:
 	/* FNMADD */
 	if((inst & 0xFF208000U) == 0x1F200000U) {
 		auto type = (inst >> 22) & 0x3U;
@@ -3269,7 +3618,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto ra = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_453) -> string { switch(temp_453) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_506) -> string { switch(temp_506) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (((float) (float) ((float) (-((float) (((float) (float) ((float) (state->V[rn][0]))) * ((float) (float) ((float) (state->V[rm][0])))))))) - ((float) (float) ((float) (state->V[ra][0])))), 0, 0, 0 };
@@ -3286,7 +3635,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_105:
+	insn_114:
 	/* FNMSUB */
 	if((inst & 0xFF208000U) == 0x1F208000U) {
 		auto type = (inst >> 22) & 0x3U;
@@ -3294,7 +3643,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto ra = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_454) -> string { switch(temp_454) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_507) -> string { switch(temp_507) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (((float) (float) ((float) (((float) (float) ((float) (state->V[rn][0]))) * ((float) (float) ((float) (state->V[rm][0])))))) - ((float) (float) ((float) (state->V[ra][0])))), 0, 0, 0 };
@@ -3311,14 +3660,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_106:
+	insn_115:
 	/* FNMUL-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E208800U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_455) -> string { switch(temp_455) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_508) -> string { switch(temp_508) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (-((float) (((float) (float) ((float) (state->V[rn][0]))) * ((float) (float) ((float) (state->V[rm][0])))))), 0, 0, 0 };
@@ -3335,13 +3684,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_107:
+	insn_116:
 	/* FRINTA-scalar */
 	if((inst & 0xFF3FFC00U) == 0x1E264000U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_456) -> string { switch(temp_456) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_509) -> string { switch(temp_509) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (((bool) ((((float) (state->V[rn][0])) < (0x0)) ? 1U : 0U) != 0) ? ((float) (ceilf(((float) (state->V[rn][0])) - 0.5f))) : ((float) (floorf(((float) (state->V[rn][0])) + 0.5f)))), 0, 0, 0 };
@@ -3358,13 +3707,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_108:
+	insn_117:
 	/* FRINTI-scalar */
 	if((inst & 0xFF3FFC00U) == 0x1E27C000U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_457) -> string { switch(temp_457) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_510) -> string { switch(temp_510) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (roundf((float) (state->V[rn][0]))), 0, 0, 0 };
@@ -3381,13 +3730,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_109:
+	insn_118:
 	/* FRINTM-scalar */
 	if((inst & 0xFF3FFC00U) == 0x1E254000U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_458) -> string { switch(temp_458) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_511) -> string { switch(temp_511) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (ceilf(((float) (state->V[rn][0])) - 0.5f)), 0, 0, 0 };
@@ -3404,13 +3753,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_110:
+	insn_119:
 	/* FRINTP-scalar */
 	if((inst & 0xFF3FFC00U) == 0x1E24C000U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_459) -> string { switch(temp_459) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_512) -> string { switch(temp_512) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (floorf(((float) (state->V[rn][0])) + 0.5f)), 0, 0, 0 };
@@ -3427,13 +3776,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_111:
+	insn_120:
 	/* FRINTX-scalar */
 	if((inst & 0xFF3FFC00U) == 0x1E274000U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_460) -> string { switch(temp_460) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_513) -> string { switch(temp_513) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (roundf((float) (state->V[rn][0]))), 0, 0, 0 };
@@ -3450,13 +3799,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_112:
+	insn_121:
 	/* FRINTZ-scalar */
 	if((inst & 0xFF3FFC00U) == 0x1E25C000U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_461) -> string { switch(temp_461) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_514) -> string { switch(temp_514) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (((bool) ((((float) (state->V[rn][0])) < (0x0)) ? 1U : 0U) != 0) ? ((float) (floorf(((float) (state->V[rn][0])) + 0.5f))) : ((float) (ceilf(((float) (state->V[rn][0])) - 0.5f)))), 0, 0, 0 };
@@ -3473,18 +3822,18 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_113:
+	insn_122:
 	/* FRSQRTE-vector */
 	if((inst & 0xBFBFFC00U) == 0x2EA1D800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_462) -> string { switch(temp_462) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		state->V[rd] = (Vector128<float>) (([=](auto temp_463) -> Vector128<float> { switch(temp_463) { case 0x0: return (Vector128<float>) (VectorFrsqrte((Vector128<float>) (state->V[rn]), 0x20, 0x2)); case 0x1: return (Vector128<float>) (VectorFrsqrte((Vector128<float>) (state->V[rn]), 0x20, 0x4)); case 0x3: return (Vector128<float>) (VectorFrsqrte((Vector128<float>) (state->V[rn]), 0x40, 0x2)); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_515) -> string { switch(temp_515) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		state->V[rd] = (Vector128<float>) (([=](auto temp_516) -> Vector128<float> { switch(temp_516) { case 0x0: return (Vector128<float>) (VectorFrsqrte((Vector128<float>) (state->V[rn]), 0x20, 0x2)); case 0x1: return (Vector128<float>) (VectorFrsqrte((Vector128<float>) (state->V[rn]), 0x20, 0x4)); case 0x3: return (Vector128<float>) (VectorFrsqrte((Vector128<float>) (state->V[rn]), 0x40, 0x2)); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		return true;
 	}
-	insn_114:
+	insn_123:
 	/* FRSQRTS-vector */
 	if((inst & 0xBFA0FC00U) == 0x0EA0FC00U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -3492,7 +3841,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_464) -> string { switch(temp_464) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_517) -> string { switch(temp_517) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				state->V[rd] = (Vector128<float>) ((Vector128<float>) (((Vector128<float>) (((Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) ((float) (0x3))) - (Vector128<float>) {}))) - ((Vector128<float>) (((Vector128<float>) (state->V[rn])) * ((Vector128<float>) (state->V[rm])))))) / ((Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) ((float) (0x2))) - (Vector128<float>) {})))));
@@ -3513,13 +3862,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_115:
+	insn_124:
 	/* FSQRT-scalar */
 	if((inst & 0xFF3FFC00U) == 0x1E21C000U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_465) -> string { switch(temp_465) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_518) -> string { switch(temp_518) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) ((float) sqrt((double) ((float) (state->V[rn][0])))), 0, 0, 0 };
@@ -3536,14 +3885,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_116:
+	insn_125:
 	/* FSUB-scalar */
 	if((inst & 0xFF20FC00U) == 0x1E203800U) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_466) -> string { switch(temp_466) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_519) -> string { switch(temp_519) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				state->V[(int) (rd)] = (Vector128<float>) { (float) (((float) (float) ((float) (state->V[rn][0]))) - ((float) (float) ((float) (state->V[rm][0])))), 0, 0, 0 };
@@ -3560,7 +3909,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_117:
+	insn_126:
 	/* FSUB-vector */
 	if((inst & 0xBFA0FC00U) == 0x0EA0D400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -3568,7 +3917,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_467) -> string { switch(temp_467) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_520) -> string { switch(temp_520) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
 				state->V[rd] = (Vector128<float>) ((Vector128<float>) (((Vector128<float>) (state->V[rn])) - ((Vector128<float>) (state->V[rm]))));
@@ -3589,7 +3938,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_118:
+	insn_127:
 	/* INS-general */
 	if((inst & 0xFFE0FC00U) == 0x4E001C00U) {
 		auto imm = (inst >> 16) & 0x1FU;
@@ -3631,7 +3980,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_119:
+	insn_128:
 	/* INS-vector */
 	if((inst & 0xFFE08400U) == 0x6E000400U) {
 		auto imm5 = (inst >> 16) & 0x1FU;
@@ -3677,7 +4026,782 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_120:
+	insn_129:
+	/* LD1-multi-no-offset-one-register */
+	if((inst & 0xBFFFF000U) == 0x0C407000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto T = (string) (([=](auto temp_521) -> string { switch(temp_521) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		state->V[rt] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x8] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x9] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x9))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xA] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xB] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xB))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xC] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xD] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xD))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xE] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xF] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xF))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x4] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x5] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x6] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x7] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x2] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x3] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+			default: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt)]))[0][0x1] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+		}
+		return true;
+	}
+	insn_130:
+	/* LD1-multi-no-offset-two-registers */
+	if((inst & 0xBFFFF000U) == 0x0C40A000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto T = (string) (([=](auto temp_522) -> string { switch(temp_522) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		state->V[rt] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		state->V[rt2] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x8] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x9] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x9))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xA] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xB] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xB))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xC] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xD] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xD))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xE] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xF] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xF))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x4] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x5] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x6] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x7] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x2] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x3] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+			default: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt)]))[0][0x1] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+		}
+		auto offset = (long) ((Q != 0) ? (0x10) : (0x8));
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x8] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x9] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x9))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xA] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xB] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xB))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xC] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xD] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xD))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xE] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xF] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xF))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x4] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x5] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x6] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x7] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x2] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x3] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			default: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt2)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt2)]))[0][0x1] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt2)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+		}
+		return true;
+	}
+	insn_131:
+	/* LD1-multi-no-offset-three-registers */
+	if((inst & 0xBFFFF000U) == 0x0C406000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		auto T = (string) (([=](auto temp_523) -> string { switch(temp_523) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		state->V[rt] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		state->V[rt2] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		state->V[rt3] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x8] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x9] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x9))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xA] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xB] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xB))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xC] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xD] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xD))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xE] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xF] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xF))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x4] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x5] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x6] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x7] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x2] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x3] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+			default: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt)]))[0][0x1] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+		}
+		auto offset = (long) ((Q != 0) ? (0x10) : (0x8));
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x8] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x9] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x9))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xA] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xB] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xB))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xC] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xD] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xD))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xE] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xF] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xF))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x4] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x5] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x6] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x7] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x2] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x3] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			default: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt2)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt2)]))[0][0x1] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt2)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+		}
+		offset = (long) ((Q != 0) ? (0x20) : (0x10));
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x8] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x9] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x9))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0xA] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0xB] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xB))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0xC] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0xD] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xD))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0xE] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0xF] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xF))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x4] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x5] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x6] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x7] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt3)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt3)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt3)]))[0][0x2] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt3)]))[0][0x3] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt3)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt3)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			default: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt3)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt3)]))[0][0x1] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt3)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+		}
+		return true;
+	}
+	insn_132:
+	/* LD1-multi-no-offset-four-registers */
+	if((inst & 0xBFFFF000U) == 0x0C402000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
+		auto T = (string) (([=](auto temp_524) -> string { switch(temp_524) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		state->V[rt] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		state->V[rt2] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		state->V[rt3] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x8] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x9] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x9))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xA] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xB] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xB))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xC] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xD] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xD))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xE] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xF] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xF))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x4] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x5] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x6] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x7] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x2] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x3] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+			default: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt)]))[0][0x1] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (0x0))))))));
+				} else {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (0x0))))))));
+				}
+				break;
+			}
+		}
+		auto offset = (long) ((Q != 0) ? (0x10) : (0x8));
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x8] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x9] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x9))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xA] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xB] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xB))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xC] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xD] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xD))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xE] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0xF] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xF))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt2)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x4] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x5] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x6] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x7] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt2)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x2] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x3] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt2)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			default: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt2)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt2)]))[0][0x1] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt2)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+		}
+		offset = (long) ((Q != 0) ? (0x20) : (0x10));
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x8] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x9] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x9))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0xA] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0xB] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xB))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0xC] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0xD] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xD))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0xE] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0xF] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xF))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt3)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x4] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x5] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x6] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x7] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt3)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt3)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt3)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt3)]))[0][0x2] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt3)]))[0][0x3] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt3)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt3)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			default: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt3)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt3)]))[0][0x1] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt3)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+		}
+		offset = (long) ((Q != 0) ? (0x30) : (0x18));
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x8] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x9] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x9))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0xA] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0xB] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xB))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0xC] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0xD] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xD))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0xE] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0xF] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xF))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x0] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x1))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x3))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x5))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt4)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x7))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt4)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt4)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt4)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt4)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt4)]))[0][0x4] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt4)]))[0][0x5] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xA))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt4)]))[0][0x6] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt4)]))[0][0x7] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xE))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt4)]))[0][0x0] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt4)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x2))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt4)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt4)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x6))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt4)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt4)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt4)]))[0][0x2] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt4)]))[0][0x3] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0xC))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt4)]))[0][0x0] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<float>*>(&(state->V[(int) (rt4)]))[0][0x1] = (float) (*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x4))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+			default: {
+				if((Q) != 0) {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt4)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt4)]))[0][0x1] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x8))) + ((long) (long) (offset))))))));
+				} else {
+					reinterpret_cast<Vector128<double>*>(&(state->V[(int) (rt4)]))[0][0x0] = (double) (*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (((long) (long) ((long) (0x0))) + ((long) (long) (offset))))))));
+				}
+				break;
+			}
+		}
+		return true;
+	}
+	insn_133:
 	/* LD1-single-no-offset */
 	if((inst & 0xBFFF2000U) == 0x0D400000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -3687,9 +4811,9 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((opc) != (0x3)) ? 1U : 0U)))
-			goto insn_121;
+			goto insn_134;
 		auto t = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("B")) : ((string) (((bool) ((((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) ((((byte) ((((ulong) (size)) & ((ulong) (0x1))))) == (0x0)) ? 1U : 0U))))) != 0) ? (string("H")) : ((string) (((bool) (((opc) == (0x2)) ? 1U : 0U) != 0) ? ((string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : ((string) (((bool) ((((bool) ((bool) (((size) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) (((S) == (0x0)) ? 1U : 0U))))) != 0) ? (string("D")) : throw "Not implemented")))) : throw "Not implemented")))));
-		auto index = (uint) (([=](auto temp_468) -> uint { switch(temp_468) { case 0x0: return (uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3)))))); case 0x1: return (uint) (((uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint) (((bool) ((((byte) ((((ulong) (size)) & ((ulong) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (S)) << 0)) | ((byte) (((byte) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
+		auto index = (uint) (([=](auto temp_525) -> uint { switch(temp_525) { case 0x0: return (uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3)))))); case 0x1: return (uint) (((uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint) (((bool) ((((byte) ((((ulong) (size)) & ((ulong) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (S)) << 0)) | ((byte) (((byte) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		switch(opc) {
 			case 0x0: {
@@ -3715,84 +4839,20 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_121:
-	/* LD1-multi-one-no-offset */
-	if((inst & 0xBFFFF000U) == 0x0C407000U) {
-		auto Q = (inst >> 30) & 0x1U;
-		auto size = (inst >> 10) & 0x3U;
-		auto rn = (inst >> 5) & 0x1FU;
-		auto rt = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_469) -> string { switch(temp_469) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
-		state->V[rt] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
-		switch(size) {
-			case 0x0: {
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x0] = (byte) (*(byte*) (address));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x1] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x1)))));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x2] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x2)))));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x3] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x3)))));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x4] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x4)))));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x5] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x5)))));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x6] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x6)))));
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x7] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x7)))));
-				if((Q) != 0) {
-					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x8] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x8)))));
-					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x9] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x9)))));
-					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xA] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0xA)))));
-					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xB] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0xB)))));
-					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xC] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0xC)))));
-					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xD] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0xD)))));
-					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xE] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0xE)))));
-					reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0xF] = (byte) (*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0xF)))));
-				}
-				break;
-			}
-			case 0x1: {
-				reinterpret_cast<Vector128<byte>*>(&(state->V[(int) (rt)]))[0][0x0] = (byte) (*(byte*) (address));
-				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x1] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x2)))));
-				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x2] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x4)))));
-				reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x3] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x6)))));
-				if((Q) != 0) {
-					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x4] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x8)))));
-					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x5] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0xA)))));
-					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x6] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0xC)))));
-					reinterpret_cast<Vector128<ushort>*>(&(state->V[(int) (rt)]))[0][0x7] = (ushort) (*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0xE)))));
-				}
-				break;
-			}
-			case 0x2: {
-				reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rt)]))[0][0x0] = (uint) (*(uint*) (address));
-				reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rt)]))[0][0x1] = (uint) (*(uint*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x4)))));
-				if((Q) != 0) {
-					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rt)]))[0][0x2] = (uint) (*(uint*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x8)))));
-					reinterpret_cast<Vector128<uint>*>(&(state->V[(int) (rt)]))[0][0x3] = (uint) (*(uint*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0xC)))));
-				}
-				break;
-			}
-			default: {
-				reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rt)]))[0][0x0] = (ulong) (*(ulong*) (address));
-				if((Q) != 0) {
-					reinterpret_cast<Vector128<ulong>*>(&(state->V[(int) (rt)]))[0][0x1] = (ulong) (*(ulong*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x8)))));
-				}
-				break;
-			}
-		}
-		return true;
-	}
-	insn_122:
+	insn_134:
 	/* LD1R-single-no-offset */
 	if((inst & 0xBFFFF000U) == 0x0D40C000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_470) -> string { switch(temp_470) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_526) -> string { switch(temp_526) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
-		auto sv = (Vector128<float>) (([=](auto temp_471) -> Vector128<float> { switch(temp_471) { case 0x0: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) (*(byte*) (address))) - (Vector128<byte>) {})); case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((ushort) (*(ushort*) (address))) - (Vector128<ushort>) {})); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) (*(float*) (address))) - (Vector128<float>) {})); default: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((double) (*(double*) (address))) - (Vector128<double>) {})); } })(size));
+		auto sv = (Vector128<float>) (([=](auto temp_527) -> Vector128<float> { switch(temp_527) { case 0x0: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) (*(byte*) (address))) - (Vector128<byte>) {})); case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((ushort) (*(ushort*) (address))) - (Vector128<ushort>) {})); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) (*(float*) (address))) - (Vector128<float>) {})); default: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((double) (*(double*) (address))) - (Vector128<double>) {})); } })(size));
 		state->V[rt] = (Vector128<float>) ((Q != 0) ? (sv) : ((Vector128<float>) (sv)));
 		return true;
 	}
-	insn_123:
+	insn_135:
 	/* LD1R-single-postindex-immediate */
 	if((inst & 0xBFE0F000U) == 0x0DC0C000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -3801,11 +4861,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_124;
-		auto t = (string) (([=](auto temp_472) -> string { switch(temp_472) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto imm = (long) (([=](auto temp_473) -> long { switch(temp_473) { case 0x0: return 0x1; case 0x1: return 0x2; case 0x2: return 0x4; default: return 0x8; } })(size));
+			goto insn_136;
+		auto t = (string) (([=](auto temp_528) -> string { switch(temp_528) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto imm = (long) (([=](auto temp_529) -> long { switch(temp_529) { case 0x0: return 0x1; case 0x1: return 0x2; case 0x2: return 0x4; default: return 0x8; } })(size));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
-		auto sv = (Vector128<float>) (([=](auto temp_474) -> Vector128<float> { switch(temp_474) { case 0x0: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) (*(byte*) (address))) - (Vector128<byte>) {})); case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((ushort) (*(ushort*) (address))) - (Vector128<ushort>) {})); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) (*(float*) (address))) - (Vector128<float>) {})); default: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((double) (*(double*) (address))) - (Vector128<double>) {})); } })(size));
+		auto sv = (Vector128<float>) (([=](auto temp_530) -> Vector128<float> { switch(temp_530) { case 0x0: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) (*(byte*) (address))) - (Vector128<byte>) {})); case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((ushort) (*(ushort*) (address))) - (Vector128<ushort>) {})); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) (*(float*) (address))) - (Vector128<float>) {})); default: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((double) (*(double*) (address))) - (Vector128<double>) {})); } })(size));
 		state->V[rt] = (Vector128<float>) ((Q != 0) ? (sv) : ((Vector128<float>) (sv)));
 		if(rn == 31)
 			state->SP = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (imm)));
@@ -3813,7 +4873,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (imm)));
 		return true;
 	}
-	insn_124:
+	insn_136:
 	/* LD1R-single-postindex-register */
 	if((inst & 0xBFE0F000U) == 0x0DC0C000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -3822,10 +4882,10 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_125;
-		auto t = (string) (([=](auto temp_475) -> string { switch(temp_475) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_137;
+		auto t = (string) (([=](auto temp_531) -> string { switch(temp_531) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
-		auto sv = (Vector128<float>) (([=](auto temp_476) -> Vector128<float> { switch(temp_476) { case 0x0: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) (*(byte*) (address))) - (Vector128<byte>) {})); case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((ushort) (*(ushort*) (address))) - (Vector128<ushort>) {})); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) (*(float*) (address))) - (Vector128<float>) {})); default: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((double) (*(double*) (address))) - (Vector128<double>) {})); } })(size));
+		auto sv = (Vector128<float>) (([=](auto temp_532) -> Vector128<float> { switch(temp_532) { case 0x0: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) (*(byte*) (address))) - (Vector128<byte>) {})); case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((ushort) (*(ushort*) (address))) - (Vector128<ushort>) {})); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) (*(float*) (address))) - (Vector128<float>) {})); default: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(((double) (*(double*) (address))) - (Vector128<double>) {})); } })(size));
 		state->V[rt] = (Vector128<float>) ((Q != 0) ? (sv) : ((Vector128<float>) (sv)));
 		if(rn == 31)
 			state->SP = (ulong) (((ulong) (ulong) (address)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
@@ -3833,7 +4893,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
 		return true;
 	}
-	insn_125:
+	insn_137:
 	/* LD2-multi-no-offset */
 	if((inst & 0xBFFFF000U) == 0x0C408000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -3841,7 +4901,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_477) -> string { switch(temp_477) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_533) -> string { switch(temp_533) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		state->V[rt] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
 		state->V[rt2] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
@@ -3958,7 +5018,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_126:
+	insn_138:
 	/* LD2-multi-postindex-immediate */
 	if((inst & 0xBFE0F000U) == 0x0CC08000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -3969,8 +5029,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
 		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x20) : (0x10))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_127;
-		auto T = (string) (([=](auto temp_478) -> string { switch(temp_478) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_139;
+		auto T = (string) (([=](auto temp_534) -> string { switch(temp_534) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		state->V[rt] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
 		state->V[rt2] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
@@ -4091,7 +5151,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (byte) (imm)));
 		return true;
 	}
-	insn_127:
+	insn_139:
 	/* LD2-multi-postindex-register */
 	if((inst & 0xBFE0F000U) == 0x0CC08000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -4101,8 +5161,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_128;
-		auto T = (string) (([=](auto temp_479) -> string { switch(temp_479) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_140;
+		auto T = (string) (([=](auto temp_535) -> string { switch(temp_535) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		state->V[rt] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
 		state->V[rt2] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
@@ -4223,7 +5283,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
 		return true;
 	}
-	insn_128:
+	insn_140:
 	/* LD3-multi-no-offset */
 	if((inst & 0xBFFFF000U) == 0x0C404000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -4232,7 +5292,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
 		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_480) -> string { switch(temp_480) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_536) -> string { switch(temp_536) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		state->V[rt] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
 		state->V[rt2] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
@@ -4394,7 +5454,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_129:
+	insn_141:
 	/* LD3-multi-postindex-immediate */
 	if((inst & 0xBFE0F000U) == 0x0CC04000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -4406,8 +5466,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
 		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x30) : (0x18))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_130;
-		auto T = (string) (([=](auto temp_481) -> string { switch(temp_481) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_142;
+		auto T = (string) (([=](auto temp_537) -> string { switch(temp_537) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		state->V[rt] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
 		state->V[rt2] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
@@ -4573,7 +5633,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (byte) (imm)));
 		return true;
 	}
-	insn_130:
+	insn_142:
 	/* LD3-multi-postindex-register */
 	if((inst & 0xBFE0F000U) == 0x0CC04000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -4584,8 +5644,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
 		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_131;
-		auto T = (string) (([=](auto temp_482) -> string { switch(temp_482) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_143;
+		auto T = (string) (([=](auto temp_538) -> string { switch(temp_538) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		state->V[rt] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
 		state->V[rt2] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
@@ -4751,7 +5811,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
 		return true;
 	}
-	insn_131:
+	insn_143:
 	/* LD4-multi-no-offset */
 	if((inst & 0xBFFFF000U) == 0x0C400000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -4761,7 +5821,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
 		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
 		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_483) -> string { switch(temp_483) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_539) -> string { switch(temp_539) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		state->V[rt] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
 		state->V[rt2] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
@@ -4968,7 +6028,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_132:
+	insn_144:
 	/* LD4-multi-postindex-immediate */
 	if((inst & 0xBFE0F000U) == 0x0CC00000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -4981,8 +6041,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
 		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x30) : (0x18))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_133;
-		auto T = (string) (([=](auto temp_484) -> string { switch(temp_484) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_145;
+		auto T = (string) (([=](auto temp_540) -> string { switch(temp_540) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		state->V[rt] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
 		state->V[rt2] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
@@ -5193,7 +6253,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (byte) (imm)));
 		return true;
 	}
-	insn_133:
+	insn_145:
 	/* LD4-multi-postindex-register */
 	if((inst & 0xBFE0F000U) == 0x0CC00000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -5205,8 +6265,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
 		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_134;
-		auto T = (string) (([=](auto temp_485) -> string { switch(temp_485) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_146;
+		auto T = (string) (([=](auto temp_541) -> string { switch(temp_541) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		state->V[rt] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
 		state->V[rt2] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
@@ -5417,7 +6477,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
 		return true;
 	}
-	insn_134:
+	insn_146:
 	/* LDAR */
 	if((inst & 0xBFFFFC00U) == 0x88DFFC00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -5433,7 +6493,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_135:
+	insn_147:
 	/* LDARB */
 	if((inst & 0xFFFFFC00U) == 0x08DFFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
@@ -5442,7 +6502,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rt] = (ulong) ((ulong) ((byte) (*(byte*) (address))));
 		return true;
 	}
-	insn_136:
+	insn_148:
 	/* LDARH */
 	if((inst & 0xFFFFFC00U) == 0x48DFFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
@@ -5451,7 +6511,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rt] = (ulong) ((ulong) ((ushort) (*(ushort*) (address))));
 		return true;
 	}
-	insn_137:
+	insn_149:
 	/* LDAXB */
 	if((inst & 0xBFFFFC00U) == 0x885FFC00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -5465,7 +6525,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_138:
+	insn_150:
 	/* LDAXRB */
 	if((inst & 0xFFFFFC00U) == 0x085FFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
@@ -5474,7 +6534,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rt] = (ulong) ((ulong) ((byte) (state->Exclusive8 = *(byte*) (address))));
 		return true;
 	}
-	insn_139:
+	insn_151:
 	/* LDAXRH */
 	if((inst & 0xFFFFFC00U) == 0x485FFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
@@ -5483,7 +6543,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rt] = (ulong) ((ulong) ((ushort) (state->Exclusive16 = *(ushort*) (address))));
 		return true;
 	}
-	insn_140:
+	insn_152:
 	/* LDP-immediate-postindex */
 	if((inst & 0x7FC00000U) == 0x28C00000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -5507,7 +6567,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (simm)));
 		return true;
 	}
-	insn_141:
+	insn_153:
 	/* LDP-immediate-signed-offset */
 	if((inst & 0x7FC00000U) == 0x29400000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -5527,7 +6587,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_142:
+	insn_154:
 	/* LDP-simd-postindex */
 	if((inst & 0x3FC00000U) == 0x2CC00000U) {
 		auto opc = (inst >> 30) & 0x3U;
@@ -5535,8 +6595,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_486) -> string { switch(temp_486) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_487) -> long { switch(temp_487) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		auto r = (string) (([=](auto temp_542) -> string { switch(temp_542) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_543) -> long { switch(temp_543) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		switch(opc) {
 			case 0x0: {
@@ -5561,7 +6621,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (simm)));
 		return true;
 	}
-	insn_143:
+	insn_155:
 	/* LDP-simd-preindex */
 	if((inst & 0x3FC00000U) == 0x2DC00000U) {
 		auto opc = (inst >> 30) & 0x3U;
@@ -5569,8 +6629,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_488) -> string { switch(temp_488) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_489) -> long { switch(temp_489) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		auto r = (string) (([=](auto temp_544) -> string { switch(temp_544) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_545) -> long { switch(temp_545) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (simm)));
 		if(rn == 31)
 			state->SP = address;
@@ -5595,7 +6655,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_144:
+	insn_156:
 	/* LDP-simd-signed-offset */
 	if((inst & 0x3FC00000U) == 0x2D400000U) {
 		auto opc = (inst >> 30) & 0x3U;
@@ -5603,8 +6663,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_490) -> string { switch(temp_490) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_491) -> long { switch(temp_491) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		auto r = (string) (([=](auto temp_546) -> string { switch(temp_546) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_547) -> long { switch(temp_547) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (simm)));
 		switch(opc) {
 			case 0x0: {
@@ -5625,7 +6685,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_145:
+	insn_157:
 	/* LDPSW-immediate-signed-offset */
 	if((inst & 0xFFC00000U) == 0x69400000U) {
 		auto imm = (inst >> 15) & 0x7FU;
@@ -5638,7 +6698,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rt2] = (ulong) ((ulong) ((long) (SignExt<long>((uint) (*(uint*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x4))))), 32))));
 		return true;
 	}
-	insn_146:
+	insn_158:
 	/* LDR-immediate-preindex */
 	if((inst & 0xBFE00C00U) == 0xB8400C00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -5659,7 +6719,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = address;
 		return true;
 	}
-	insn_147:
+	insn_159:
 	/* LDR-immediate-postindex */
 	if((inst & 0xBFE00C00U) == 0xB8400400U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -5679,7 +6739,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (imm)));
 		return true;
 	}
-	insn_148:
+	insn_160:
 	/* LDR-immediate-unsigned-offset */
 	if((inst & 0xBFC00000U) == 0xB9400000U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -5695,7 +6755,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_149:
+	insn_161:
 	/* LDR-literal */
 	if((inst & 0xBF000000U) == 0x18000000U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -5711,7 +6771,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_150:
+	insn_162:
 	/* LDR-simd-immediate-postindex */
 	if((inst & 0x3F600C00U) == 0x3C400400U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -5720,7 +6780,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
-		auto r = (string) (([=](auto temp_492) -> string { switch(temp_492) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_548) -> string { switch(temp_548) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		switch((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
@@ -5754,7 +6814,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (simm)));
 		return true;
 	}
-	insn_151:
+	insn_163:
 	/* LDR-simd-immediate-preindex */
 	if((inst & 0x3F600C00U) == 0x3C400C00U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -5763,7 +6823,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto simm = (long) (SignExt<long>(imm, 9));
-		auto r = (string) (([=](auto temp_493) -> string { switch(temp_493) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_549) -> string { switch(temp_549) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (simm)));
 		switch((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
@@ -5797,7 +6857,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = address;
 		return true;
 	}
-	insn_152:
+	insn_164:
 	/* LDR-simd-immediate-unsigned-offset */
 	if((inst & 0x3F400000U) == 0x3D400000U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -5807,8 +6867,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto opc = (byte) ((byte) (((byte) (((byte) ((bool) ((bool) (0x1)))) << 0)) | ((byte) (((byte) (ropc)) << 1))));
 		auto m = (byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_494) -> string { switch(temp_494) { case 0x1: return string("B"); case 0x5: return string("H"); case 0x9: return string("S"); case 0xD: return string("D"); default: return string("Q"); } })(m));
-		auto imm = (uint) (((uint) ((uint) (rawimm))) << (uint) ((long) (([=](auto temp_495) -> long { switch(temp_495) { case 0x1: return 0x0; case 0x5: return 0x1; case 0x9: return 0x2; case 0xD: return 0x3; default: return 0x4; } })(m))));
+		auto r = (string) (([=](auto temp_550) -> string { switch(temp_550) { case 0x1: return string("B"); case 0x5: return string("H"); case 0x9: return string("S"); case 0xD: return string("D"); default: return string("Q"); } })(m));
+		auto imm = (uint) (((uint) ((uint) (rawimm))) << (uint) ((long) (([=](auto temp_551) -> long { switch(temp_551) { case 0x1: return 0x0; case 0x5: return 0x1; case 0x9: return 0x2; case 0xD: return 0x3; default: return 0x4; } })(m))));
 		switch(m) {
 			case 0x1: {
 				state->V[(int) (rt)] = reinterpret_cast<Vector128<float>>((Vector128<byte>) { (byte) (*(byte*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (uint) (imm))))), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
@@ -5833,13 +6893,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_153:
+	insn_165:
 	/* LDR-simd-literal */
 	if((inst & 0x3F000000U) == 0x1C000000U) {
 		auto size = (inst >> 30) & 0x3U;
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_496) -> string { switch(temp_496) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(size));
+		auto r = (string) (([=](auto temp_552) -> string { switch(temp_552) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(size));
 		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) (((uint) (((uint) ((byte) ((byte) (0x0)))) << 0)) | ((uint) (((uint) (imm)) << 2)))), 21)))));
 		switch(size) {
 			case 0x0: {
@@ -5861,7 +6921,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_154:
+	insn_166:
 	/* LDR-simd-register */
 	if((inst & 0x3F600C00U) == 0x3C600800U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -5871,11 +6931,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto scale = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r1 = (string) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (string("Q")) : ((string) (([=](auto temp_497) -> string { switch(temp_497) { case 0x0: return string("B"); case 0x1: return string("H"); case 0x2: return string("S"); case 0x3: return string("D"); default: throw "Not implemented"; } })(size))));
+		auto r1 = (string) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (string("Q")) : ((string) (([=](auto temp_553) -> string { switch(temp_553) { case 0x0: return string("B"); case 0x1: return string("H"); case 0x2: return string("S"); case 0x3: return string("D"); default: throw "Not implemented"; } })(size))));
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (([=](auto temp_498) -> string { switch(temp_498) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
-		auto amount = (ulong) (((ulong) (bool) (scale)) * ((ulong) (long) ((long) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (0x4) : ((long) (([=](auto temp_499) -> long { switch(temp_499) { case 0x0: return 0x1; case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: throw "Not implemented"; } })(size)))))));
-		auto offset = (ulong) (((ulong) (([=](auto temp_500) -> ulong { switch(temp_500) { case 0x2: return (ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]))); case 0x3: return (ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32)))); case 0x7: return (ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]); default: throw "Not implemented"; } })(option))) << (uint) (amount));
+		auto extend = (string) (([=](auto temp_554) -> string { switch(temp_554) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto amount = (ulong) (((ulong) (bool) (scale)) * ((ulong) (long) ((long) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (0x4) : ((long) (([=](auto temp_555) -> long { switch(temp_555) { case 0x0: return 0x1; case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: throw "Not implemented"; } })(size)))))));
+		auto offset = (ulong) (((ulong) (([=](auto temp_556) -> ulong { switch(temp_556) { case 0x2: return (ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]))); case 0x3: return (ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32)))); case 0x7: return (ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]); default: throw "Not implemented"; } })(option))) << (uint) (amount));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset)));
 		switch((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
 			case 0x0: {
@@ -5901,7 +6961,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_155:
+	insn_167:
 	/* LDR-register */
 	if((inst & 0xBFE00C00U) == 0xB8600800U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -5913,7 +6973,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		auto extend = (string) (([=](auto temp_501) -> string { switch(temp_501) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto extend = (string) (([=](auto temp_557) -> string { switch(temp_557) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			state->X[(int) rt] = (ulong) (uint) ((uint) (*(uint*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset))))));
@@ -5922,7 +6982,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_156:
+	insn_168:
 	/* LDRB-immediate-postindex */
 	if((inst & 0xFFE00C00U) == 0x38400400U) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
@@ -5936,7 +6996,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (imm)));
 		return true;
 	}
-	insn_157:
+	insn_169:
 	/* LDRB-immediate-preindex */
 	if((inst & 0xFFE00C00U) == 0x38400C00U) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
@@ -5951,7 +7011,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = address;
 		return true;
 	}
-	insn_158:
+	insn_170:
 	/* LDRB-immediate-unsigned-offset */
 	if((inst & 0xFFC00000U) == 0x39400000U) {
 		auto imm = (inst >> 10) & 0xFFFU;
@@ -5960,7 +7020,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rt] = (ulong) ((ulong) ((byte) (*(byte*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ushort) (imm)))))));
 		return true;
 	}
-	insn_159:
+	insn_171:
 	/* LDRB-register */
 	if((inst & 0xFFE00C00U) == 0x38600800U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -5969,12 +7029,12 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_502) -> string { switch(temp_502) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_558) -> string { switch(temp_558) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		state->X[(int) rt] = (ulong) (uint) ((byte) (*(byte*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset))))));
 		return true;
 	}
-	insn_160:
+	insn_172:
 	/* LDRH-immediate-postindex */
 	if((inst & 0xFFE00C00U) == 0x78400400U) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
@@ -5989,7 +7049,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (imm)));
 		return true;
 	}
-	insn_161:
+	insn_173:
 	/* LDRH-immediate-preindex */
 	if((inst & 0xFFE00C00U) == 0x78400C00U) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
@@ -6004,7 +7064,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = address;
 		return true;
 	}
-	insn_162:
+	insn_174:
 	/* LDRH-immediate-unsigned-offset */
 	if((inst & 0xFFC00000U) == 0x79400000U) {
 		auto rawimm = (inst >> 10) & 0xFFFU;
@@ -6014,7 +7074,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rt] = (ulong) ((ulong) ((ushort) (*(ushort*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ushort) (imm)))))));
 		return true;
 	}
-	insn_163:
+	insn_175:
 	/* LDRH-register */
 	if((inst & 0xFFE00C00U) == 0x78600800U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -6023,12 +7083,12 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_503) -> string { switch(temp_503) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_559) -> string { switch(temp_559) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		state->X[(int) rt] = (ulong) (uint) ((ushort) (*(ushort*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset))))));
 		return true;
 	}
-	insn_164:
+	insn_176:
 	/* LDRSB-immediate-postindex */
 	if((inst & 0xFFA00C00U) == 0x38800400U) {
 		auto opc = (inst >> 22) & 0x1U;
@@ -6049,7 +7109,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (imm)));
 		return true;
 	}
-	insn_165:
+	insn_177:
 	/* LDRSB-immediate-preindex */
 	if((inst & 0xFFA00C00U) == 0x38800C00U) {
 		auto opc = (inst >> 22) & 0x1U;
@@ -6070,7 +7130,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = address;
 		return true;
 	}
-	insn_166:
+	insn_178:
 	/* LDRSB-immediate-unsigned-offset */
 	if((inst & 0xFF800000U) == 0x39800000U) {
 		auto opc = (inst >> 22) & 0x1U;
@@ -6085,7 +7145,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_167:
+	insn_179:
 	/* LDRSB-register */
 	if((inst & 0xFFA00C00U) == 0x38A00800U) {
 		auto opc = (inst >> 22) & 0x1U;
@@ -6095,7 +7155,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_504) -> string { switch(temp_504) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_560) -> string { switch(temp_560) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
 			state->X[(int) rt] = (ulong) (uint) ((uint) ((uint) ((int) (SignExt<int>((byte) (*(byte*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset))))), 8)))));
@@ -6104,7 +7164,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_168:
+	insn_180:
 	/* LDRSH-immediate-postindex */
 	if((inst & 0xFFA00C00U) == 0x78800400U) {
 		auto opc = (inst >> 22) & 0x1U;
@@ -6125,7 +7185,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (imm)));
 		return true;
 	}
-	insn_169:
+	insn_181:
 	/* LDRSH-immediate-preindex */
 	if((inst & 0xFFA00C00U) == 0x78800C00U) {
 		auto opc = (inst >> 22) & 0x1U;
@@ -6146,7 +7206,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = address;
 		return true;
 	}
-	insn_170:
+	insn_182:
 	/* LDRSH-immediate-unsigned-offset */
 	if((inst & 0xFF800000U) == 0x79800000U) {
 		auto opc = (inst >> 22) & 0x1U;
@@ -6162,7 +7222,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_171:
+	insn_183:
 	/* LDRSH-register */
 	if((inst & 0xFFA00C00U) == 0x78A00800U) {
 		auto opc = (inst >> 22) & 0x1U;
@@ -6172,7 +7232,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_505) -> string { switch(temp_505) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_561) -> string { switch(temp_561) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
 			state->X[(int) rt] = (ulong) (uint) ((uint) ((uint) ((int) (SignExt<int>((ushort) (*(ushort*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset))))), 16)))));
@@ -6181,7 +7241,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_172:
+	insn_184:
 	/* LDRSW-immediate-postindex */
 	if((inst & 0xFFE00C00U) == 0xB8800400U) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
@@ -6196,7 +7256,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (imm)));
 		return true;
 	}
-	insn_173:
+	insn_185:
 	/* LDRSW-immediate-preindex */
 	if((inst & 0xFFE00C00U) == 0xB8800C00U) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
@@ -6211,7 +7271,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = address;
 		return true;
 	}
-	insn_174:
+	insn_186:
 	/* LDRSW-immediate-unsigned-offset */
 	if((inst & 0xFFC00000U) == 0xB9800000U) {
 		auto rawimm = (inst >> 10) & 0xFFFU;
@@ -6221,7 +7281,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rt] = (ulong) ((ulong) ((long) (SignExt<long>((uint) (*(uint*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ushort) (imm))))), 32))));
 		return true;
 	}
-	insn_175:
+	insn_187:
 	/* LDRSW-literal */
 	if((inst & 0xFF000000U) == 0x98000000U) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
@@ -6230,7 +7290,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rt] = (ulong) ((ulong) ((long) (SignExt<long>((uint) (*(uint*) (addr)), 32))));
 		return true;
 	}
-	insn_176:
+	insn_188:
 	/* LDRSW-register */
 	if((inst & 0xFFE00C00U) == 0xB8A00800U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -6240,12 +7300,12 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0x2));
-		auto extend = (string) (([=](auto temp_506) -> string { switch(temp_506) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto extend = (string) (([=](auto temp_562) -> string { switch(temp_562) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		state->X[(int) rt] = (ulong) ((ulong) ((long) (SignExt<long>((uint) (*(uint*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset))))), 32))));
 		return true;
 	}
-	insn_177:
+	insn_189:
 	/* LDUR */
 	if((inst & 0xBFE00C00U) == 0xB8400000U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -6261,7 +7321,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_178:
+	insn_190:
 	/* LDURB */
 	if((inst & 0xFFE00C00U) == 0x38400000U) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
@@ -6271,7 +7331,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rd] = (ulong) ((ulong) ((byte) (*(byte*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (imm)))))));
 		return true;
 	}
-	insn_179:
+	insn_191:
 	/* LDURH */
 	if((inst & 0xFFE00C00U) == 0x78400000U) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
@@ -6281,7 +7341,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rd] = (ulong) ((ulong) ((ushort) (*(ushort*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (imm)))))));
 		return true;
 	}
-	insn_180:
+	insn_192:
 	/* LDURSB */
 	if((inst & 0xFFA00C00U) == 0x38800000U) {
 		auto opc = (inst >> 22) & 0x1U;
@@ -6297,7 +7357,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_181:
+	insn_193:
 	/* LDURSH */
 	if((inst & 0xFFA00C00U) == 0x78800000U) {
 		auto opc = (inst >> 22) & 0x1U;
@@ -6313,7 +7373,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_182:
+	insn_194:
 	/* LDURSW */
 	if((inst & 0xFFE00C00U) == 0xB8800000U) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
@@ -6323,7 +7383,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rt] = (ulong) ((ulong) ((long) (SignExt<long>((uint) (*(uint*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (imm))))), 32))));
 		return true;
 	}
-	insn_183:
+	insn_195:
 	/* LDUR-simd */
 	if((inst & 0x3F600C00U) == 0x3C400000U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -6331,7 +7391,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_507) -> string { switch(temp_507) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_563) -> string { switch(temp_563) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto imm = (long) (SignExt<long>(rawimm, 9));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (imm)));
 		switch((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
@@ -6354,7 +7414,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_184:
+	insn_196:
 	/* LDXR */
 	if((inst & 0xBFFFFC00U) == 0x885F7C00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -6368,7 +7428,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_185:
+	insn_197:
 	/* LDXRB */
 	if((inst & 0xFFFFFC00U) == 0x085F7C00U) {
 		auto rn = (inst >> 5) & 0x1FU;
@@ -6376,7 +7436,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rt] = (ulong) ((ulong) ((byte) (state->Exclusive8 = *(byte*) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn])))));
 		return true;
 	}
-	insn_186:
+	insn_198:
 	/* LDXRH */
 	if((inst & 0xFFFFFC00U) == 0x485F7C00U) {
 		auto rn = (inst >> 5) & 0x1FU;
@@ -6384,7 +7444,25 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rt] = (ulong) ((ulong) ((ushort) (state->Exclusive16 = *(ushort*) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn])))));
 		return true;
 	}
-	insn_187:
+	insn_199:
+	/* LDXP */
+	if((inst & 0xBFFF8000U) == 0x887F0000U) {
+		auto size = (inst >> 30) & 0x1U;
+		auto rt2 = (inst >> 10) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
+			state->X[(int) rt] = (ulong) (uint) ((uint) (state->Exclusive32 = *(uint*) (address)));
+			state->X[(int) rt2] = (ulong) (uint) ((uint) (state->Exclusive32 = *(uint*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x4))))));
+		} else {
+			state->X[(int) rt] = (ulong) (state->Exclusive64 = *(ulong*) (address));
+			state->X[(int) rt2] = (ulong) (state->Exclusive64 = *(ulong*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x8)))));
+		}
+		return true;
+	}
+	insn_200:
 	/* LSL-register */
 	if((inst & 0x7FE0FC00U) == 0x1AC02000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6399,7 +7477,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_188:
+	insn_201:
 	/* LSRV */
 	if((inst & 0x7FE0FC00U) == 0x1AC02400U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6414,7 +7492,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_189:
+	insn_202:
 	/* MADD */
 	if((inst & 0x7FE08000U) == 0x1B000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6430,7 +7508,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_190:
+	insn_203:
 	/* MOVI-scalar-64bit */
 	if((inst & 0xFFF8FC00U) == 0x2F00E400U) {
 		auto a = (inst >> 18) & 0x1U;
@@ -6454,7 +7532,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (Bitcast<ulong, double>(imm)), 0 });
 		return true;
 	}
-	insn_191:
+	insn_204:
 	/* MOVI-vector-8bit */
 	if((inst & 0xBFF8FC00U) == 0x0F00E400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -6473,7 +7551,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->V[rd] = (Vector128<float>) ((Q != 0) ? (avec) : ((Vector128<float>) (avec)));
 		return true;
 	}
-	insn_192:
+	insn_205:
 	/* MOVI-vector-16bit */
 	if((inst & 0xBFF8DC00U) == 0x0F008400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -6493,7 +7571,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->V[rd] = (Vector128<float>) ((Q != 0) ? (avec) : ((Vector128<float>) (avec)));
 		return true;
 	}
-	insn_193:
+	insn_206:
 	/* MOVI-vector-32bit */
 	if((inst & 0xBFF89C00U) == 0x0F000400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -6508,13 +7586,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-		auto amount = (long) (([=](auto temp_508) -> long { switch(temp_508) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
+		auto amount = (long) (([=](auto temp_564) -> long { switch(temp_564) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
 		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
 		auto avec = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((float) (Bitcast<uint, float>((uint) (((uint) ((uint) (imm))) << (uint) (amount))))) - (Vector128<float>) {}));
 		state->V[rd] = (Vector128<float>) ((Q != 0) ? (avec) : ((Vector128<float>) (avec)));
 		return true;
 	}
-	insn_194:
+	insn_207:
 	/* MOVI-Vx.2D */
 	if((inst & 0xFFF8FC00U) == 0x6F00E400U) {
 		auto a = (inst >> 18) & 0x1U;
@@ -6530,7 +7608,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>((imm) - (Vector128<ulong>) {}));
 		return true;
 	}
-	insn_195:
+	insn_208:
 	/* MOVK */
 	if((inst & 0x7F800000U) == 0x72800000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6546,7 +7624,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_196:
+	insn_209:
 	/* MOVN */
 	if((inst & 0x7F800000U) == 0x12800000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6562,7 +7640,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_197:
+	insn_210:
 	/* MOVZ */
 	if((inst & 0x7F800000U) == 0x52800000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6578,7 +7656,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_198:
+	insn_211:
 	/* MRS */
 	if((inst & 0xFFF00000U) == 0xD5300000U) {
 		auto op0 = (inst >> 19) & 0x1U;
@@ -6590,7 +7668,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rt] = (ulong) (SR(op0, op1, cn, cm, op2));
 		return true;
 	}
-	insn_199:
+	insn_212:
 	/* MSR-register */
 	if((inst & 0xFFF00000U) == 0xD5100000U) {
 		auto op0 = (inst >> 19) & 0x1U;
@@ -6602,7 +7680,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		SR(op0, op1, cn, cm, op2, (ulong) ((rt) == 31 ? 0UL : state->X[(int) rt]));
 		return true;
 	}
-	insn_200:
+	insn_213:
 	/* MSUB */
 	if((inst & 0x7FE08000U) == 0x1B008000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6618,7 +7696,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_201:
+	insn_214:
 	/* MUL-by-element */
 	if((inst & 0xBF00F400U) == 0x0F008000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -6630,14 +7708,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto rm = (byte) (((bool) (((size) == (0x2)) ? 1U : 0U) != 0) ? ((byte) ((byte) (((byte) (((byte) (rv)) << 0)) | ((byte) (((byte) (M)) << 4))))) : (rv));
-		auto t = (string) (([=](auto temp_509) -> string { switch(temp_509) { case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto ts = (string) (([=](auto temp_510) -> string { switch(temp_510) { case 0x1: return string("H"); case 0x2: return string("S"); default: throw "Not implemented"; } })(size));
-		auto index = (byte) (([=](auto temp_511) -> byte { switch(temp_511) { case 0x1: return (byte) ((byte) (((byte) (byte) (((byte) (((byte) (M)) << 0)) | ((byte) (((byte) (L)) << 1)))) | ((byte) (((byte) (H)) << 2)))); case 0x2: return (byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))); default: throw "Not implemented"; } })(size));
-		auto v = (Vector128<float>) (([=](auto temp_512) -> Vector128<float> { switch(temp_512) { case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn])) * (((ushort) (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rm]))[index]))))); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rn])) * (((uint) (reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rm]))[index]))))); default: throw "Not implemented"; } })(size));
+		auto t = (string) (([=](auto temp_565) -> string { switch(temp_565) { case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_566) -> string { switch(temp_566) { case 0x1: return string("H"); case 0x2: return string("S"); default: throw "Not implemented"; } })(size));
+		auto index = (byte) (([=](auto temp_567) -> byte { switch(temp_567) { case 0x1: return (byte) ((byte) (((byte) (byte) (((byte) (((byte) (M)) << 0)) | ((byte) (((byte) (L)) << 1)))) | ((byte) (((byte) (H)) << 2)))); case 0x2: return (byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))); default: throw "Not implemented"; } })(size));
+		auto v = (Vector128<float>) (([=](auto temp_568) -> Vector128<float> { switch(temp_568) { case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn])) * (((ushort) (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rm]))[index]))))); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rn])) * (((uint) (reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rm]))[index]))))); default: throw "Not implemented"; } })(size));
 		state->V[rd] = (Vector128<float>) ((Q != 0) ? (v) : ((Vector128<float>) (v)));
 		return true;
 	}
-	insn_202:
+	insn_215:
 	/* MUL-vector */
 	if((inst & 0xBF20FC00U) == 0x0E209C00U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -6645,19 +7723,82 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_513) -> string { switch(temp_513) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto v = (Vector128<float>) (([=](auto temp_514) -> Vector128<float> { switch(temp_514) { case 0x0: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rn])) * (reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rm]))))); case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn])) * (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rm]))))); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rn])) * (reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rm]))))); default: throw "Not implemented"; } })(size));
+		auto t = (string) (([=](auto temp_569) -> string { switch(temp_569) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto v = (Vector128<float>) (([=](auto temp_570) -> Vector128<float> { switch(temp_570) { case 0x0: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rn])) * (reinterpret_cast<Vector128<byte>>((Vector128<float>) (state->V[rm]))))); case 0x1: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn])) * (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rm]))))); case 0x2: return (Vector128<float>) (reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rn])) * (reinterpret_cast<Vector128<uint>>((Vector128<float>) (state->V[rm]))))); default: throw "Not implemented"; } })(size));
 		state->V[rd] = (Vector128<float>) ((Q != 0) ? (v) : ((Vector128<float>) (v)));
 		return true;
 	}
-	insn_203:
+	insn_216:
+	/* MVNI-vector-16bit */
+	if((inst & 0xBFF8DC00U) == 0x2F008400U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto a = (inst >> 18) & 0x1U;
+		auto b = (inst >> 17) & 0x1U;
+		auto c = (inst >> 16) & 0x1U;
+		auto cmode = (inst >> 13) & 0x1U;
+		auto d = (inst >> 9) & 0x1U;
+		auto e = (inst >> 8) & 0x1U;
+		auto f = (inst >> 7) & 0x1U;
+		auto g = (inst >> 6) & 0x1U;
+		auto h = (inst >> 5) & 0x1U;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto t = (string) ((Q != 0) ? (string("8H")) : (string("4H")));
+		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto amount = (long) ((cmode != 0) ? (0x8) : (0x0));
+		auto avec = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((ushort) ((ushort) ((ushort) (~((ushort) (((ushort) ((ushort) (imm))) << (uint) (amount))))))) - (Vector128<ushort>) {}));
+		state->V[rd] = (Vector128<float>) ((Q != 0) ? (avec) : ((Vector128<float>) (avec)));
+		return true;
+	}
+	insn_217:
+	/* MVNI-vector-32bit-LSL */
+	if((inst & 0xBFF89C00U) == 0x2F000400U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto a = (inst >> 18) & 0x1U;
+		auto b = (inst >> 17) & 0x1U;
+		auto c = (inst >> 16) & 0x1U;
+		auto cmode = (inst >> 13) & 0x3U;
+		auto d = (inst >> 9) & 0x1U;
+		auto e = (inst >> 8) & 0x1U;
+		auto f = (inst >> 7) & 0x1U;
+		auto g = (inst >> 6) & 0x1U;
+		auto h = (inst >> 5) & 0x1U;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
+		auto amount = (long) (([=](auto temp_571) -> long { switch(temp_571) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
+		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto avec = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((uint) (~((uint) (((uint) ((uint) (imm))) << (uint) (amount))))) - (Vector128<uint>) {}));
+		state->V[rd] = (Vector128<float>) ((Q != 0) ? (avec) : ((Vector128<float>) (avec)));
+		return true;
+	}
+	insn_218:
+	/* MVNI-vector-32bit-MSL */
+	if((inst & 0xBFF8EC00U) == 0x2F00E400U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto a = (inst >> 18) & 0x1U;
+		auto b = (inst >> 17) & 0x1U;
+		auto c = (inst >> 16) & 0x1U;
+		auto cmode = (inst >> 12) & 0x1U;
+		auto d = (inst >> 9) & 0x1U;
+		auto e = (inst >> 8) & 0x1U;
+		auto f = (inst >> 7) & 0x1U;
+		auto g = (inst >> 6) & 0x1U;
+		auto h = (inst >> 5) & 0x1U;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
+		auto amount = (long) ((cmode != 0) ? (0x10) : (0x8));
+		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto avec = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((uint) (~((uint) ((((uint) ((uint) (((uint) ((uint) (imm))) << (uint) (amount)))) | ((uint) ((uint) ((uint) ((long) ((cmode != 0) ? (0xFFFF) : (0xFF))))))))))) - (Vector128<uint>) {}));
+		state->V[rd] = (Vector128<float>) ((Q != 0) ? (avec) : ((Vector128<float>) (avec)));
+		return true;
+	}
+	insn_219:
 	/* NEG-vector */
 	if((inst & 0xBF3FFC00U) == 0x2E20B800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_515) -> string { switch(temp_515) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_572) -> string { switch(temp_572) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto n = (Vector128<float>) (state->V[rn]);
 		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
@@ -6733,12 +7874,12 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_204:
+	insn_220:
 	/* NOP */
 	if((inst & 0xFFFFFFFFU) == 0xD503201FU) {
 		return true;
 	}
-	insn_205:
+	insn_221:
 	/* ORN-shifted-register */
 	if((inst & 0x7F200000U) == 0x2A200000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6748,15 +7889,15 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_516) -> string { switch(temp_516) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_573) -> string { switch(temp_573) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) | ((uint) ((uint) (~((uint) (([=](auto temp_517) -> uint { switch(temp_517) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))))));
+			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) | ((uint) ((uint) (~((uint) (([=](auto temp_574) -> uint { switch(temp_574) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))))));
 		} else {
-			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) | ((ulong) ((ulong) (~((ulong) (([=](auto temp_518) -> ulong { switch(temp_518) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
+			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) | ((ulong) ((ulong) (~((ulong) (([=](auto temp_575) -> ulong { switch(temp_575) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))))));
 		}
 		return true;
 	}
-	insn_206:
+	insn_222:
 	/* ORR-immediate */
 	if((inst & 0x7F800000U) == 0x32000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6780,7 +7921,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_207:
+	insn_223:
 	/* ORR-shifted-register */
 	if((inst & 0x7F200000U) == 0x2A000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6790,15 +7931,15 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_519) -> string { switch(temp_519) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_576) -> string { switch(temp_576) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) | ((uint) ((uint) (([=](auto temp_520) -> uint { switch(temp_520) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))));
+			state->X[(int) rd] = (ulong) (uint) ((uint) ((((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) | ((uint) ((uint) (([=](auto temp_577) -> uint { switch(temp_577) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift)))))));
 		} else {
-			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) | ((ulong) ((ulong) (([=](auto temp_521) -> ulong { switch(temp_521) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+			state->X[(int) rd] = (ulong) ((((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) | ((ulong) ((ulong) (([=](auto temp_578) -> ulong { switch(temp_578) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 		}
 		return true;
 	}
-	insn_208:
+	insn_224:
 	/* ORR-simd-register */
 	if((inst & 0xBFE0FC00U) == 0x0EA01C00U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -6814,7 +7955,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_209:
+	insn_225:
 	/* PRFM-immediate */
 	if((inst & 0xFFC00000U) == 0xF9800000U) {
 		auto imm = (inst >> 10) & 0xFFFU;
@@ -6823,7 +7964,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto pimm = (ulong) (((ulong) (ushort) (imm)) * ((ulong) (long) (0x8)));
 		return true;
 	}
-	insn_210:
+	insn_226:
 	/* RBIT */
 	if((inst & 0x7FFFFC00U) == 0x5AC00000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6837,14 +7978,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_211:
+	insn_227:
 	/* RET */
 	if((inst & 0xFFFFFC1FU) == 0xD65F0000U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		BranchRegister(rn);
 		return true;
 	}
-	insn_212:
+	insn_228:
 	/* REV */
 	if((inst & 0x7FFFF800U) == 0x5AC00800U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6870,7 +8011,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_213:
+	insn_229:
 	/* REV16 */
 	if((inst & 0x7FFFFC00U) == 0x5AC00400U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6886,7 +8027,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_214:
+	insn_230:
 	/* RORV */
 	if((inst & 0x7FE0FC00U) == 0x1AC02C00U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6901,7 +8042,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_215:
+	insn_231:
 	/* SBCS */
 	if((inst & 0x7FE0FC00U) == 0x7A000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6942,7 +8083,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_216:
+	insn_232:
 	/* SBFM */
 	if((inst & 0x7F800000U) == 0x13000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -6969,7 +8110,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_217:
+	insn_233:
 	/* SCVTF-scalar-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E220000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -7039,7 +8180,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_218:
+	insn_234:
 	/* SCVTF-scalar */
 	if((inst & 0xFFBFFC00U) == 0x5E21D800U) {
 		auto size = (inst >> 22) & 0x1U;
@@ -7053,14 +8194,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_219:
+	insn_235:
 	/* SCVTF-vector */
 	if((inst & 0xBFBFFC00U) == 0x0E21D800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_522) -> string { switch(temp_522) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_579) -> string { switch(temp_579) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto n = (Vector128<float>) (state->V[rn]);
 		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
@@ -7088,7 +8229,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_220:
+	insn_236:
 	/* SDIV */
 	if((inst & 0x7FE0FC00U) == 0x1AC00C00U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -7105,7 +8246,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_221:
+	insn_237:
 	/* SHL-vector */
 	if((inst & 0xBF80FC00U) == 0x0F005400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7117,7 +8258,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto size = 0x0;
 		auto shift = 0x0;
 		if(!((bool) (((immh) != (0x0)) ? 1U : 0U)))
-			goto insn_222;
+			goto insn_238;
 		if(((bool) (((immh) == (0x1)) ? 1U : 0U)) != 0) {
 			T = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
 			size = 0x1;
@@ -7193,7 +8334,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_222:
+	insn_238:
 	/* SMADDL */
 	if((inst & 0xFFE08000U) == 0x9B200000U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -7203,7 +8344,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rd] = (ulong) ((ulong) ((long) (((long) (long) ((long) ((long) ((ulong) ((ra) == 31 ? 0UL : state->X[(int) ra]))))) + ((long) (long) ((long) (((long) (long) ((long) (SignExt<long>((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]), 32)))) * ((long) (long) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))))))));
 		return true;
 	}
-	insn_223:
+	insn_239:
 	/* SMULH */
 	if((inst & 0xFFE0FC00U) == 0x9B407C00U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -7212,7 +8353,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rd] = (ulong) ((ulong) ((long) ((long) ((Int128) (((Int128) (((Int128) (Int128) ((Int128) ((Int128) ((long) ((long) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))))))) * ((Int128) (Int128) ((Int128) ((Int128) ((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))))))))) >> (uint) (0x40))))));
 		return true;
 	}
-	insn_224:
+	insn_240:
 	/* SSHLL */
 	if((inst & 0xBF80FC00U) == 0x0F00A400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7271,7 +8412,2278 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_225:
+	insn_241:
+	/* ST1-multi-no-offset-one-register */
+	if((inst & 0xBFFFF000U) == 0x0C007000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto T = (string) (([=](auto temp_580) -> string { switch(temp_580) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		auto v = (Vector128<float>) (state->V[rt]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		return true;
+	}
+	insn_242:
+	/* ST1-multi-postindex-immediate-one-register */
+	if((inst & 0xBFE0F000U) == 0x0C807000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x20) : (0x10))));
+		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
+			goto insn_243;
+		auto T = (string) (([=](auto temp_581) -> string { switch(temp_581) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		auto v = (Vector128<float>) (state->V[rt]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		if(rn == 31)
+			state->SP = (ulong) (((ulong) (ulong) (address)) + ((ulong) (byte) (imm)));
+		else
+			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (byte) (imm)));
+		return true;
+	}
+	insn_243:
+	/* ST1-multi-postindex-register-one-register */
+	if((inst & 0xBFE0F000U) == 0x0C807000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
+			goto insn_244;
+		auto T = (string) (([=](auto temp_582) -> string { switch(temp_582) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		auto v = (Vector128<float>) (state->V[rt]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		if(rn == 31)
+			state->SP = (ulong) (((ulong) (ulong) (address)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
+		else
+			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
+		return true;
+	}
+	insn_244:
+	/* ST1-multi-no-offset-two-registers */
+	if((inst & 0xBFFFF000U) == 0x0C00A000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto T = (string) (([=](auto temp_583) -> string { switch(temp_583) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		auto v = (Vector128<float>) (state->V[rt]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt2]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		return true;
+	}
+	insn_245:
+	/* ST1-multi-postindex-immediate-two-registers */
+	if((inst & 0xBFE0F000U) == 0x0C80A000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x20) : (0x10))));
+		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
+			goto insn_246;
+		auto T = (string) (([=](auto temp_584) -> string { switch(temp_584) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		auto v = (Vector128<float>) (state->V[rt]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt2]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		if(rn == 31)
+			state->SP = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		else
+			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		return true;
+	}
+	insn_246:
+	/* ST1-multi-postindex-register-two-registers */
+	if((inst & 0xBFE0F000U) == 0x0C80A000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
+			goto insn_247;
+		auto T = (string) (([=](auto temp_585) -> string { switch(temp_585) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		auto oaddress = address;
+		auto v = (Vector128<float>) (state->V[rt]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt2]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		if(rn == 31)
+			state->SP = (ulong) (((ulong) (ulong) (oaddress)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
+		else
+			state->X[(int) rn] = (ulong) (((ulong) (ulong) (oaddress)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
+		return true;
+	}
+	insn_247:
+	/* ST1-multi-no-offset-three-registers */
+	if((inst & 0xBFFFF000U) == 0x0C006000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		auto T = (string) (([=](auto temp_586) -> string { switch(temp_586) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		auto v = (Vector128<float>) (state->V[rt]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt2]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt3]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		return true;
+	}
+	insn_248:
+	/* ST1-multi-postindex-immediate-three-registers */
+	if((inst & 0xBFE0F000U) == 0x0C806000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x30) : (0x18))));
+		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
+			goto insn_249;
+		auto T = (string) (([=](auto temp_587) -> string { switch(temp_587) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		auto v = (Vector128<float>) (state->V[rt]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt2]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt3]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		if(rn == 31)
+			state->SP = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		else
+			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		return true;
+	}
+	insn_249:
+	/* ST1-multi-postindex-register-three-registers */
+	if((inst & 0xBFE0F000U) == 0x0C806000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
+			goto insn_250;
+		auto T = (string) (([=](auto temp_588) -> string { switch(temp_588) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		auto oaddress = address;
+		auto v = (Vector128<float>) (state->V[rt]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt2]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt3]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		if(rn == 31)
+			state->SP = (ulong) (((ulong) (ulong) (oaddress)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
+		else
+			state->X[(int) rn] = (ulong) (((ulong) (ulong) (oaddress)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
+		return true;
+	}
+	insn_250:
+	/* ST1-multi-no-offset-four-registers */
+	if((inst & 0xBFFFF000U) == 0x0C002000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
+		auto T = (string) (([=](auto temp_589) -> string { switch(temp_589) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		auto v = (Vector128<float>) (state->V[rt]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt2]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt3]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt4]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		return true;
+	}
+	insn_251:
+	/* ST1-multi-postindex-immediate-four-registers */
+	if((inst & 0xBFE0F000U) == 0x0C802000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x40) : (0x20))));
+		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
+		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
+			goto insn_252;
+		auto T = (string) (([=](auto temp_590) -> string { switch(temp_590) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		auto v = (Vector128<float>) (state->V[rt]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt2]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt3]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt4]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		if(rn == 31)
+			state->SP = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		else
+			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		return true;
+	}
+	insn_252:
+	/* ST1-multi-postindex-register-four-registers */
+	if((inst & 0xBFE0F000U) == 0x0C802000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto size = (inst >> 10) & 0x3U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
+		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
+			goto insn_253;
+		auto T = (string) (([=](auto temp_591) -> string { switch(temp_591) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		auto oaddress = address;
+		auto v = (Vector128<float>) (state->V[rt]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt2]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt3]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		address = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) ((Q != 0) ? (0x10) : (0x8)))));
+		v = (Vector128<float>) (state->V[rt4]);
+		switch(size) {
+			case 0x0: {
+				if((Q) != 0) {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x8]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x9))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x9]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xA]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xB))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xB]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xC]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xD))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xD]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xE]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xF))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0xF]);
+				} else {
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x0]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x1))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x1]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x2]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x3))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x3]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x4]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x5))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x5]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x6]);
+					*(byte*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x7))))) = (byte) (reinterpret_cast<Vector128<byte>>(v)[0x7]);
+				}
+				break;
+			}
+			case 0x1: {
+				if((Q) != 0) {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x4]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xA))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x5]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x6]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xE))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x7]);
+				} else {
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x0]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x2))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x1]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x2]);
+					*(ushort*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x6))))) = (ushort) (reinterpret_cast<Vector128<ushort>>(v)[0x3]);
+				}
+				break;
+			}
+			case 0x2: {
+				if((Q) != 0) {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x2]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0xC))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x3]);
+				} else {
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x0]);
+					*(float*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x4))))) = (float) (reinterpret_cast<Vector128<float>>(v)[0x1]);
+				}
+				break;
+			}
+			default: {
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x0))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x0]);
+				*(double*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) ((long) (0x8))))) = (double) (reinterpret_cast<Vector128<double>>(v)[0x1]);
+				break;
+			}
+		}
+		if(rn == 31)
+			state->SP = (ulong) (((ulong) (ulong) (oaddress)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
+		else
+			state->X[(int) rn] = (ulong) (((ulong) (ulong) (oaddress)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
+		return true;
+	}
+	insn_253:
 	/* ST1-single-no-offset */
 	if((inst & 0xBFFF2000U) == 0x0D000000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7281,9 +10693,9 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((opc) != (0x3)) ? 1U : 0U)))
-			goto insn_226;
+			goto insn_254;
 		auto t = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("B")) : ((string) (((bool) ((((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) ((((byte) ((((ulong) (size)) & ((ulong) (0x1))))) == (0x0)) ? 1U : 0U))))) != 0) ? (string("H")) : ((string) (((bool) (((opc) == (0x2)) ? 1U : 0U) != 0) ? ((string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : ((string) (((bool) ((((bool) ((bool) (((size) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) (((S) == (0x0)) ? 1U : 0U))))) != 0) ? (string("D")) : throw "Not implemented")))) : throw "Not implemented")))));
-		auto index = (uint) (([=](auto temp_523) -> uint { switch(temp_523) { case 0x0: return (uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3)))))); case 0x1: return (uint) (((uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint) (((bool) ((((byte) ((((ulong) (size)) & ((ulong) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (S)) << 0)) | ((byte) (((byte) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
+		auto index = (uint) (([=](auto temp_592) -> uint { switch(temp_592) { case 0x0: return (uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3)))))); case 0x1: return (uint) (((uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint) (((bool) ((((byte) ((((ulong) (size)) & ((ulong) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (S)) << 0)) | ((byte) (((byte) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		auto v = (Vector128<float>) (state->V[rt]);
 		switch(opc) {
@@ -7310,7 +10722,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_226:
+	insn_254:
 	/* ST2-multi-no-offset */
 	if((inst & 0xBFFFF000U) == 0x0C008000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7318,7 +10730,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_524) -> string { switch(temp_524) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_593) -> string { switch(temp_593) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		auto a = (Vector128<float>) (state->V[rt]);
 		auto b = (Vector128<float>) (state->V[rt2]);
@@ -7435,7 +10847,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_227:
+	insn_255:
 	/* ST2-multi-postindex-immediate */
 	if((inst & 0xBFE0F000U) == 0x0C808000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7446,8 +10858,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
 		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x20) : (0x10))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_228;
-		auto T = (string) (([=](auto temp_525) -> string { switch(temp_525) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_256;
+		auto T = (string) (([=](auto temp_594) -> string { switch(temp_594) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		auto a = (Vector128<float>) (state->V[rt]);
 		auto b = (Vector128<float>) (state->V[rt2]);
@@ -7568,7 +10980,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (byte) (imm)));
 		return true;
 	}
-	insn_228:
+	insn_256:
 	/* ST2-multi-postindex-register */
 	if((inst & 0xBFE0F000U) == 0x0C808000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7578,8 +10990,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_229;
-		auto T = (string) (([=](auto temp_526) -> string { switch(temp_526) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_257;
+		auto T = (string) (([=](auto temp_595) -> string { switch(temp_595) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		auto a = (Vector128<float>) (state->V[rt]);
 		auto b = (Vector128<float>) (state->V[rt2]);
@@ -7700,7 +11112,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
 		return true;
 	}
-	insn_229:
+	insn_257:
 	/* ST3-multi-no-offset */
 	if((inst & 0xBFFFF000U) == 0x0C004000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7709,7 +11121,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
 		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_527) -> string { switch(temp_527) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_596) -> string { switch(temp_596) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		auto a = (Vector128<float>) (state->V[rt]);
 		auto b = (Vector128<float>) (state->V[rt2]);
@@ -7871,7 +11283,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_230:
+	insn_258:
 	/* ST3-multi-postindex-immediate */
 	if((inst & 0xBFE0F000U) == 0x0C804000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7883,8 +11295,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
 		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x30) : (0x18))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_231;
-		auto T = (string) (([=](auto temp_528) -> string { switch(temp_528) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_259;
+		auto T = (string) (([=](auto temp_597) -> string { switch(temp_597) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		auto a = (Vector128<float>) (state->V[rt]);
 		auto b = (Vector128<float>) (state->V[rt2]);
@@ -8050,7 +11462,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (byte) (imm)));
 		return true;
 	}
-	insn_231:
+	insn_259:
 	/* ST3-multi-postindex-register */
 	if((inst & 0xBFE0F000U) == 0x0C804000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -8061,8 +11473,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
 		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_232;
-		auto T = (string) (([=](auto temp_529) -> string { switch(temp_529) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_260;
+		auto T = (string) (([=](auto temp_598) -> string { switch(temp_598) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		auto a = (Vector128<float>) (state->V[rt]);
 		auto b = (Vector128<float>) (state->V[rt2]);
@@ -8228,7 +11640,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
 		return true;
 	}
-	insn_232:
+	insn_260:
 	/* ST4-multi-no-offset */
 	if((inst & 0xBFFFF000U) == 0x0C000000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -8238,7 +11650,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
 		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
 		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_530) -> string { switch(temp_530) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_599) -> string { switch(temp_599) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		auto a = (Vector128<float>) (state->V[rt]);
 		auto b = (Vector128<float>) (state->V[rt2]);
@@ -8445,7 +11857,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_233:
+	insn_261:
 	/* ST4-multi-postindex-immediate */
 	if((inst & 0xBFE0F000U) == 0x0C800000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -8458,8 +11870,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
 		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x40) : (0x2B))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_234;
-		auto T = (string) (([=](auto temp_531) -> string { switch(temp_531) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_262;
+		auto T = (string) (([=](auto temp_600) -> string { switch(temp_600) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		auto a = (Vector128<float>) (state->V[rt]);
 		auto b = (Vector128<float>) (state->V[rt2]);
@@ -8670,7 +12082,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (byte) (imm)));
 		return true;
 	}
-	insn_234:
+	insn_262:
 	/* ST4-multi-postindex-register */
 	if((inst & 0xBFE0F000U) == 0x0C800000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -8682,8 +12094,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
 		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_235;
-		auto T = (string) (([=](auto temp_532) -> string { switch(temp_532) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_263;
+		auto T = (string) (([=](auto temp_601) -> string { switch(temp_601) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		auto a = (Vector128<float>) (state->V[rt]);
 		auto b = (Vector128<float>) (state->V[rt2]);
@@ -8894,7 +12306,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))));
 		return true;
 	}
-	insn_235:
+	insn_263:
 	/* STLR */
 	if((inst & 0xBFFFFC00U) == 0x889FFC00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -8908,7 +12320,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_236:
+	insn_264:
 	/* STLRB */
 	if((inst & 0xFFFFFC00U) == 0x089FFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
@@ -8917,7 +12329,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		*(byte*) (address) = (byte) ((byte) ((uint) ((rt) == 31 ? 0U : (uint) state->X[(int) rt])));
 		return true;
 	}
-	insn_237:
+	insn_265:
 	/* STLRH */
 	if((inst & 0xFFFFFC00U) == 0x489FFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
@@ -8926,7 +12338,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		*(ushort*) (address) = (ushort) ((ushort) ((uint) ((rt) == 31 ? 0U : (uint) state->X[(int) rt])));
 		return true;
 	}
-	insn_238:
+	insn_266:
 	/* STLXR */
 	if((inst & 0xBFE0FC00U) == 0x8800FC00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -8943,7 +12355,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rs] = (ulong) (uint) (0x0);
 		return true;
 	}
-	insn_239:
+	insn_267:
 	/* STLXRB */
 	if((inst & 0xFFE0FC00U) == 0x0800FC00U) {
 		auto rs = (inst >> 16) & 0x1FU;
@@ -8954,7 +12366,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rs] = (ulong) (uint) (0x0);
 		return true;
 	}
-	insn_240:
+	insn_268:
 	/* STP-postindex */
 	if((inst & 0x7FC00000U) == 0x28800000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -8978,7 +12390,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rd] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (simm)));
 		return true;
 	}
-	insn_241:
+	insn_269:
 	/* STP-preindex */
 	if((inst & 0x7FC00000U) == 0x29800000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -9002,7 +12414,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rd] = address;
 		return true;
 	}
-	insn_242:
+	insn_270:
 	/* STP-signed-offset */
 	if((inst & 0x7FC00000U) == 0x29000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -9022,7 +12434,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_243:
+	insn_271:
 	/* STP-simd-postindex */
 	if((inst & 0x3FC00000U) == 0x2C800000U) {
 		auto opc = (inst >> 30) & 0x3U;
@@ -9030,8 +12442,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_533) -> string { switch(temp_533) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_534) -> long { switch(temp_534) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_602) -> string { switch(temp_602) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_603) -> long { switch(temp_603) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		auto address = (ulong) ((rd) == 31 ? state->SP : state->X[(int) rd]);
 		switch(opc) {
 			case 0x0: {
@@ -9060,7 +12472,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rd] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (simm)));
 		return true;
 	}
-	insn_244:
+	insn_272:
 	/* STP-simd-preindex */
 	if((inst & 0x3FC00000U) == 0x2D800000U) {
 		auto opc = (inst >> 30) & 0x3U;
@@ -9068,8 +12480,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_535) -> string { switch(temp_535) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_536) -> long { switch(temp_536) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_604) -> string { switch(temp_604) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_605) -> long { switch(temp_605) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rd) == 31 ? state->SP : state->X[(int) rd]))) + ((ulong) (long) (simm)));
 		switch(opc) {
 			case 0x0: {
@@ -9098,7 +12510,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rd] = address;
 		return true;
 	}
-	insn_245:
+	insn_273:
 	/* STP-simd-signed-offset */
 	if((inst & 0x3FC00000U) == 0x2D000000U) {
 		auto opc = (inst >> 30) & 0x3U;
@@ -9106,8 +12518,8 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_537) -> string { switch(temp_537) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_538) -> long { switch(temp_538) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_606) -> string { switch(temp_606) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_607) -> long { switch(temp_607) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rd) == 31 ? state->SP : state->X[(int) rd]))) + ((ulong) (long) (simm)));
 		switch(opc) {
 			case 0x0: {
@@ -9132,7 +12544,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_246:
+	insn_274:
 	/* STR-immediate-postindex */
 	if((inst & 0xBFE00C00U) == 0xB8000400U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -9153,7 +12565,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rd] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (simm)));
 		return true;
 	}
-	insn_247:
+	insn_275:
 	/* STR-immediate-preindex */
 	if((inst & 0xBFE00C00U) == 0xB8000C00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -9174,7 +12586,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rd] = address;
 		return true;
 	}
-	insn_248:
+	insn_276:
 	/* STR-immediate-unsigned-offset */
 	if((inst & 0xBFC00000U) == 0xB9000000U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -9190,7 +12602,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_249:
+	insn_277:
 	/* STR-register */
 	if((inst & 0xBFE00C00U) == 0xB8200800U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -9202,7 +12614,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		auto extend = (string) (([=](auto temp_539) -> string { switch(temp_539) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto extend = (string) (([=](auto temp_608) -> string { switch(temp_608) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			*(uint*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset)))) = (uint) ((rt) == 31 ? 0U : (uint) state->X[(int) rt]);
@@ -9211,7 +12623,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_250:
+	insn_278:
 	/* STR-simd-postindex */
 	if((inst & 0x3F600C00U) == 0x3C000400U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -9220,7 +12632,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_540) -> string { switch(temp_540) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_609) -> string { switch(temp_609) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
 		switch(rop) {
@@ -9255,7 +12667,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (simm)));
 		return true;
 	}
-	insn_251:
+	insn_279:
 	/* STR-simd-preindex */
 	if((inst & 0x3F600C00U) == 0x3C000C00U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -9264,7 +12676,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_541) -> string { switch(temp_541) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_610) -> string { switch(temp_610) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto scale = (byte) ((byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (opc)) << 2))));
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (simm)));
@@ -9300,7 +12712,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rn] = address;
 		return true;
 	}
-	insn_252:
+	insn_280:
 	/* STR-simd-unsigned-offset */
 	if((inst & 0x3F400000U) == 0x3D000000U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -9309,7 +12721,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_542) -> string { switch(temp_542) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_611) -> string { switch(temp_611) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto scale = (byte) ((byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (opc)) << 2))));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ushort) ((ushort) ((imm) << (uint) (scale)))));
 		switch(rop) {
@@ -9340,7 +12752,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_253:
+	insn_281:
 	/* STR-simd-register */
 	if((inst & 0x3F600C00U) == 0x3C200800U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -9351,10 +12763,10 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r1 = (string) (([=](auto temp_543) -> string { switch(temp_543) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r1 = (string) (([=](auto temp_612) -> string { switch(temp_612) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (([=](auto temp_544) -> long { switch(temp_544) { case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: return (long) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (0x4) : (0x0)); } })(size))));
-		auto extend = (string) (([=](auto temp_545) -> string { switch(temp_545) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (([=](auto temp_613) -> long { switch(temp_613) { case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: return (long) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (0x4) : (0x0)); } })(size))));
+		auto extend = (string) (([=](auto temp_614) -> string { switch(temp_614) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset)));
 		switch(rop) {
@@ -9385,7 +12797,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_254:
+	insn_282:
 	/* STRB-immediate-postindex */
 	if((inst & 0xFFE00C00U) == 0x38000400U) {
 		auto imm = (inst >> 12) & 0x1FFU;
@@ -9400,7 +12812,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rd] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (simm)));
 		return true;
 	}
-	insn_255:
+	insn_283:
 	/* STRB-immediate-preindex */
 	if((inst & 0xFFE00C00U) == 0x38000C00U) {
 		auto imm = (inst >> 12) & 0x1FFU;
@@ -9415,7 +12827,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rd] = address;
 		return true;
 	}
-	insn_256:
+	insn_284:
 	/* STRB-immediate-unsigned-offset */
 	if((inst & 0xFFC00000U) == 0x39000000U) {
 		auto imm = (inst >> 10) & 0xFFFU;
@@ -9424,7 +12836,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		*(byte*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ushort) (imm)))) = (byte) ((byte) ((ulong) ((rt) == 31 ? 0UL : state->X[(int) rt])));
 		return true;
 	}
-	insn_257:
+	insn_285:
 	/* STRB-register */
 	if((inst & 0xFFE00C00U) == 0x38200800U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -9433,12 +12845,12 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_546) -> string { switch(temp_546) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_615) -> string { switch(temp_615) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		*(byte*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset)))) = (byte) ((byte) ((uint) ((rt) == 31 ? 0U : (uint) state->X[(int) rt])));
 		return true;
 	}
-	insn_258:
+	insn_286:
 	/* STRH-immediate-postindex */
 	if((inst & 0xFFE00C00U) == 0x78000400U) {
 		auto imm = (inst >> 12) & 0x1FFU;
@@ -9453,7 +12865,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rd] = (ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (simm)));
 		return true;
 	}
-	insn_259:
+	insn_287:
 	/* STRH-immediate-preindex */
 	if((inst & 0xFFE00C00U) == 0x78000C00U) {
 		auto imm = (inst >> 12) & 0x1FFU;
@@ -9468,7 +12880,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			state->X[(int) rd] = address;
 		return true;
 	}
-	insn_260:
+	insn_288:
 	/* STRH-immediate-unsigned-offset */
 	if((inst & 0xFFC00000U) == 0x79000000U) {
 		auto rawimm = (inst >> 10) & 0xFFFU;
@@ -9478,7 +12890,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		*(ushort*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ushort) (imm)))) = (ushort) ((ushort) ((ulong) ((rt) == 31 ? 0UL : state->X[(int) rt])));
 		return true;
 	}
-	insn_261:
+	insn_289:
 	/* STRH-register */
 	if((inst & 0xFFE00C00U) == 0x78200800U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -9487,12 +12899,12 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_547) -> string { switch(temp_547) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_616) -> string { switch(temp_616) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = (ulong) (((ulong) (((bool) (((option) == (0x6)) ? 1U : 0U) != 0) ? ((ulong) ((ulong) ((long) (SignExt<long>((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]), 32))))) : ((ulong) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) : ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))) << (uint) (amount));
 		*(ushort*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (ulong) (offset)))) = (ushort) ((ushort) ((uint) ((rt) == 31 ? 0U : (uint) state->X[(int) rt])));
 		return true;
 	}
-	insn_262:
+	insn_290:
 	/* STUR */
 	if((inst & 0xBFE00C00U) == 0xB8000000U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -9508,7 +12920,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_263:
+	insn_291:
 	/* STUR-simd */
 	if((inst & 0x3F600C00U) == 0x3C000000U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -9517,7 +12929,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_548) -> string { switch(temp_548) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_617) -> string { switch(temp_617) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto simm = (long) (SignExt<long>(imm, 9));
 		auto address = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (simm)));
 		switch(rop) {
@@ -9548,7 +12960,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_264:
+	insn_292:
 	/* STURB */
 	if((inst & 0xFFE00C00U) == 0x38000000U) {
 		auto imm = (inst >> 12) & 0x1FFU;
@@ -9558,7 +12970,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		*(byte*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (offset)))) = (byte) ((byte) ((ulong) ((rt) == 31 ? 0UL : state->X[(int) rt])));
 		return true;
 	}
-	insn_265:
+	insn_293:
 	/* STURH */
 	if((inst & 0xFFE00C00U) == 0x78000000U) {
 		auto imm = (inst >> 12) & 0x1FFU;
@@ -9568,7 +12980,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		*(ushort*) ((ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) + ((ulong) (long) (offset)))) = (ushort) ((ushort) ((ulong) ((rt) == 31 ? 0UL : state->X[(int) rt])));
 		return true;
 	}
-	insn_266:
+	insn_294:
 	/* STXR */
 	if((inst & 0xBFE0FC00U) == 0x88007C00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -9579,7 +12991,20 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rs] = (ulong) (uint) ((bool) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((bool) (CompareAndSwap((uint*) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn])), (uint) ((rt) == 31 ? 0U : (uint) state->X[(int) rt]), state->Exclusive32))) : ((bool) (CompareAndSwap((ulong*) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn])), (ulong) ((rt) == 31 ? 0UL : state->X[(int) rt]), state->Exclusive64)))));
 		return true;
 	}
-	insn_267:
+	insn_295:
+	/* STXP */
+	if((inst & 0xBFE08000U) == 0x88200000U) {
+		auto size = (inst >> 30) & 0x1U;
+		auto rs = (inst >> 16) & 0x1FU;
+		auto rt2 = (inst >> 10) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
+		auto address = (ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]);
+		state->X[(int) rs] = (ulong) (uint) ((bool) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((bool) ((((bool) ((bool) (CompareAndSwap((uint*) (address), (uint) ((rt) == 31 ? 0U : (uint) state->X[(int) rt]), state->Exclusive32)))) | ((bool) ((bool) (CompareAndSwap((uint*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x4)))), (uint) ((rt) == 31 ? 0U : (uint) state->X[(int) rt]), state->Exclusive32))))))) : ((bool) ((((bool) ((bool) (CompareAndSwap((ulong*) (address), (ulong) ((rt) == 31 ? 0UL : state->X[(int) rt]), state->Exclusive64)))) | ((bool) ((bool) (CompareAndSwap((ulong*) ((ulong) (((ulong) (ulong) (address)) + ((ulong) (long) (0x8)))), (ulong) ((rt) == 31 ? 0UL : state->X[(int) rt]), state->Exclusive64)))))))));
+		return true;
+	}
+	insn_296:
 	/* SUB-immediate */
 	if((inst & 0x7F800000U) == 0x51000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -9602,7 +13027,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_268:
+	insn_297:
 	/* SUB-extended-register */
 	if((inst & 0x7FE00000U) == 0x4B200000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -9613,13 +13038,13 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_549) -> string { switch(temp_549) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_550) -> string { switch(temp_550) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_618) -> string { switch(temp_618) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_619) -> string { switch(temp_619) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = (uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]);
 			if(rd == 31)
-				state->SP = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) - ((uint) (uint) ((uint) (((uint) (([=](auto temp_551) -> uint { switch(temp_551) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
+				state->SP = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) - ((uint) (uint) ((uint) (((uint) (([=](auto temp_620) -> uint { switch(temp_620) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
 			else
-				state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) - ((uint) (uint) ((uint) (((uint) (([=](auto temp_552) -> uint { switch(temp_552) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
+				state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL)))) - ((uint) (uint) ((uint) (((uint) (([=](auto temp_621) -> uint { switch(temp_621) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
 		} else {
 			if(((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U)) != 0) {
 				if(rd == 31)
@@ -9629,14 +13054,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 			} else {
 				auto m = (ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])));
 				if(rd == 31)
-					state->SP = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) - ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_553) -> ulong { switch(temp_553) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>(m, 64)))); default: return m; } })(option))) << (uint) (imm)))));
+					state->SP = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) - ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_622) -> ulong { switch(temp_622) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>(m, 64)))); default: return m; } })(option))) << (uint) (imm)))));
 				else
-					state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) - ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_554) -> ulong { switch(temp_554) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>(m, 64)))); default: return m; } })(option))) << (uint) (imm)))));
+					state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn]))) - ((ulong) (ulong) ((ulong) (((ulong) (([=](auto temp_623) -> ulong { switch(temp_623) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>(m, 64)))); default: return m; } })(option))) << (uint) (imm)))));
 			}
 		}
 		return true;
 	}
-	insn_269:
+	insn_298:
 	/* SUB-shifted-register */
 	if((inst & 0x7F200000U) == 0x4B000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -9646,15 +13071,15 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_555) -> string { switch(temp_555) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_624) -> string { switch(temp_624) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) - ((uint) (uint) ((uint) (([=](auto temp_556) -> uint { switch(temp_556) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+			state->X[(int) rd] = (ulong) (uint) ((uint) (((uint) (uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))) - ((uint) (uint) ((uint) (([=](auto temp_625) -> uint { switch(temp_625) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 		} else {
-			state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) - ((ulong) (ulong) ((ulong) (([=](auto temp_557) -> ulong { switch(temp_557) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift)))));
+			state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))) - ((ulong) (ulong) ((ulong) (([=](auto temp_626) -> ulong { switch(temp_626) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift)))));
 		}
 		return true;
 	}
-	insn_270:
+	insn_299:
 	/* SUBS-extended-register */
 	if((inst & 0x7FE00000U) == 0x6B200000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -9665,12 +13090,12 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_558) -> string { switch(temp_558) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_559) -> string { switch(temp_559) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_627) -> string { switch(temp_627) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_628) -> string { switch(temp_628) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = (uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm]);
 			state->X[(int) rd] = (ulong) (uint) ((uint) (([=]() -> uint {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = (uint) ((uint) ((uint) ((rn) == 31 ? state->SP : (state->X[(int) rn] & 0xFFFFFFFFUL))));
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = (uint) ((uint) ((uint) (~((uint) (((uint) (([=](auto temp_560) -> uint { switch(temp_560) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = (uint) ((uint) ((uint) (~((uint) (((uint) (([=](auto temp_629) -> uint { switch(temp_629) { case 0x0: return (uint) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (uint) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x4: return (uint) ((uint) ((int) (SignExt<int>((byte) ((byte) (m)), 8)))); case 0x5: return (uint) ((uint) ((int) (SignExt<int>((ushort) ((ushort) (m)), 16)))); default: return m; } })(option))) << (uint) (imm))))));
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint) ((uint) (0x1));
 					auto bits = (int) (32);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -9702,7 +13127,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				auto m = (ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])));
 				state->X[(int) rd] = (ulong) (([=]() -> ulong {
 						auto __macro_add_with_carry_set_nzcv_common_operand1 = (ulong) ((ulong) ((ulong) ((rn) == 31 ? state->SP : state->X[(int) rn])));
-						auto __macro_add_with_carry_set_nzcv_common_operand2 = (ulong) ((ulong) ((ulong) (~((ulong) (((ulong) (([=](auto temp_561) -> ulong { switch(temp_561) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>(m, 64)))); default: return m; } })(option))) << (uint) (imm))))));
+						auto __macro_add_with_carry_set_nzcv_common_operand2 = (ulong) ((ulong) ((ulong) (~((ulong) (((ulong) (([=](auto temp_630) -> ulong { switch(temp_630) { case 0x0: return (ulong) ((((ulong) (m)) & ((ulong) (0xFF)))); case 0x1: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFF)))); case 0x2: return (ulong) ((((ulong) (m)) & ((ulong) (0xFFFFFFFF)))); case 0x4: return (ulong) ((ulong) ((long) (SignExt<long>((byte) ((byte) (m)), 8)))); case 0x5: return (ulong) ((ulong) ((long) (SignExt<long>((ushort) ((ushort) (m)), 16)))); case 0x6: return (ulong) ((ulong) ((long) (SignExt<long>(m, 64)))); default: return m; } })(option))) << (uint) (imm))))));
 						auto __macro_add_with_carry_set_nzcv_common_carryIn = (ulong) ((ulong) (0x1));
 						auto bits = (int) (64);
 						auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -9718,7 +13143,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_271:
+	insn_300:
 	/* SUBS-shifted-register */
 	if((inst & 0x7F200000U) == 0x6B000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -9729,11 +13154,11 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto mode32 = (bool) (((size) == (0x0)) ? 1U : 0U);
 		auto r = (string) ((mode32 != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_562) -> string { switch(temp_562) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_631) -> string { switch(temp_631) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if((mode32) != 0) {
 			state->X[(int) rd] = (ulong) (uint) ((uint) (([=]() -> uint {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = (uint) ((uint) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn])));
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = (uint) ((uint) ((uint) (~((uint) (([=](auto temp_563) -> uint { switch(temp_563) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = (uint) ((uint) ((uint) (~((uint) (([=](auto temp_632) -> uint { switch(temp_632) { case 0x0: return (uint) (((uint) ((uint) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (uint) (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (uint) ((uint) ((int) (((int) ((int) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))) >> (uint) (imm)))); default: return (uint) ((((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) << (32 - (int) (imm))) | (((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint) ((uint) (0x1));
 					auto bits = (int) (32);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -9748,7 +13173,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		} else {
 			state->X[(int) rd] = (ulong) (([=]() -> ulong {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = (ulong) ((ulong) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn])));
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = (ulong) ((ulong) ((ulong) (~((ulong) (([=](auto temp_564) -> ulong { switch(temp_564) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = (ulong) ((ulong) ((ulong) (~((ulong) (([=](auto temp_633) -> ulong { switch(temp_633) { case 0x0: return (ulong) (((ulong) ((ulong) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) << (uint) (imm)); case 0x1: return (ulong) (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (uint) (imm)); case 0x2: return (ulong) ((ulong) ((long) (((long) ((long) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])))) >> (uint) (imm)))); default: return (ulong) ((((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) << (64 - (int) (imm))) | (((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm])) >> (int) (imm))); } })(shift))))));
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (ulong) ((ulong) (0x1));
 					auto bits = (int) (64);
 					auto bits1 = (long) (((long) (int) (bits)) - ((long) (long) (0x1)));
@@ -9763,7 +13188,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_272:
+	insn_301:
 	/* SUBS-immediate */
 	if((inst & 0x7F800000U) == 0x71000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -9772,7 +13197,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_565) -> string { switch(temp_565) { case 0x0: return string("LSL #0"); case 0x1: return string("LSL #12"); default: throw "Not implemented"; } })(shift));
+		auto shiftstr = (string) (([=](auto temp_634) -> string { switch(temp_634) { case 0x0: return string("LSL #0"); case 0x1: return string("LSL #12"); default: throw "Not implemented"; } })(shift));
 		auto rimm = (uint) ((shift != 0) ? ((uint) (((uint) ((uint) (imm))) << (uint) (0xC))) : (imm));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			state->X[(int) rd] = (ulong) (uint) ((uint) (([=]() -> uint {
@@ -9807,14 +13232,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_273:
+	insn_302:
 	/* SVC */
 	if((inst & 0xFFE0001FU) == 0xD4000001U) {
 		auto imm = (inst >> 5) & 0xFFFFU;
 		Svc(imm);
 		return true;
 	}
-	insn_274:
+	insn_303:
 	/* SYS */
 	if((inst & 0xFFF80000U) == 0xD5080000U) {
 		auto op1 = (inst >> 16) & 0x7U;
@@ -9824,7 +13249,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		return true;
 	}
-	insn_275:
+	insn_304:
 	/* TBZ */
 	if((inst & 0x7F000000U) == 0x36000000U) {
 		auto upper = (inst >> 31) & 0x1U;
@@ -9841,7 +13266,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_276:
+	insn_305:
 	/* TBNZ */
 	if((inst & 0x7F000000U) == 0x37000000U) {
 		auto upper = (inst >> 31) & 0x1U;
@@ -9858,15 +13283,15 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_277:
+	insn_306:
 	/* UADDLV */
 	if((inst & 0xBF3FFC00U) == 0x2E303800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_566) -> string { switch(temp_566) { case 0x0: return string("H"); case 0x1: return string("S"); case 0x2: return string("D"); default: throw "Not implemented"; } })(size));
-		auto t = (string) (([=](auto temp_567) -> string { switch(temp_567) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_635) -> string { switch(temp_635) { case 0x0: return string("H"); case 0x1: return string("S"); case 0x2: return string("D"); default: throw "Not implemented"; } })(size));
+		auto t = (string) (([=](auto temp_636) -> string { switch(temp_636) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto esize = (long) ((0x8) << (uint) (size));
 		auto count = (long) (((long) (long) ((long) ((Q != 0) ? (0x80) : (0x40)))) / ((long) (long) (esize)));
 		switch(size) {
@@ -9889,7 +13314,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_278:
+	insn_307:
 	/* UADDW[2] */
 	if((inst & 0xBF20FC00U) == 0x2E201000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -9969,7 +13394,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_279:
+	insn_308:
 	/* UBFM */
 	if((inst & 0x7F800000U) == 0x53000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -9994,7 +13419,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_280:
+	insn_309:
 	/* UCVTF-scalar-gpr-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E230000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -10064,7 +13489,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_281:
+	insn_310:
 	/* UCVTF-scalar-integer */
 	if((inst & 0xFFBFFC00U) == 0x7E21D800U) {
 		auto size = (inst >> 22) & 0x1U;
@@ -10078,14 +13503,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_282:
+	insn_311:
 	/* UCVTF-vector */
 	if((inst & 0xBFBFFC00U) == 0x2E21D800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_568) -> string { switch(temp_568) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_637) -> string { switch(temp_637) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto n = (Vector128<float>) (state->V[rn]);
 		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
 		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
@@ -10113,7 +13538,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_283:
+	insn_312:
 	/* UDIV */
 	if((inst & 0x7FE0FC00U) == 0x1AC00800U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -10130,7 +13555,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_284:
+	insn_313:
 	/* UMADDL */
 	if((inst & 0xFFE08000U) == 0x9BA00000U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -10140,7 +13565,48 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rd] = (ulong) (((ulong) (ulong) ((ulong) ((ra) == 31 ? 0UL : state->X[(int) ra]))) + ((ulong) (ulong) ((ulong) (((ulong) (ulong) ((ulong) ((ulong) ((uint) ((rn) == 31 ? 0U : (uint) state->X[(int) rn]))))) * ((ulong) (ulong) ((ulong) ((ulong) ((uint) ((rm) == 31 ? 0U : (uint) state->X[(int) rm])))))))));
 		return true;
 	}
-	insn_285:
+	insn_314:
+	/* UMOV */
+	if((inst & 0xBFE0FC00U) == 0x0E003C00U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto imm = (inst >> 16) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto T = string("");
+		auto index = 0x0;
+		auto r = (string) ((Q != 0) ? (string("X")) : (string("W")));
+		auto size = (long) ((Q != 0) ? (0x40) : ((long) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x1))))) == (0x1)) ? 1U : 0U) != 0) ? (0x8) : ((long) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x3))))) == (0x2)) ? 1U : 0U) != 0) ? (0x10) : (0x20))))));
+		switch(size) {
+			case 0x8: {
+				T = string("B");
+				index = (byte) ((imm) >> (uint) (0x1));
+				break;
+			}
+			case 0x10: {
+				T = string("H");
+				index = (byte) ((imm) >> (uint) (0x2));
+				break;
+			}
+			case 0x20: {
+				T = string("S");
+				index = (byte) ((imm) >> (uint) (0x3));
+				break;
+			}
+			default: {
+				T = string("D");
+				index = (byte) ((imm) >> (uint) (0x4));
+				break;
+			}
+		}
+		auto v = (Vector128<float>) (state->V[rn]);
+		if((Q) != 0) {
+			state->X[(int) rd] = (ulong) (reinterpret_cast<Vector128<ulong>>(v)[index]);
+		} else {
+			state->X[(int) rd] = (ulong) (uint) ((uint) (([=](auto temp_638) -> uint { switch(temp_638) { case 0x8: return (uint) ((uint) ((byte) (reinterpret_cast<Vector128<byte>>(v)[index]))); case 0x10: return (uint) ((uint) ((byte) (reinterpret_cast<Vector128<byte>>(v)[index]))); default: return (uint) (reinterpret_cast<Vector128<uint>>(v)[index]); } })(size)));
+		}
+		return true;
+	}
+	insn_315:
 	/* UMULH */
 	if((inst & 0xFFE0FC00U) == 0x9BC07C00U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -10149,7 +13615,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		state->X[(int) rd] = (ulong) ((ulong) ((UInt128) (((UInt128) (((UInt128) (UInt128) ((UInt128) ((UInt128) ((ulong) ((rn) == 31 ? 0UL : state->X[(int) rn]))))) * ((UInt128) (UInt128) ((UInt128) ((UInt128) ((ulong) ((rm) == 31 ? 0UL : state->X[(int) rm]))))))) >> (uint) (0x40))));
 		return true;
 	}
-	insn_286:
+	insn_316:
 	/* USHL-vector */
 	if((inst & 0xBF20FC00U) == 0x2E204400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -10157,7 +13623,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_569) -> string { switch(temp_569) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_639) -> string { switch(temp_639) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto n = (Vector128<float>) (state->V[rn]);
 		auto m = (Vector128<float>) (state->V[rm]);
 		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
@@ -10234,7 +13700,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_287:
+	insn_317:
 	/* USHLL-vector */
 	if((inst & 0xBF80FC00U) == 0x2F00A400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -10247,7 +13713,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto size = 0x0;
 		auto shift = 0x0;
 		if(!((bool) (((immh) != (0x0)) ? 1U : 0U)))
-			goto insn_288;
+			goto insn_318;
 		auto i2 = (string) ((Q != 0) ? (string("2")) : (string("")));
 		if(((bool) (((immh) == (0x1)) ? 1U : 0U)) != 0) {
 			Ta = string("8H");
@@ -10327,14 +13793,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_288:
+	insn_318:
 	/* XTN */
 	if((inst & 0xFF3FFC00U) == 0x0E212800U) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto tb = (string) (([=](auto temp_570) -> string { switch(temp_570) { case 0x0: return string("8B"); case 0x1: return string("4H"); case 0x2: return string("2S"); default: throw "Not implemented"; } })(size));
-		auto ta = (string) (([=](auto temp_571) -> string { switch(temp_571) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto tb = (string) (([=](auto temp_640) -> string { switch(temp_640) { case 0x0: return string("8B"); case 0x1: return string("4H"); case 0x2: return string("2S"); default: throw "Not implemented"; } })(size));
+		auto ta = (string) (([=](auto temp_641) -> string { switch(temp_641) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x0: {
 				auto a = (ushort) (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn]))[0x0]);
@@ -10369,14 +13835,14 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_289:
+	insn_319:
 	/* XTN2 */
 	if((inst & 0xFF3FFC00U) == 0x4E212800U) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto tb = (string) (([=](auto temp_572) -> string { switch(temp_572) { case 0x0: return string("16B"); case 0x1: return string("8H"); case 0x2: return string("4S"); default: throw "Not implemented"; } })(size));
-		auto ta = (string) (([=](auto temp_573) -> string { switch(temp_573) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto tb = (string) (([=](auto temp_642) -> string { switch(temp_642) { case 0x0: return string("16B"); case 0x1: return string("8H"); case 0x2: return string("4S"); default: throw "Not implemented"; } })(size));
+		auto ta = (string) (([=](auto temp_643) -> string { switch(temp_643) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x0: {
 				auto a = (ushort) (reinterpret_cast<Vector128<ushort>>((Vector128<float>) (state->V[rn]))[0x0]);
@@ -10408,7 +13874,12 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_290:
+	insn_320:
+	/* YIELD */
+	if((inst & 0xFFFFFFFFU) == 0xD503203FU) {
+		return true;
+	}
+	insn_321:
 	/* ZIP */
 	if((inst & 0xBF20BC00U) == 0x0E003800U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -10418,7 +13889,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto i = (byte) ((byte) ((ulong) (((ulong) (bool) (op)) + ((ulong) (long) (0x1)))));
-		auto T = (string) (([=](auto temp_574) -> string { switch(temp_574) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_644) -> string { switch(temp_644) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
 		auto av = (Vector128<float>) (state->V[rn]);
 		auto bv = (Vector128<float>) (state->V[rm]);
 		state->V[rd] = (Vector128<float>) (reinterpret_cast<Vector128<float>>(((byte) ((byte) (0x0))) - (Vector128<byte>) {}));
@@ -10475,7 +13946,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 		}
 		return true;
 	}
-	insn_291:
+	insn_322:
 
     return false;
 }

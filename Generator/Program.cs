@@ -44,26 +44,35 @@ namespace Generator {
 		
 		public abstract void Define();
 	}
-	
+
 	static class Program {
 		public static string NextLabel;
+
 		static void Main(string[] args) {
 			AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes())
 				.Where(x => x.IsSubclassOf(typeof(Builtin)))
 				.ForEach(x => ((Builtin) Activator.CreateInstance(x)).Define());
-			
+
 			var ptree = ListParser.Parse(File.ReadAllText("aarch64.isa"));
 			ptree = MacroProcessor.Rewrite(ptree);
 			var defs = Def.ParseAll(ptree).Select(InferRuntime).ToList();
 			BuildDisassembler(defs);
 			BuildInterpreter(defs);
 			BuildRecompiler(defs);
+			BuildTests(defs);
 		}
 
-		public static readonly Dictionary<string, (Func<PList, EType> Signature, Action<CodeBuilder, PList> CompileTime, Action<CodeBuilder, PList> RunTime)>
-			Statements = new Dictionary<string, (Func<PList, EType> Signature, Action<CodeBuilder, PList> CompileTime, Action<CodeBuilder, PList> RunTime)>();
-		public static readonly Dictionary<string, (Func<PList, EType> Signature, Func<PList, string> CompileTime, Func<PList, string> RunTime)>
-			Expressions = new Dictionary<string, (Func<PList, EType> Signature, Func<PList, string> CompileTime, Func<PList, string> RunTime)>();
+		public static readonly Dictionary<string, (Func<PList, EType> Signature, Action<CodeBuilder, PList> CompileTime,
+				Action<CodeBuilder, PList> RunTime)>
+			Statements =
+				new Dictionary<string, (Func<PList, EType> Signature, Action<CodeBuilder, PList> CompileTime,
+					Action<CodeBuilder, PList> RunTime)>();
+
+		public static readonly Dictionary<string, (Func<PList, EType> Signature, Func<PList, string> CompileTime,
+				Func<PList, string> RunTime)>
+			Expressions =
+				new Dictionary<string, (Func<PList, EType> Signature, Func<PList, string> CompileTime,
+					Func<PList, string> RunTime)>();
 
 		static Def InferRuntime(Def def) {
 			void InferList(PList list) {
@@ -114,6 +123,7 @@ namespace Generator {
 				GenerateRuntimeStatement(c, list);
 				return;
 			}
+
 			switch(list[0]) {
 				case PName(var name) when Statements.ContainsKey(name):
 					Statements[name].CompileTime(c, list);
@@ -141,6 +151,7 @@ namespace Generator {
 		}
 
 		static string ToHex(long value) => value < 0 ? $"-0x{-value:X}" : $"0x{value:X}";
+
 		public static string GenerateExpression(PTree v, bool lhs = false) {
 			switch(v) {
 				case PName name: return name.Name;
@@ -197,21 +208,35 @@ namespace Generator {
 				case PName("count-leading-zeros"): return $"CountLeadingZeros({GenerateExpression(list[1])})";
 				case PName("reverse-bits"): return $"ReverseBits({GenerateExpression(list[1])})";
 				case PName("make-tmask"):
-					return $"MakeTMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})";
+					return
+						$"MakeTMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})";
 				case PName("make-wmask"):
-					return $"MakeWMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})";
-				
-				case PName("vector-all"): return $"reinterpret_cast<Vector128<float>>(({GenerateExpression(list[1])}) - (Vector128<{GenerateType(list[1].Type)}>) {{}})";
+					return
+						$"MakeWMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})";
+
+				case PName("vector-all"):
+					return
+						$"reinterpret_cast<Vector128<float>>(({GenerateExpression(list[1])}) - (Vector128<{GenerateType(list[1].Type)}>) {{}})";
 				case PName("vector-zero-top"): return GenerateExpression(list[1]);
-				case PName("vector-insert"): return $"reinterpret_cast<Vector128<{GenerateType(list[3].Type)}>*>(&(state->V[(int) ({GenerateExpression(list[1])})]))[0][{GenerateExpression(list[2])}] = {GenerateExpression(list[3])}";
+				case PName("vector-insert"):
+					return
+						$"reinterpret_cast<Vector128<{GenerateType(list[3].Type)}>*>(&(state->V[(int) ({GenerateExpression(list[1])})]))[0][{GenerateExpression(list[2])}] = {GenerateExpression(list[3])}";
 				case PName("vector-element"):
-					return $"reinterpret_cast<Vector128<{GenerateType(list.Type.AsCompiletime())}>>({GenerateExpression(list[1])})[{GenerateExpression(list[2])}]";
-				case PName("vector-count-bits"): return $"VectorCountBits({GenerateExpression(list[1])}, {GenerateExpression(list[2])})";
-				case PName("vector-sum-unsigned"): return $"VectorSumUnsigned({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])})";
-				case PName("vector-extract"): return $"VectorExtract({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[4])})";
-				
-				case PName("float-to-fixed-point"): return $"FloatToFixed{((EInt) list.Type).Width}({GenerateExpression(list[1])}, (int) ({GenerateExpression(list[3])}))";
-				
+					return
+						$"reinterpret_cast<Vector128<{GenerateType(list.Type.AsCompiletime())}>>({GenerateExpression(list[1])})[{GenerateExpression(list[2])}]";
+				case PName("vector-count-bits"):
+					return $"VectorCountBits({GenerateExpression(list[1])}, {GenerateExpression(list[2])})";
+				case PName("vector-sum-unsigned"):
+					return
+						$"VectorSumUnsigned({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])})";
+				case PName("vector-extract"):
+					return
+						$"VectorExtract({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[4])})";
+
+				case PName("float-to-fixed-point"):
+					return
+						$"FloatToFixed{((EInt) list.Type).Width}({GenerateExpression(list[1])}, (int) ({GenerateExpression(list[3])}))";
+
 				case PName name when Expressions.ContainsKey(name): return Expressions[name].CompileTime(list);
 				case PName name: throw new NotImplementedException($"Unknown name for GenerateListExpression: {name}");
 				default: throw new NotSupportedException($"Non-name for first element of list {list.ToPrettyString()}");
@@ -221,49 +246,68 @@ namespace Generator {
 		static string GenerateBaseListRuntimeExpression(PList list) {
 			Debug.Assert(Context == ContextTypes.Recompiler);
 			switch(list[0]) {
-				case PName("count-leading-zeros"): return $"Call<{GenerateType(list[1].Type.AsCompiletime())}, {GenerateType(list[1].Type.AsCompiletime())}>(CountLeadingZeros, {GenerateExpression(list[1])})";
-				case PName("reverse-bits"): return $"Call<{GenerateType(list[1].Type.AsCompiletime())}, {GenerateType(list[1].Type.AsCompiletime())}>(ReverseBits, {GenerateExpression(list[1])})";
+				case PName("count-leading-zeros"):
+					return
+						$"Call<{GenerateType(list[1].Type.AsCompiletime())}, {GenerateType(list[1].Type.AsCompiletime())}>(CountLeadingZeros, {GenerateExpression(list[1])})";
+				case PName("reverse-bits"):
+					return
+						$"Call<{GenerateType(list[1].Type.AsCompiletime())}, {GenerateType(list[1].Type.AsCompiletime())}>(ReverseBits, {GenerateExpression(list[1])})";
 				case PName("make-tmask"):
-					return $"MakeTMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})";
+					return
+						$"MakeTMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})";
 				case PName("make-wmask"):
-					return $"MakeWMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})";
-				
+					return
+						$"MakeWMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})";
+
 				case PName("vector-all"):
-					return $"(({GenerateType(list[1].Type.AsRuntime())}) ({GenerateExpression(list[1])})).CreateVector()";
+					return
+						$"(({GenerateType(list[1].Type.AsRuntime())}) ({GenerateExpression(list[1])})).CreateVector()";
 				case PName("vector-zero-top"): return GenerateExpression(list[1]);
-				
+
 				case PName("vector-insert"):
-					return $"VR[(int) ({GenerateExpression(list[1])})] = VR[(int) ({GenerateExpression(list[1])})]().Insert({GenerateExpression(list[2])}, {GenerateExpression(list[3])})";
+					return
+						$"VR[(int) ({GenerateExpression(list[1])})] = VR[(int) ({GenerateExpression(list[1])})]().Insert({GenerateExpression(list[2])}, {GenerateExpression(list[3])})";
 				case PName("vector-element"):
-					return $"({GenerateExpression(list[1])}).Element<{GenerateType(list.Type.AsCompiletime())}>({GenerateExpression(list[2])})";
-				
-				case PName("vector-count-bits"): return $"Call<Vector128<float>, Vector128<float>, long>(VectorCountBits, {GenerateExpression(list[1])}, {GenerateExpression(list[2])})";
-				case PName("vector-sum-unsigned"): return $"Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, {GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])})";
-				case PName("vector-extract"): return $"Call<Vector128<float>, Vector128<float>, Vector128<float>, uint, uint>(VectorExtract, {GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[4])})";
-				
-				case PName("float-to-fixed-point"): return $"Call<{(((EInt) list.Type).Width == 64 ? "ulong" : "uint")}, {GenerateType(list[1].Type.AsCompiletime())}, int>(FloatToFixed{((EInt) list.Type).Width}, {GenerateExpression(list[1])}, (RuntimeValue<int>) ({GenerateExpression(list[3])}))";
-				
+					return
+						$"({GenerateExpression(list[1])}).Element<{GenerateType(list.Type.AsCompiletime())}>({GenerateExpression(list[2])})";
+
+				case PName("vector-count-bits"):
+					return
+						$"Call<Vector128<float>, Vector128<float>, long>(VectorCountBits, {GenerateExpression(list[1])}, {GenerateExpression(list[2])})";
+				case PName("vector-sum-unsigned"):
+					return
+						$"Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, {GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])})";
+				case PName("vector-extract"):
+					return
+						$"Call<Vector128<float>, Vector128<float>, Vector128<float>, uint, uint>(VectorExtract, {GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[4])})";
+
+				case PName("float-to-fixed-point"):
+					return
+						$"Call<{(((EInt) list.Type).Width == 64 ? "ulong" : "uint")}, {GenerateType(list[1].Type.AsCompiletime())}, int>(FloatToFixed{((EInt) list.Type).Width}, {GenerateExpression(list[1])}, (RuntimeValue<int>) ({GenerateExpression(list[3])}))";
+
 				case PName name when Expressions.ContainsKey(name): return Expressions[name].RunTime(list);
-				case PName name: throw new NotImplementedException($"Unknown name for GenerateRuntimeListExpression: {name}");
+				case PName name:
+					throw new NotImplementedException($"Unknown name for GenerateRuntimeListExpression: {name}");
 				default: throw new NotSupportedException($"Non-name for first element of list {list.ToPrettyString()}");
 			}
 		}
 
 		static void BuildDisassembler(List<Def> defs) {
 			Context = ContextTypes.Disassembler;
-			
+
 			var c = new CodeBuilder();
 			c += 1;
 			var ic = new CodeBuilder();
 			ic += 1;
 
 			var labelNum = 0;
-			
+
 			foreach(var def in defs) {
 				Console.WriteLine(def.Name + "...");
 				var args = new List<string>();
+
 				string RewriteFormat(string fmt) =>
-					Regex.Replace(fmt, @"\$(\$|[a-zA-Z\-][a-zA-Z\-0-9]*)", 
+					Regex.Replace(fmt, @"\$(\$|[a-zA-Z\-][a-zA-Z\-0-9]*)",
 						match => {
 							if(match.Groups[1].Value == "$$")
 								return "$";
@@ -278,6 +322,7 @@ namespace Generator {
 									return $"%{args.Count}$#x";
 								}
 							}
+
 							//if(def.Locals[name] is EInt(var signed, var size) && size > 8)
 							//	return signed ? $"{{({name} < 0 ? $\"-0x{{-{name}:X}}\" : $\"0x{{{name}:X}}\")}}" : $"0x{{{name}:X}}";
 							args.Add(name);
@@ -306,7 +351,7 @@ namespace Generator {
 				c += $"{NextLabel}:";
 				ic += $"{NextLabel}:";
 			}
-			
+
 			using var fp = File.Open("../disassembler.generated.cpp", FileMode.Truncate);
 			using var sw = new StreamWriter(fp);
 			sw.Write(File.ReadAllText("disassemblerStub.cpp")
@@ -314,14 +359,14 @@ namespace Generator {
 				.Replace("/*%IC_CODE%*/", ic.Code)
 				.Replace("/*%IC_COUNT%*/", defs.Count.ToString()));
 		}
-		
+
 		static void BuildInterpreter(List<Def> defs) {
 			Context = ContextTypes.Interpreter;
-			
+
 			var c = new CodeBuilder();
 			c += 1;
 			var labelNum = 0;
-			
+
 			foreach(var def in defs) {
 				NextLabel = $"insn_{++labelNum}";
 				c += $"/* {def.Name} */";
@@ -340,14 +385,14 @@ namespace Generator {
 			using var sw = new StreamWriter(fp);
 			sw.Write(File.ReadAllText("interpreterStub.cpp").Replace("/*%CODE%*/", c.Code));
 		}
-		
+
 		static void BuildRecompiler(List<Def> defs) {
 			string Rename(string name) => name.Replace('-', '_').Replace('.', '_').Replace('[', '_').Replace(']', '_');
 			Context = ContextTypes.Recompiler;
-			
+
 			var c = new CodeBuilder();
 			c++;
-			
+
 			foreach(var def in defs) {
 				c += $"if((inst & 0x{def.Mask:X8}U) == 0x{def.Match:X8}U) {{";
 				c++;
@@ -356,12 +401,12 @@ namespace Generator {
 				c--;
 				c += "}";
 			}
-			
+
 			var fc = new CodeBuilder();
 
 			var dfp = File.Open("../recompiler.generated.h", FileMode.Truncate);
 			var dsw = new StreamWriter(dfp);
-			foreach (var def in defs) {
+			foreach(var def in defs) {
 				NextLabel = "unimplemented";
 				fc += "";
 				fc += $"/* {def.Name} */";
@@ -383,11 +428,26 @@ namespace Generator {
 				fc--;
 				fc += "}";
 			}
-			
+
 			using var fp = File.Open("../recompiler.generated.cpp", FileMode.Truncate);
 			using var sw = new StreamWriter(fp);
-			sw.Write(File.ReadAllText("recompilerStub.cpp").Replace("/*%CODE%*/", c.Code).Replace("/*%FUNCS%*/", fc.Code));
+			sw.Write(File.ReadAllText("recompilerStub.cpp").Replace("/*%CODE%*/", c.Code)
+				.Replace("/*%FUNCS%*/", fc.Code));
 			dsw.Close();
+		}
+
+		static void BuildTests(List<Def> defs) {
+			using var fp = File.Open("../test_instructions.generated.h", FileMode.Truncate);
+			using var sw = new StreamWriter(fp);
+			foreach(var def in defs) {
+				if(def.Fields.Count == 0) continue;
+				var tg = new TestGen(def);
+				if(tg.Instructions.Count == 0) continue;
+				
+				sw.WriteLine($"/* {def.Name} */");
+				foreach(var (inst, disasm) in tg.Instructions.OrderBy(x => x.Value))
+					sw.WriteLine($"TEST_INSTRUCTION(0x{inst:X08}, {disasm.ToPrettyString()})");
+			}
 		}
 	}
 }
