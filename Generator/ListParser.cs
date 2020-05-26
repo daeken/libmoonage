@@ -111,6 +111,18 @@ namespace Generator {
 			
 			return modified ? new PList(c) { Type = Type } : this;
 		}
+
+		public T WalkLeaves<T>(Func<PTree, T> mapper) where T : class {
+			foreach(var child in this) {
+				var ret = mapper(child);
+				if(ret != null) return ret;
+				if(child is PList list) {
+					ret = list.WalkLeaves(mapper);
+					if(ret != null) return ret;
+				}
+			}
+			return null;
+		}
 	}
 
 	public class PName : PTree {

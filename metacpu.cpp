@@ -93,5 +93,6 @@ void MetaCpu::run(uint64_t pc, uint64_t sp) {
                 }
                 break;
         }
+        //break;
     }
 }

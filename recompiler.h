@@ -57,7 +57,7 @@ public:
     void precompile(ulong pc);
     void recompileMultiple(Block* block);
 
-    volatile CpuState state;
+    CpuState state;
     bool isOptimizer = false;
     CpuInterface* interface;
     ulong currentPC;

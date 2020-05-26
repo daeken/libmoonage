@@ -4910,7 +4910,7 @@ bool Recompiler::FMSUB(uint inst, ulong pc) {
 				break;
 			}
 			case 0x1: {
-				VDR[(int) (rd)] = (RuntimeValue<double>) (((RuntimeValue<double>) (RuntimeValue<float>) ((RuntimeValue<float>) (VSR[(int) (ra)]))) - ((RuntimeValue<double>) (RuntimeValue<double>) ((RuntimeValue<double>) (((RuntimeValue<double>) (RuntimeValue<double>) ((RuntimeValue<double>) (VDR[(int) (rn)]))) * ((RuntimeValue<double>) (RuntimeValue<double>) ((RuntimeValue<double>) (VDR[(int) (rm)])))))));
+				VDR[(int) (rd)] = (RuntimeValue<double>) (((RuntimeValue<double>) (RuntimeValue<double>) ((RuntimeValue<double>) (VDR[(int) (ra)]))) - ((RuntimeValue<double>) (RuntimeValue<double>) ((RuntimeValue<double>) (((RuntimeValue<double>) (RuntimeValue<double>) ((RuntimeValue<double>) (VDR[(int) (rn)]))) * ((RuntimeValue<double>) (RuntimeValue<double>) ((RuntimeValue<double>) (VDR[(int) (rm)])))))));
 				break;
 			}
 			default: {

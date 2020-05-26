@@ -1030,7 +1030,7 @@
 
 (def DUP-element-vector
     "0 Q 0 01110000 iiiii 0 0000 1 nnnnn ddddd"
-    "dup $rd.$T, V$rn.$Ts[$index]"
+    "dup V$rd.$T, V$rn.$Ts[$index]"
     (names (Q Q) (imm i) (rn n) (rd d))
     (mlet (Ts "" T "" index 0 size 0)
         (if (== (& imm 0b01111) 0) (unimplemented)
@@ -2024,7 +2024,7 @@
                 (unimplemented)))
     (match type
         0b00 (= (vec-s rd) (- (vec-s ra) (* (vec-s rn) (vec-s rm))))
-        0b01 (= (vec-d rd) (- (vec-s ra) (* (vec-d rn) (vec-d rm))))
+        0b01 (= (vec-d rd) (- (vec-d ra) (* (vec-d rn) (vec-d rm))))
         (unimplemented)))
 
 (def FMUL-by-element-scalar-spdp

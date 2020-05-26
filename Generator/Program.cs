@@ -33,7 +33,7 @@ namespace Generator {
 			Program.Expressions[name] = (signature, compiletime, runtime ?? compiletime);
 		}
 		public static void Expression(IEnumerable<string> names, Func<PList, EType> signature, Func<PList, string> compiletime, Func<PList, string> runtime = null) =>
-			names.ForEach(name => Expression(name, signature, compiletime, runtime));
+			MoreEnumerable.ForEach(names, name => Expression(name, signature, compiletime, runtime));
 
 		public static string TempName() => Program.TempName();
 
@@ -49,17 +49,18 @@ namespace Generator {
 		public static string NextLabel;
 
 		static void Main(string[] args) {
-			AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes())
-				.Where(x => x.IsSubclassOf(typeof(Builtin)))
-				.ForEach(x => ((Builtin) Activator.CreateInstance(x)).Define());
+			MoreEnumerable.ForEach(AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes())
+					.Where(x => x.IsSubclassOf(typeof(Builtin))), x => ((Builtin) Activator.CreateInstance(x)).Define());
 
 			var ptree = ListParser.Parse(File.ReadAllText("aarch64.isa"));
 			ptree = MacroProcessor.Rewrite(ptree);
 			var defs = Def.ParseAll(ptree).Select(InferRuntime).ToList();
-			BuildDisassembler(defs);
-			BuildInterpreter(defs);
-			BuildRecompiler(defs);
-			BuildTests(defs);
+			if(args.Length == 0 || args[0] != "tests") {
+				BuildDisassembler(defs);
+				BuildInterpreter(defs);
+				BuildRecompiler(defs);
+			} else
+				BuildTests(defs);
 		}
 
 		public static readonly Dictionary<string, (Func<PList, EType> Signature, Action<CodeBuilder, PList> CompileTime,
@@ -316,11 +317,14 @@ namespace Generator {
 								if(signed) {
 									args.Add($"(({name}) < 0 ? \"-\" : \"\")");
 									args.Add($"(({name}) < 0 ? -({name}) : ({name}))");
-									return $"%{args.Count - 1}%%{args.Count}$#x";
+									return $"%{args.Count - 1}%0x%{args.Count}$#x";
 								} else {
-									args.Add(signed || size != 8 ? name : "(uint16_t) " + name);
-									return $"%{args.Count}$#x";
+									args.Add(name);
+									return $"0x%{args.Count}$#x";
 								}
+							} else if(def.Locals[name] is EInt(var ssigned, var ssize) && ssize == 8) {
+								args.Add((ssigned ? "(int16_t) " : "(uint16_t) ") + name);
+								return $"%{args.Count}%";
 							}
 
 							//if(def.Locals[name] is EInt(var signed, var size) && size > 8)
@@ -441,6 +445,14 @@ namespace Generator {
 			using var sw = new StreamWriter(fp);
 			foreach(var def in defs) {
 				if(def.Fields.Count == 0) continue;
+				if(def.Name.StartsWith("LD") || def.Name.StartsWith("ST")) continue;
+				if(def.Name.StartsWith("SVC") || def.Name.StartsWith("BRK")) continue;
+				if(def.Name.StartsWith("MSR") || def.Name.StartsWith("MRS")) continue;
+				if(def.Name.StartsWith("CAS") || def.Name.StartsWith("CAS")) continue;
+
+				if(def.Eval.WalkLeaves<string>(tree => tree is PName pn && pn.Name.StartsWith("branch") ? "" : null) !=
+				   null) continue;
+				
 				var tg = new TestGen(def);
 				if(tg.Instructions.Count == 0) continue;
 				

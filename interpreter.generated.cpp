@@ -3451,7 +3451,7 @@ bool Interpreter::interpret(uint inst, ulong pc) {
 				break;
 			}
 			case 0x1: {
-				state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (((double) (float) ((float) (state->V[ra][0]))) - ((double) (double) ((double) (((double) (double) ((double) (reinterpret_cast<Vector128<double>>(state->V[rn])[0]))) * ((double) (double) ((double) (reinterpret_cast<Vector128<double>>(state->V[rm])[0]))))))), 0 });
+				state->V[(int) (rd)] = reinterpret_cast<Vector128<float>>((Vector128<double>) { (double) (((double) (double) ((double) (reinterpret_cast<Vector128<double>>(state->V[ra])[0]))) - ((double) (double) ((double) (((double) (double) ((double) (reinterpret_cast<Vector128<double>>(state->V[rn])[0]))) * ((double) (double) ((double) (reinterpret_cast<Vector128<double>>(state->V[rm])[0]))))))), 0 });
 				break;
 			}
 			default: {

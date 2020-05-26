@@ -9,6 +9,11 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 include_directories(/usr/local/include ../)
 link_directories(/usr/local/lib)
+
+include_directories(/Users/daeken/projects/unicorn_native/include)
+link_directories(/Users/daeken/projects/unicorn_native)
+link_libraries(unicorn)
+
 IF(CMAKE_BUILD_TYPE MATCHES Debug)
     link_directories(../cmake-build-debug)
 ELSE()
@@ -20,3 +25,4 @@ link_libraries(moonage)
 #set(CMAKE_EXE_LINKER_FLAGS -fsanitize=address)
 
 add_executable(unittests main.cpp insts.h)
+llvm_config(unittests core)

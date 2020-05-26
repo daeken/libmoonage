@@ -7,6 +7,7 @@ using PrettyPrinter;
 
 namespace Generator {
     public class TestGen {
+        private const ulong PC = 0x4_5000_0000UL;
         public readonly Dictionary<uint, string> Instructions = new Dictionary<uint, string>();
         public TestGen(Def def) {
             Console.WriteLine($"Generating test for {def.Name}");
@@ -18,9 +19,13 @@ namespace Generator {
                 parse.RemoveFirst();
                 var values = new List<uint> { 0, 1 };
 
-                if(bits == 5 && name[0] == 'r')
+                if(bits == 5 && name[0] == 'r') {
+                    values.Add(2);
+                    values.Add(3);
                     values.Add(0b11111);
-                else if(bits > 1) {
+                } else if(bits <= 4)
+                    values = Enumerable.Range(0, 1 << bits).Select(x => (uint) x).ToList();
+                else {
                     var max = (1U << bits) - 1;
                     values.Add(max);
                     values.Add(max - 1);
@@ -36,26 +41,100 @@ namespace Generator {
                             yield return (value << shift) | nv;
                 }
             }
-
             
             foreach(var values in Sub(fields)) {
                 var inst = def.Match | values;
 
-                var disasm = Disassemble(def, inst, 0x100000000UL);
+                var disasm = Disassemble(def, inst);
                 if(disasm == null)
                     continue;
 
                 Instructions[inst] = disasm;
             }
+
+            var instsWithConditions =
+                Instructions.Select(x => (x.Key, x.Value, CreateConditions(def, x.Key))).ToList();
         }
 
-        string Disassemble(Def def, uint inst, ulong pc) {
-            if((inst & def.Mask) != def.Match) return null;
+        class UnusablePreconditionException : Exception {}
+        class MissingPreconditionException : Exception {
+            public EType Type;
+            protected MissingPreconditionException(EType type) { Type = type; }
+        }
+        class MissingRegisterPreconditionException : MissingPreconditionException {
+            public string Register;
+            public MissingRegisterPreconditionException(string register, EType type) : base(type) { Register = register; }
+        }
+        class MissingMemoryPreconditionException : MissingPreconditionException {
+            public ulong Address;
+            public MissingMemoryPreconditionException(ulong address, EType type) : base(type) { Address = address; }
+        }
 
-            var locals = new Dictionary<string, dynamic>();
-            foreach(var field in def.Fields)
-                locals[field.Key] = (inst >> field.Value.Shift) & ((1U << field.Value.Bits) - 1);
+        class CpuState {
+            public Func<string, dynamic> ReadRegister;
+            public Action<string, dynamic> WriteRegister;
+            public Func<ulong, EType, dynamic> ReadMemory;
+            public Action<ulong, EType, dynamic> WriteMemory;
+        }
+
+        List<(Dictionary<string, dynamic>, Dictionary<string, dynamic>)> CreateConditions(Def def, uint inst) {
+            var preconditionSets = new Queue<Dictionary<string, dynamic>>();
+            preconditionSets.Enqueue(new Dictionary<string, dynamic>());
+            var conditionSets = new List<(Dictionary<string, dynamic>, Dictionary<string, dynamic>)>();
             
+            var masterLocals = new Dictionary<string, dynamic>();
+            foreach(var field in def.Fields)
+                masterLocals[field.Key] = (inst >> field.Value.Shift) & ((1U << field.Value.Bits) - 1);
+            Evaluate(def.Decode, masterLocals);
+
+            void Map(Dictionary<string, dynamic> preconditions) {
+                var registerValues = new Dictionary<string, dynamic>();
+                var memoryValues = new Dictionary<ulong, dynamic>();
+
+                dynamic ReadRegister(string name) {
+                    return 127;
+                }
+
+                void WriteRegister(string name, dynamic value) {
+                    Console.WriteLine($"Writing {value} to {name}");
+                }
+
+                dynamic ReadMemory(ulong address, EType type) {
+                    return null;
+                }
+
+                void WriteMemory(ulong address, EType type, dynamic value) {
+                }
+
+                var cpuState = new CpuState {
+                    ReadRegister = ReadRegister, WriteRegister = WriteRegister, 
+                    ReadMemory = ReadMemory, WriteMemory = WriteMemory
+                };
+
+                Evaluate(def.Eval, new Dictionary<string, dynamic>(masterLocals), cpuState);
+
+                var postconditions = registerValues;
+                foreach(var kv in memoryValues)
+                    postconditions[$"[0x{kv.Key:X}]"] = kv.Value;
+                conditionSets.Add((preconditions, postconditions));
+            }
+            
+            while(preconditionSets.TryDequeue(out var preconditions)) {
+                try {
+                    Map(preconditions);
+                } catch(UnusablePreconditionException) {
+                    
+                } catch(MissingRegisterPreconditionException mrpe) {
+                    
+                } catch(MissingMemoryPreconditionException mmpe) {
+                    
+                }
+            }
+
+            return conditionSets;
+        }
+
+        void Evaluate(PTree tree, Dictionary<string, dynamic> locals, CpuState state = null) {
             dynamic Binary(PList list, Func<dynamic, dynamic, dynamic> func) {
                 var a = Interpret(list[1]);
                 var b = Interpret(list[2]);
@@ -86,7 +165,35 @@ namespace Generator {
                             return value;
                         }
                         case "=":
-                            return locals[((PName) list[1]).Name] = Interpret(list[2]);
+                            if(list[1] is PList alist) {
+                                if(!(alist[0] is PName aname)) throw new NotImplementedException();
+                                return Interpret(new PList(new[] { new PName("=" + aname.Name) }.Concat(alist.Skip(1)).Concat(list.Skip(2))));
+                            } else
+                                return locals[((PName) list[1]).Name] = Interpret(list[2]);
+                        case "=gpr32": {
+                            var reg = Interpret(list[1]);
+                            state.WriteRegister($"X{reg}", (ulong) (uint) Interpret(list[2]));
+                            return null;
+                        }
+                        case "=gpr64": {
+                            var reg = Interpret(list[1]);
+                            state.WriteRegister($"X{reg}", (ulong) Interpret(list[2]));
+                            return null;
+                        }
+                        case "gpr32": return (uint) state.ReadRegister($"X{Interpret(list[1])}");
+                        case "gpr64": return (ulong) state.ReadRegister($"X{Interpret(list[1])}");
+                        case "nzcv": {
+                            var nzcv = (uint) state.ReadRegister("NZCV");
+                            if(list.Count == 1) return nzcv;
+                            var sub = ((PName) list[1]).Name;
+                            switch(sub) {
+                                case "n": return (nzcv >> 31) & 1;
+                                case "z": return (nzcv >> 30) & 1;
+                                case "c": return (nzcv >> 29) & 1;
+                                case "v": return (nzcv >> 28) & 1;
+                                default: throw new NotImplementedException();
+                            }
+                        }
                         case "if": {
                             var cond = Interpret(list[1]);
                             var bcond = cond is bool b ? b : cond != 0;
@@ -158,6 +265,10 @@ namespace Generator {
                                 default: throw new NotImplementedException($"Bitcasting to '{tn.Name}'");
                             }
                         }
+                        case "bitwidth": {
+                            var typeName = ((PName) list[1]).Name;
+                            return int.Parse(typeName.Substring(1));
+                        }
                         case "signext":
                             var isv = Interpret(list[1]);
                             if(!(list[2] is PName stn))
@@ -177,7 +288,7 @@ namespace Generator {
                             }
                             return ccv;
                         case "unimplemented": throw new NotSupportedException();
-                        case "pc": return pc;
+                        case "pc": return PC;
 
                         case "make-wmask": {
                             var ilist = list.Skip(1).Select(Interpret).ToList();
@@ -224,8 +335,18 @@ namespace Generator {
                 throw new NotImplementedException($"PTree '{tree}'");
             }
 
+            Interpret(tree);
+        }
+
+        string Disassemble(Def def, uint inst) {
+            if((inst & def.Mask) != def.Match) return null;
+
+            var locals = new Dictionary<string, dynamic>();
+            foreach(var field in def.Fields)
+                locals[field.Key] = (inst >> field.Value.Shift) & ((1U << field.Value.Bits) - 1);
+            
             try {
-                Interpret(def.Decode);
+                Evaluate(def.Decode, locals);
             } catch(NotSupportedException) {
                 return null;
             }
