@@ -105,6 +105,9 @@ namespace Generator {
 					else
 						c += $"auto {list[1]} = {GenerateExpression(list[2])};";
 					list.Skip(3).ForEach(x => GenerateStatement(c, (PList) x));
+				}).Interpret((list, state) => {
+					state.Locals[list[1].AsName()] = state.Evaluate(list[2]);
+					return state.Evaluate(list.Skip(3));
 				});
 
 			Statement("mlet", 
@@ -124,6 +127,12 @@ namespace Generator {
 						else
 							c += $"auto {dlist[i]} = {GenerateExpression(dlist[i + 1])};";
 					list.Skip(2).ForEach(x => GenerateStatement(c, (PList) x));
+				}).Interpret((list, state) => {
+					var assigns = (PList) list[1];
+					Debug.Assert(assigns.Count % 2 == 0);
+					for(var i = 0; i < assigns.Count; i += 2)
+						state.Locals[assigns[i].AsName()] = state.Evaluate(assigns[i + 1]);
+					return state.Evaluate(list.Skip(2));
 				});
 			
 			Expression("cast", list => TypeFromName(list[2]).AsRuntime(list.AnyRuntime), 

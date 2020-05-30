@@ -27,25 +27,33 @@ namespace Generator {
 		
 		public override void Define() {
 			Expression(
-				new[] { "+", "-", "*", "/", "%" }, LogicalType,
+				new[] {"+", "-", "*", "/", "%"}, LogicalType,
 				list => {
 					Debug.Assert(list.Count == 3);
 					if(list[1].Type is EInt(var sa, var ba) && list[2].Type is EInt(var sb, var bb)) {
 						var stype = new EInt(sa && sb, Math.Max(ba, bb))
-							{ Runtime = list[1].Type.Runtime || list[2].Type.Runtime };
+						{Runtime = list[1].Type.Runtime || list[2].Type.Runtime};
 						return
 							$"(({GenerateType(stype)}) ({GenerateType(list[1].Type.AsRuntime(list.Type.Runtime))}) ({GenerateExpression(list[1])})) {list[0]} (({GenerateType(stype)}) ({GenerateType(list[2].Type.AsRuntime(list.Type.Runtime))}) ({GenerateExpression(list[2])}))";
 					}
 
 					if(list[1].Type is EFloat(var wa) && list[2].Type is EFloat(var wb)) {
 						var stype = new EFloat(Math.Max(wa, wb))
-							{ Runtime = list[1].Type.Runtime || list[2].Type.Runtime };
+						{Runtime = list[1].Type.Runtime || list[2].Type.Runtime};
 						return
 							$"(({GenerateType(stype)}) ({GenerateType(list[1].Type.AsRuntime(list.Type.Runtime))}) ({GenerateExpression(list[1])})) {list[0]} (({GenerateType(stype)}) ({GenerateType(list[2].Type.AsRuntime(list.Type.Runtime))}) ({GenerateExpression(list[2])}))";
 					}
 
 					throw new NotImplementedException();
-				});
+				}).Interpret(
+					(list, state) =>
+						(state.Evaluate(list[1]), state.Evaluate(list[2])).WithCommonType((a, b) =>
+							list[0].AsName() switch {
+								"+" => a + b, "-" => a - b, 
+								"*" => a * b, "/" => a / b, 
+								"%" => a % b, 
+								_ => throw new BailoutException()
+							}));
 			
 			Expression(
 				new[] { "|", "&", "^" }, FirstType,
@@ -85,6 +93,14 @@ namespace Generator {
 					return
 						$"(({GenerateExpression(list[1])}) << ((RuntimeValue<uint>) ({bs} - ({GenerateExpression(list[2])})))) | (({GenerateExpression(list[1])}) >> ((RuntimeValue<uint>) ({GenerateExpression(list[2])})))";
 				});
+
+			Expression("reverse-bits", list => list[1].Type,
+				list => $"ReverseBits({GenerateExpression(list[1])})",
+				list => $"Call<{GenerateType(list[1].Type.AsCompiletime())}, {GenerateType(list[1].Type.AsCompiletime())}>(ReverseBits, {GenerateExpression(list[1])})");
+
+			Expression("count-leading-zeros", list => list[1].Type,
+				list => $"CountLeadingZeros({GenerateExpression(list[1])})", 
+				list => $"Call<{GenerateType(list[1].Type.AsCompiletime())}, {GenerateType(list[1].Type.AsCompiletime())}>(CountLeadingZeros, {GenerateExpression(list[1])})");
 
 			Expression(":", list => new EInt(false,
 					list.Skip(1).Select(y => y.Type is EInt(_, var width) ? width : throw new NotSupportedException())
@@ -143,6 +159,10 @@ namespace Generator {
 			Expression("floor", list => list[1].Type, 
 				list => $"floor{(list[1].Type is EFloat(var size) && size == 32 ? "f" : "")}({GenerateExpression(list[1])})", 
 				list => $"({GenerateExpression(list[1])}).Floor()");
+
+			Expression("float-to-fixed-point", list => TypeFromName(list[2]).AsRuntime(list[1].Type.Runtime || list[3].Type.Runtime), 
+				list => $"FloatToFixed{((EInt) list.Type).Width}({GenerateExpression(list[1])}, (int) ({GenerateExpression(list[3])}))", 
+				list => $"Call<{(((EInt) list.Type).Width == 64 ? "ulong" : "uint")}, {GenerateType(list[1].Type.AsCompiletime())}, int>(FloatToFixed{((EInt) list.Type).Width}, {GenerateExpression(list[1])}, (RuntimeValue<int>) ({GenerateExpression(list[3])}))");
 			
 			Expression("bitwidth", _ => new EInt(true, 32),
 				list => {
@@ -156,34 +176,27 @@ namespace Generator {
 
 			Expression("NaN?", list => new EInt(false, 1).AsRuntime(list[1].Type.Runtime),
 				list => $"isnan({GenerateExpression(list[1])}) ? 1U : 0U",
-				list => $"({GenerateExpression(list[1])}).IsNaN()");
-
-			long Evaluate(PTree elem) {
-				switch(elem) {
-					case PInt(var value):
-						return value;
-					case PList list:
-						var name = list[0] is PName pn ? pn.Name : throw new NotSupportedException();
-						var args = list.Skip(1).Select(Evaluate).ToList();
-						switch(name) {
-							case "+": return args.Aggregate((a, b) => a + b);
-							case "-": return args.Aggregate((a, b) => a - b);
-							case "*": return args.Aggregate((a, b) => a * b);
-							case "/": return args.Aggregate((a, b) => a / b);
-							case ">>": return args.Aggregate((a, b) => a >> (int) b);
-							case "<<": return args.Aggregate((a, b) => a << (int) b);
-							case "&": return args.Aggregate((a, b) => a & b);
-							case "|": return args.Aggregate((a, b) => a | b);
-							case "^": return args.Aggregate((a, b) => a ^ b);
-							default: throw new NotSupportedException($"Cannot evaluate list expression {name}");
-						}
-					default:
-						throw new NotSupportedException($"Cannot evaluate value {elem}");
-				}
-			}
+				list => $"({GenerateExpression(list[1])}).IsNaN()")
+				.Interpret((list, state) => {
+					var value = state.Evaluate(list[1]);
+					if(value is float fv)
+						return float.IsNaN(fv);
+					if(value is double dv)
+						return double.IsNaN(dv);
+					return false;
+				});
 
 			Expression("literal", list => list[1].Type,
-				list => GenerateExpression(new PInt(Evaluate(list[1])) { Type = list[1].Type }));
+				list => GenerateExpression(new PInt((long) ExecutionState.Cleanroom().Evaluate(list[1])) { Type = list[1].Type }))
+				.Interpret((list, state) => state.Evaluate(list[1]));
+
+			Expression("make-wmask", _ => new EInt(false, 64),
+				list => $"MakeWMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})",
+				list => $"MakeWMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})");
+
+			Expression("make-tmask", _ => new EInt(false, 64),
+				list => $"MakeTMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})",
+				list => $"MakeTMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})");
 		}
 	}
 }

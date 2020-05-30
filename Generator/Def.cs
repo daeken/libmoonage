@@ -97,9 +97,6 @@ namespace Generator {
 							case { } fname when Program.Expressions.ContainsKey(fname):
 								InferList(list);
 								return Program.Expressions[fname].Signature(list);
-							case { } fname when BuiltinTypes.Builtins.ContainsKey(fname):
-								InferList(list);
-								return BuiltinTypes.Builtins[fname](list);
 							default:
 								throw new NotImplementedException($"Unhandled function: {list[0]}");
 						}

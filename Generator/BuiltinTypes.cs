@@ -29,20 +29,5 @@ namespace Generator {
 			}
 			throw new NotImplementedException("Logical expression has non-int/non-float type");
 		}
-		
-		public static readonly IReadOnlyDictionary<string, Func<PList, EType>> Builtins = new Dictionary<string, Func<PList, EType>> {
-			["make-wmask"] = _ => new EInt(false, 64), 
-			["make-tmask"] = _ => new EInt(false, 64), 
-			["count-leading-zeros"] = x => x[1].Type, 
-			["reverse-bits"] = x => x[1].Type, 
-			["vector-all"] = _ => EType.Vector.AsRuntime(), 
-			["vector-zero-top"] = _ => EType.Vector.AsRuntime(), 
-			["vector-insert"] = _ => EType.Unit, 
-			["vector-element"] = x => TypeFromName(x[3]).AsRuntime(), 
-			["vector-extract"] = x => EType.Vector.AsRuntime(x[1].Type.Runtime || x[2].Type.Runtime), 
-			["vector-count-bits"] = _ => EType.Vector, 
-			["vector-sum-unsigned"] = _ => new EInt(false, 32), 
-			["float-to-fixed-point"] = x => TypeFromName(x[2]).AsRuntime(x[1].Type.Runtime || x[3].Type.Runtime), 
-		};
 	}
 }

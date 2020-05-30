@@ -53,21 +53,11 @@ namespace Generator {
             }
 
             var instsWithConditions =
-                Instructions.Select(x => (x.Key, x.Value, CreateConditions(def, x.Key))).ToList();
-        }
-
-        class UnusablePreconditionException : Exception {}
-        class MissingPreconditionException : Exception {
-            public EType Type;
-            protected MissingPreconditionException(EType type) { Type = type; }
-        }
-        class MissingRegisterPreconditionException : MissingPreconditionException {
-            public string Register;
-            public MissingRegisterPreconditionException(string register, EType type) : base(type) { Register = register; }
-        }
-        class MissingMemoryPreconditionException : MissingPreconditionException {
-            public ulong Address;
-            public MissingMemoryPreconditionException(ulong address, EType type) : base(type) { Address = address; }
+                Instructions.AsParallel().Select(x => {
+                    var cond = CreateConditions(def, x.Key);
+                    Console.WriteLine($"Generated {cond.Count} condition sets for {x.Value}");
+                    return (x.Key, x.Value, cond);
+                }).ToList();
         }
 
         class CpuState {
@@ -85,18 +75,33 @@ namespace Generator {
             var masterLocals = new Dictionary<string, dynamic>();
             foreach(var field in def.Fields)
                 masterLocals[field.Key] = (inst >> field.Value.Shift) & ((1U << field.Value.Bits) - 1);
-            Evaluate(def.Decode, masterLocals);
+            try {
+                Evaluate(def.Decode, masterLocals);
+            } catch(NotSupportedException) {
+                return null;
+            }
 
             void Map(Dictionary<string, dynamic> preconditions) {
                 var registerValues = new Dictionary<string, dynamic>();
                 var memoryValues = new Dictionary<ulong, dynamic>();
+                foreach(var (key, value) in preconditions) {
+                    if(key[0] == '[')
+                        memoryValues[Convert.ToUInt64(key.Substring(3, key.Length - 4), 16)] = value;
+                    else
+                        registerValues[key] = value;
+                }
 
                 dynamic ReadRegister(string name) {
-                    return 127;
+                    if(name != "NZCV" && name[0] != 'X') throw new NotImplementedException();
+                    if(registerValues.TryGetValue(name, out var value))
+                        return value;
+                    throw new MissingRegisterException(name, new EInt(false, 64));
                 }
 
                 void WriteRegister(string name, dynamic value) {
-                    Console.WriteLine($"Writing {value} to {name}");
+                    if(name != "NZCV" && name[0] != 'X') throw new NotImplementedException();
+                    //Console.WriteLine($"Writing {value} to {name}");
+                    registerValues[name] = value;
                 }
 
                 dynamic ReadMemory(ulong address, EType type) {
@@ -122,12 +127,20 @@ namespace Generator {
             while(preconditionSets.TryDequeue(out var preconditions)) {
                 try {
                     Map(preconditions);
-                } catch(UnusablePreconditionException) {
-                    
-                } catch(MissingRegisterPreconditionException mrpe) {
-                    
-                } catch(MissingMemoryPreconditionException mmpe) {
-                    
+                } catch(BailoutException) {
+                } catch(MissingRegisterException mrpe) {
+                    if(mrpe.Register != "NZCV" && mrpe.Register[0] != 'X') throw new NotImplementedException();
+                    if(mrpe.Register == "NZCV")
+                        for(var i = 0UL; i < 0b10000UL; ++i)
+                            preconditionSets.Enqueue(new Dictionary<string, dynamic>(preconditions) { ["NZCV"] = i << 28 });
+                    else
+                        for(var i = 0; i < 64; ++i) {
+                            var value = 1UL << i;
+                            preconditionSets.Enqueue(new Dictionary<string, dynamic>(preconditions) { [mrpe.Register] = value });
+                            preconditionSets.Enqueue(new Dictionary<string, dynamic>(preconditions) { [mrpe.Register] = ~value });
+                        }
+                } catch(MissingMemoryException mmpe) {
+                    throw new NotImplementedException();
                 }
             }
 
@@ -182,6 +195,23 @@ namespace Generator {
                         }
                         case "gpr32": return (uint) state.ReadRegister($"X{Interpret(list[1])}");
                         case "gpr64": return (ulong) state.ReadRegister($"X{Interpret(list[1])}");
+                        case "=nzcv": {
+                            if(list.Count == 2)
+                                state.WriteRegister("NZCV", Interpret(list[1]));
+                            else {
+                                var nzcv = (uint) state.ReadRegister("NZCV");
+                                var sub = ((PName) list[1]).Name;
+                                var sv = Interpret(list[2]);
+                                if(sv is bool x) sv = x ? 1U : 0U;
+                                var bit = (uint) sv & 1U;
+                                nzcv |= 1U << sub switch {
+                                    "n" => 31, "z" => 30, "c" => 29, "v" => 28, 
+                                    _ => throw new NotImplementedException()
+                                };
+                                state.WriteRegister("NZCV", nzcv);
+                            }
+                            return null;
+                        }
                         case "nzcv": {
                             var nzcv = (uint) state.ReadRegister("NZCV");
                             if(list.Count == 1) return nzcv;

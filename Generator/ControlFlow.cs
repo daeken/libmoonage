@@ -13,10 +13,15 @@ namespace Generator {
 					c++;
 					c += $"goto {Program.NextLabel};";
 					c--;
-				});
+				}).Interpret(
+					(list, state) =>
+						list.Skip(1).Select(x => state.Evaluate(x).AsBool()).Aggregate((a, b) => a && b)
+							? true
+							: throw new BailoutException());
 			
 			Statement("block", list => list.Last().Type,
-				(c, list) => list.Skip(1).ForEach(x => GenerateStatement(c, (PList) x)));
+				(c, list) => list.Skip(1).ForEach(x => GenerateStatement(c, (PList) x)))
+				.Interpret((list, state) => state.Evaluate(list.Skip(1)));
 			
 			Expression("block", list => list.Last().Type, 
 				list => $@"([=]() -> {GenerateType(list.Type)} {{
@@ -46,8 +51,8 @@ namespace Generator {
 						return $"\t\treturn ({code.Trim().TrimEnd(';')}).Store();";
 					return $"\t\t{code.Trim()}";
 				}))}
-	}})()");
-			
+	}})()").Interpret((list, state) => state.Evaluate(list.Skip(1)));
+
 			Statement("if",
 				list => list[2].Type.AsRuntime(list[1].Type.Runtime ||
 				                               !(list[2].Type is EUnit) && list[2].Type.Runtime ||
@@ -109,6 +114,8 @@ namespace Generator {
 				if(!b.StartsWith("throw")) b = $"({b})";
 				return $"({GenerateExpression(list[1])}) != 0 ? {a} : {b}";
 			});
+
+			Interpret("if", (list, state) => state.Evaluate(list[1]).AsBool() ? state.Evaluate(list[2]) : state.Evaluate(list[3]));
 			
 			Statement("for", _ => EType.Unit,
 				(c, list) => {
@@ -125,7 +132,7 @@ namespace Generator {
 					} else if(dlist.Count == 4) {
 						if(!(dlist[1] is PInt si) || !(dlist[2] is PInt ei) || !(dlist[3] is PInt ti))
 							throw new NotSupportedException();
-						start = (int) ei.Value;
+						start = (int) si.Value;
 						end = (int) ei.Value;
 						step = (int) ti.Value;
 					}
@@ -137,6 +144,30 @@ namespace Generator {
 						pi.Type = new EInt(true, 32);
 						list.Skip(2).ForEach(x => GenerateStatement(c, ((PList) x).MapLeaves(y => y is PName pn && pn.Name == name ? pi : y)));
 					}
+				}).Interpret((list, state) => {
+					var rlist = (PList) list[1];
+					var varName = ((PName) rlist[0]).Name;
+					var range = rlist.Skip(1).Select(state.Evaluate).ToList();
+					int start = 0, end = 0, step = 1;
+					if(range.Count == 1)
+						end = range[0];
+					else if(range.Count == 2)
+						(start, end) = (range[0], range[1]);
+					else if(range.Count == 3)
+						(start, end, step) = (range[0], range[1], range[2]);
+					else
+						throw new NotSupportedException();
+					var hasPrevious = state.Locals.ContainsKey(varName);
+					var preValue = hasPrevious ? state.Locals[varName] : null;
+					for(var i = start; i < end; i += step) {
+						state.Locals[varName] = i;
+						state.Evaluate(list.Skip(2));
+					}
+					if(hasPrevious)
+						state.Locals[varName] = preValue;
+					else
+						state.Locals.Remove(varName);
+					return null;
 				});
 			
 			Statement("when", _ => EType.Unit,
@@ -163,7 +194,7 @@ namespace Generator {
 						c--;
 						c += "}";
 					}
-				});
+				}).Interpret((list, state) => state.Evaluate(list[1]).AsBool() ? state.Evaluate(list[2]) : null);
 			
 			Statement("match", list => list.Count == 3 ? list[2].Type : list[3].Type,
 				(c, list) => {
@@ -214,17 +245,37 @@ namespace Generator {
 					return $"([=](auto {tn}) -> {GenerateType(list.Count == 3 ? list[2].Type : list[3].Type)} {{ switch({tn}) {{ {string.Join(" ", opts)} }} }})({GenerateExpression(list[1])})";
 				});
 
+			Interpret("match", (list, state) => {
+				var mv = state.Evaluate(list[1]);
+				for(var i = 2; i < list.Count; i += 2) {
+					if(i + 1 < list.Count) {
+						var cv = state.Evaluate(list[i]);
+						var mcond = false;
+						try {
+							mcond = cv == mv;
+						} catch(Exception) {
+							mcond = (ulong) cv == (ulong) mv;
+						}
+						if(mcond)
+							return state.Evaluate(list[i + 1]);
+					} else
+						return state.Evaluate(list[i]);
+				}
+				throw new BailoutException(); // This can only be hit if nothing matches and there's no default case
+			});
+
 			Expression("svc", _ => EType.Unit.AsRuntime(),
 				list => $"Svc({GenerateExpression(list[1])})",
-				list => $"CallSvc({GenerateExpression(list[1])})");
+				list => $"CallSvc({GenerateExpression(list[1])})")
+				.NoInterpret();
 			
 			Expression("branch", _ => EType.Unit.AsRuntime(), list => $"Branch({GenerateExpression(list[1])})");
 			Expression("branch-linked", _ => EType.Unit.AsRuntime(), list => $"BranchLinked({GenerateExpression(list[1])})");
 			Expression("branch-linked-register", _ => EType.Unit.AsRuntime(), list => $"BranchLinkedRegister({GenerateExpression(list[1])})");
 			Expression("branch-register", _ => EType.Unit.AsRuntime(), list => $"BranchRegister({GenerateExpression(list[1])})");
-			Expression("branch-default", _ => EType.Unit.AsRuntime(), list => $"Branch(pc + 4)");
+			Expression("branch-default", _ => EType.Unit.AsRuntime(), list => "Branch(pc + 4)");
 			
-			Expression("unimplemented", _ => EType.Unit, _ => "throw \"Not implemented\"");
+			Expression("unimplemented", _ => EType.Unit, _ => "throw \"Not implemented\"").NoInterpret();
 		}
 	}
 }

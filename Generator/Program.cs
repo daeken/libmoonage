@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,6 +14,32 @@ namespace Generator {
 		Recompiler
 	}
 
+	public class Capture {
+		public static readonly List<Capture> UnassignedCaptures = new List<Capture>();
+		public readonly string Name, RawName;
+		readonly Action<Func<PList, ExecutionState, dynamic>> Assign;
+
+		public Capture(string type, string name, Action<Func<PList, ExecutionState, dynamic>> assign) {
+			var st = new StackTrace();
+			var frame = st.GetFrame(2);
+			var method = frame?.GetMethod() ?? throw new Exception();
+			RawName = name;
+			Name = type + " " + name + " in " + method.DeclaringType.Name;
+			Assign = assign;
+			UnassignedCaptures.Add(this);
+		}
+		
+		public void Interpret(Func<PList, ExecutionState, dynamic> func) {
+			UnassignedCaptures.Remove(this);
+			Assign(func);
+		}
+
+		public void NoInterpret() {
+			UnassignedCaptures.Remove(this);
+			Assign((_, __) => throw new BailoutException());
+		}
+	}
+
 	public abstract class Builtin {
 		public static EType TypeFromName(PTree expr) {
 			if(!(expr is PName name)) throw new NotSupportedException($"Attempted to make type from expr {expr.ToPrettyString()}");
@@ -24,16 +50,26 @@ namespace Generator {
 			return ns[0] == 'i' ? new EInt(true, int.Parse(ns.Substring(1))) : new EInt(false, int.Parse(ns.Substring(1)));
 		}
 		
-		public static void Statement(string name, Func<PList, EType> signature, Action<CodeBuilder, PList> compiletime, Action<CodeBuilder, PList> runtime = null) {
+		public static Capture Statement(string name, Func<PList, EType> signature, Action<CodeBuilder, PList> compiletime, Action<CodeBuilder, PList> runtime = null) {
 			if(Program.Statements.ContainsKey(name)) throw new Exception();
-			Program.Statements[name] = (signature, compiletime, runtime ?? compiletime);
+			return new Capture("Statement", name, func => Program.Statements[name] = (signature, compiletime, runtime ?? compiletime, func));
 		}
-		public static void Expression(string name, Func<PList, EType> signature, Func<PList, string> compiletime, Func<PList, string> runtime = null) {
+		public static Capture Expression(string name, Func<PList, EType> signature, Func<PList, string> compiletime, Func<PList, string> runtime = null) {
 			if(Program.Expressions.ContainsKey(name)) throw new Exception();
-			Program.Expressions[name] = (signature, compiletime, runtime ?? compiletime);
+			return new Capture("Expression", name, func => Program.Expressions[name] = (signature, compiletime, runtime ?? compiletime, func));
 		}
-		public static void Expression(IEnumerable<string> names, Func<PList, EType> signature, Func<PList, string> compiletime, Func<PList, string> runtime = null) =>
-			MoreEnumerable.ForEach(names, name => Expression(name, signature, compiletime, runtime));
+		public static Capture Expression(IEnumerable<string> names, Func<PList, EType> signature, Func<PList, string> compiletime, Func<PList, string> runtime = null) {
+			var nameList = names.ToList();
+			return new Capture("Expressions", $"[ {string.Join(" ", nameList)} ]",
+				func => MoreEnumerable.ForEach(nameList, name => Expression(name, signature, compiletime, runtime).Interpret(func)));
+		}
+
+		public static void Interpret(string name, Func<PList, ExecutionState, dynamic> func) {
+			var captures = Capture.UnassignedCaptures.Where(x => x.RawName == name).ToList();
+			Debug.Assert(captures.Count != 0);
+			foreach(var capture in captures)
+				capture.Interpret(func);
+		}
 
 		public static string TempName() => Program.TempName();
 
@@ -52,6 +88,20 @@ namespace Generator {
 			MoreEnumerable.ForEach(AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes())
 					.Where(x => x.IsSubclassOf(typeof(Builtin))), x => ((Builtin) Activator.CreateInstance(x)).Define());
 
+			if(Capture.UnassignedCaptures.Count != 0) {
+				Console.WriteLine("The following captures have not been assigned:");
+				foreach(var capture in Capture.UnassignedCaptures)
+					Console.WriteLine($"- {capture.Name}");
+				Console.WriteLine("---Press Enter To Continue---");
+				Console.ReadLine();
+				//return;
+				while(Capture.UnassignedCaptures.Count != 0)
+					foreach(var capture in Capture.UnassignedCaptures) {
+						capture.NoInterpret();
+						break;
+					}
+			}
+			
 			var ptree = ListParser.Parse(File.ReadAllText("aarch64.isa"));
 			ptree = MacroProcessor.Rewrite(ptree);
 			var defs = Def.ParseAll(ptree).Select(InferRuntime).ToList();
@@ -64,16 +114,16 @@ namespace Generator {
 		}
 
 		public static readonly Dictionary<string, (Func<PList, EType> Signature, Action<CodeBuilder, PList> CompileTime,
-				Action<CodeBuilder, PList> RunTime)>
+				Action<CodeBuilder, PList> RunTime, Func<PList, ExecutionState, dynamic> Execute)>
 			Statements =
 				new Dictionary<string, (Func<PList, EType> Signature, Action<CodeBuilder, PList> CompileTime,
-					Action<CodeBuilder, PList> RunTime)>();
+					Action<CodeBuilder, PList> RunTime, Func<PList, ExecutionState, dynamic> Execute)>();
 
 		public static readonly Dictionary<string, (Func<PList, EType> Signature, Func<PList, string> CompileTime,
-				Func<PList, string> RunTime)>
+				Func<PList, string> RunTime, Func<PList, ExecutionState, dynamic> Execute)>
 			Expressions =
 				new Dictionary<string, (Func<PList, EType> Signature, Func<PList, string> CompileTime,
-					Func<PList, string> RunTime)>();
+					Func<PList, string> RunTime, Func<PList, ExecutionState, dynamic>)>();
 
 		static Def InferRuntime(Def def) {
 			void InferList(PList list) {
@@ -206,38 +256,6 @@ namespace Generator {
 
 		static string GenerateBaseListExpression(PList list) {
 			switch(list[0]) {
-				case PName("count-leading-zeros"): return $"CountLeadingZeros({GenerateExpression(list[1])})";
-				case PName("reverse-bits"): return $"ReverseBits({GenerateExpression(list[1])})";
-				case PName("make-tmask"):
-					return
-						$"MakeTMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})";
-				case PName("make-wmask"):
-					return
-						$"MakeWMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})";
-
-				case PName("vector-all"):
-					return
-						$"reinterpret_cast<Vector128<float>>(({GenerateExpression(list[1])}) - (Vector128<{GenerateType(list[1].Type)}>) {{}})";
-				case PName("vector-zero-top"): return GenerateExpression(list[1]);
-				case PName("vector-insert"):
-					return
-						$"reinterpret_cast<Vector128<{GenerateType(list[3].Type)}>*>(&(state->V[(int) ({GenerateExpression(list[1])})]))[0][{GenerateExpression(list[2])}] = {GenerateExpression(list[3])}";
-				case PName("vector-element"):
-					return
-						$"reinterpret_cast<Vector128<{GenerateType(list.Type.AsCompiletime())}>>({GenerateExpression(list[1])})[{GenerateExpression(list[2])}]";
-				case PName("vector-count-bits"):
-					return $"VectorCountBits({GenerateExpression(list[1])}, {GenerateExpression(list[2])})";
-				case PName("vector-sum-unsigned"):
-					return
-						$"VectorSumUnsigned({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])})";
-				case PName("vector-extract"):
-					return
-						$"VectorExtract({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[4])})";
-
-				case PName("float-to-fixed-point"):
-					return
-						$"FloatToFixed{((EInt) list.Type).Width}({GenerateExpression(list[1])}, (int) ({GenerateExpression(list[3])}))";
-
 				case PName name when Expressions.ContainsKey(name): return Expressions[name].CompileTime(list);
 				case PName name: throw new NotImplementedException($"Unknown name for GenerateListExpression: {name}");
 				default: throw new NotSupportedException($"Non-name for first element of list {list.ToPrettyString()}");
@@ -247,45 +265,6 @@ namespace Generator {
 		static string GenerateBaseListRuntimeExpression(PList list) {
 			Debug.Assert(Context == ContextTypes.Recompiler);
 			switch(list[0]) {
-				case PName("count-leading-zeros"):
-					return
-						$"Call<{GenerateType(list[1].Type.AsCompiletime())}, {GenerateType(list[1].Type.AsCompiletime())}>(CountLeadingZeros, {GenerateExpression(list[1])})";
-				case PName("reverse-bits"):
-					return
-						$"Call<{GenerateType(list[1].Type.AsCompiletime())}, {GenerateType(list[1].Type.AsCompiletime())}>(ReverseBits, {GenerateExpression(list[1])})";
-				case PName("make-tmask"):
-					return
-						$"MakeTMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})";
-				case PName("make-wmask"):
-					return
-						$"MakeWMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})";
-
-				case PName("vector-all"):
-					return
-						$"(({GenerateType(list[1].Type.AsRuntime())}) ({GenerateExpression(list[1])})).CreateVector()";
-				case PName("vector-zero-top"): return GenerateExpression(list[1]);
-
-				case PName("vector-insert"):
-					return
-						$"VR[(int) ({GenerateExpression(list[1])})] = VR[(int) ({GenerateExpression(list[1])})]().Insert({GenerateExpression(list[2])}, {GenerateExpression(list[3])})";
-				case PName("vector-element"):
-					return
-						$"({GenerateExpression(list[1])}).Element<{GenerateType(list.Type.AsCompiletime())}>({GenerateExpression(list[2])})";
-
-				case PName("vector-count-bits"):
-					return
-						$"Call<Vector128<float>, Vector128<float>, long>(VectorCountBits, {GenerateExpression(list[1])}, {GenerateExpression(list[2])})";
-				case PName("vector-sum-unsigned"):
-					return
-						$"Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, {GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])})";
-				case PName("vector-extract"):
-					return
-						$"Call<Vector128<float>, Vector128<float>, Vector128<float>, uint, uint>(VectorExtract, {GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[4])})";
-
-				case PName("float-to-fixed-point"):
-					return
-						$"Call<{(((EInt) list.Type).Width == 64 ? "ulong" : "uint")}, {GenerateType(list[1].Type.AsCompiletime())}, int>(FloatToFixed{((EInt) list.Type).Width}, {GenerateExpression(list[1])}, (RuntimeValue<int>) ({GenerateExpression(list[3])}))";
-
 				case PName name when Expressions.ContainsKey(name): return Expressions[name].RunTime(list);
 				case PName name:
 					throw new NotImplementedException($"Unknown name for GenerateRuntimeListExpression: {name}");
