@@ -2172,7 +2172,7 @@
         0b01 (= (vec-d rd) (-! (* (vec-d rn) (vec-d rm))))
         (unimplemented)))
 
-(defm frinta (v) (if (< v 0) (frintm v) (frintp v)))
+(defm frinta (v) (if (< v 0) (round-half-down v) (round-half-up v)))
 
 (def FRINTA-scalar
     "0 0 0 11110 tt 1 001 100 10000 nnnnn ddddd"
@@ -2198,8 +2198,8 @@
         0b01 "D"
         (unimplemented)))
     (match type
-        0b00 (= (vec-s rd) (frinti (vec-s rn)))
-        0b01 (= (vec-d rd) (frinti (vec-d rn)))
+        0b00 (= (vec-s rd) (round (vec-s rn)))
+        0b01 (= (vec-d rd) (round (vec-d rn)))
         (unimplemented)))
 
 (def FRINTM-scalar
@@ -2212,8 +2212,8 @@
         0b01 "D"
         (unimplemented)))
     (match type
-        0b00 (= (vec-s rd) (frintm (vec-s rn)))
-        0b01 (= (vec-d rd) (frintm (vec-d rn)))
+        0b00 (= (vec-s rd) (round-half-down (vec-s rn)))
+        0b01 (= (vec-d rd) (round-half-down (vec-d rn)))
         (unimplemented)))
 
 (def FRINTP-scalar
@@ -2226,8 +2226,8 @@
         0b01 "D"
         (unimplemented)))
     (match type
-        0b00 (= (vec-s rd) (frintp (vec-s rn)))
-        0b01 (= (vec-d rd) (frintp (vec-d rn)))
+        0b00 (= (vec-s rd) (round-half-up (vec-s rn)))
+        0b01 (= (vec-d rd) (round-half-up (vec-d rn)))
         (unimplemented)))
 
 (def FRINTX-scalar
@@ -2240,8 +2240,8 @@
         0b01 "D"
         (unimplemented)))
     (match type
-        0b00 (= (vec-s rd) (frinti (vec-s rn)))
-        0b01 (= (vec-d rd) (frinti (vec-d rn)))
+        0b00 (= (vec-s rd) (round (vec-s rn)))
+        0b01 (= (vec-d rd) (round (vec-d rn)))
         (unimplemented)))
 
 (def FRINTZ-scalar
@@ -2254,8 +2254,8 @@
         0b01 "D"
         (unimplemented)))
     (match type
-        0b00 (= (vec-s rd) (if (< (vec-s rn) 0) (frintp (vec-s rn)) (frintm (vec-s rn))))
-        0b01 (= (vec-d rd) (if (< (vec-d rn) 0) (frintp (vec-d rn)) (frintm (vec-d rn))))
+        0b00 (= (vec-s rd) (if (< (vec-s rn) 0) (round-half-up (vec-s rn)) (round-half-down (vec-s rn))))
+        0b01 (= (vec-d rd) (if (< (vec-d rn) 0) (round-half-up (vec-d rn)) (round-half-down (vec-d rn))))
         (unimplemented)))
 
 (def FRSQRTE-vector
@@ -3079,7 +3079,7 @@
             0b01_0 (= (vec-h rt) (load address u16))
             0b10_0 (= (vec-s rt) (load address f32))
             0b11_0 (= (vec-d rt) (load address f64))
-            0b00_1 (= (vec rt)   (load address f128))
+            0b00_1 (= (vec rt)   (load address vec))
             (unimplemented))
         (= (gpr-or-sp64 rn) (+ address simm))))
 
@@ -3102,7 +3102,7 @@
             0b01_0 (= (vec-h rt) (load address u16))
             0b10_0 (= (vec-s rt) (load address f32))
             0b11_0 (= (vec-d rt) (load address f64))
-            0b00_1 (= (vec rt)   (load address f128))
+            0b00_1 (= (vec rt)   (load address vec))
             (unimplemented))
         (= (gpr-or-sp64 rn) address)))
 
@@ -3130,7 +3130,7 @@
         0b0101 (= (vec-h rt) (load (+ (gpr-or-sp64 rn) imm) u16))
         0b1001 (= (vec-s rt) (load (+ (gpr-or-sp64 rn) imm) f32))
         0b1101 (= (vec-d rt) (load (+ (gpr-or-sp64 rn) imm) f64))
-               (= (vec   rt) (load (+ (gpr-or-sp64 rn) imm) f128))))
+               (= (vec   rt) (load (+ (gpr-or-sp64 rn) imm) vec))))
 
 (def LDR-simd-literal
     "ss 011 1 00 iiiiiiiiiiiiiiiiiii ttttt"
@@ -3146,7 +3146,7 @@
     (match size
         0b00 (= (vec-s rt) (load addr f32))
         0b01 (= (vec-d rt) (load addr f64))
-        0b10 (= (vec rt) (load addr f128))
+        0b10 (= (vec rt) (load addr vec))
         (unimplemented)))
 
 (def LDR-simd-register

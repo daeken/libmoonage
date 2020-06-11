@@ -15,7 +15,7 @@ namespace Generator {
 					c--;
 				}).Interpret(
 					(list, state) =>
-						list.Skip(1).Select(x => state.Evaluate(x).AsBool()).Aggregate((a, b) => a && b)
+						list.Skip(1).Select(x => Extensions.AsBool(state.Evaluate(x))).Aggregate((a, b) => a && b)
 							? true
 							: throw new BailoutException());
 			
@@ -115,7 +115,7 @@ namespace Generator {
 				return $"({GenerateExpression(list[1])}) != 0 ? {a} : {b}";
 			});
 
-			Interpret("if", (list, state) => state.Evaluate(list[1]).AsBool() ? state.Evaluate(list[2]) : state.Evaluate(list[3]));
+			Interpret("if", (list, state) => Extensions.AsBool(state.Evaluate(list[1])) ? state.Evaluate(list[2]) : state.Evaluate(list[3]));
 			
 			Statement("for", _ => EType.Unit,
 				(c, list) => {
@@ -150,11 +150,11 @@ namespace Generator {
 					var range = rlist.Skip(1).Select(state.Evaluate).ToList();
 					int start = 0, end = 0, step = 1;
 					if(range.Count == 1)
-						end = range[0];
+						end = (int) range[0];
 					else if(range.Count == 2)
-						(start, end) = (range[0], range[1]);
+						(start, end) = ((int) range[0], (int) range[1]);
 					else if(range.Count == 3)
-						(start, end, step) = (range[0], range[1], range[2]);
+						(start, end, step) = ((int) range[0], (int) range[1], (int) range[2]);
 					else
 						throw new NotSupportedException();
 					var hasPrevious = state.Locals.ContainsKey(varName);
@@ -194,7 +194,7 @@ namespace Generator {
 						c--;
 						c += "}";
 					}
-				}).Interpret((list, state) => state.Evaluate(list[1]).AsBool() ? state.Evaluate(list[2]) : null);
+				}).Interpret((list, state) => Extensions.AsBool(state.Evaluate(list[1])) ? state.Evaluate(list[2]) : null);
 			
 			Statement("match", list => list.Count == 3 ? list[2].Type : list[3].Type,
 				(c, list) => {
@@ -269,11 +269,22 @@ namespace Generator {
 				list => $"CallSvc({GenerateExpression(list[1])})")
 				.NoInterpret();
 			
-			Expression("branch", _ => EType.Unit.AsRuntime(), list => $"Branch({GenerateExpression(list[1])})");
-			Expression("branch-linked", _ => EType.Unit.AsRuntime(), list => $"BranchLinked({GenerateExpression(list[1])})");
-			Expression("branch-linked-register", _ => EType.Unit.AsRuntime(), list => $"BranchLinkedRegister({GenerateExpression(list[1])})");
-			Expression("branch-register", _ => EType.Unit.AsRuntime(), list => $"BranchRegister({GenerateExpression(list[1])})");
-			Expression("branch-default", _ => EType.Unit.AsRuntime(), list => "Branch(pc + 4)");
+			Expression("branch", _ => EType.Unit.AsRuntime(), list => $"Branch({GenerateExpression(list[1])})")
+				.Interpret((list, state) => state.Registers["PC"] = state.Evaluate(list[1]));
+			Expression("branch-linked", _ => EType.Unit.AsRuntime(), list => $"BranchLinked({GenerateExpression(list[1])})")
+				.Interpret((list, state) => {
+					state.Registers["X30"] = state.GetRegister("PC") + 4;
+					return state.Registers["PC"] = state.Evaluate(list[1]);
+				});
+			Expression("branch-linked-register", _ => EType.Unit.AsRuntime(), list => $"BranchLinkedRegister({GenerateExpression(list[1])})")
+				.Interpret((list, state) => {
+					state.Registers["X30"] = state.GetRegister("PC") + 4;
+					return state.Registers["PC"] = state.GetRegister($"X{state.Evaluate(list[1])}");
+				});
+			Expression("branch-register", _ => EType.Unit.AsRuntime(), list => $"BranchRegister({GenerateExpression(list[1])})")
+				.Interpret((list, state) => state.Registers["PC"] = state.GetRegister($"X{state.Evaluate(list[1])}"));
+			Expression("branch-default", _ => EType.Unit.AsRuntime(), list => "Branch(pc + 4)")
+				.Interpret((list, state) => state.Registers["PC"] = state.GetRegister("PC") + 4);
 			
 			Expression("unimplemented", _ => EType.Unit, _ => "throw \"Not implemented\"").NoInterpret();
 		}

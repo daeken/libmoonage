@@ -97,13 +97,19 @@ namespace Generator {
 				//return;
 				while(Capture.UnassignedCaptures.Count != 0)
 					foreach(var capture in Capture.UnassignedCaptures) {
-						capture.NoInterpret();
+						capture.Interpret((_, __) => throw new NotImplementedException(capture.Name));
 						break;
 					}
 			}
 			
 			var ptree = ListParser.Parse(File.ReadAllText("aarch64.isa"));
 			ptree = MacroProcessor.Rewrite(ptree);
+			var es = ExecutionState.Cleanroom();
+			foreach(var tle in ptree) {
+				try {
+					es.Evaluate(tle);
+				} catch(BailoutException) {}
+			}
 			var defs = Def.ParseAll(ptree).Select(InferRuntime).ToList();
 			if(args.Length == 0 || args[0] != "tests") {
 				BuildDisassembler(defs);
@@ -125,35 +131,35 @@ namespace Generator {
 				new Dictionary<string, (Func<PList, EType> Signature, Func<PList, string> CompileTime,
 					Func<PList, string> RunTime, Func<PList, ExecutionState, dynamic>)>();
 
-		static Def InferRuntime(Def def) {
-			void InferList(PList list) {
-				switch(list[0]) {
-					case PName(var name) when Statements.ContainsKey(name):
-						foreach(var elem in list.Skip(1))
-							if(elem is PList sublist)
-								InferList(sublist);
-						list.Type = Statements[name].Signature(list);
-						break;
-					default:
-						InferExpression(list);
-						break;
-				}
+		public static void InferList(PList list) {
+			switch(list[0]) {
+				case PName(var name) when Statements.ContainsKey(name):
+					foreach(var elem in list.Skip(1))
+						if(elem is PList sublist)
+							InferList(sublist);
+					list.Type = Statements[name].Signature(list);
+					break;
+				default:
+					InferExpression(list);
+					break;
 			}
+		}
 
-			EType InferExpression(PTree tree) {
-				if(tree.Type.Runtime) return tree.Type;
-				switch(tree) {
-					case PList list:
-						var set = false;
-						foreach(var elem in list)
-							if(InferExpression(elem).Runtime)
-								set = true;
-						return list.Type = set ? list.Type.AsRuntime() : list.Type;
-					default:
-						return tree.Type;
-				}
+		public static EType InferExpression(PTree tree) {
+			if(tree.Type.Runtime) return tree.Type;
+			switch(tree) {
+				case PList list:
+					var set = false;
+					foreach(var elem in list)
+						if(InferExpression(elem).Runtime)
+							set = true;
+					return list.Type = set ? list.Type.AsRuntime() : list.Type;
+				default:
+					return tree.Type;
 			}
-
+		}
+		
+		public static Def InferRuntime(Def def) {
 			InferList(def.Decode);
 			InferList(def.Eval);
 			return def;
@@ -283,7 +289,6 @@ namespace Generator {
 			var labelNum = 0;
 
 			foreach(var def in defs) {
-				Console.WriteLine(def.Name + "...");
 				var args = new List<string>();
 
 				string RewriteFormat(string fmt) =>
@@ -422,12 +427,19 @@ namespace Generator {
 		static void BuildTests(List<Def> defs) {
 			using var fp = File.Open("../test_instructions.generated.h", FileMode.Truncate);
 			using var sw = new StreamWriter(fp);
+			var found = false;
 			foreach(var def in defs) {
 				if(def.Fields.Count == 0) continue;
-				if(def.Name.StartsWith("LD") || def.Name.StartsWith("ST")) continue;
-				if(def.Name.StartsWith("SVC") || def.Name.StartsWith("BRK")) continue;
-				if(def.Name.StartsWith("MSR") || def.Name.StartsWith("MRS")) continue;
-				if(def.Name.StartsWith("CAS") || def.Name.StartsWith("CAS")) continue;
+				if(!found && def.Name != "LDP-simd-postindex")
+					continue;
+				found = true;
+				var miss = false;
+				if(def.Name.StartsWith("LD") || def.Name.StartsWith("ST")) miss = true;
+				if(def.Name.StartsWith("SVC") || def.Name.StartsWith("BRK")) miss = true;
+				if(def.Name.StartsWith("MSR") || def.Name.StartsWith("MRS")) miss = true;
+				if(def.Name.StartsWith("CAS")) continue;
+
+				if(!miss) continue;
 
 				if(def.Eval.WalkLeaves<string>(tree => tree is PName pn && pn.Name.StartsWith("branch") ? "" : null) !=
 				   null) continue;

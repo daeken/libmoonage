@@ -49,9 +49,9 @@ namespace Generator {
 					(list, state) =>
 						(state.Evaluate(list[1]), state.Evaluate(list[2])).WithCommonType((a, b) =>
 							list[0].AsName() switch {
-								"+" => a + b, "-" => a - b, 
-								"*" => a * b, "/" => a / b, 
-								"%" => a % b, 
+								"+" => unchecked(a + b), "-" => unchecked(a - b), 
+								"*" => unchecked(a * b), "/" => unchecked(a / b), 
+								"%" => unchecked(a % b), 
 								_ => throw new BailoutException()
 							}));
 			
@@ -68,20 +68,31 @@ namespace Generator {
 					}
 					var stype = GenerateType(new EInt(signed, size).AsRuntime(list.AnyRuntime));
 					return list.Skip(1).Select(x => $"(({stype}) ({GenerateExpression(x)}))").Aggregate((x1, x2) => $"({x1} {list[0]} {x2})");
-				});
+				}).Interpret(
+					(list, state) =>
+						(state.Evaluate(list[1]), state.Evaluate(list[2])).WithCommonType((a, b) =>
+							list[0].AsName() switch {
+								"|" => a | b, 
+								"&" => a & b, 
+								"^" => a ^ b, 
+								_ => throw new BailoutException()
+								}));
 			
-			Expression("~", FirstType, list => $"~({GenerateExpression(list[1])})");
-			Expression("-!", FirstType, list => $"-({GenerateExpression(list[1])})");
+			Expression("~", FirstType, list => $"~({GenerateExpression(list[1])})").Interpret((list, state) => ~state.Evaluate(list[1]));
+			Expression("-!", FirstType, list => $"-({GenerateExpression(list[1])})").Interpret((list, state) => -state.Evaluate(list[1]));
 			Expression("!", list => new EInt(false, 1).AsRuntime(list[1].Type.Runtime), 
-				list => $"({GenerateExpression(list[1])}) != 0 ? 0U : 1U", list => $"!({GenerateExpression(list[1])})");
+				list => $"({GenerateExpression(list[1])}) != 0 ? 0U : 1U", list => $"!({GenerateExpression(list[1])})")
+				.Interpret((list, state) => !Extensions.AsBool(state.Evaluate(list[1])));
 			
 			Expression("<<", FirstType, 
 				list => $"({GenerateExpression(list[1])}) << (uint) ({GenerateExpression(list[2])})", 
-				list => $"({GenerateExpression(list[1])}) << ({GenerateExpression(list[2])})");
+				list => $"({GenerateExpression(list[1])}) << ({GenerateExpression(list[2])})")
+				.Interpret((list, state) => state.Evaluate(list[1]) << (int) state.Evaluate(list[2]));
 			
 			Expression(">>", FirstType, 
 				list => $"({GenerateExpression(list[1])}) >> (uint) ({GenerateExpression(list[2])})", 
-				list => $"({GenerateExpression(list[1])}) >> ({GenerateExpression(list[2])})");
+				list => $"({GenerateExpression(list[1])}) >> ({GenerateExpression(list[2])})")
+				.Interpret((list, state) => state.Evaluate(list[1]) >> (int) state.Evaluate(list[2]));
 			
 			Expression(">>>", FirstType,
 				list => {
@@ -92,15 +103,22 @@ namespace Generator {
 					if(!(list[1].Type is EInt(false, var bs))) throw new NotSupportedException();
 					return
 						$"(({GenerateExpression(list[1])}) << ((RuntimeValue<uint>) ({bs} - ({GenerateExpression(list[2])})))) | (({GenerateExpression(list[1])}) >> ((RuntimeValue<uint>) ({GenerateExpression(list[2])})))";
+				}).Interpret((list, state) => {
+					var left = state.Evaluate(list[1]);
+					var right = (int) state.Evaluate(list[2]);
+					if(!(list[1].Type is EInt(false, var bs))) throw new NotSupportedException();
+					return (left << (bs - right)) | (left >> right);
 				});
 
 			Expression("reverse-bits", list => list[1].Type,
 				list => $"ReverseBits({GenerateExpression(list[1])})",
-				list => $"Call<{GenerateType(list[1].Type.AsCompiletime())}, {GenerateType(list[1].Type.AsCompiletime())}>(ReverseBits, {GenerateExpression(list[1])})");
+				list => $"Call<{GenerateType(list[1].Type.AsCompiletime())}, {GenerateType(list[1].Type.AsCompiletime())}>(ReverseBits, {GenerateExpression(list[1])})")
+				.NoInterpret(); // TODO: Implement
 
 			Expression("count-leading-zeros", list => list[1].Type,
 				list => $"CountLeadingZeros({GenerateExpression(list[1])})", 
-				list => $"Call<{GenerateType(list[1].Type.AsCompiletime())}, {GenerateType(list[1].Type.AsCompiletime())}>(CountLeadingZeros, {GenerateExpression(list[1])})");
+				list => $"Call<{GenerateType(list[1].Type.AsCompiletime())}, {GenerateType(list[1].Type.AsCompiletime())}>(CountLeadingZeros, {GenerateExpression(list[1])})")
+				.NoInterpret(); // TODO: Implement
 
 			Expression(":", list => new EInt(false,
 					list.Skip(1).Select(y => y.Type is EInt(_, var width) ? width : throw new NotSupportedException())
@@ -114,6 +132,15 @@ namespace Generator {
 						return ret;
 					}).Aggregate((a, x) =>
 						$"({GenerateType(list.Type)}) ((({GenerateType(list.Type)}) {a}) | (({GenerateType(list.Type)}) {x}))");
+				}).Interpret((list, state) => {
+					var ret = 0UL;
+					foreach(var elem in list.Skip(1)) {
+						var value = state.Evaluate(elem);
+						if(!(elem.Type is EInt(_, var width))) throw new NotSupportedException("Non-int element in :");
+						ret <<= width;
+						ret |= (ulong) Extensions.AsNonBool(value);
+					}
+					return ret;
 				});
 
 			Expression("replicate", list => new EInt(false,
@@ -127,6 +154,16 @@ namespace Generator {
 						.Select(i => $"((({GenerateType(list.Type)}) ({GenerateExpression(list[1])})) << {i * width})")
 						.Aggregate((a, x) =>
 							$"({GenerateType(list.Type)}) ((({GenerateType(list.Type)}) {a}) | (({GenerateType(list.Type)}) {x}))");
+				}).Interpret((list, state) => {
+					var ret = 0UL;
+					var value = (ulong) state.Evaluate(list[1]);
+					var count = (int) state.Evaluate(list[2]);
+					if(!(list[1].Type is EInt(_, var width))) throw new NotSupportedException("Non-int value for replicate");
+					for(var i = 0; i < count; ++i) {
+						ret <<= width;
+						ret |= value;
+					}
+					return ret;
 				});
 			
 			Expression("abs", list => list[1].Type, 
@@ -134,35 +171,55 @@ namespace Generator {
 					EFloat(_) => $"fabs({GenerateExpression(list[1])})", 
 					_ => throw new NotSupportedException()
 				}, 
-				list => $"({GenerateExpression(list[1])}).Abs()");
+				list => $"({GenerateExpression(list[1])}).Abs()")
+				.Interpret((list, state) => ((object) state.Evaluate(list[1])).If<float>(x => MathF.Abs(x)).IfNot<float>(x => Math.Abs(x)));
 
 			Expression("sqrt", list => list[1].Type,
 				list => $"({GenerateType(list.Type)}) sqrt((double) ({GenerateExpression(list[1])}))",
-				list => $"({GenerateType(list.Type)}) (({GenerateType(new EFloat(64).AsRuntime(list[1].Type.Runtime))}) ({GenerateExpression(list[1])})).Sqrt()");
+				list => $"({GenerateType(list.Type)}) (({GenerateType(new EFloat(64).AsRuntime(list[1].Type.Runtime))}) ({GenerateExpression(list[1])})).Sqrt()")
+				.Interpret((list, state) => ((object) state.Evaluate(list[1])).If<float>(x => MathF.Sqrt(x)).IfNot<float>(x => Math.Sqrt((double) x)));
 			
-			Expression("frinti", list => list[1].Type, 
+			Expression("round", list => list[1].Type, 
 				list => $"round{(list[1].Type is EFloat(var size) && size == 32 ? "f" : "")}({GenerateExpression(list[1])})", 
-				list => $"({GenerateExpression(list[1])}).Round()");
+				list => $"({GenerateExpression(list[1])}).Round()")
+				.Interpret((list, state) => ((object) state.Evaluate(list[1])).If<float>(x => MathF.Round(x)).IfNot<float>(x => Math.Round((double) x)));
 			
-			Expression("frintm", list => list[1].Type, 
+			Expression("round-half-down", list => list[1].Type, 
 				list => $"ceil{(list[1].Type is EFloat(var size) && size == 32 ? "f" : "")}(({GenerateExpression(list[1])}) - 0.5{(list[1].Type is EFloat(var _size) && _size == 32 ? "f" : "")})", 
-				list => $"({GenerateExpression(list[1])}).RoundHalfDown()");
+				list => $"({GenerateExpression(list[1])}).RoundHalfDown()")
+				.Interpret((list, state) => ((object) state.Evaluate(list[1])).If<float>(x => MathF.Ceiling(x - 0.5f)).IfNot<float>(x => Math.Ceiling((double) x - 0.5)));
 			
-			Expression("frintp", list => list[1].Type, 
+			Expression("round-half-up", list => list[1].Type, 
 				list => $"floor{(list[1].Type is EFloat(var size) && size == 32 ? "f" : "")}(({GenerateExpression(list[1])}) + 0.5{(list[1].Type is EFloat(var _size) && _size == 32 ? "f" : "")})", 
-				list => $"({GenerateExpression(list[1])}).RoundHalfUp()");
+				list => $"({GenerateExpression(list[1])}).RoundHalfUp()")
+				.Interpret((list, state) => ((object) state.Evaluate(list[1])).If<float>(x => MathF.Floor(x + 0.5f)).IfNot<float>(x => Math.Floor((double) x + 0.5)));
 			
 			Expression("ceil", list => list[1].Type, 
 				list => $"ceil{(list[1].Type is EFloat(var size) && size == 32 ? "f" : "")}({GenerateExpression(list[1])})", 
-				list => $"({GenerateExpression(list[1])}).Ceil()");
+				list => $"({GenerateExpression(list[1])}).Ceil()")
+				.Interpret((list, state) => ((object) state.Evaluate(list[1])).If<float>(x => MathF.Ceiling(x)).IfNot<float>(x => Math.Ceiling((double) x)));
 			
 			Expression("floor", list => list[1].Type, 
 				list => $"floor{(list[1].Type is EFloat(var size) && size == 32 ? "f" : "")}({GenerateExpression(list[1])})", 
-				list => $"({GenerateExpression(list[1])}).Floor()");
+				list => $"({GenerateExpression(list[1])}).Floor()")
+				.Interpret((list, state) => ((object) state.Evaluate(list[1])).If<float>(x => MathF.Floor(x)).IfNot<float>(x => Math.Floor((double) x)));
 
 			Expression("float-to-fixed-point", list => TypeFromName(list[2]).AsRuntime(list[1].Type.Runtime || list[3].Type.Runtime), 
 				list => $"FloatToFixed{((EInt) list.Type).Width}({GenerateExpression(list[1])}, (int) ({GenerateExpression(list[3])}))", 
-				list => $"Call<{(((EInt) list.Type).Width == 64 ? "ulong" : "uint")}, {GenerateType(list[1].Type.AsCompiletime())}, int>(FloatToFixed{((EInt) list.Type).Width}, {GenerateExpression(list[1])}, (RuntimeValue<int>) ({GenerateExpression(list[3])}))");
+				list => $"Call<{(((EInt) list.Type).Width == 64 ? "ulong" : "uint")}, {GenerateType(list[1].Type.AsCompiletime())}, int>(FloatToFixed{((EInt) list.Type).Width}, {GenerateExpression(list[1])}, (RuntimeValue<int>) ({GenerateExpression(list[3])}))")
+				.Interpret((list, state) => {
+					var width = ((EInt) list.Type).Width;
+					var swidth = ((EFloat) list[1].Type).Width;
+					var fvalue = state.Evaluate(list[1]);
+					var fbits = (int) state.Evaluate(list[3]);
+					return (width, swidth) switch {
+						(32, 32) => (dynamic) unchecked((uint) (int) MathF.Round(fvalue * (1 << fbits))), 
+						(64, 32) => (dynamic) unchecked((ulong) (long) MathF.Round(fvalue * (1 << fbits))), 
+						(32, 64) => (dynamic) unchecked((uint) (int) Math.Round(fvalue * (1 << fbits))), 
+						(64, 64) => (dynamic) unchecked((ulong) (long) Math.Round(fvalue * (1 << fbits))), 
+						_ => throw new NotSupportedException()
+					};
+				});
 			
 			Expression("bitwidth", _ => new EInt(true, 32),
 				list => {
@@ -172,19 +229,18 @@ namespace Generator {
 						case EVector _: return "128";
 						default: throw new NotSupportedException(list[1].Type.ToString());
 					}
+				}).Interpret((list, state) => TypeFromName(list[1]) switch {
+					EInt(_, var width) => width, 
+					EFloat(var width) => width, 
+					EVector _ => 128, 
+					var type => throw new NotSupportedException($"Bitwidth on type {type}")
 				});
 
 			Expression("NaN?", list => new EInt(false, 1).AsRuntime(list[1].Type.Runtime),
 				list => $"isnan({GenerateExpression(list[1])}) ? 1U : 0U",
 				list => $"({GenerateExpression(list[1])}).IsNaN()")
-				.Interpret((list, state) => {
-					var value = state.Evaluate(list[1]);
-					if(value is float fv)
-						return float.IsNaN(fv);
-					if(value is double dv)
-						return double.IsNaN(dv);
-					return false;
-				});
+				.Interpret((list, state) => 
+					state.Evaluate(list[1]) switch { float v => float.IsNaN(v), double v => double.IsNaN(v), _ => false });
 
 			Expression("literal", list => list[1].Type,
 				list => GenerateExpression(new PInt((long) ExecutionState.Cleanroom().Evaluate(list[1])) { Type = list[1].Type }))
@@ -192,11 +248,59 @@ namespace Generator {
 
 			Expression("make-wmask", _ => new EInt(false, 64),
 				list => $"MakeWMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})",
-				list => $"MakeWMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})");
+				list => $"MakeWMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})")
+				.Interpret((list, state) => MakeWMask((uint) state.Evaluate(list[1]), (uint) state.Evaluate(list[2]), (uint) state.Evaluate(list[3]), (long) state.Evaluate(list[5]), (int) state.Evaluate(list[4])));
 
 			Expression("make-tmask", _ => new EInt(false, 64),
 				list => $"MakeTMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})",
-				list => $"MakeTMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})");
+				list => $"MakeTMask({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])}, {GenerateExpression(list[5])}, {GenerateExpression(list[4])})")
+				.Interpret((list, state) => MakeTMask((uint) state.Evaluate(list[1]), (uint) state.Evaluate(list[2]), (uint) state.Evaluate(list[3]), (long) state.Evaluate(list[5]), (int) state.Evaluate(list[4])));
 		}
+
+		static int HighestSetBit(ulong v, int bits) {
+			for(var i = bits - 1; i >= 0; --i)
+				if((v & (1UL << i)) != 0)
+					return i;
+			return -1;
+		}
+
+		static ulong ZeroExtend(ulong v, int bits) => v & Ones(bits);
+		static ulong Ones(int bits) => Enumerable.Range(0, bits).Select(i => 1UL << i).Aggregate((a, b) => a | b);
+
+		static ulong Replicate(ulong v, int bits, int start, int rep, int ext) {
+			var repval = (v >> start) & Ones(rep);
+			var times = ext / rep;
+			var val = 0UL;
+			for(var i = 0; i < times; ++i)
+				val = (val << rep) | repval;
+			return v | (val << start);
+		}
+
+		static ulong RollRight(ulong v, int size, int rotate) => ((v << (size - rotate)) | (v >> rotate)) & Ones(size);
+
+		static (ulong, ulong) MakeMasks(uint n, uint imms, uint immr, int m, bool immediate) {
+			var len = HighestSetBit((n << 6) | (imms ^ 0b111111U), 7);
+			if(!(len > 0 && m >= 1 << len)) throw new BailoutException();
+
+			var levels = ZeroExtend(Ones(len), 6);
+			if(!(!immediate || (imms & levels) != levels)) throw new BailoutException();
+            
+			var S = imms & levels;
+			var R = immr & levels;
+
+			var diff = (S - R) & 0b111111;
+			var esize = 1 << len;
+			var d = diff & Ones(len);
+
+			var welem = ZeroExtend(Ones((int) (S + 1)), esize);
+			var telem = ZeroExtend(Ones((int) (d + 1)), esize);
+
+			var wmask = Replicate(RollRight(welem, esize, (int) R), esize, 0, esize, m);
+			var tmask = Replicate(telem, esize, 0, esize, m);
+			return (wmask, tmask);
+		}
+
+		static ulong MakeWMask(uint n, uint imms, uint immr, long m, int immediate) => MakeMasks(n, imms, immr, (int) m, immediate != 0).Item1;
+		static ulong MakeTMask(uint n, uint imms, uint immr, long m, int immediate) => MakeMasks(n, imms, immr, (int) m, immediate != 0).Item2;
 	}
 }

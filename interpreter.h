@@ -46,6 +46,6 @@ public:
             state->NZCV_Z = (value >> 30) & 1;
             state->NZCV_C = (value >> 29) & 1;
             state->NZCV_V = (value >> 28) & 1;
-        }
+        }VectorFrsqrte
     };
 };

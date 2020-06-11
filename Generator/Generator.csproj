@@ -5,9 +5,18 @@
         <TargetFramework>netcoreapp3.0</TargetFramework>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
     <ItemGroup>
       <PackageReference Include="morelinq" Version="3.3.2" />
       <PackageReference Include="PrettyPrinter" Version="1.0.0" />
+      <PackageReference Include="UltimateOrb.Int128" Version="1.0.8" />
     </ItemGroup>
 
 </Project>

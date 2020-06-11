@@ -34,7 +34,6 @@ namespace Generator {
 			var fields = new Dictionary<string, (int, int)>();
 			var mask = 0U;
 			var match = 0U;
-			name.Print();
 			var bitstring = bitstr.String.Replace(" ", "");
 			Debug.Assert(bitstring.Length == 32);
 			for(var i = 0; i < 32; ++i) {

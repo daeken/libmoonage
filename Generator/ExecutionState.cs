@@ -1,23 +1,28 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Generator {
     class BailoutException : Exception {}
     class MissingValueException : Exception {
         public EType Type;
-        protected MissingValueException(EType type) { Type = type; }
+        protected MissingValueException(EType type) => Type = type;
     }
     class MissingRegisterException : MissingValueException {
         public string Register;
-        public MissingRegisterException(string register, EType type) : base(type) { Register = register; }
+        public MissingRegisterException(string register) : base(EType.Undef) => Register = register;
+        public override string ToString() => $"Missing register {Register}";
     }
     class MissingMemoryException : MissingValueException {
         public ulong Address;
-        public MissingMemoryException(ulong address, EType type) : base(type) { Address = address; }
+        public MissingMemoryException(ulong address, EType type) : base(type) => Address = address;
+        public override string ToString() => $"Missing memory 0x{Address:X}";
     }
     
     public class ExecutionState {
         public readonly Dictionary<string, dynamic> Locals = new Dictionary<string,dynamic>();
+        public readonly Dictionary<string, dynamic> Registers = new Dictionary<string, dynamic>();
+        public readonly Dictionary<ulong, byte[]> Memory = new Dictionary<ulong, byte[]>();
         
         public static ExecutionState Cleanroom() => new ExecutionState();
 
@@ -46,6 +51,41 @@ namespace Generator {
                     value = sub;
             }
             return value;
+        }
+
+        public dynamic GetRegister(string name) {
+            if(Registers.TryGetValue(name, out var value))
+                return value;
+            throw new MissingRegisterException(name);
+        }
+
+        public dynamic GetMemory(ulong addr, EType type) {
+            if(addr > 0xFFFF_FFFF_FFFFUL)
+                throw new BailoutException();
+            var page = addr >> 12;
+            if(!Memory.TryGetValue(page, out var mem)) throw new MissingMemoryException(addr, type);
+            mem = mem.Skip((int) (addr - (page << 12))).ToArray();
+            return type switch {
+                EInt(false, 8) => (dynamic) mem[0], 
+                EInt(false, 16) => (dynamic) BitConverter.ToUInt16(mem), 
+                EInt(false, 32) => (dynamic) BitConverter.ToUInt32(mem), 
+                EInt(false, 64) => (dynamic) BitConverter.ToUInt64(mem), 
+                EInt(true, 16) => (dynamic) BitConverter.ToInt16(mem), 
+                EInt(true, 32) => (dynamic) BitConverter.ToInt32(mem), 
+                EInt(true, 64) => (dynamic) BitConverter.ToInt64(mem), 
+                EFloat(32) => (dynamic) BitConverter.ToSingle(mem), 
+                EFloat(64) => (dynamic) BitConverter.ToDouble(mem),
+                EVector _ => (dynamic) new Vector128<double>(new[] { BitConverter.ToDouble(mem), BitConverter.ToDouble(mem, 8) }), 
+                _ => throw new NotSupportedException()
+            };
+        }
+
+        public void SetMemory(ulong addr, dynamic value) {
+            var page = addr >> 12;
+            if(!Memory.TryGetValue(page, out var mem))
+                mem = Memory[page] = new byte[8192];
+            var bytes = BitConverter.GetBytes(value);
+            Array.Copy(bytes, 0, mem, (int) (addr - (page << 12)), bytes.Length);
         }
     }
 }
