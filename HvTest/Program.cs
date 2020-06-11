@@ -20,6 +20,29 @@ namespace HvTest {
             Console.WriteLine($"Memory? {mem}");
             var vcpu = vm.CreateVCpu(0);
             Console.WriteLine($"Created VCpu: {vcpu.Handle.DangerousGetHandle()}");
+            
+            if(vm.GetArmPreferredTarget(out var init))
+                Console.WriteLine("Got preferred target!");
+            
+            if(vcpu.Init(init))
+                Console.WriteLine("Initialized vcpu");
+            
+            vcpu.Debug = new KvmGuestDebug { Control = KvmGuestDebug.ENABLE | KvmGuestDebug.SINGLESTEP };
+
+            vcpu.PC = 0x4_5000_0000UL;
+            vcpu.X[0] = 123;
+            vcpu.X[1] = 100;
+            unsafe {
+                *(uint*) addr = 0x8b010002;
+            }
+            Console.WriteLine($"Set PC to {vcpu.PC:X}");
+            Console.WriteLine($"X2 == {vcpu.X[2]}");
+            
+            Console.WriteLine("Attempting to single step CPU");
+
+            var rs = vcpu.Run();
+            Console.WriteLine($"Run success? {rs}");
+            Console.WriteLine($"X2 == {vcpu.X[2]}");
         }
     }
 }
