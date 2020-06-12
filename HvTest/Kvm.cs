@@ -149,19 +149,104 @@ namespace HvTest {
         }
     }
 
-    public unsafe class VCpu {
+    public unsafe class VecWrapper {
+        readonly SafeUnixHandle Handle;
+        readonly ulong Base;
+        readonly byte[] Buffer = new byte[16];
+        internal VecWrapper(SafeUnixHandle handle, ulong @base) {
+            Handle = handle;
+            Base = @base;
+        }
+
+        public (ulong, ulong) this[int index] {
+            get {
+                fixed(byte* buf = Buffer) {
+                    var tb = (ulong*) buf;
+                    tb[0] = tb[1] = 0;
+                    if(!Ioctls.VcpuGetOneReg(Handle, new KvmOneReg {
+                        Id = Base + (ulong) index * 4,
+                        Addr = (ulong) buf
+                    }))
+                        throw new KvmException("Could not get register");
+                    return (tb[0], tb[1]);
+                }
+            }
+            set {
+                fixed(byte* buf = Buffer) {
+                    var tb = (ulong*) buf;
+                    tb[0] = value.Item1;
+                    tb[1] = value.Item2;
+                    if(!Ioctls.VcpuSetOneReg(Handle, new KvmOneReg {
+                        Id = Base + (ulong) index * 4,
+                        Addr = (ulong) tb
+                    }))
+                        throw new KvmException("Could not set register");
+                }
+            }
+        }
+    }
+
+    public unsafe class VCpu : IDisposable {
         internal readonly SafeUnixHandle Handle;
 
-        public RegWrapper X, VL, VH;
+        public RegWrapper X;
+        public VecWrapper V;
 
-        public ulong SP { get => X[31]; set => X[31] = value; }
+        public ulong SP { get => X[34]; set => X[34] = value; }
         public ulong PC { get => X[32]; set => X[32] = value; }
+
+        ulong SR(ulong op0, ulong CRn, ulong op1, ulong op2, ulong CRm) =>
+            (0x6030_0000_0013UL << 16) |
+            (op0 << 14) |
+            (op1 << 11) |
+            (CRn << 7) |
+            (CRm << 3) | 
+            op2;
+        
+        public ulong CPACR_EL1 {
+            get {
+                ulong output;
+                if(!Ioctls.VcpuGetOneReg(Handle, new KvmOneReg {
+                    Id = SR(0b11, 0b0001, 0b000, 0b010, 0b0000), 
+                    Addr = (ulong) &output
+                }))
+                    throw new KvmException("Could not get CPACR_EL1");
+                return output;
+            }
+            set {
+                if(!Ioctls.VcpuSetOneReg(Handle, new KvmOneReg {
+                    Id = SR(0b11, 0b0001, 0b000, 0b010, 0b0000), 
+                    Addr = (ulong) &value
+                }))
+                    throw new KvmException("Could not set CPACR_EL1");
+            }
+        }
+
+        public ulong SCTLR_EL1 {
+            get {
+                ulong output;
+                if(!Ioctls.VcpuGetOneReg(Handle, new KvmOneReg {
+                    Id = SR(0b11, 0b0001, 0b000, 0b000, 0b0000), 
+                    Addr = (ulong) &output
+                }))
+                    throw new KvmException("Could not get CPACR_EL1");
+                return output;
+            }
+            set {
+                if(!Ioctls.VcpuSetOneReg(Handle, new KvmOneReg {
+                    Id = SR(0b11, 0b0001, 0b000, 0b000, 0b0000), 
+                    Addr = (ulong) &value
+                }))
+                    throw new KvmException("Could not set CPACR_EL1");
+            }
+        }
+
+        public ulong NZCV { get => X[33] & 0xF_000_0000UL; set => X[33] = (X[33] & ~0xF_000_0000UL) | value; }
 
         internal VCpu(SafeUnixHandle handle) {
             Handle = handle;
             X = new RegWrapper(Handle, 0x6030_0000_0010_0000, 2);
-            VL = new RegWrapper(Handle, 0x6030_0000_0010_0054, 4);
-            VH = new RegWrapper(Handle, 0x6030_0000_0010_0056, 4);
+            V = new VecWrapper(Handle, 0x6030_0000_0010_0054);
         }
 
         public bool Init(KvmVcpuInit init) => Ioctls.VcpuArmInit(Handle, init);
@@ -174,9 +259,11 @@ namespace HvTest {
         }
 
         public bool Run() => Ioctls.VcpuRun(Handle);
+
+        public void Dispose() => Handle?.Dispose();
     }
 
-    public class Vm {
+    public class Vm : IDisposable {
         internal readonly SafeUnixHandle Handle;
 
         internal Vm(SafeUnixHandle handle) => Handle = handle;
@@ -190,6 +277,8 @@ namespace HvTest {
         }
 
         public bool GetArmPreferredTarget(out KvmVcpuInit init) => Ioctls.VmArmPreferredTarget(Handle, out init);
+
+        public void Dispose() => Handle?.Dispose();
     }
     
     public class Kvm {

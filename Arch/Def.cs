@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using MoreLinq.Extensions;
 using PrettyPrinter;
-using MoreLinq;
 
-namespace Generator {
+namespace Arch {
 	public class Def {
 		public static List<Def> ParseAll(PList top) => top.Where(x => ((PList) x)[0] is PName("def")).Select(x => new Def((PList) x)).ToList();
 		
@@ -90,12 +90,12 @@ namespace Generator {
 									locals[((PName) dlist[i]).Name] = InferType(dlist[i + 1]);
 								list.Skip(2).ForEach(x => InferType(x));
 								return list.Last().Type;
-							case { } fname when Program.Statements.ContainsKey(fname):
+							case { } fname when Core.Statements.ContainsKey(fname):
 								InferList(list);
-								return Program.Statements[fname].Signature(list);
-							case { } fname when Program.Expressions.ContainsKey(fname):
+								return Core.Statements[fname].Signature(list);
+							case { } fname when Core.Expressions.ContainsKey(fname):
 								InferList(list);
-								return Program.Expressions[fname].Signature(list);
+								return Core.Expressions[fname].Signature(list);
 							default:
 								throw new NotImplementedException($"Unhandled function: {list[0]}");
 						}

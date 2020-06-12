@@ -1,6 +1,6 @@
 using System;
 
-namespace Generator {
+namespace Arch {
 	class VectorMath : Builtin {
 		unsafe float FastInvsqrt(float number) {
 			var i = *(uint*) &number;

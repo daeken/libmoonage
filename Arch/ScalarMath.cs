@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Generator {
+namespace Arch {
 	class ScalarMath : Builtin {
 		static EType FirstType(PList list) => list[1].Type.AsRuntime(list.AnyRuntime);
 		

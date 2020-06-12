@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HvTest", "HvTest\HvTest.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteTestRunner", "RemoteTestRunner\RemoteTestRunner.csproj", "{B468FCCC-53F2-4F77-9213-5A7919613809}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arch", "Arch\Arch.csproj", "{74DD6D0F-073D-4E89-A3A6-61F4D3A289B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{B468FCCC-53F2-4F77-9213-5A7919613809}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B468FCCC-53F2-4F77-9213-5A7919613809}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B468FCCC-53F2-4F77-9213-5A7919613809}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74DD6D0F-073D-4E89-A3A6-61F4D3A289B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74DD6D0F-073D-4E89-A3A6-61F4D3A289B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74DD6D0F-073D-4E89-A3A6-61F4D3A289B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74DD6D0F-073D-4E89-A3A6-61F4D3A289B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

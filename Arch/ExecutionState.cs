@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Generator {
+namespace Arch {
     class BailoutException : Exception {}
     class MissingValueException : Exception {
         public EType Type;
@@ -33,9 +33,9 @@ namespace Generator {
                 case PName pn when Locals.ContainsKey(pn.Name): return Locals[pn.Name];
                 case PList pl: {
                     if(!(pl[0] is PName(var name))) throw new NotSupportedException($"First element of list {node} is not a name: {pl[0]}");
-                    if(Program.Statements.TryGetValue(name, out var st) && st.Execute != null)
+                    if(Core.Statements.TryGetValue(name, out var st) && st.Execute != null)
                         return st.Execute(pl, this);
-                    if(Program.Expressions.TryGetValue(name, out var et) && et.Execute != null)
+                    if(Core.Expressions.TryGetValue(name, out var et) && et.Execute != null)
                         return et.Execute(pl, this);
                     throw new NotImplementedException($"No compile-time execution of {node}");
                 }
@@ -54,13 +54,17 @@ namespace Generator {
         }
 
         public dynamic GetRegister(string name) {
+            if(name == "X31")
+                return 0UL;
             if(Registers.TryGetValue(name, out var value))
                 return value;
             throw new MissingRegisterException(name);
         }
 
         public dynamic GetMemory(ulong addr, EType type) {
-            if(addr > 0xFFFF_FFFF_FFFFUL)
+            if(addr > 0xFF_FFFF_FFFFUL)
+                throw new BailoutException();
+            if((addr & 0x7) != 0)
                 throw new BailoutException();
             var page = addr >> 12;
             if(!Memory.TryGetValue(page, out var mem)) throw new MissingMemoryException(addr, type);
@@ -81,6 +85,10 @@ namespace Generator {
         }
 
         public void SetMemory(ulong addr, dynamic value) {
+            if(addr > 0xFF_FFFF_FFFFUL)
+                throw new BailoutException();
+            if((addr & 0x7) != 0)
+                throw new BailoutException();
             var page = addr >> 12;
             if(!Memory.TryGetValue(page, out var mem))
                 mem = Memory[page] = new byte[8192];

@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
@@ -17,10 +16,6 @@
       <PackageReference Include="morelinq" Version="3.3.2" />
       <PackageReference Include="PrettyPrinter" Version="1.0.0" />
       <PackageReference Include="UltimateOrb.Int128" Version="1.0.8" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Arch\Arch.csproj" />
     </ItemGroup>
 
 </Project>

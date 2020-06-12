@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
 using PrettyPrinter;
 
-namespace Generator {
+namespace Arch {
 	public class BuiltinTypes {
 		static EType TypeFromName(PTree expr) {
 			if(!(expr is PName name)) throw new NotSupportedException($"Attempted to make type from expr {expr.ToPrettyString()}");

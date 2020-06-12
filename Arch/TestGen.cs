@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
-using PrettyPrinter;
 
-namespace Generator {
+namespace Arch {
     public class TestGen {
-        private const ulong PC = 0x4_5000_0000UL;
+        public const ulong PC = 0x4_5000_0000UL;
+        readonly Def Def;
         public readonly Dictionary<uint, string> Instructions = new Dictionary<uint, string>();
+
         public TestGen(Def def) {
-            Console.WriteLine($"Generating tests for {def.Name}");
+            Def = def;
             var fields =
                 new LinkedList<(string Name, int Bits, int Shift)>(def.Fields.Select(x =>
                     (Name: x.Key, x.Value.Bits, x.Value.Shift)));
@@ -51,16 +51,16 @@ namespace Generator {
 
                 Instructions[inst] = disasm;
             }
+        }
 
-            var instsWithConditions =
-                Instructions.AsParallel().Select(x => {
-                    var cond = CreateConditions(def, x.Key);
+        public
+            IEnumerable<(uint Inst, string Disasm, List<(Dictionary<object, dynamic>, Dictionary<object, dynamic>)>)>
+            InstructionsWithConditions =>
+                Instructions.Select(x => {
+                    var cond = CreateConditions(Def, x.Key);
                     //Console.WriteLine($"Generated {cond.Count} condition sets for {x.Value}");
                     return (x.Key, x.Value, cond);
-                }).ToList();
-            
-            Console.WriteLine($"\tGenerated {Instructions.Count} unique instructions and {instsWithConditions.Select(x => x.cond.Count).Sum()} precondition sets");
-        }
+                });
 
         List<(Dictionary<object, dynamic>, Dictionary<object, dynamic>)> CreateConditions(Def def, uint inst) {
             var preconditionSets = new Queue<Dictionary<object, dynamic>>();
@@ -92,15 +92,25 @@ namespace Generator {
 
                 state.Evaluate((PTree) def.Eval);
 
+                bool Equal(dynamic a, dynamic b) {
+                    try {
+                        return a == b;
+                    } catch(Exception) {
+                        return a.Equals(b);
+                    }
+                }
+
                 var postconditions = new Dictionary<object, dynamic>();
                 foreach(var (name, value) in state.Registers)
-                    postconditions[name] = value;
+                    if(!preconditions.TryGetValue(name, out var pv) || !Equal(pv, value))
+                        postconditions[name] = value;
                 foreach(var (page, data) in state.Memory)
-                    postconditions[page] = data;
+                    if(!preconditions.TryGetValue(page, out var pv) || pv != data)
+                        postconditions[page] = data;
                 preconditions.Remove("PC");
                 if(postconditions.TryGetValue("PC", out var pc) && pc == PC)
                     postconditions.Remove("PC");
-                if(preconditions.Count > 0 && postconditions.Count > 0)
+                if(postconditions.Count > 0)
                     conditionSets.Add((preconditions, postconditions));
             }
             
@@ -113,8 +123,8 @@ namespace Generator {
                         preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) {[mrpe.Register] = 0UL});
                         preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) {[mrpe.Register] = 1UL});
                     } else if(mrpe.Register[0] == 'X' || mrpe.Register == "SP") {
-                        for(var i = 0; i < 8; ++i) {
-                            var value = 1UL << (i * 8);
+                        for(var i = 0; i < 4; ++i) {
+                            var value = 1UL << (i * 16);
                             preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) {
                                 [mrpe.Register] = value
                             });
@@ -154,6 +164,10 @@ namespace Generator {
                             Array.Copy(bytes, 0, mdata, i, bytes.Length);
                         for(var i = offset - bytes.Length; i >= 0; i -= bytes.Length)
                             Array.Copy(bytes, 0, mdata, i, bytes.Length);
+                        if(page == PC >> 12)
+                            Array.Copy(BitConverter.GetBytes(inst), 0, mdata, 0, 4);
+                        else if(page == (PC >> 12) - 1)
+                            Array.Copy(BitConverter.GetBytes(inst), 0, mdata, 0x1000, 4);
                         preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) { [page] = mdata });
                     }
                 }

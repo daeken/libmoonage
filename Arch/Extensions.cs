@@ -1,6 +1,6 @@
 using System;
 
-namespace Generator {
+namespace Arch {
     public static class Extensions {
         public static dynamic AsDynamic(this object value) => value;
         public static T AsDynamic<T>(this object value, Func<dynamic, T> func) => func(value);

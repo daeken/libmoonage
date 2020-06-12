@@ -4,7 +4,7 @@ using System.Linq;
 using MoreLinq.Extensions;
 using PrettyPrinter;
 
-namespace Generator {
+namespace Arch {
 	public class MacroProcessor {
 		public static PList Rewrite(PList top) {
 			var macros = new Dictionary<string, (List<string>, PTree)>();

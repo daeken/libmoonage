@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace Generator {
+namespace Arch {
     public class Vector128<T> where T : struct {
         public T[] Data;
         public int Length = default(T) switch {
@@ -90,6 +90,12 @@ namespace Generator {
         public static Vector128<T> operator &(Vector128<T> left, Vector128<T> right) => left.MapTwo(right, (a, b) => a & b);
         
         public static Vector128<T> operator ~(Vector128<T> left) => left.Map(a => ~a);
+
+        public bool Equals<U>(Vector128<U> other) where U : struct {
+            var left = As<ulong>();
+            var right = other.As<ulong>();
+            return left[0] == right[0] && left[1] == right[1];
+        }
 
         public override string ToString() => $"Vector128<{typeof(T).Name}> {{ {string.Join(", ", Data.Select(x => x.ToString()))} }}";
 

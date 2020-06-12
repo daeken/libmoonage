@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Text;
 
-namespace Generator {
+namespace Arch {
 	public class CodeBuilder {
 		readonly StringBuilder Builder = new StringBuilder();
 		public string Code => Builder.ToString();

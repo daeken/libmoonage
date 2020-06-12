@@ -1,6 +1,6 @@
 using System;
 
-namespace Generator {
+namespace Arch {
 	public class Memory : Builtin {
 		public override void Define() {
 			Expression("load", list => TypeFromName(list[2]).AsRuntime(),

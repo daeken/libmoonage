@@ -5,7 +5,7 @@ using System.Linq;
 using MoreLinq.Extensions;
 using PrettyPrinter;
 
-namespace Generator {
+namespace Arch {
 	public abstract class EType {
 		public static readonly EUndef Undef = new EUndef();
 		public static readonly EUnit Unit = (EUnit) EUnit.CompiletimeType;

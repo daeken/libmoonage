@@ -1,6 +1,6 @@
 using System;
 
-namespace Generator {
+namespace Arch {
     public class TopLevelProcessing : Builtin {
         public override void Define() {
             Expression("defm", _ => EType.Unit, _ => throw new NotSupportedException()).NoInterpret();

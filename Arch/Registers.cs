@@ -1,6 +1,6 @@
 using System;
 
-namespace Generator {
+namespace Arch {
 	public class Registers : Builtin {
 		public override void Define() {
 			Expression("pc", _ => new EInt(false, 64), _ => "pc").Interpret((_, state) => state.GetRegister("PC"));

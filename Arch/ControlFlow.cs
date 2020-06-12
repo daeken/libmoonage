@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using MoreLinq.Extensions;
 
-namespace Generator {
+namespace Arch {
 	class ControlFlow : Builtin {
 		public override void Define() {
 			Statement("requires", list => EType.Unit,
 				(c, list) => {
 					c += $"if({string.Join(" && ", list.Skip(1).Select(x => $"!({GenerateExpression(x)})"))})";
 					c++;
-					c += $"goto {Program.NextLabel};";
+					c += $"goto {Core.NextLabel};";
 					c--;
 				}).Interpret(
 					(list, state) =>

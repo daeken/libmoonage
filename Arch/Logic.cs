@@ -1,9 +1,9 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using MoreLinq;
+using MoreLinq.Extensions;
 
-namespace Generator {
+namespace Arch {
 	public class Logic : Builtin {
 		public override void Define() {
 			Statement("=", list => list[2].Type?.AsRuntime(list.AnyRuntime) ?? throw new NotImplementedException(),
