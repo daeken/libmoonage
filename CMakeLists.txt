@@ -10,6 +10,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 set(LLVM_LIB_DEPS LLVMX86AsmPrinter LLVMX86AsmParser)
 find_package(llvm 9.0.1 REQUIRED CONFIG)
 include_directories(${LLVM_INCLUDE_DIRS})
+include_directories(xbyak)
 add_definitions(${LLVM_DEFINITIONS})
 message("${LLVM_INCLUDE_DIRS}")
 #add_definitions(-fsanitize=address)
@@ -21,10 +22,14 @@ IF(SIMBUILD MATCHES true)
 ENDIF()
 set(CMAKE_CXX_FLAGS "-Wno-deprecated-declarations -O2")
 
-add_library(moonage SHARED disassembler.generated.cpp common.h interpreter.generated.cpp interpreter.cpp interpreter.h state.h recompiler.generated.cpp recompiler.h runtimeValue.cpp runtimeValue.h recompiler.cpp property.h cacheManager.cpp cacheManager.h interface.h metacpu.cpp metacpu.h test_instructions.generated.h)
+add_library(moonage SHARED
+        disassembler.generated.cpp common.h interpreter.generated.cpp interpreter.cpp interpreter.h state.h recompiler.generated.cpp recompiler.h runtimeValue.cpp runtimeValue.h recompiler.cpp
+        property.h cacheManager.cpp cacheManager.h interface.h metacpu.cpp metacpu.h  lightRecompiler.generated.cpp lightRecompiler.h lightRuntimeValue.cpp lightRuntimeValue.h lightRecompiler.cpp
+        xbyak/xbyak/xbyak.h xbyak/xbyak/xbyak_mnemonic.h xbyak/xbyak/xbyak_util.h vectorHelpers.cpp vectorHelpers.h)
 target_link_options(moonage PUBLIC -fvisibility=hidden)
 llvm_config(moonage core support mc mcjit native nativecodegen target)
 
 IF(NOT (SIMBUILD MATCHES true))
-    add_subdirectory("${PROJECT_SOURCE_DIR}/UnitTests" "${PROJECT_SOURCE_DIR}/UnitTests_output")
+    add_subdirectory("${PROJECT_SOURCE_DIR}/SimpleTest" "${PROJECT_SOURCE_DIR}/SimpleTest_output")
+    #add_subdirectory("${PROJECT_SOURCE_DIR}/UnitTests" "${PROJECT_SOURCE_DIR}/UnitTests_output")
 ENDIF()

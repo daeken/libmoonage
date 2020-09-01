@@ -7,7 +7,7 @@ namespace Arch {
 			
 			Expression("gpr32", _ => new EInt(false, 32).AsRuntime(),
 				list => $"({GenerateExpression(list[1])}) == 31 ? 0U : (uint) state->X[(int) {GenerateExpression(list[1])}]",
-				list => $"({GenerateExpression(list[1])}) == 31 ? (RuntimeValue<uint>) 0U : (RuntimeValue<uint>) (XR[(int) {GenerateExpression(list[1])}]())")
+				list => $"({GenerateExpression(list[1])}) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) {GenerateExpression(list[1])}]())")
 				.Interpret((list, state) => {
 					var reg = state.Evaluate(list[1]);
 					if(reg == 31)
@@ -23,7 +23,7 @@ namespace Arch {
 				});
 			Expression("gpr64", _ => new EInt(false, 64).AsRuntime(),
 				list => $"({GenerateExpression(list[1])}) == 31 ? 0UL : state->X[(int) {GenerateExpression(list[1])}]",
-				list => $"({GenerateExpression(list[1])}) == 31 ? (RuntimeValue<ulong>) 0UL : XR[(int) {GenerateExpression(list[1])}]()")
+				list => $"({GenerateExpression(list[1])}) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) {GenerateExpression(list[1])}]()")
 				.Interpret((list, state) => {
 					var reg = state.Evaluate(list[1]);
 					if(reg == 31)
@@ -43,11 +43,11 @@ namespace Arch {
 				list => $"VR[(int) ({GenerateExpression(list[1])})]")
 				.Interpret((list, state) => state.GetRegister($"V{state.Evaluate(list[1])}"));
 			Expression("vec-b", _ => new EFloat(8).AsRuntime(),
-				list => $"reinterpret_cast<Vector128<byte>>(state->V[{GenerateExpression(list[1])}])[0]",
+				list => $"reinterpret_cast<Vector128<uint8_t>>(state->V[{GenerateExpression(list[1])}])[0]",
 				list => $"VBR[(int) ({GenerateExpression(list[1])})]")
 				.Interpret((list, state) => state.GetRegister($"V{state.Evaluate(list[1])}").As<byte>()[0]);
 			Expression("vec-h", _ => new EInt(false, 16).AsRuntime(),
-				list => $"reinterpret_cast<Vector128<ushort>>(state->V[{GenerateExpression(list[1])}])[0]",
+				list => $"reinterpret_cast<Vector128<uint16_t>>(state->V[{GenerateExpression(list[1])}])[0]",
 				list => $"VHR[(int) ({GenerateExpression(list[1])})]")
 				.Interpret((list, state) => state.GetRegister($"V{state.Evaluate(list[1])}").As<ushort>()[0]);
 			Expression("vec-s", _ => new EFloat(32).AsRuntime(),

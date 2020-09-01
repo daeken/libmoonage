@@ -8,7 +8,7 @@ typedef uint32_t uint;
 typedef uint16_t ushort;
 typedef uint8_t byte;
 
-const int instructionClassCount = 322+0;
+const int instructionClassCount = 327+0;
 
 const char* getInstructionClass(uint inst) {
     ulong pc = 0;
@@ -29,7 +29,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
+		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
 		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_2) -> string { switch(temp_2) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_3) -> string { switch(temp_3) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		return "ADD-extended-register";
 	}
@@ -41,8 +41,8 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (long) (((bool) (((sh) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0xC));
-		auto simm = (uint) (((uint) ((uint) (imm))) << (uint) (shift));
+		auto shift = (int64_t) (((bool) (((sh) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0xC));
+		auto simm = (uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (shift));
 		return "ADD-immediate";
 	}
 	insn_3:
@@ -64,7 +64,7 @@ const char* getInstructionClass(uint inst) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_7) -> string { switch(temp_7) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_7) -> string { switch(temp_7) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ADD-vector";
 	}
 	insn_5:
@@ -76,7 +76,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
+		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
 		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_10) -> string { switch(temp_10) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_11) -> string { switch(temp_11) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		return "ADDS-extended-register";
 	}
@@ -88,8 +88,8 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (long) (((bool) (((sh) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0xC));
-		auto simm = (uint) (((uint) ((uint) (imm))) << (uint) (shift));
+		auto shift = (int64_t) (((bool) (((sh) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0xC));
+		auto simm = (uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (shift));
 		return "ADDS-immediate";
 	}
 	insn_7:
@@ -109,8 +109,8 @@ const char* getInstructionClass(uint inst) {
 		auto immlo = (inst >> 29) & 0x3U;
 		auto immhi = (inst >> 5) & 0x7FFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>((uint) ((uint) (((uint) (((uint) (immlo)) << 0)) | ((uint) (((uint) (immhi)) << 2)))), 21));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) (imm)));
+		auto imm = (int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) (((uint32_t) (((uint32_t) (immlo)) << 0)) | ((uint32_t) (((uint32_t) (immhi)) << 2)))), 21));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) (imm)));
 		return "ADR";
 	}
 	insn_9:
@@ -118,8 +118,8 @@ const char* getInstructionClass(uint inst) {
 		auto immlo = (inst >> 29) & 0x3U;
 		auto immhi = (inst >> 5) & 0x7FFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>((ulong) ((ulong) (((ulong) (ulong) (((ulong) (((ulong) ((ushort) ((ushort) (0x0)))) << 0)) | ((ulong) (((ulong) (immlo)) << 12)))) | ((ulong) (((ulong) (immhi)) << 14)))), 33));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) ((ulong) (((ulong) (((ulong) ((ushort) ((ushort) (0x0)))) << 0)) | ((ulong) (((ulong) ((ulong) ((ulong) ((ulong) (((ulong) (pc)) >> (uint) (0xC)))))) << 12)))))) + ((ulong) (long) (imm)));
+		auto imm = (int64_t) (SignExt<int64_t>((uint64_t) ((uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (((uint64_t) ((uint16_t) ((uint16_t) (0x0)))) << 0)) | ((uint64_t) (((uint64_t) (immlo)) << 12)))) | ((uint64_t) (((uint64_t) (immhi)) << 14)))), 33));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) ((uint64_t) (((uint64_t) (((uint64_t) ((uint16_t) ((uint16_t) (0x0)))) << 0)) | ((uint64_t) (((uint64_t) ((uint64_t) ((uint64_t) ((uint64_t) (((uint64_t) (pc)) >> (uint) (0xC)))))) << 12)))))) + ((uint64_t) (int64_t) (imm)));
 		return "ADRP";
 	}
 	insn_10:
@@ -131,7 +131,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (ulong) (MakeWMask(up, imms, immr, (long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
+		auto imm = (uint64_t) (MakeWMask(up, imms, immr, (int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
 		return "AND-immediate";
 	}
 	insn_11:
@@ -176,7 +176,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (ulong) (MakeWMask(up, imms, immr, (long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
+		auto imm = (uint64_t) (MakeWMask(up, imms, immr, (int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
 		return "ANDS-immediate";
 	}
 	insn_15:
@@ -191,14 +191,14 @@ const char* getInstructionClass(uint inst) {
 	insn_16:
 	if((inst & 0xFC000000U) == 0x14000000U) {
 		auto imm = (inst >> 0) & 0x3FFFFFFU;
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) (((uint) ((uint) (imm))) << (uint) (0x2)), 28)))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (0x2)), 28)))));
 		return "B";
 	}
 	insn_17:
 	if((inst & 0xFF000010U) == 0x54000000U) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto cond = (inst >> 0) & 0xFU;
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) (((uint) ((uint) (imm))) << (uint) (0x2)), 21)))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (0x2)), 21)))));
 		auto condstr = (string) (([=](auto temp_19) -> string { switch(temp_19) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
 		return "B.cond";
 	}
@@ -248,8 +248,8 @@ const char* getInstructionClass(uint inst) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto T = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
-		auto amount = (long) ((cmode != 0) ? (0x8) : (0x0));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto amount = (int64_t) ((cmode != 0) ? (0x8) : (0x0));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		return "BIC-vector-immediate-16bit";
 	}
 	insn_22:
@@ -266,8 +266,8 @@ const char* getInstructionClass(uint inst) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto T = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
-		auto amount = (byte) ((cmode) << (uint) (0x3));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto amount = (uint8_t) ((cmode) << (uint) (0x3));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		return "BIC-vector-immediate-32bit";
 	}
 	insn_23:
@@ -285,8 +285,8 @@ const char* getInstructionClass(uint inst) {
 	insn_24:
 	if((inst & 0xFC000000U) == 0x94000000U) {
 		auto imm = (inst >> 0) & 0x3FFFFFFU;
-		auto offset = (long) (SignExt<long>((uint) (((uint) ((uint) (imm))) << (uint) (0x2)), 28));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) (offset)));
+		auto offset = (int64_t) (SignExt<int64_t>((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (0x2)), 28));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) (offset)));
 		return "BL";
 	}
 	insn_25:
@@ -320,8 +320,8 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto rs2 = (ulong) (((ulong) (byte) (rs)) + ((ulong) (long) (0x1)));
-		auto rt2 = (ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)));
+		auto rs2 = (uint64_t) (((uint64_t) (uint8_t) (rs)) + ((uint64_t) (int64_t) (0x1)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1)));
 		return "CASP";
 	}
 	insn_30:
@@ -331,8 +331,8 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto rs2 = (ulong) (((ulong) (byte) (rs)) + ((ulong) (long) (0x1)));
-		auto rt2 = (ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)));
+		auto rs2 = (uint64_t) (((uint64_t) (uint8_t) (rs)) + ((uint64_t) (int64_t) (0x1)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1)));
 		return "CASPA";
 	}
 	insn_31:
@@ -342,8 +342,8 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto rs2 = (ulong) (((ulong) (byte) (rs)) + ((ulong) (long) (0x1)));
-		auto rt2 = (ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)));
+		auto rs2 = (uint64_t) (((uint64_t) (uint8_t) (rs)) + ((uint64_t) (int64_t) (0x1)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1)));
 		return "CASPAL";
 	}
 	insn_32:
@@ -353,8 +353,8 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto rs2 = (ulong) (((ulong) (byte) (rs)) + ((ulong) (long) (0x1)));
-		auto rt2 = (ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)));
+		auto rs2 = (uint64_t) (((uint64_t) (uint8_t) (rs)) + ((uint64_t) (int64_t) (0x1)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1)));
 		return "CASPL";
 	}
 	insn_33:
@@ -363,7 +363,7 @@ const char* getInstructionClass(uint inst) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto rs = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) ((uint) ((imm) << (uint) (0x2)))), 21)))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) ((uint32_t) ((imm) << (uint) (0x2)))), 21)))));
 		return "CBNZ";
 	}
 	insn_34:
@@ -372,7 +372,7 @@ const char* getInstructionClass(uint inst) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto rs = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) ((uint) ((imm) << (uint) (0x2)))), 21)))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) ((uint32_t) ((imm) << (uint) (0x2)))), 21)))));
 		return "CBZ";
 	}
 	insn_35:
@@ -437,7 +437,7 @@ const char* getInstructionClass(uint inst) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_33) -> string { switch(temp_33) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_33) -> string { switch(temp_33) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "CMEQ-register-vector";
 	}
 	insn_42:
@@ -454,7 +454,7 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_37) -> string { switch(temp_37) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_37) -> string { switch(temp_37) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "CMEQ-zero-vector";
 	}
 	insn_44:
@@ -473,7 +473,7 @@ const char* getInstructionClass(uint inst) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_41) -> string { switch(temp_41) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_41) -> string { switch(temp_41) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "CMGT-register-vector";
 	}
 	insn_46:
@@ -490,7 +490,7 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_45) -> string { switch(temp_45) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_45) -> string { switch(temp_45) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "CMGT-zero-vector";
 	}
 	insn_48:
@@ -499,7 +499,7 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_47) -> string { switch(temp_47) { case 0x0: return string("8B"); case 0x1: return string("16B"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_47) -> string { switch(temp_47) { case 0x0: return string("8B"); case 0x1: return string("16B"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "CNT";
 	}
 	insn_49:
@@ -566,26 +566,26 @@ const char* getInstructionClass(uint inst) {
 		auto T = string("");
 		auto index = 0x0;
 		auto size = 0x0;
-		if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0xF))))) == (0x0)) ? 1U : 0U)) != 0) {
+		if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF))))) == (0x0)) ? 1U : 0U)) != 0) {
 			throw "Not implemented";
 		} else {
-			if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
+			if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
 				T = string("B");
-				index = (byte) ((imm) >> (uint) (0x1));
+				index = (uint8_t) ((imm) >> (uint) (0x1));
 				size = 0x1;
 			} else {
-				if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x3))))) == (0x2)) ? 1U : 0U)) != 0) {
+				if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x3))))) == (0x2)) ? 1U : 0U)) != 0) {
 					T = string("H");
-					index = (byte) ((imm) >> (uint) (0x2));
+					index = (uint8_t) ((imm) >> (uint) (0x2));
 					size = 0x2;
 				} else {
-					if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x7))))) == (0x4)) ? 1U : 0U)) != 0) {
+					if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x7))))) == (0x4)) ? 1U : 0U)) != 0) {
 						T = string("S");
-						index = (byte) ((imm) >> (uint) (0x3));
+						index = (uint8_t) ((imm) >> (uint) (0x3));
 						size = 0x4;
 					} else {
 						T = string("D");
-						index = (byte) ((imm) >> (uint) (0x4));
+						index = (uint8_t) ((imm) >> (uint) (0x4));
 						size = 0x8;
 					}
 				}
@@ -603,30 +603,30 @@ const char* getInstructionClass(uint inst) {
 		auto T = string("");
 		auto index = 0x0;
 		auto size = 0x0;
-		if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0xF))))) == (0x0)) ? 1U : 0U)) != 0) {
+		if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF))))) == (0x0)) ? 1U : 0U)) != 0) {
 			throw "Not implemented";
 		} else {
-			if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
+			if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
 				Ts = string("B");
 				T = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
-				index = (byte) ((imm) >> (uint) (0x1));
+				index = (uint8_t) ((imm) >> (uint) (0x1));
 				size = 0x1;
 			} else {
-				if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x3))))) == (0x2)) ? 1U : 0U)) != 0) {
+				if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x3))))) == (0x2)) ? 1U : 0U)) != 0) {
 					Ts = string("H");
 					T = (string) ((Q != 0) ? (string("8H")) : (string("4H")));
-					index = (byte) ((imm) >> (uint) (0x2));
+					index = (uint8_t) ((imm) >> (uint) (0x2));
 					size = 0x2;
 				} else {
-					if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x7))))) == (0x4)) ? 1U : 0U)) != 0) {
+					if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x7))))) == (0x4)) ? 1U : 0U)) != 0) {
 						Ts = string("S");
 						T = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-						index = (byte) ((imm) >> (uint) (0x3));
+						index = (uint8_t) ((imm) >> (uint) (0x3));
 						size = 0x4;
 					} else {
 						Ts = string("D");
 						T = (string) ((Q != 0) ? (string("2D")) : throw "Not implemented");
-						index = (byte) ((imm) >> (uint) (0x4));
+						index = (uint8_t) ((imm) >> (uint) (0x4));
 						size = 0x8;
 					}
 				}
@@ -640,9 +640,9 @@ const char* getInstructionClass(uint inst) {
 		auto imm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto size = ((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0xF))))) == (0x0)) ? 1U : 0U) != 0) ? throw "Not implemented" : ((long) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0xF))))) == (0x8)) ? 1U : 0U) != 0) ? (0x40) : (0x20)));
+		auto size = ((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF))))) == (0x0)) ? 1U : 0U) != 0) ? throw "Not implemented" : ((int64_t) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF))))) == (0x8)) ? 1U : 0U) != 0) ? (0x40) : (0x20)));
 		auto r = (string) (((bool) (((size) == (0x40)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto T = ((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0xF))))) == (0x0)) ? 1U : 0U) != 0) ? throw "Not implemented" : ((string) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x1))))) == (0x1)) ? 1U : 0U) != 0) ? ((string) ((Q != 0) ? (string("16B")) : (string("8B")))) : ((string) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x3))))) == (0x2)) ? 1U : 0U) != 0) ? ((string) ((Q != 0) ? (string("8H")) : (string("4H")))) : ((string) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x7))))) == (0x4)) ? 1U : 0U) != 0) ? ((string) ((Q != 0) ? (string("4S")) : (string("2S")))) : ((string) ((Q != 0) ? (string("2D")) : throw "Not implemented"))))))));
+		auto T = ((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF))))) == (0x0)) ? 1U : 0U) != 0) ? throw "Not implemented" : ((string) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x1))))) == (0x1)) ? 1U : 0U) != 0) ? ((string) ((Q != 0) ? (string("16B")) : (string("8B")))) : ((string) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x3))))) == (0x2)) ? 1U : 0U) != 0) ? ((string) ((Q != 0) ? (string("8H")) : (string("4H")))) : ((string) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x7))))) == (0x4)) ? 1U : 0U) != 0) ? ((string) ((Q != 0) ? (string("4S")) : (string("2S")))) : ((string) ((Q != 0) ? (string("2D")) : throw "Not implemented"))))))));
 		return "DUP-general";
 	}
 	insn_58:
@@ -666,7 +666,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (ulong) (MakeWMask(up, imms, immr, (long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
+		auto imm = (uint64_t) (MakeWMask(up, imms, immr, (int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
 		return "EOR-immediate";
 	}
 	insn_60:
@@ -734,7 +734,7 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_69) -> string { switch(temp_69) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_69) -> string { switch(temp_69) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "FABS-vector";
 	}
 	insn_67:
@@ -753,7 +753,7 @@ const char* getInstructionClass(uint inst) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_73) -> string { switch(temp_73) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_73) -> string { switch(temp_73) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "FADD-vector";
 	}
 	insn_69:
@@ -771,7 +771,7 @@ const char* getInstructionClass(uint inst) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_75) -> string { switch(temp_75) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_75) -> string { switch(temp_75) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "FADDP-vector";
 	}
 	insn_71:
@@ -795,8 +795,8 @@ const char* getInstructionClass(uint inst) {
 		auto ac = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto top = (string) (([=](auto temp_82) -> string { switch(temp_82) { case 0x0: return string("EQ"); case 0x2: return string("GE"); case 0x3: return string("GE"); case 0x6: return string("GT"); case 0x7: return string("GT"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
-		auto t = (string) (([=](auto temp_83) -> string { switch(temp_83) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto top = (string) (([=](auto temp_82) -> string { switch(temp_82) { case 0x0: return string("EQ"); case 0x2: return string("GE"); case 0x3: return string("GE"); case 0x6: return string("GT"); case 0x7: return string("GT"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2))))));
+		auto t = (string) (([=](auto temp_83) -> string { switch(temp_83) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "FCMxx-register-vector";
 	}
 	insn_73:
@@ -807,8 +807,8 @@ const char* getInstructionClass(uint inst) {
 		auto op = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto top = (string) (([=](auto temp_86) -> string { switch(temp_86) { case 0x0: return string("GT"); case 0x1: return string("GE"); case 0x2: return string("EQ"); default: return string("LE"); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
-		auto t = (string) (([=](auto temp_87) -> string { switch(temp_87) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto top = (string) (([=](auto temp_86) -> string { switch(temp_86) { case 0x0: return string("GT"); case 0x1: return string("GE"); case 0x2: return string("EQ"); default: return string("LE"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1))))));
+		auto t = (string) (([=](auto temp_87) -> string { switch(temp_87) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "FCMxx-zero-vector";
 	}
 	insn_74:
@@ -817,7 +817,7 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_89) -> string { switch(temp_89) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_89) -> string { switch(temp_89) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "FCMLT-zero-vector";
 	}
 	insn_75:
@@ -849,7 +849,7 @@ const char* getInstructionClass(uint inst) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = string("");
 		auto r2 = string("");
-		auto tf = (byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (type)) << 2))));
+		auto tf = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (type)) << 2))));
 		switch(tf) {
 			case 0xC: {
 				r1 = string("S");
@@ -894,7 +894,7 @@ const char* getInstructionClass(uint inst) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -941,7 +941,7 @@ const char* getInstructionClass(uint inst) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -990,7 +990,7 @@ const char* getInstructionClass(uint inst) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto o2 = (string) ((Q != 0) ? (string("2")) : (string("")));
 		auto ta = (string) ((size != 0) ? (string("2D")) : (string("4S")));
-		auto tb = (string) (([=](auto temp_97) -> string { switch(temp_97) { case 0x0: return string("4H"); case 0x1: return string("8H"); case 0x2: return string("2S"); default: return string("4S"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto tb = (string) (([=](auto temp_97) -> string { switch(temp_97) { case 0x0: return string("4H"); case 0x1: return string("8H"); case 0x2: return string("2S"); default: return string("4S"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "FCVTL[2]";
 	}
 	insn_81:
@@ -999,7 +999,7 @@ const char* getInstructionClass(uint inst) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -1046,7 +1046,7 @@ const char* getInstructionClass(uint inst) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -1135,7 +1135,7 @@ const char* getInstructionClass(uint inst) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -1182,7 +1182,7 @@ const char* getInstructionClass(uint inst) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -1230,7 +1230,7 @@ const char* getInstructionClass(uint inst) {
 		auto scale = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto fbits = (ulong) (((ulong) (long) (0x40)) - ((ulong) (byte) (scale)));
+		auto fbits = (uint64_t) (((uint64_t) (int64_t) (0x40)) - ((uint64_t) (uint8_t) (scale)));
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (([=](auto temp_99) -> string { switch(temp_99) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		return "FCVTZS-scalar-fixedpoint";
@@ -1241,7 +1241,7 @@ const char* getInstructionClass(uint inst) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -1289,7 +1289,7 @@ const char* getInstructionClass(uint inst) {
 		auto scale = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto fbits = (ulong) (((ulong) (long) (0x40)) - ((ulong) (byte) (scale)));
+		auto fbits = (uint64_t) (((uint64_t) (int64_t) (0x40)) - ((uint64_t) (uint8_t) (scale)));
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (([=](auto temp_101) -> string { switch(temp_101) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		return "FCVTZU-scalar-fixedpoint";
@@ -1300,7 +1300,7 @@ const char* getInstructionClass(uint inst) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -1357,7 +1357,7 @@ const char* getInstructionClass(uint inst) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_105) -> string { switch(temp_105) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_105) -> string { switch(temp_105) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "FDIV-vector";
 	}
 	insn_93:
@@ -1415,9 +1415,9 @@ const char* getInstructionClass(uint inst) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_118) -> string { switch(temp_118) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_118) -> string { switch(temp_118) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint) (([=](auto temp_119) -> uint { switch(temp_119) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto index = (uint32_t) (([=](auto temp_119) -> uint32_t { switch(temp_119) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
 		return "FMLA-by-element-vector-spdp";
 	}
 	insn_99:
@@ -1427,7 +1427,7 @@ const char* getInstructionClass(uint inst) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_121) -> string { switch(temp_121) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto T = (string) (([=](auto temp_121) -> string { switch(temp_121) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
 		return "FMLA-vector";
 	}
 	insn_100:
@@ -1439,9 +1439,9 @@ const char* getInstructionClass(uint inst) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_124) -> string { switch(temp_124) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_124) -> string { switch(temp_124) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint) (([=](auto temp_125) -> uint { switch(temp_125) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto index = (uint32_t) (([=](auto temp_125) -> uint32_t { switch(temp_125) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
 		return "FMLS-by-element-vector-spdp";
 	}
 	insn_101:
@@ -1451,7 +1451,7 @@ const char* getInstructionClass(uint inst) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_127) -> string { switch(temp_127) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto T = (string) (([=](auto temp_127) -> string { switch(temp_127) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
 		return "FMLS-vector";
 	}
 	insn_102:
@@ -1462,8 +1462,8 @@ const char* getInstructionClass(uint inst) {
 		auto ropc = (inst >> 16) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto opc = (byte) ((byte) (((byte) (((byte) (ropc)) << 0)) | ((byte) (((byte) ((byte) ((byte) (0x3)))) << 1))));
-		auto tf = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) ((byte) ((byte) (mode)))) << 3)))) | ((byte) (((byte) (type)) << 5)))) | ((byte) (((byte) (sf)) << 7))));
+		auto opc = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (ropc)) << 0)) | ((uint8_t) (((uint8_t) ((uint8_t) ((uint8_t) (0x3)))) << 1))));
+		auto tf = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) ((uint8_t) ((uint8_t) (mode)))) << 3)))) | ((uint8_t) (((uint8_t) (type)) << 5)))) | ((uint8_t) (((uint8_t) (sf)) << 7))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(tf) {
@@ -1532,7 +1532,7 @@ const char* getInstructionClass(uint inst) {
 		auto imm = (inst >> 13) & 0xFFU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_129) -> string { switch(temp_129) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		auto sv = (float) (Bitcast<uint, float>((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((bool) ((bool) (0x0)))) << 0)) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 1)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 2)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 3)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 4)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 5)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 6)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 7)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 8)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 9)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 10)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 11)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 12)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 13)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 14)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 15)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 16)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 17)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 18)))))) << 0)) | ((uint) (((uint) ((byte) ((byte) ((byte) ((((ulong) (imm)) & ((ulong) (0xF)))))))) << 19)))) | ((uint) (((uint) ((byte) ((byte) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x4)))) & ((ulong) (0x3)))))))) << 23)))) | ((uint) (((uint) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 0)) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 1)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 2)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 3)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 4)))))) << 25)))) | ((uint) (((uint) ((bool) (((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1))))) != 0 ? 0U : 1U))) << 30)))) | ((uint) (((uint) ((bool) ((bool) ((byte) ((imm) >> (uint) (0x7)))))) << 31))))));
+		auto sv = (float) (Bitcast<uint32_t, float>((uint32_t) ((uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (((uint32_t) ((uint32_t) ((uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 1)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 2)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 3)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 4)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 5)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 6)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 7)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 8)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 9)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 10)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 11)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 12)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 13)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 14)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 15)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 16)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 17)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 18)))))) << 0)) | ((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) ((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF)))))))) << 19)))) | ((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x4)))) & ((uint64_t) (0x3)))))))) << 23)))) | ((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 0)) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 1)))) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 2)))) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 3)))) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 4)))))) << 25)))) | ((uint32_t) (((uint32_t) ((bool) (((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1))))) != 0 ? 0U : 1U))) << 30)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) ((uint8_t) ((imm) >> (uint) (0x7)))))) << 31))))));
 		return "FMOV-scalar-immediate";
 	}
 	insn_104:
@@ -1548,7 +1548,7 @@ const char* getInstructionClass(uint inst) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto T = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-		auto sv = (float) (Bitcast<uint, float>((uint) ((((uint) ((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((uint) ((uint) (0x0)))) << 0)) | ((uint) (((uint) (h)) << 19)))) | ((uint) (((uint) (g)) << 20)))) | ((uint) (((uint) (f)) << 21)))) | ((uint) (((uint) (e)) << 22)))) | ((uint) (((uint) (d)) << 23)))) | ((uint) (((uint) (c)) << 24)))) | ((uint) (((uint) (b)) << 25)))) | ((uint) (((uint) (b)) << 26)))) | ((uint) (((uint) (b)) << 27)))) | ((uint) (((uint) (b)) << 28)))) | ((uint) (((uint) (b)) << 29)))) | ((uint) (((uint) (b)) << 30)))) | ((uint) (((uint) (a)) << 31)))))) ^ ((uint) ((uint) (((uint) ((uint) (0x1))) << (uint) (0x1E))))))));
+		auto sv = (float) (Bitcast<uint32_t, float>((uint32_t) ((((uint32_t) ((uint32_t) ((uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (((uint32_t) ((uint32_t) ((uint32_t) (0x0)))) << 0)) | ((uint32_t) (((uint32_t) (h)) << 19)))) | ((uint32_t) (((uint32_t) (g)) << 20)))) | ((uint32_t) (((uint32_t) (f)) << 21)))) | ((uint32_t) (((uint32_t) (e)) << 22)))) | ((uint32_t) (((uint32_t) (d)) << 23)))) | ((uint32_t) (((uint32_t) (c)) << 24)))) | ((uint32_t) (((uint32_t) (b)) << 25)))) | ((uint32_t) (((uint32_t) (b)) << 26)))) | ((uint32_t) (((uint32_t) (b)) << 27)))) | ((uint32_t) (((uint32_t) (b)) << 28)))) | ((uint32_t) (((uint32_t) (b)) << 29)))) | ((uint32_t) (((uint32_t) (b)) << 30)))) | ((uint32_t) (((uint32_t) (a)) << 31)))))) ^ ((uint32_t) ((uint32_t) (((uint32_t) ((uint32_t) (0x1))) << (uint) (0x1E))))))));
 		return "FMOV-vector-immediate-single";
 	}
 	insn_105:
@@ -1562,7 +1562,7 @@ const char* getInstructionClass(uint inst) {
 		auto g = (inst >> 6) & 0x1U;
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto sv = (double) (Bitcast<ulong, double>((ulong) ((((ulong) ((ulong) ((ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (((ulong) ((ulong) ((ulong) (0x0)))) << 0)) | ((ulong) (((ulong) (h)) << 48)))) | ((ulong) (((ulong) (g)) << 49)))) | ((ulong) (((ulong) (f)) << 50)))) | ((ulong) (((ulong) (e)) << 51)))) | ((ulong) (((ulong) (d)) << 52)))) | ((ulong) (((ulong) (c)) << 53)))) | ((ulong) (((ulong) (b)) << 54)))) | ((ulong) (((ulong) (b)) << 55)))) | ((ulong) (((ulong) (b)) << 56)))) | ((ulong) (((ulong) (b)) << 57)))) | ((ulong) (((ulong) (b)) << 58)))) | ((ulong) (((ulong) (b)) << 59)))) | ((ulong) (((ulong) (b)) << 60)))) | ((ulong) (((ulong) (b)) << 61)))) | ((ulong) (((ulong) (b)) << 62)))) | ((ulong) (((ulong) (a)) << 63)))))) ^ ((ulong) ((ulong) (((ulong) ((ulong) (0x1))) << (uint) (0x3E))))))));
+		auto sv = (double) (Bitcast<uint64_t, double>((uint64_t) ((((uint64_t) ((uint64_t) ((uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (((uint64_t) ((uint64_t) ((uint64_t) (0x0)))) << 0)) | ((uint64_t) (((uint64_t) (h)) << 48)))) | ((uint64_t) (((uint64_t) (g)) << 49)))) | ((uint64_t) (((uint64_t) (f)) << 50)))) | ((uint64_t) (((uint64_t) (e)) << 51)))) | ((uint64_t) (((uint64_t) (d)) << 52)))) | ((uint64_t) (((uint64_t) (c)) << 53)))) | ((uint64_t) (((uint64_t) (b)) << 54)))) | ((uint64_t) (((uint64_t) (b)) << 55)))) | ((uint64_t) (((uint64_t) (b)) << 56)))) | ((uint64_t) (((uint64_t) (b)) << 57)))) | ((uint64_t) (((uint64_t) (b)) << 58)))) | ((uint64_t) (((uint64_t) (b)) << 59)))) | ((uint64_t) (((uint64_t) (b)) << 60)))) | ((uint64_t) (((uint64_t) (b)) << 61)))) | ((uint64_t) (((uint64_t) (b)) << 62)))) | ((uint64_t) (((uint64_t) (a)) << 63)))))) ^ ((uint64_t) ((uint64_t) (((uint64_t) ((uint64_t) (0x1))) << (uint) (0x3E))))))));
 		return "FMOV-vector-immediate-double";
 	}
 	insn_106:
@@ -1584,7 +1584,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint) (([=](auto temp_133) -> uint { switch(temp_133) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto index = (uint32_t) (([=](auto temp_133) -> uint32_t { switch(temp_133) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
 		return "FMUL-by-element-scalar-spdp";
 	}
 	insn_108:
@@ -1596,9 +1596,9 @@ const char* getInstructionClass(uint inst) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_136) -> string { switch(temp_136) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_136) -> string { switch(temp_136) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint) (([=](auto temp_137) -> uint { switch(temp_137) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto index = (uint32_t) (([=](auto temp_137) -> uint32_t { switch(temp_137) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
 		return "FMUL-by-element-vector-spdp";
 	}
 	insn_109:
@@ -1617,7 +1617,7 @@ const char* getInstructionClass(uint inst) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_141) -> string { switch(temp_141) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_141) -> string { switch(temp_141) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "FMUL-vector";
 	}
 	insn_111:
@@ -1634,7 +1634,7 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_145) -> string { switch(temp_145) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_145) -> string { switch(temp_145) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "FNEG-vector";
 	}
 	insn_113:
@@ -1720,7 +1720,7 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_165) -> string { switch(temp_165) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_165) -> string { switch(temp_165) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "FRSQRTE-vector";
 	}
 	insn_123:
@@ -1730,7 +1730,7 @@ const char* getInstructionClass(uint inst) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_167) -> string { switch(temp_167) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_167) -> string { switch(temp_167) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "FRSQRTS-vector";
 	}
 	insn_124:
@@ -1757,7 +1757,7 @@ const char* getInstructionClass(uint inst) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_173) -> string { switch(temp_173) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_173) -> string { switch(temp_173) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "FSUB-vector";
 	}
 	insn_127:
@@ -1766,22 +1766,22 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto ts = string("");
-		auto index = (uint) ((uint) (0x0));
+		auto index = (uint32_t) ((uint32_t) (0x0));
 		auto r = string("W");
-		if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
+		if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
 			ts = string("B");
-			index = (byte) ((imm) >> (uint) (0x1));
+			index = (uint8_t) ((imm) >> (uint) (0x1));
 		} else {
-			if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x2))))) == (0x2)) ? 1U : 0U)) != 0) {
+			if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x2))))) == (0x2)) ? 1U : 0U)) != 0) {
 				ts = string("H");
-				index = (byte) ((imm) >> (uint) (0x2));
+				index = (uint8_t) ((imm) >> (uint) (0x2));
 			} else {
-				if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x4))))) == (0x4)) ? 1U : 0U)) != 0) {
+				if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x4))))) == (0x4)) ? 1U : 0U)) != 0) {
 					ts = string("S");
-					index = (byte) ((imm) >> (uint) (0x3));
+					index = (uint8_t) ((imm) >> (uint) (0x3));
 				} else {
 					ts = string("D");
-					index = (byte) ((imm) >> (uint) (0x4));
+					index = (uint8_t) ((imm) >> (uint) (0x4));
 					r = string("X");
 				}
 			}
@@ -1795,26 +1795,26 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto ts = string("");
-		auto index1 = (uint) ((uint) (0x0));
-		auto index2 = (uint) ((uint) (0x0));
-		if(((bool) ((((byte) ((((ulong) (imm5)) & ((ulong) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
+		auto index1 = (uint32_t) ((uint32_t) (0x0));
+		auto index2 = (uint32_t) ((uint32_t) (0x0));
+		if(((bool) ((((uint8_t) ((((uint64_t) (imm5)) & ((uint64_t) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
 			ts = string("B");
-			index1 = (byte) ((imm5) >> (uint) (0x1));
+			index1 = (uint8_t) ((imm5) >> (uint) (0x1));
 			index2 = imm4;
 		} else {
-			if(((bool) ((((byte) ((((ulong) (imm5)) & ((ulong) (0x2))))) == (0x2)) ? 1U : 0U)) != 0) {
+			if(((bool) ((((uint8_t) ((((uint64_t) (imm5)) & ((uint64_t) (0x2))))) == (0x2)) ? 1U : 0U)) != 0) {
 				ts = string("H");
-				index1 = (byte) ((imm5) >> (uint) (0x2));
-				index2 = (byte) ((imm4) >> (uint) (0x1));
+				index1 = (uint8_t) ((imm5) >> (uint) (0x2));
+				index2 = (uint8_t) ((imm4) >> (uint) (0x1));
 			} else {
-				if(((bool) ((((byte) ((((ulong) (imm5)) & ((ulong) (0x4))))) == (0x4)) ? 1U : 0U)) != 0) {
+				if(((bool) ((((uint8_t) ((((uint64_t) (imm5)) & ((uint64_t) (0x4))))) == (0x4)) ? 1U : 0U)) != 0) {
 					ts = string("S");
-					index1 = (byte) ((imm5) >> (uint) (0x3));
-					index2 = (byte) ((imm4) >> (uint) (0x2));
+					index1 = (uint8_t) ((imm5) >> (uint) (0x3));
+					index2 = (uint8_t) ((imm4) >> (uint) (0x2));
 				} else {
 					ts = string("D");
-					index1 = (byte) ((imm5) >> (uint) (0x4));
-					index2 = (byte) ((imm4) >> (uint) (0x3));
+					index1 = (uint8_t) ((imm5) >> (uint) (0x4));
+					index2 = (uint8_t) ((imm4) >> (uint) (0x3));
 				}
 			}
 		}
@@ -1826,7 +1826,7 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_175) -> string { switch(temp_175) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_175) -> string { switch(temp_175) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LD1-multi-no-offset-one-register";
 	}
 	insn_130:
@@ -1835,8 +1835,8 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_177) -> string { switch(temp_177) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_177) -> string { switch(temp_177) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LD1-multi-no-offset-two-registers";
 	}
 	insn_131:
@@ -1845,9 +1845,9 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_179) -> string { switch(temp_179) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_179) -> string { switch(temp_179) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LD1-multi-no-offset-three-registers";
 	}
 	insn_132:
@@ -1856,10 +1856,10 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_181) -> string { switch(temp_181) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_181) -> string { switch(temp_181) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LD1-multi-no-offset-four-registers";
 	}
 	insn_133:
@@ -1872,8 +1872,8 @@ const char* getInstructionClass(uint inst) {
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((opc) != (0x3)) ? 1U : 0U)))
 			goto insn_134;
-		auto t = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("B")) : ((string) (((bool) ((((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) ((((byte) ((((ulong) (size)) & ((ulong) (0x1))))) == (0x0)) ? 1U : 0U))))) != 0) ? (string("H")) : ((string) (((bool) (((opc) == (0x2)) ? 1U : 0U) != 0) ? ((string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : ((string) (((bool) ((((bool) ((bool) (((size) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) (((S) == (0x0)) ? 1U : 0U))))) != 0) ? (string("D")) : throw "Not implemented")))) : throw "Not implemented")))));
-		auto index = (uint) (([=](auto temp_183) -> uint { switch(temp_183) { case 0x0: return (uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3)))))); case 0x1: return (uint) (((uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint) (((bool) ((((byte) ((((ulong) (size)) & ((ulong) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (S)) << 0)) | ((byte) (((byte) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
+		auto t = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("B")) : ((string) (((bool) ((((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U))))) != 0) ? (string("H")) : ((string) (((bool) (((opc) == (0x2)) ? 1U : 0U) != 0) ? ((string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : ((string) (((bool) ((((bool) ((bool) (((size) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) (((S) == (0x0)) ? 1U : 0U))))) != 0) ? (string("D")) : throw "Not implemented")))) : throw "Not implemented")))));
+		auto index = (uint32_t) (([=](auto temp_183) -> uint32_t { switch(temp_183) { case 0x0: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3)))))); case 0x1: return (uint32_t) (((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint32_t) (((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (S)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
 		return "LD1-single-no-offset";
 	}
 	insn_134:
@@ -1882,7 +1882,7 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_185) -> string { switch(temp_185) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_185) -> string { switch(temp_185) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LD1R-single-no-offset";
 	}
 	insn_135:
@@ -1894,8 +1894,8 @@ const char* getInstructionClass(uint inst) {
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto insn_136;
-		auto t = (string) (([=](auto temp_188) -> string { switch(temp_188) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto imm = (long) (([=](auto temp_189) -> long { switch(temp_189) { case 0x0: return 0x1; case 0x1: return 0x2; case 0x2: return 0x4; default: return 0x8; } })(size));
+		auto t = (string) (([=](auto temp_188) -> string { switch(temp_188) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto imm = (int64_t) (([=](auto temp_189) -> int64_t { switch(temp_189) { case 0x0: return 0x1; case 0x1: return 0x2; case 0x2: return 0x4; default: return 0x8; } })(size));
 		return "LD1R-single-postindex-immediate";
 	}
 	insn_136:
@@ -1907,7 +1907,7 @@ const char* getInstructionClass(uint inst) {
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto insn_137;
-		auto t = (string) (([=](auto temp_191) -> string { switch(temp_191) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_191) -> string { switch(temp_191) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LD1R-single-postindex-register";
 	}
 	insn_137:
@@ -1916,8 +1916,8 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_193) -> string { switch(temp_193) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_193) -> string { switch(temp_193) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LD2-multi-no-offset";
 	}
 	insn_138:
@@ -1927,11 +1927,11 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x20) : (0x10))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x20) : (0x10))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto insn_139;
-		auto T = (string) (([=](auto temp_195) -> string { switch(temp_195) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_195) -> string { switch(temp_195) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LD2-multi-postindex-immediate";
 	}
 	insn_139:
@@ -1941,10 +1941,10 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto insn_140;
-		auto T = (string) (([=](auto temp_197) -> string { switch(temp_197) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_197) -> string { switch(temp_197) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LD2-multi-postindex-register";
 	}
 	insn_140:
@@ -1953,9 +1953,9 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_199) -> string { switch(temp_199) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_199) -> string { switch(temp_199) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LD3-multi-no-offset";
 	}
 	insn_141:
@@ -1965,12 +1965,12 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x30) : (0x18))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x30) : (0x18))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto insn_142;
-		auto T = (string) (([=](auto temp_201) -> string { switch(temp_201) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_201) -> string { switch(temp_201) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LD3-multi-postindex-immediate";
 	}
 	insn_142:
@@ -1980,11 +1980,11 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto insn_143;
-		auto T = (string) (([=](auto temp_203) -> string { switch(temp_203) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_203) -> string { switch(temp_203) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LD3-multi-postindex-register";
 	}
 	insn_143:
@@ -1993,10 +1993,10 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_205) -> string { switch(temp_205) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_205) -> string { switch(temp_205) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LD4-multi-no-offset";
 	}
 	insn_144:
@@ -2006,13 +2006,13 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x30) : (0x18))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x30) : (0x18))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto insn_145;
-		auto T = (string) (([=](auto temp_207) -> string { switch(temp_207) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_207) -> string { switch(temp_207) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LD4-multi-postindex-immediate";
 	}
 	insn_145:
@@ -2022,12 +2022,12 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto insn_146;
-		auto T = (string) (([=](auto temp_209) -> string { switch(temp_209) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_209) -> string { switch(temp_209) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LD4-multi-postindex-register";
 	}
 	insn_146:
@@ -2077,7 +2077,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		return "LDP-immediate-postindex";
 	}
 	insn_153:
@@ -2088,7 +2088,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		return "LDP-immediate-signed-offset";
 	}
 	insn_154:
@@ -2099,7 +2099,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_212) -> string { switch(temp_212) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_213) -> long { switch(temp_213) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_213) -> int64_t { switch(temp_213) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		return "LDP-simd-postindex";
 	}
 	insn_155:
@@ -2110,7 +2110,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_216) -> string { switch(temp_216) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_217) -> long { switch(temp_217) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_217) -> int64_t { switch(temp_217) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		return "LDP-simd-preindex";
 	}
 	insn_156:
@@ -2121,7 +2121,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_220) -> string { switch(temp_220) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_221) -> long { switch(temp_221) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_221) -> int64_t { switch(temp_221) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		return "LDP-simd-signed-offset";
 	}
 	insn_157:
@@ -2130,7 +2130,7 @@ const char* getInstructionClass(uint inst) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) (0x2));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) (0x2));
 		return "LDPSW-immediate-signed-offset";
 	}
 	insn_158:
@@ -2140,7 +2140,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return "LDR-immediate-preindex";
 	}
 	insn_159:
@@ -2150,7 +2150,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return "LDR-immediate-postindex";
 	}
 	insn_160:
@@ -2160,7 +2160,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (ushort) ((rawimm) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto imm = (uint16_t) ((rawimm) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		return "LDR-immediate-unsigned-offset";
 	}
 	insn_161:
@@ -2169,8 +2169,8 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 5) & 0x7FFFFU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto offset = (long) (SignExt<long>((uint) ((uint) ((uint) ((rawimm) << (uint) (0x2)))), 21));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) (offset)));
+		auto offset = (int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) ((uint32_t) ((rawimm) << (uint) (0x2)))), 21));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) (offset)));
 		return "LDR-literal";
 	}
 	insn_162:
@@ -2180,8 +2180,8 @@ const char* getInstructionClass(uint inst) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto simm = (long) (SignExt<long>(imm, 9));
-		auto r = (string) (([=](auto temp_223) -> string { switch(temp_223) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
+		auto r = (string) (([=](auto temp_223) -> string { switch(temp_223) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LDR-simd-immediate-postindex";
 	}
 	insn_163:
@@ -2191,8 +2191,8 @@ const char* getInstructionClass(uint inst) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto simm = (long) (SignExt<long>(imm, 9));
-		auto r = (string) (([=](auto temp_225) -> string { switch(temp_225) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
+		auto r = (string) (([=](auto temp_225) -> string { switch(temp_225) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "LDR-simd-immediate-preindex";
 	}
 	insn_164:
@@ -2202,10 +2202,10 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto opc = (byte) ((byte) (((byte) (((byte) ((bool) ((bool) (0x1)))) << 0)) | ((byte) (((byte) (ropc)) << 1))));
-		auto m = (byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto opc = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x1)))) << 0)) | ((uint8_t) (((uint8_t) (ropc)) << 1))));
+		auto m = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r = (string) (([=](auto temp_228) -> string { switch(temp_228) { case 0x1: return string("B"); case 0x5: return string("H"); case 0x9: return string("S"); case 0xD: return string("D"); default: return string("Q"); } })(m));
-		auto imm = (uint) (((uint) ((uint) (rawimm))) << (uint) ((long) (([=](auto temp_229) -> long { switch(temp_229) { case 0x1: return 0x0; case 0x5: return 0x1; case 0x9: return 0x2; case 0xD: return 0x3; default: return 0x4; } })(m))));
+		auto imm = (uint32_t) (((uint32_t) ((uint32_t) (rawimm))) << (uint) ((int64_t) (([=](auto temp_229) -> int64_t { switch(temp_229) { case 0x1: return 0x0; case 0x5: return 0x1; case 0x9: return 0x2; case 0xD: return 0x3; default: return 0x4; } })(m))));
 		return "LDR-simd-immediate-unsigned-offset";
 	}
 	insn_165:
@@ -2214,7 +2214,7 @@ const char* getInstructionClass(uint inst) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_231) -> string { switch(temp_231) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(size));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) (((uint) (((uint) ((byte) ((byte) (0x0)))) << 0)) | ((uint) (((uint) (imm)) << 2)))), 21)))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) (((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) (0x0)))) << 0)) | ((uint32_t) (((uint32_t) (imm)) << 2)))), 21)))));
 		return "LDR-simd-literal";
 	}
 	insn_166:
@@ -2227,9 +2227,9 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (string("Q")) : ((string) (([=](auto temp_235) -> string { switch(temp_235) { case 0x0: return string("B"); case 0x1: return string("H"); case 0x2: return string("S"); case 0x3: return string("D"); default: throw "Not implemented"; } })(size))));
-		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto extend = (string) (([=](auto temp_236) -> string { switch(temp_236) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
-		auto amount = (ulong) (((ulong) (bool) (scale)) * ((ulong) (long) ((long) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (0x4) : ((long) (([=](auto temp_237) -> long { switch(temp_237) { case 0x0: return 0x1; case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: throw "Not implemented"; } })(size)))))));
+		auto amount = (uint64_t) (((uint64_t) (bool) (scale)) * ((uint64_t) (int64_t) ((int64_t) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (0x4) : ((int64_t) (([=](auto temp_237) -> int64_t { switch(temp_237) { case 0x0: return 0x1; case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: throw "Not implemented"; } })(size)))))));
 		return "LDR-simd-register";
 	}
 	insn_167:
@@ -2241,8 +2241,8 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		auto extend = (string) (([=](auto temp_239) -> string { switch(temp_239) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		return "LDR-register";
 	}
@@ -2251,7 +2251,7 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return "LDRB-immediate-postindex";
 	}
 	insn_169:
@@ -2259,7 +2259,7 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return "LDRB-immediate-preindex";
 	}
 	insn_170:
@@ -2276,7 +2276,7 @@ const char* getInstructionClass(uint inst) {
 		auto amount = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto str = (string) (([=](auto temp_241) -> string { switch(temp_241) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		return "LDRB-register";
 	}
@@ -2285,7 +2285,7 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return "LDRH-immediate-postindex";
 	}
 	insn_173:
@@ -2293,7 +2293,7 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return "LDRH-immediate-preindex";
 	}
 	insn_174:
@@ -2301,7 +2301,7 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (ushort) ((rawimm) << (uint) (0x1));
+		auto imm = (uint16_t) ((rawimm) << (uint) (0x1));
 		return "LDRH-immediate-unsigned-offset";
 	}
 	insn_175:
@@ -2311,7 +2311,7 @@ const char* getInstructionClass(uint inst) {
 		auto amount = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto str = (string) (([=](auto temp_243) -> string { switch(temp_243) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		return "LDRH-register";
 	}
@@ -2321,7 +2321,7 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "LDRSB-immediate-postindex";
 	}
@@ -2331,7 +2331,7 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "LDRSB-immediate-preindex";
 	}
@@ -2362,7 +2362,7 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "LDRSH-immediate-postindex";
 	}
@@ -2372,7 +2372,7 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "LDRSH-immediate-preindex";
 	}
@@ -2383,7 +2383,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (ushort) ((rawimm) << (uint) (0x1));
+		auto imm = (uint16_t) ((rawimm) << (uint) (0x1));
 		return "LDRSH-immediate-unsigned-offset";
 	}
 	insn_183:
@@ -2403,7 +2403,7 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return "LDRSW-immediate-postindex";
 	}
 	insn_185:
@@ -2411,7 +2411,7 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return "LDRSW-immediate-preindex";
 	}
 	insn_186:
@@ -2419,14 +2419,14 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (ushort) ((rawimm) << (uint) (0x2));
+		auto imm = (uint16_t) ((rawimm) << (uint) (0x2));
 		return "LDRSW-immediate-unsigned-offset";
 	}
 	insn_187:
 	if((inst & 0xFF000000U) == 0x98000000U) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) (((uint) (((uint) ((byte) ((byte) (0x0)))) << 0)) | ((uint) (((uint) (imm)) << 2)))), 21)))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) (((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) (0x0)))) << 0)) | ((uint32_t) (((uint32_t) (imm)) << 2)))), 21)))));
 		return "LDRSW-literal";
 	}
 	insn_188:
@@ -2436,8 +2436,8 @@ const char* getInstructionClass(uint inst) {
 		auto scale = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0x2));
+		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0x2));
 		auto extend = (string) (([=](auto temp_249) -> string { switch(temp_249) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		return "LDRSW-register";
 	}
@@ -2448,7 +2448,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return "LDUR";
 	}
 	insn_190:
@@ -2456,7 +2456,7 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return "LDURB";
 	}
 	insn_191:
@@ -2464,7 +2464,7 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return "LDURH";
 	}
 	insn_192:
@@ -2474,7 +2474,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return "LDURSB";
 	}
 	insn_193:
@@ -2484,7 +2484,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return "LDURSH";
 	}
 	insn_194:
@@ -2492,7 +2492,7 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return "LDURSW";
 	}
 	insn_195:
@@ -2502,8 +2502,8 @@ const char* getInstructionClass(uint inst) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_251) -> string { switch(temp_251) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto r = (string) (([=](auto temp_251) -> string { switch(temp_251) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return "LDUR-simd";
 	}
 	insn_196:
@@ -2574,15 +2574,15 @@ const char* getInstructionClass(uint inst) {
 		auto g = (inst >> 6) & 0x1U;
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto imm8a = (byte) ((byte) ((long) ((a != 0) ? (0xFF) : (0x0))));
-		auto imm8b = (byte) ((byte) ((long) ((b != 0) ? (0xFF) : (0x0))));
-		auto imm8c = (byte) ((byte) ((long) ((c != 0) ? (0xFF) : (0x0))));
-		auto imm8d = (byte) ((byte) ((long) ((d != 0) ? (0xFF) : (0x0))));
-		auto imm8e = (byte) ((byte) ((long) ((e != 0) ? (0xFF) : (0x0))));
-		auto imm8f = (byte) ((byte) ((long) ((f != 0) ? (0xFF) : (0x0))));
-		auto imm8g = (byte) ((byte) ((long) ((g != 0) ? (0xFF) : (0x0))));
-		auto imm8h = (byte) ((byte) ((long) ((h != 0) ? (0xFF) : (0x0))));
-		auto imm = (ulong) ((ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (((ulong) (imm8h)) << 0)) | ((ulong) (((ulong) (imm8g)) << 8)))) | ((ulong) (((ulong) (imm8f)) << 16)))) | ((ulong) (((ulong) (imm8e)) << 24)))) | ((ulong) (((ulong) (imm8d)) << 32)))) | ((ulong) (((ulong) (imm8c)) << 40)))) | ((ulong) (((ulong) (imm8b)) << 48)))) | ((ulong) (((ulong) (imm8a)) << 56))));
+		auto imm8a = (uint8_t) ((uint8_t) ((int64_t) ((a != 0) ? (0xFF) : (0x0))));
+		auto imm8b = (uint8_t) ((uint8_t) ((int64_t) ((b != 0) ? (0xFF) : (0x0))));
+		auto imm8c = (uint8_t) ((uint8_t) ((int64_t) ((c != 0) ? (0xFF) : (0x0))));
+		auto imm8d = (uint8_t) ((uint8_t) ((int64_t) ((d != 0) ? (0xFF) : (0x0))));
+		auto imm8e = (uint8_t) ((uint8_t) ((int64_t) ((e != 0) ? (0xFF) : (0x0))));
+		auto imm8f = (uint8_t) ((uint8_t) ((int64_t) ((f != 0) ? (0xFF) : (0x0))));
+		auto imm8g = (uint8_t) ((uint8_t) ((int64_t) ((g != 0) ? (0xFF) : (0x0))));
+		auto imm8h = (uint8_t) ((uint8_t) ((int64_t) ((h != 0) ? (0xFF) : (0x0))));
+		auto imm = (uint64_t) ((uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (((uint64_t) (imm8h)) << 0)) | ((uint64_t) (((uint64_t) (imm8g)) << 8)))) | ((uint64_t) (((uint64_t) (imm8f)) << 16)))) | ((uint64_t) (((uint64_t) (imm8e)) << 24)))) | ((uint64_t) (((uint64_t) (imm8d)) << 32)))) | ((uint64_t) (((uint64_t) (imm8c)) << 40)))) | ((uint64_t) (((uint64_t) (imm8b)) << 48)))) | ((uint64_t) (((uint64_t) (imm8a)) << 56))));
 		return "MOVI-scalar-64bit";
 	}
 	insn_204:
@@ -2598,7 +2598,7 @@ const char* getInstructionClass(uint inst) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		return "MOVI-vector-8bit";
 	}
 	insn_205:
@@ -2615,7 +2615,7 @@ const char* getInstructionClass(uint inst) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("8H")) : (string("4H")));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		return "MOVI-vector-16bit";
 	}
 	insn_206:
@@ -2632,8 +2632,8 @@ const char* getInstructionClass(uint inst) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-		auto amount = (long) (([=](auto temp_253) -> long { switch(temp_253) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto amount = (int64_t) (([=](auto temp_253) -> int64_t { switch(temp_253) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		return "MOVI-vector-32bit";
 	}
 	insn_207:
@@ -2647,7 +2647,7 @@ const char* getInstructionClass(uint inst) {
 		auto g = (inst >> 6) & 0x1U;
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto imm = (ulong) ((ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (h)) << 1)))) | ((byte) (((byte) (h)) << 2)))) | ((byte) (((byte) (h)) << 3)))) | ((byte) (((byte) (h)) << 4)))) | ((byte) (((byte) (h)) << 5)))) | ((byte) (((byte) (h)) << 6)))) | ((byte) (((byte) (h)) << 7)))))) << 0)) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (g)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (g)) << 2)))) | ((byte) (((byte) (g)) << 3)))) | ((byte) (((byte) (g)) << 4)))) | ((byte) (((byte) (g)) << 5)))) | ((byte) (((byte) (g)) << 6)))) | ((byte) (((byte) (g)) << 7)))))) << 8)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (f)) << 0)) | ((byte) (((byte) (f)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (f)) << 3)))) | ((byte) (((byte) (f)) << 4)))) | ((byte) (((byte) (f)) << 5)))) | ((byte) (((byte) (f)) << 6)))) | ((byte) (((byte) (f)) << 7)))))) << 16)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (e)) << 0)) | ((byte) (((byte) (e)) << 1)))) | ((byte) (((byte) (e)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (e)) << 4)))) | ((byte) (((byte) (e)) << 5)))) | ((byte) (((byte) (e)) << 6)))) | ((byte) (((byte) (e)) << 7)))))) << 24)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (d)) << 0)) | ((byte) (((byte) (d)) << 1)))) | ((byte) (((byte) (d)) << 2)))) | ((byte) (((byte) (d)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (d)) << 5)))) | ((byte) (((byte) (d)) << 6)))) | ((byte) (((byte) (d)) << 7)))))) << 32)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (c)) << 0)) | ((byte) (((byte) (c)) << 1)))) | ((byte) (((byte) (c)) << 2)))) | ((byte) (((byte) (c)) << 3)))) | ((byte) (((byte) (c)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (c)) << 6)))) | ((byte) (((byte) (c)) << 7)))))) << 40)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (b)) << 0)) | ((byte) (((byte) (b)) << 1)))) | ((byte) (((byte) (b)) << 2)))) | ((byte) (((byte) (b)) << 3)))) | ((byte) (((byte) (b)) << 4)))) | ((byte) (((byte) (b)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (b)) << 7)))))) << 48)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (a)) << 0)) | ((byte) (((byte) (a)) << 1)))) | ((byte) (((byte) (a)) << 2)))) | ((byte) (((byte) (a)) << 3)))) | ((byte) (((byte) (a)) << 4)))) | ((byte) (((byte) (a)) << 5)))) | ((byte) (((byte) (a)) << 6)))) | ((byte) (((byte) (a)) << 7)))))) << 56))));
+		auto imm = (uint64_t) ((uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (h)) << 1)))) | ((uint8_t) (((uint8_t) (h)) << 2)))) | ((uint8_t) (((uint8_t) (h)) << 3)))) | ((uint8_t) (((uint8_t) (h)) << 4)))) | ((uint8_t) (((uint8_t) (h)) << 5)))) | ((uint8_t) (((uint8_t) (h)) << 6)))) | ((uint8_t) (((uint8_t) (h)) << 7)))))) << 0)) | ((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (g)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (g)) << 2)))) | ((uint8_t) (((uint8_t) (g)) << 3)))) | ((uint8_t) (((uint8_t) (g)) << 4)))) | ((uint8_t) (((uint8_t) (g)) << 5)))) | ((uint8_t) (((uint8_t) (g)) << 6)))) | ((uint8_t) (((uint8_t) (g)) << 7)))))) << 8)))) | ((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (f)) << 0)) | ((uint8_t) (((uint8_t) (f)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (f)) << 3)))) | ((uint8_t) (((uint8_t) (f)) << 4)))) | ((uint8_t) (((uint8_t) (f)) << 5)))) | ((uint8_t) (((uint8_t) (f)) << 6)))) | ((uint8_t) (((uint8_t) (f)) << 7)))))) << 16)))) | ((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (e)) << 0)) | ((uint8_t) (((uint8_t) (e)) << 1)))) | ((uint8_t) (((uint8_t) (e)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (e)) << 4)))) | ((uint8_t) (((uint8_t) (e)) << 5)))) | ((uint8_t) (((uint8_t) (e)) << 6)))) | ((uint8_t) (((uint8_t) (e)) << 7)))))) << 24)))) | ((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (d)) << 0)) | ((uint8_t) (((uint8_t) (d)) << 1)))) | ((uint8_t) (((uint8_t) (d)) << 2)))) | ((uint8_t) (((uint8_t) (d)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (d)) << 5)))) | ((uint8_t) (((uint8_t) (d)) << 6)))) | ((uint8_t) (((uint8_t) (d)) << 7)))))) << 32)))) | ((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (c)) << 0)) | ((uint8_t) (((uint8_t) (c)) << 1)))) | ((uint8_t) (((uint8_t) (c)) << 2)))) | ((uint8_t) (((uint8_t) (c)) << 3)))) | ((uint8_t) (((uint8_t) (c)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (c)) << 6)))) | ((uint8_t) (((uint8_t) (c)) << 7)))))) << 40)))) | ((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (b)) << 0)) | ((uint8_t) (((uint8_t) (b)) << 1)))) | ((uint8_t) (((uint8_t) (b)) << 2)))) | ((uint8_t) (((uint8_t) (b)) << 3)))) | ((uint8_t) (((uint8_t) (b)) << 4)))) | ((uint8_t) (((uint8_t) (b)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (b)) << 7)))))) << 48)))) | ((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (a)) << 0)) | ((uint8_t) (((uint8_t) (a)) << 1)))) | ((uint8_t) (((uint8_t) (a)) << 2)))) | ((uint8_t) (((uint8_t) (a)) << 3)))) | ((uint8_t) (((uint8_t) (a)) << 4)))) | ((uint8_t) (((uint8_t) (a)) << 5)))) | ((uint8_t) (((uint8_t) (a)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7)))))) << 56))));
 		return "MOVI-Vx.2D";
 	}
 	insn_208:
@@ -2657,7 +2657,7 @@ const char* getInstructionClass(uint inst) {
 		auto imm = (inst >> 5) & 0xFFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (byte) ((hw) << (uint) (0x4));
+		auto shift = (uint8_t) ((hw) << (uint) (0x4));
 		return "MOVK";
 	}
 	insn_209:
@@ -2667,7 +2667,7 @@ const char* getInstructionClass(uint inst) {
 		auto imm = (inst >> 5) & 0xFFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (byte) ((hw) << (uint) (0x4));
+		auto shift = (uint8_t) ((hw) << (uint) (0x4));
 		return "MOVN";
 	}
 	insn_210:
@@ -2677,7 +2677,7 @@ const char* getInstructionClass(uint inst) {
 		auto imm = (inst >> 5) & 0xFFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (byte) ((hw) << (uint) (0x4));
+		auto shift = (uint8_t) ((hw) << (uint) (0x4));
 		return "MOVZ";
 	}
 	insn_211:
@@ -2720,10 +2720,10 @@ const char* getInstructionClass(uint inst) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto rm = (byte) (((bool) (((size) == (0x2)) ? 1U : 0U) != 0) ? ((byte) ((byte) (((byte) (((byte) (rv)) << 0)) | ((byte) (((byte) (M)) << 4))))) : (rv));
-		auto t = (string) (([=](auto temp_257) -> string { switch(temp_257) { case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rm = (uint8_t) (((bool) (((size) == (0x2)) ? 1U : 0U) != 0) ? ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (rv)) << 0)) | ((uint8_t) (((uint8_t) (M)) << 4))))) : (rv));
+		auto t = (string) (([=](auto temp_257) -> string { switch(temp_257) { case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto ts = (string) (([=](auto temp_258) -> string { switch(temp_258) { case 0x1: return string("H"); case 0x2: return string("S"); default: throw "Not implemented"; } })(size));
-		auto index = (byte) (([=](auto temp_259) -> byte { switch(temp_259) { case 0x1: return (byte) ((byte) (((byte) (byte) (((byte) (((byte) (M)) << 0)) | ((byte) (((byte) (L)) << 1)))) | ((byte) (((byte) (H)) << 2)))); case 0x2: return (byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))); default: throw "Not implemented"; } })(size));
+		auto index = (uint8_t) (([=](auto temp_259) -> uint8_t { switch(temp_259) { case 0x1: return (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (M)) << 0)) | ((uint8_t) (((uint8_t) (L)) << 1)))) | ((uint8_t) (((uint8_t) (H)) << 2)))); case 0x2: return (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))); default: throw "Not implemented"; } })(size));
 		return "MUL-by-element";
 	}
 	insn_215:
@@ -2733,7 +2733,7 @@ const char* getInstructionClass(uint inst) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_261) -> string { switch(temp_261) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_261) -> string { switch(temp_261) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "MUL-vector";
 	}
 	insn_216:
@@ -2750,8 +2750,8 @@ const char* getInstructionClass(uint inst) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("8H")) : (string("4H")));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
-		auto amount = (long) ((cmode != 0) ? (0x8) : (0x0));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
+		auto amount = (int64_t) ((cmode != 0) ? (0x8) : (0x0));
 		return "MVNI-vector-16bit";
 	}
 	insn_217:
@@ -2768,8 +2768,8 @@ const char* getInstructionClass(uint inst) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-		auto amount = (long) (([=](auto temp_263) -> long { switch(temp_263) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto amount = (int64_t) (([=](auto temp_263) -> int64_t { switch(temp_263) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		return "MVNI-vector-32bit-LSL";
 	}
 	insn_218:
@@ -2786,8 +2786,8 @@ const char* getInstructionClass(uint inst) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-		auto amount = (long) ((cmode != 0) ? (0x10) : (0x8));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto amount = (int64_t) ((cmode != 0) ? (0x10) : (0x8));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		return "MVNI-vector-32bit-MSL";
 	}
 	insn_219:
@@ -2796,7 +2796,7 @@ const char* getInstructionClass(uint inst) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_265) -> string { switch(temp_265) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_265) -> string { switch(temp_265) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "NEG-vector";
 	}
 	insn_220:
@@ -2824,7 +2824,7 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (ulong) (MakeWMask(up, imms, immr, (long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
+		auto imm = (uint64_t) (MakeWMask(up, imms, immr, (int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
 		return "ORR-immediate";
 	}
 	insn_223:
@@ -2849,14 +2849,48 @@ const char* getInstructionClass(uint inst) {
 		return "ORR-simd-register";
 	}
 	insn_225:
+	if((inst & 0xBF20FC00U) == 0x0E20E000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x3U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto h = (string) ((Q != 0) ? (string("2")) : (string("")));
+		auto Ta = (string) (([=](auto temp_272) -> string { switch(temp_272) { case 0x0: return string("8H"); case 0x3: return string("1Q"); default: throw "Not implemented"; } })(size));
+		auto Tb = (string) (([=](auto temp_273) -> string { switch(temp_273) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x6: return string("1D"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		return "PMULL[2]";
+	}
+	insn_226:
 	if((inst & 0xFFC00000U) == 0xF9800000U) {
 		auto imm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto imm5 = (inst >> 0) & 0x1FU;
-		auto pimm = (ulong) (((ulong) (ushort) (imm)) * ((ulong) (long) (0x8)));
+		auto pimm = (uint64_t) (((uint64_t) (uint16_t) (imm)) * ((uint64_t) (int64_t) (0x8)));
 		return "PRFM-immediate";
 	}
-	insn_226:
+	insn_227:
+	if((inst & 0xFF000000U) == 0xD8000000U) {
+		auto imm = (inst >> 5) & 0x7FFFFU;
+		auto rt = (inst >> 0) & 0x1FU;
+		return "PRFM-literal";
+	}
+	insn_228:
+	if((inst & 0xFFE00C00U) == 0xF8A00800U) {
+		auto rm = (inst >> 16) & 0x1FU;
+		auto opt = (inst >> 13) & 0x7U;
+		auto S = (inst >> 12) & 0x1U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		return "PRFM-register";
+	}
+	insn_229:
+	if((inst & 0xFFE00C00U) == 0xF8800000U) {
+		auto imm = (inst >> 12) & 0x1FFU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		return "PRFUM";
+	}
+	insn_230:
 	if((inst & 0x7FFFFC00U) == 0x5AC00000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
@@ -2864,12 +2898,12 @@ const char* getInstructionClass(uint inst) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "RBIT";
 	}
-	insn_227:
+	insn_231:
 	if((inst & 0xFFFFFC1FU) == 0xD65F0000U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		return "RET";
 	}
-	insn_228:
+	insn_232:
 	if((inst & 0x7FFFF800U) == 0x5AC00800U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto opc = (inst >> 10) & 0x1U;
@@ -2878,7 +2912,7 @@ const char* getInstructionClass(uint inst) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "REV";
 	}
-	insn_229:
+	insn_233:
 	if((inst & 0x7FFFFC00U) == 0x5AC00400U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
@@ -2886,7 +2920,7 @@ const char* getInstructionClass(uint inst) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "REV16";
 	}
-	insn_230:
+	insn_234:
 	if((inst & 0x7FE0FC00U) == 0x1AC02C00U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
@@ -2895,7 +2929,7 @@ const char* getInstructionClass(uint inst) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "RORV";
 	}
-	insn_231:
+	insn_235:
 	if((inst & 0x7FE0FC00U) == 0x7A000000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
@@ -2904,7 +2938,7 @@ const char* getInstructionClass(uint inst) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "SBCS";
 	}
-	insn_232:
+	insn_236:
 	if((inst & 0x7F800000U) == 0x13000000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto N = (inst >> 22) & 0x1U;
@@ -2915,13 +2949,13 @@ const char* getInstructionClass(uint inst) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "SBFM";
 	}
-	insn_233:
+	insn_237:
 	if((inst & 0x7F3FFC00U) == 0x1E220000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -2962,7 +2996,7 @@ const char* getInstructionClass(uint inst) {
 		}
 		return "SCVTF-scalar-integer";
 	}
-	insn_234:
+	insn_238:
 	if((inst & 0xFFBFFC00U) == 0x5E21D800U) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
@@ -2970,16 +3004,16 @@ const char* getInstructionClass(uint inst) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : (string("D")));
 		return "SCVTF-scalar";
 	}
-	insn_235:
+	insn_239:
 	if((inst & 0xBFBFFC00U) == 0x0E21D800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_271) -> string { switch(temp_271) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_275) -> string { switch(temp_275) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "SCVTF-vector";
 	}
-	insn_236:
+	insn_240:
 	if((inst & 0x7FE0FC00U) == 0x1AC00C00U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
@@ -2988,7 +3022,7 @@ const char* getInstructionClass(uint inst) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "SDIV";
 	}
-	insn_237:
+	insn_241:
 	if((inst & 0xBF80FC00U) == 0x0F005400U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto immh = (inst >> 19) & 0xFU;
@@ -2999,31 +3033,31 @@ const char* getInstructionClass(uint inst) {
 		auto size = 0x0;
 		auto shift = 0x0;
 		if(!((bool) (((immh) != (0x0)) ? 1U : 0U)))
-			goto insn_238;
+			goto insn_242;
 		if(((bool) (((immh) == (0x1)) ? 1U : 0U)) != 0) {
 			T = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
 			size = 0x1;
-			shift = (ulong) (((ulong) (uint) ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))))) - ((ulong) (long) (0x8)));
+			shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x8)));
 		} else {
-			if(((bool) ((((byte) ((((ulong) (immh)) & ((ulong) (0xE))))) == (0x2)) ? 1U : 0U)) != 0) {
+			if(((bool) ((((uint8_t) ((((uint64_t) (immh)) & ((uint64_t) (0xE))))) == (0x2)) ? 1U : 0U)) != 0) {
 				T = (string) ((Q != 0) ? (string("8H")) : (string("4H")));
 				size = 0x2;
-				shift = (ulong) (((ulong) (uint) ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))))) - ((ulong) (long) (0x10)));
+				shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x10)));
 			} else {
-				if(((bool) ((((byte) ((((ulong) (immh)) & ((ulong) (0xC))))) == (0x4)) ? 1U : 0U)) != 0) {
+				if(((bool) ((((uint8_t) ((((uint64_t) (immh)) & ((uint64_t) (0xC))))) == (0x4)) ? 1U : 0U)) != 0) {
 					T = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
 					size = 0x4;
-					shift = (ulong) (((ulong) (uint) ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))))) - ((ulong) (long) (0x20)));
+					shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x20)));
 				} else {
 					T = (string) ((Q != 0) ? (string("2D")) : throw "Not implemented");
 					size = 0x8;
-					shift = (ulong) (((ulong) (uint) ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))))) - ((ulong) (long) (0x20)));
+					shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x20)));
 				}
 			}
 		}
 		return "SHL-vector";
 	}
-	insn_238:
+	insn_242:
 	if((inst & 0xFFE08000U) == 0x9B200000U) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto ra = (inst >> 10) & 0x1FU;
@@ -3031,14 +3065,14 @@ const char* getInstructionClass(uint inst) {
 		auto rd = (inst >> 0) & 0x1FU;
 		return "SMADDL";
 	}
-	insn_239:
+	insn_243:
 	if((inst & 0xFFE0FC00U) == 0x9B407C00U) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		return "SMULH";
 	}
-	insn_240:
+	insn_244:
 	if((inst & 0xBF80FC00U) == 0x0F00A400U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto immh = (inst >> 19) & 0xFU;
@@ -3048,21 +3082,21 @@ const char* getInstructionClass(uint inst) {
 		auto variant = (string) ((Q != 0) ? (string("2")) : (string("")));
 		auto ta = string("");
 		auto tb = string("");
-		auto shift = (ulong) ((ulong) (0x0));
+		auto shift = (uint64_t) ((uint64_t) (0x0));
 		if(((bool) (((immh) == (0x1)) ? 1U : 0U)) != 0) {
 			ta = string("8H");
 			tb = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
-			shift = (ulong) (((ulong) (byte) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))) - ((ulong) (long) (0x8)));
+			shift = (uint64_t) (((uint64_t) (uint8_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))) - ((uint64_t) (int64_t) (0x8)));
 		} else {
-			if(((bool) ((((byte) ((((ulong) (immh)) & ((ulong) (0xE))))) == (0x2)) ? 1U : 0U)) != 0) {
+			if(((bool) ((((uint8_t) ((((uint64_t) (immh)) & ((uint64_t) (0xE))))) == (0x2)) ? 1U : 0U)) != 0) {
 				ta = string("4S");
 				tb = (string) ((Q != 0) ? (string("8H")) : (string("4H")));
-				shift = (ulong) (((ulong) (byte) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))) - ((ulong) (long) (0x10)));
+				shift = (uint64_t) (((uint64_t) (uint8_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))) - ((uint64_t) (int64_t) (0x10)));
 			} else {
-				if(((bool) ((((byte) ((((ulong) (immh)) & ((ulong) (0xC))))) == (0x4)) ? 1U : 0U)) != 0) {
+				if(((bool) ((((uint8_t) ((((uint64_t) (immh)) & ((uint64_t) (0xC))))) == (0x4)) ? 1U : 0U)) != 0) {
 					ta = string("2D");
 					tb = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-					shift = (ulong) (((ulong) (byte) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))) - ((ulong) (long) (0x20)));
+					shift = (uint64_t) (((uint64_t) (uint8_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))) - ((uint64_t) (int64_t) (0x20)));
 				} else {
 					throw "Not implemented";
 				}
@@ -3070,29 +3104,29 @@ const char* getInstructionClass(uint inst) {
 		}
 		return "SSHLL";
 	}
-	insn_241:
+	insn_245:
 	if((inst & 0xBFFFF000U) == 0x0C007000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_273) -> string { switch(temp_273) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_277) -> string { switch(temp_277) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST1-multi-no-offset-one-register";
 	}
-	insn_242:
+	insn_246:
 	if((inst & 0xBFE0F000U) == 0x0C807000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x20) : (0x10))));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x20) : (0x10))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_243;
-		auto T = (string) (([=](auto temp_275) -> string { switch(temp_275) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_247;
+		auto T = (string) (([=](auto temp_279) -> string { switch(temp_279) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST1-multi-postindex-immediate-one-register";
 	}
-	insn_243:
+	insn_247:
 	if((inst & 0xBFE0F000U) == 0x0C807000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
@@ -3100,131 +3134,131 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_244;
-		auto T = (string) (([=](auto temp_277) -> string { switch(temp_277) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_248;
+		auto T = (string) (([=](auto temp_281) -> string { switch(temp_281) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST1-multi-postindex-register-one-register";
 	}
-	insn_244:
+	insn_248:
 	if((inst & 0xBFFFF000U) == 0x0C00A000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_279) -> string { switch(temp_279) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_283) -> string { switch(temp_283) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST1-multi-no-offset-two-registers";
 	}
-	insn_245:
+	insn_249:
 	if((inst & 0xBFE0F000U) == 0x0C80A000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x20) : (0x10))));
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x20) : (0x10))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_246;
-		auto T = (string) (([=](auto temp_281) -> string { switch(temp_281) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_250;
+		auto T = (string) (([=](auto temp_285) -> string { switch(temp_285) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST1-multi-postindex-immediate-two-registers";
 	}
-	insn_246:
+	insn_250:
 	if((inst & 0xBFE0F000U) == 0x0C80A000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_247;
-		auto T = (string) (([=](auto temp_283) -> string { switch(temp_283) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_251;
+		auto T = (string) (([=](auto temp_287) -> string { switch(temp_287) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST1-multi-postindex-register-two-registers";
 	}
-	insn_247:
+	insn_251:
 	if((inst & 0xBFFFF000U) == 0x0C006000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_285) -> string { switch(temp_285) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_289) -> string { switch(temp_289) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST1-multi-no-offset-three-registers";
 	}
-	insn_248:
+	insn_252:
 	if((inst & 0xBFE0F000U) == 0x0C806000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x30) : (0x18))));
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x30) : (0x18))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_249;
-		auto T = (string) (([=](auto temp_287) -> string { switch(temp_287) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_253;
+		auto T = (string) (([=](auto temp_291) -> string { switch(temp_291) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST1-multi-postindex-immediate-three-registers";
 	}
-	insn_249:
+	insn_253:
 	if((inst & 0xBFE0F000U) == 0x0C806000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_250;
-		auto T = (string) (([=](auto temp_289) -> string { switch(temp_289) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_254;
+		auto T = (string) (([=](auto temp_293) -> string { switch(temp_293) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST1-multi-postindex-register-three-registers";
 	}
-	insn_250:
+	insn_254:
 	if((inst & 0xBFFFF000U) == 0x0C002000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_291) -> string { switch(temp_291) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_295) -> string { switch(temp_295) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST1-multi-no-offset-four-registers";
 	}
-	insn_251:
+	insn_255:
 	if((inst & 0xBFE0F000U) == 0x0C802000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x40) : (0x20))));
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x40) : (0x20))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_252;
-		auto T = (string) (([=](auto temp_293) -> string { switch(temp_293) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_256;
+		auto T = (string) (([=](auto temp_297) -> string { switch(temp_297) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST1-multi-postindex-immediate-four-registers";
 	}
-	insn_252:
+	insn_256:
 	if((inst & 0xBFE0F000U) == 0x0C802000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_253;
-		auto T = (string) (([=](auto temp_295) -> string { switch(temp_295) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_257;
+		auto T = (string) (([=](auto temp_299) -> string { switch(temp_299) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST1-multi-postindex-register-four-registers";
 	}
-	insn_253:
+	insn_257:
 	if((inst & 0xBFFF2000U) == 0x0D000000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto opc = (inst >> 14) & 0x3U;
@@ -3233,132 +3267,132 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((opc) != (0x3)) ? 1U : 0U)))
-			goto insn_254;
-		auto t = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("B")) : ((string) (((bool) ((((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) ((((byte) ((((ulong) (size)) & ((ulong) (0x1))))) == (0x0)) ? 1U : 0U))))) != 0) ? (string("H")) : ((string) (((bool) (((opc) == (0x2)) ? 1U : 0U) != 0) ? ((string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : ((string) (((bool) ((((bool) ((bool) (((size) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) (((S) == (0x0)) ? 1U : 0U))))) != 0) ? (string("D")) : throw "Not implemented")))) : throw "Not implemented")))));
-		auto index = (uint) (([=](auto temp_297) -> uint { switch(temp_297) { case 0x0: return (uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3)))))); case 0x1: return (uint) (((uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint) (((bool) ((((byte) ((((ulong) (size)) & ((ulong) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (S)) << 0)) | ((byte) (((byte) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
+			goto insn_258;
+		auto t = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("B")) : ((string) (((bool) ((((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U))))) != 0) ? (string("H")) : ((string) (((bool) (((opc) == (0x2)) ? 1U : 0U) != 0) ? ((string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : ((string) (((bool) ((((bool) ((bool) (((size) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) (((S) == (0x0)) ? 1U : 0U))))) != 0) ? (string("D")) : throw "Not implemented")))) : throw "Not implemented")))));
+		auto index = (uint32_t) (([=](auto temp_301) -> uint32_t { switch(temp_301) { case 0x0: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3)))))); case 0x1: return (uint32_t) (((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint32_t) (((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (S)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
 		return "ST1-single-no-offset";
 	}
-	insn_254:
+	insn_258:
 	if((inst & 0xBFFFF000U) == 0x0C008000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_299) -> string { switch(temp_299) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_303) -> string { switch(temp_303) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST2-multi-no-offset";
 	}
-	insn_255:
+	insn_259:
 	if((inst & 0xBFE0F000U) == 0x0C808000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x20) : (0x10))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x20) : (0x10))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_256;
-		auto T = (string) (([=](auto temp_301) -> string { switch(temp_301) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_260;
+		auto T = (string) (([=](auto temp_305) -> string { switch(temp_305) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST2-multi-postindex-immediate";
 	}
-	insn_256:
+	insn_260:
 	if((inst & 0xBFE0F000U) == 0x0C808000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_257;
-		auto T = (string) (([=](auto temp_303) -> string { switch(temp_303) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_261;
+		auto T = (string) (([=](auto temp_307) -> string { switch(temp_307) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST2-multi-postindex-register";
 	}
-	insn_257:
+	insn_261:
 	if((inst & 0xBFFFF000U) == 0x0C004000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_305) -> string { switch(temp_305) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_309) -> string { switch(temp_309) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST3-multi-no-offset";
 	}
-	insn_258:
+	insn_262:
 	if((inst & 0xBFE0F000U) == 0x0C804000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x30) : (0x18))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x30) : (0x18))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_259;
-		auto T = (string) (([=](auto temp_307) -> string { switch(temp_307) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_263;
+		auto T = (string) (([=](auto temp_311) -> string { switch(temp_311) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST3-multi-postindex-immediate";
 	}
-	insn_259:
+	insn_263:
 	if((inst & 0xBFE0F000U) == 0x0C804000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_260;
-		auto T = (string) (([=](auto temp_309) -> string { switch(temp_309) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_264;
+		auto T = (string) (([=](auto temp_313) -> string { switch(temp_313) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST3-multi-postindex-register";
 	}
-	insn_260:
+	insn_264:
 	if((inst & 0xBFFFF000U) == 0x0C000000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_311) -> string { switch(temp_311) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_315) -> string { switch(temp_315) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST4-multi-no-offset";
 	}
-	insn_261:
+	insn_265:
 	if((inst & 0xBFE0F000U) == 0x0C800000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x40) : (0x2B))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x40) : (0x2B))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_262;
-		auto T = (string) (([=](auto temp_313) -> string { switch(temp_313) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_266;
+		auto T = (string) (([=](auto temp_317) -> string { switch(temp_317) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST4-multi-postindex-immediate";
 	}
-	insn_262:
+	insn_266:
 	if((inst & 0xBFE0F000U) == 0x0C800000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_263;
-		auto T = (string) (([=](auto temp_315) -> string { switch(temp_315) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_267;
+		auto T = (string) (([=](auto temp_319) -> string { switch(temp_319) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ST4-multi-postindex-register";
 	}
-	insn_263:
+	insn_267:
 	if((inst & 0xBFFFFC00U) == 0x889FFC00U) {
 		auto size = (inst >> 30) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
@@ -3366,19 +3400,19 @@ const char* getInstructionClass(uint inst) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "STLR";
 	}
-	insn_264:
+	insn_268:
 	if((inst & 0xFFFFFC00U) == 0x089FFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		return "STLRB";
 	}
-	insn_265:
+	insn_269:
 	if((inst & 0xFFFFFC00U) == 0x489FFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		return "STLRH";
 	}
-	insn_266:
+	insn_270:
 	if((inst & 0xBFE0FC00U) == 0x8800FC00U) {
 		auto size = (inst >> 30) & 0x1U;
 		auto rs = (inst >> 16) & 0x1FU;
@@ -3387,14 +3421,14 @@ const char* getInstructionClass(uint inst) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "STLXR";
 	}
-	insn_267:
+	insn_271:
 	if((inst & 0xFFE0FC00U) == 0x0800FC00U) {
 		auto rs = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		return "STLXRB";
 	}
-	insn_268:
+	insn_272:
 	if((inst & 0x7FC00000U) == 0x28800000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto imm = (inst >> 15) & 0x7FU;
@@ -3402,10 +3436,10 @@ const char* getInstructionClass(uint inst) {
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		return "STP-postindex";
 	}
-	insn_269:
+	insn_273:
 	if((inst & 0x7FC00000U) == 0x29800000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto imm = (inst >> 15) & 0x7FU;
@@ -3413,10 +3447,10 @@ const char* getInstructionClass(uint inst) {
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		return "STP-preindex";
 	}
-	insn_270:
+	insn_274:
 	if((inst & 0x7FC00000U) == 0x29000000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto imm = (inst >> 15) & 0x7FU;
@@ -3424,73 +3458,73 @@ const char* getInstructionClass(uint inst) {
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		return "STP-signed-offset";
 	}
-	insn_271:
+	insn_275:
 	if((inst & 0x3FC00000U) == 0x2C800000U) {
 		auto opc = (inst >> 30) & 0x3U;
 		auto imm = (inst >> 15) & 0x7FU;
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_318) -> string { switch(temp_318) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_319) -> long { switch(temp_319) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_322) -> string { switch(temp_322) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_323) -> int64_t { switch(temp_323) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		return "STP-simd-postindex";
 	}
-	insn_272:
+	insn_276:
 	if((inst & 0x3FC00000U) == 0x2D800000U) {
 		auto opc = (inst >> 30) & 0x3U;
 		auto imm = (inst >> 15) & 0x7FU;
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_322) -> string { switch(temp_322) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_323) -> long { switch(temp_323) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_326) -> string { switch(temp_326) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_327) -> int64_t { switch(temp_327) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		return "STP-simd-preindex";
 	}
-	insn_273:
+	insn_277:
 	if((inst & 0x3FC00000U) == 0x2D000000U) {
 		auto opc = (inst >> 30) & 0x3U;
 		auto imm = (inst >> 15) & 0x7FU;
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_326) -> string { switch(temp_326) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_327) -> long { switch(temp_327) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_330) -> string { switch(temp_330) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_331) -> int64_t { switch(temp_331) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		return "STP-simd-signed-offset";
 	}
-	insn_274:
+	insn_278:
 	if((inst & 0xBFE00C00U) == 0xB8000400U) {
 		auto size = (inst >> 30) & 0x1U;
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return "STR-immediate-postindex";
 	}
-	insn_275:
+	insn_279:
 	if((inst & 0xBFE00C00U) == 0xB8000C00U) {
 		auto size = (inst >> 30) & 0x1U;
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return "STR-immediate-preindex";
 	}
-	insn_276:
+	insn_280:
 	if((inst & 0xBFC00000U) == 0xB9000000U) {
 		auto size = (inst >> 30) & 0x1U;
 		auto imm = (inst >> 10) & 0xFFFU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto pimm = (ulong) (((ulong) ((ulong) (imm))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto pimm = (uint64_t) (((uint64_t) ((uint64_t) (imm))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		return "STR-immediate-unsigned-offset";
 	}
-	insn_277:
+	insn_281:
 	if((inst & 0xBFE00C00U) == 0xB8200800U) {
 		auto size = (inst >> 30) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
@@ -3499,49 +3533,49 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		auto extend = (string) (([=](auto temp_329) -> string { switch(temp_329) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto extend = (string) (([=](auto temp_333) -> string { switch(temp_333) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		return "STR-register";
 	}
-	insn_278:
+	insn_282:
 	if((inst & 0x3F600C00U) == 0x3C000400U) {
 		auto size = (inst >> 30) & 0x3U;
 		auto opc = (inst >> 23) & 0x1U;
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_331) -> string { switch(temp_331) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
+		auto r = (string) (([=](auto temp_335) -> string { switch(temp_335) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return "STR-simd-postindex";
 	}
-	insn_279:
+	insn_283:
 	if((inst & 0x3F600C00U) == 0x3C000C00U) {
 		auto size = (inst >> 30) & 0x3U;
 		auto opc = (inst >> 23) & 0x1U;
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_333) -> string { switch(temp_333) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
-		auto scale = (byte) ((byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (opc)) << 2))));
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
+		auto r = (string) (([=](auto temp_337) -> string { switch(temp_337) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto scale = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 2))));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return "STR-simd-preindex";
 	}
-	insn_280:
+	insn_284:
 	if((inst & 0x3F400000U) == 0x3D000000U) {
 		auto size = (inst >> 30) & 0x3U;
 		auto opc = (inst >> 23) & 0x1U;
 		auto imm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_335) -> string { switch(temp_335) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
-		auto scale = (byte) ((byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (opc)) << 2))));
+		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
+		auto r = (string) (([=](auto temp_339) -> string { switch(temp_339) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto scale = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 2))));
 		return "STR-simd-unsigned-offset";
 	}
-	insn_281:
+	insn_285:
 	if((inst & 0x3F600C00U) == 0x3C200800U) {
 		auto size = (inst >> 30) & 0x3U;
 		auto opc = (inst >> 23) & 0x1U;
@@ -3550,121 +3584,128 @@ const char* getInstructionClass(uint inst) {
 		auto scale = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r1 = (string) (([=](auto temp_339) -> string { switch(temp_339) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
-		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (([=](auto temp_340) -> long { switch(temp_340) { case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: return (long) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (0x4) : (0x0)); } })(size))));
-		auto extend = (string) (([=](auto temp_341) -> string { switch(temp_341) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
+		auto r1 = (string) (([=](auto temp_343) -> string { switch(temp_343) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((int64_t) (([=](auto temp_344) -> int64_t { switch(temp_344) { case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: return (int64_t) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (0x4) : (0x0)); } })(size))));
+		auto extend = (string) (([=](auto temp_345) -> string { switch(temp_345) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		return "STR-simd-register";
 	}
-	insn_282:
+	insn_286:
 	if((inst & 0xFFE00C00U) == 0x38000400U) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return "STRB-immediate-postindex";
 	}
-	insn_283:
+	insn_287:
 	if((inst & 0xFFE00C00U) == 0x38000C00U) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return "STRB-immediate-preindex";
 	}
-	insn_284:
+	insn_288:
 	if((inst & 0xFFC00000U) == 0x39000000U) {
 		auto imm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		return "STRB-immediate-unsigned-offset";
 	}
-	insn_285:
+	insn_289:
 	if((inst & 0xFFE00C00U) == 0x38200800U) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto option = (inst >> 13) & 0x7U;
 		auto amount = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_343) -> string { switch(temp_343) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto str = (string) (([=](auto temp_347) -> string { switch(temp_347) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		return "STRB-register";
 	}
-	insn_286:
+	insn_290:
 	if((inst & 0xFFE00C00U) == 0x78000400U) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return "STRH-immediate-postindex";
 	}
-	insn_287:
+	insn_291:
 	if((inst & 0xFFE00C00U) == 0x78000C00U) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return "STRH-immediate-preindex";
 	}
-	insn_288:
+	insn_292:
 	if((inst & 0xFFC00000U) == 0x79000000U) {
 		auto rawimm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (ushort) ((rawimm) << (uint) (0x1));
+		auto imm = (uint16_t) ((rawimm) << (uint) (0x1));
 		return "STRH-immediate-unsigned-offset";
 	}
-	insn_289:
+	insn_293:
 	if((inst & 0xFFE00C00U) == 0x78200800U) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto option = (inst >> 13) & 0x7U;
 		auto amount = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_345) -> string { switch(temp_345) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto str = (string) (([=](auto temp_349) -> string { switch(temp_349) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		return "STRH-register";
 	}
-	insn_290:
+	insn_294:
 	if((inst & 0xBFE00C00U) == 0xB8000000U) {
 		auto size = (inst >> 30) & 0x1U;
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto offset = (long) (SignExt<long>(imm, 9));
+		auto offset = (int64_t) (SignExt<int64_t>(imm, 9));
 		return "STUR";
 	}
-	insn_291:
+	insn_295:
 	if((inst & 0x3F600C00U) == 0x3C000000U) {
 		auto size = (inst >> 30) & 0x3U;
 		auto opc = (inst >> 23) & 0x1U;
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_347) -> string { switch(temp_347) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
+		auto r = (string) (([=](auto temp_351) -> string { switch(temp_351) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return "STUR-simd";
 	}
-	insn_292:
+	insn_296:
 	if((inst & 0xFFE00C00U) == 0x38000000U) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto offset = (long) (SignExt<long>(imm, 9));
+		auto offset = (int64_t) (SignExt<int64_t>(imm, 9));
 		return "STURB";
 	}
-	insn_293:
+	insn_297:
 	if((inst & 0xFFE00C00U) == 0x78000000U) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto offset = (long) (SignExt<long>(imm, 9));
+		auto offset = (int64_t) (SignExt<int64_t>(imm, 9));
 		return "STURH";
 	}
-	insn_294:
+	insn_298:
+	if((inst & 0xFFE0FC00U) == 0x08007C00U) {
+		auto rs = (inst >> 16) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		return "STXRB";
+	}
+	insn_299:
 	if((inst & 0xBFE0FC00U) == 0x88007C00U) {
 		auto size = (inst >> 30) & 0x1U;
 		auto rs = (inst >> 16) & 0x1FU;
@@ -3673,7 +3714,7 @@ const char* getInstructionClass(uint inst) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "STXR";
 	}
-	insn_295:
+	insn_300:
 	if((inst & 0xBFE08000U) == 0x88200000U) {
 		auto size = (inst >> 30) & 0x1U;
 		auto rs = (inst >> 16) & 0x1FU;
@@ -3683,7 +3724,7 @@ const char* getInstructionClass(uint inst) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "STXP";
 	}
-	insn_296:
+	insn_301:
 	if((inst & 0x7F800000U) == 0x51000000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto sh = (inst >> 22) & 0x1U;
@@ -3691,10 +3732,10 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (long) (((bool) (((sh) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0xC));
+		auto shift = (int64_t) (((bool) (((sh) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0xC));
 		return "SUB-immediate";
 	}
-	insn_297:
+	insn_302:
 	if((inst & 0x7FE00000U) == 0x4B200000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
@@ -3703,11 +3744,11 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_350) -> string { switch(temp_350) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_351) -> string { switch(temp_351) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_354) -> string { switch(temp_354) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_355) -> string { switch(temp_355) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		return "SUB-extended-register";
 	}
-	insn_298:
+	insn_303:
 	if((inst & 0x7F200000U) == 0x4B000000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto shift = (inst >> 22) & 0x3U;
@@ -3716,10 +3757,10 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_353) -> string { switch(temp_353) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_357) -> string { switch(temp_357) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		return "SUB-shifted-register";
 	}
-	insn_299:
+	insn_304:
 	if((inst & 0x7FE00000U) == 0x6B200000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
@@ -3728,11 +3769,11 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_356) -> string { switch(temp_356) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_357) -> string { switch(temp_357) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_360) -> string { switch(temp_360) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_361) -> string { switch(temp_361) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		return "SUBS-extended-register";
 	}
-	insn_300:
+	insn_305:
 	if((inst & 0x7F200000U) == 0x6B000000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto shift = (inst >> 22) & 0x3U;
@@ -3742,10 +3783,10 @@ const char* getInstructionClass(uint inst) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto mode32 = (bool) (((size) == (0x0)) ? 1U : 0U);
 		auto r = (string) ((mode32 != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_359) -> string { switch(temp_359) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_363) -> string { switch(temp_363) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		return "SUBS-shifted-register";
 	}
-	insn_301:
+	insn_306:
 	if((inst & 0x7F800000U) == 0x71000000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto shift = (inst >> 22) & 0x1U;
@@ -3753,15 +3794,15 @@ const char* getInstructionClass(uint inst) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_361) -> string { switch(temp_361) { case 0x0: return string("LSL #0"); case 0x1: return string("LSL #12"); default: throw "Not implemented"; } })(shift));
+		auto shiftstr = (string) (([=](auto temp_365) -> string { switch(temp_365) { case 0x0: return string("LSL #0"); case 0x1: return string("LSL #12"); default: throw "Not implemented"; } })(shift));
 		return "SUBS-immediate";
 	}
-	insn_302:
+	insn_307:
 	if((inst & 0xFFE0001FU) == 0xD4000001U) {
 		auto imm = (inst >> 5) & 0xFFFFU;
 		return "SVC";
 	}
-	insn_303:
+	insn_308:
 	if((inst & 0xFFF80000U) == 0xD5080000U) {
 		auto op1 = (inst >> 16) & 0x7U;
 		auto cn = (inst >> 12) & 0xFU;
@@ -3770,41 +3811,41 @@ const char* getInstructionClass(uint inst) {
 		auto rt = (inst >> 0) & 0x1FU;
 		return "SYS";
 	}
-	insn_304:
+	insn_309:
 	if((inst & 0x7F000000U) == 0x36000000U) {
 		auto upper = (inst >> 31) & 0x1U;
 		auto bottom = (inst >> 19) & 0x1FU;
 		auto offset = (inst >> 5) & 0x3FFFU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((upper) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (uint) ((((uint) ((uint) (((uint) ((uint) (upper))) << (uint) (0x5)))) | ((uint) ((uint) ((uint) (bottom))))));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((ushort) (((ushort) ((ushort) (offset))) << (uint) (0x2)), 16)))));
+		auto imm = (uint32_t) ((((uint32_t) ((uint32_t) (((uint32_t) ((uint32_t) (upper))) << (uint) (0x5)))) | ((uint32_t) ((uint32_t) ((uint32_t) (bottom))))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint16_t) (((uint16_t) ((uint16_t) (offset))) << (uint) (0x2)), 16)))));
 		return "TBZ";
 	}
-	insn_305:
+	insn_310:
 	if((inst & 0x7F000000U) == 0x37000000U) {
 		auto upper = (inst >> 31) & 0x1U;
 		auto bottom = (inst >> 19) & 0x1FU;
 		auto offset = (inst >> 5) & 0x3FFFU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((upper) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (uint) ((((uint) ((uint) (((uint) ((uint) (upper))) << (uint) (0x5)))) | ((uint) ((uint) ((uint) (bottom))))));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((ushort) (((ushort) ((ushort) (offset))) << (uint) (0x2)), 16)))));
+		auto imm = (uint32_t) ((((uint32_t) ((uint32_t) (((uint32_t) ((uint32_t) (upper))) << (uint) (0x5)))) | ((uint32_t) ((uint32_t) ((uint32_t) (bottom))))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint16_t) (((uint16_t) ((uint16_t) (offset))) << (uint) (0x2)), 16)))));
 		return "TBNZ";
 	}
-	insn_306:
+	insn_311:
 	if((inst & 0xBF3FFC00U) == 0x2E303800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_364) -> string { switch(temp_364) { case 0x0: return string("H"); case 0x1: return string("S"); case 0x2: return string("D"); default: throw "Not implemented"; } })(size));
-		auto t = (string) (([=](auto temp_365) -> string { switch(temp_365) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto esize = (long) ((0x8) << (uint) (size));
-		auto count = (long) (((long) (long) ((long) ((Q != 0) ? (0x80) : (0x40)))) / ((long) (long) (esize)));
+		auto r = (string) (([=](auto temp_368) -> string { switch(temp_368) { case 0x0: return string("H"); case 0x1: return string("S"); case 0x2: return string("D"); default: throw "Not implemented"; } })(size));
+		auto t = (string) (([=](auto temp_369) -> string { switch(temp_369) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto esize = (int64_t) ((0x8) << (uint) (size));
+		auto count = (int64_t) (((int64_t) (int64_t) ((int64_t) ((Q != 0) ? (0x80) : (0x40)))) / ((int64_t) (int64_t) (esize)));
 		return "UADDLV";
 	}
-	insn_307:
+	insn_312:
 	if((inst & 0xBF20FC00U) == 0x2E201000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x3U;
@@ -3814,7 +3855,7 @@ const char* getInstructionClass(uint inst) {
 		auto o2 = (string) ((Q != 0) ? (string("2")) : (string("")));
 		auto Ta = string("");
 		auto Tb = string("");
-		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
+		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				Ta = string("8H");
 				Tb = string("8B");
@@ -3852,7 +3893,7 @@ const char* getInstructionClass(uint inst) {
 		}
 		return "UADDW[2]";
 	}
-	insn_308:
+	insn_313:
 	if((inst & 0x7F800000U) == 0x53000000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto N = (inst >> 22) & 0x1U;
@@ -3863,13 +3904,13 @@ const char* getInstructionClass(uint inst) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "UBFM";
 	}
-	insn_309:
+	insn_314:
 	if((inst & 0x7F3FFC00U) == 0x1E230000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -3910,7 +3951,7 @@ const char* getInstructionClass(uint inst) {
 		}
 		return "UCVTF-scalar-gpr-integer";
 	}
-	insn_310:
+	insn_315:
 	if((inst & 0xFFBFFC00U) == 0x7E21D800U) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
@@ -3918,16 +3959,16 @@ const char* getInstructionClass(uint inst) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : (string("D")));
 		return "UCVTF-scalar-integer";
 	}
-	insn_311:
+	insn_316:
 	if((inst & 0xBFBFFC00U) == 0x2E21D800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_367) -> string { switch(temp_367) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_371) -> string { switch(temp_371) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "UCVTF-vector";
 	}
-	insn_312:
+	insn_317:
 	if((inst & 0x7FE0FC00U) == 0x1AC00800U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto rm = (inst >> 16) & 0x1FU;
@@ -3936,7 +3977,7 @@ const char* getInstructionClass(uint inst) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return "UDIV";
 	}
-	insn_313:
+	insn_318:
 	if((inst & 0xFFE08000U) == 0x9BA00000U) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto ra = (inst >> 10) & 0x1FU;
@@ -3944,7 +3985,7 @@ const char* getInstructionClass(uint inst) {
 		auto rd = (inst >> 0) & 0x1FU;
 		return "UMADDL";
 	}
-	insn_314:
+	insn_319:
 	if((inst & 0xBFE0FC00U) == 0x0E003C00U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto imm = (inst >> 16) & 0x1FU;
@@ -3953,49 +3994,49 @@ const char* getInstructionClass(uint inst) {
 		auto T = string("");
 		auto index = 0x0;
 		auto r = (string) ((Q != 0) ? (string("X")) : (string("W")));
-		auto size = (long) ((Q != 0) ? (0x40) : ((long) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x1))))) == (0x1)) ? 1U : 0U) != 0) ? (0x8) : ((long) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x3))))) == (0x2)) ? 1U : 0U) != 0) ? (0x10) : (0x20))))));
+		auto size = (int64_t) ((Q != 0) ? (0x40) : ((int64_t) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x1))))) == (0x1)) ? 1U : 0U) != 0) ? (0x8) : ((int64_t) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x3))))) == (0x2)) ? 1U : 0U) != 0) ? (0x10) : (0x20))))));
 		switch(size) {
 			case 0x8: {
 				T = string("B");
-				index = (byte) ((imm) >> (uint) (0x1));
+				index = (uint8_t) ((imm) >> (uint) (0x1));
 				break;
 			}
 			case 0x10: {
 				T = string("H");
-				index = (byte) ((imm) >> (uint) (0x2));
+				index = (uint8_t) ((imm) >> (uint) (0x2));
 				break;
 			}
 			case 0x20: {
 				T = string("S");
-				index = (byte) ((imm) >> (uint) (0x3));
+				index = (uint8_t) ((imm) >> (uint) (0x3));
 				break;
 			}
 			default: {
 				T = string("D");
-				index = (byte) ((imm) >> (uint) (0x4));
+				index = (uint8_t) ((imm) >> (uint) (0x4));
 				break;
 			}
 		}
 		return "UMOV";
 	}
-	insn_315:
+	insn_320:
 	if((inst & 0xFFE0FC00U) == 0x9BC07C00U) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		return "UMULH";
 	}
-	insn_316:
+	insn_321:
 	if((inst & 0xBF20FC00U) == 0x2E204400U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x3U;
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_369) -> string { switch(temp_369) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_373) -> string { switch(temp_373) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "USHL-vector";
 	}
-	insn_317:
+	insn_322:
 	if((inst & 0xBF80FC00U) == 0x2F00A400U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto immh = (inst >> 19) & 0xFU;
@@ -4007,25 +4048,25 @@ const char* getInstructionClass(uint inst) {
 		auto size = 0x0;
 		auto shift = 0x0;
 		if(!((bool) (((immh) != (0x0)) ? 1U : 0U)))
-			goto insn_318;
+			goto insn_323;
 		auto i2 = (string) ((Q != 0) ? (string("2")) : (string("")));
 		if(((bool) (((immh) == (0x1)) ? 1U : 0U)) != 0) {
 			Ta = string("8H");
 			Tb = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
 			size = 0x0;
-			shift = (ulong) (((ulong) (uint) ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))))) - ((ulong) (long) (0x8)));
+			shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x8)));
 		} else {
-			if(((bool) ((((byte) ((((ulong) (immh)) & ((ulong) (0xE))))) == (0x2)) ? 1U : 0U)) != 0) {
+			if(((bool) ((((uint8_t) ((((uint64_t) (immh)) & ((uint64_t) (0xE))))) == (0x2)) ? 1U : 0U)) != 0) {
 				Ta = string("4S");
 				Tb = (string) ((Q != 0) ? (string("8H")) : (string("4H")));
 				size = 0x1;
-				shift = (ulong) (((ulong) (uint) ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))))) - ((ulong) (long) (0x10)));
+				shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x10)));
 			} else {
-				if(((bool) ((((byte) ((((ulong) (immh)) & ((ulong) (0xC))))) == (0x4)) ? 1U : 0U)) != 0) {
+				if(((bool) ((((uint8_t) ((((uint64_t) (immh)) & ((uint64_t) (0xC))))) == (0x4)) ? 1U : 0U)) != 0) {
 					Ta = string("2D");
 					Tb = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
 					size = 0x2;
-					shift = (ulong) (((ulong) (uint) ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))))) - ((ulong) (long) (0x20)));
+					shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x20)));
 				} else {
 					throw "Not implemented";
 				}
@@ -4033,29 +4074,29 @@ const char* getInstructionClass(uint inst) {
 		}
 		return "USHLL-vector";
 	}
-	insn_318:
+	insn_323:
 	if((inst & 0xFF3FFC00U) == 0x0E212800U) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto tb = (string) (([=](auto temp_372) -> string { switch(temp_372) { case 0x0: return string("8B"); case 0x1: return string("4H"); case 0x2: return string("2S"); default: throw "Not implemented"; } })(size));
-		auto ta = (string) (([=](auto temp_373) -> string { switch(temp_373) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto tb = (string) (([=](auto temp_376) -> string { switch(temp_376) { case 0x0: return string("8B"); case 0x1: return string("4H"); case 0x2: return string("2S"); default: throw "Not implemented"; } })(size));
+		auto ta = (string) (([=](auto temp_377) -> string { switch(temp_377) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
 		return "XTN";
 	}
-	insn_319:
+	insn_324:
 	if((inst & 0xFF3FFC00U) == 0x4E212800U) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto tb = (string) (([=](auto temp_376) -> string { switch(temp_376) { case 0x0: return string("16B"); case 0x1: return string("8H"); case 0x2: return string("4S"); default: throw "Not implemented"; } })(size));
-		auto ta = (string) (([=](auto temp_377) -> string { switch(temp_377) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto tb = (string) (([=](auto temp_380) -> string { switch(temp_380) { case 0x0: return string("16B"); case 0x1: return string("8H"); case 0x2: return string("4S"); default: throw "Not implemented"; } })(size));
+		auto ta = (string) (([=](auto temp_381) -> string { switch(temp_381) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
 		return "XTN2";
 	}
-	insn_320:
+	insn_325:
 	if((inst & 0xFFFFFFFFU) == 0xD503203FU) {
 		return "YIELD";
 	}
-	insn_321:
+	insn_326:
 	if((inst & 0xBF20BC00U) == 0x0E003800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x3U;
@@ -4063,11 +4104,11 @@ const char* getInstructionClass(uint inst) {
 		auto op = (inst >> 14) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto i = (byte) ((byte) ((ulong) (((ulong) (bool) (op)) + ((ulong) (long) (0x1)))));
-		auto T = (string) (([=](auto temp_379) -> string { switch(temp_379) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto i = (uint8_t) ((uint8_t) ((uint64_t) (((uint64_t) (bool) (op)) + ((uint64_t) (int64_t) (0x1)))));
+		auto T = (string) (([=](auto temp_383) -> string { switch(temp_383) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return "ZIP";
 	}
-	insn_322:
+	insn_327:
 
     return nullptr;
 }
@@ -4092,7 +4133,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
+		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
 		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_0) -> string { switch(temp_0) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_1) -> string { switch(temp_1) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		return (boost::format("add %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r1 % rd % r1 % rn % r2 % rm % extend % imm).str();
 	}
@@ -4105,8 +4146,8 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (long) (((bool) (((sh) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0xC));
-		auto simm = (uint) (((uint) ((uint) (imm))) << (uint) (shift));
+		auto shift = (int64_t) (((bool) (((sh) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0xC));
+		auto simm = (uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (shift));
 		return (boost::format("add %1%%2%, %3%%4%, #0x%5$#x, LSL #%6%0x%7$#x") % r % rd % r % rn % imm % ((shift) < 0 ? "-" : "") % ((shift) < 0 ? -(shift) : (shift))).str();
 	}
 	insn_3:
@@ -4130,7 +4171,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_6) -> string { switch(temp_6) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_6) -> string { switch(temp_6) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("add V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % ts % rn % ts % rm % ts).str();
 	}
 	insn_5:
@@ -4143,7 +4184,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
+		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
 		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_8) -> string { switch(temp_8) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_9) -> string { switch(temp_9) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		return (boost::format("adds %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r1 % rd % r1 % rn % r2 % rm % extend % imm).str();
 	}
@@ -4156,8 +4197,8 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (long) (((bool) (((sh) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0xC));
-		auto simm = (uint) (((uint) ((uint) (imm))) << (uint) (shift));
+		auto shift = (int64_t) (((bool) (((sh) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0xC));
+		auto simm = (uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (shift));
 		return (boost::format("adds %1%%2%, %3%%4%, #0x%5$#x, LSL #%6%0x%7$#x") % r % rd % r % rn % imm % ((shift) < 0 ? "-" : "") % ((shift) < 0 ? -(shift) : (shift))).str();
 	}
 	insn_7:
@@ -4179,8 +4220,8 @@ string disassemble(uint inst, ulong pc) {
 		auto immlo = (inst >> 29) & 0x3U;
 		auto immhi = (inst >> 5) & 0x7FFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>((uint) ((uint) (((uint) (((uint) (immlo)) << 0)) | ((uint) (((uint) (immhi)) << 2)))), 21));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) (imm)));
+		auto imm = (int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) (((uint32_t) (((uint32_t) (immlo)) << 0)) | ((uint32_t) (((uint32_t) (immhi)) << 2)))), 21));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) (imm)));
 		return (boost::format("adr X%1%, #0x%2$#x") % rd % addr).str();
 	}
 	insn_9:
@@ -4189,8 +4230,8 @@ string disassemble(uint inst, ulong pc) {
 		auto immlo = (inst >> 29) & 0x3U;
 		auto immhi = (inst >> 5) & 0x7FFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>((ulong) ((ulong) (((ulong) (ulong) (((ulong) (((ulong) ((ushort) ((ushort) (0x0)))) << 0)) | ((ulong) (((ulong) (immlo)) << 12)))) | ((ulong) (((ulong) (immhi)) << 14)))), 33));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) ((ulong) (((ulong) (((ulong) ((ushort) ((ushort) (0x0)))) << 0)) | ((ulong) (((ulong) ((ulong) ((ulong) ((ulong) (((ulong) (pc)) >> (uint) (0xC)))))) << 12)))))) + ((ulong) (long) (imm)));
+		auto imm = (int64_t) (SignExt<int64_t>((uint64_t) ((uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (((uint64_t) ((uint16_t) ((uint16_t) (0x0)))) << 0)) | ((uint64_t) (((uint64_t) (immlo)) << 12)))) | ((uint64_t) (((uint64_t) (immhi)) << 14)))), 33));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) ((uint64_t) (((uint64_t) (((uint64_t) ((uint16_t) ((uint16_t) (0x0)))) << 0)) | ((uint64_t) (((uint64_t) ((uint64_t) ((uint64_t) ((uint64_t) (((uint64_t) (pc)) >> (uint) (0xC)))))) << 12)))))) + ((uint64_t) (int64_t) (imm)));
 		return (boost::format("adrp X%1%, #0x%2$#x") % rd % addr).str();
 	}
 	insn_10:
@@ -4203,7 +4244,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (ulong) (MakeWMask(up, imms, immr, (long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
+		auto imm = (uint64_t) (MakeWMask(up, imms, immr, (int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
 		return (boost::format("and %1%%2%, %3%%4%, #0x%5$#x") % r % rd % r % rn % imm).str();
 	}
 	insn_11:
@@ -4252,7 +4293,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (ulong) (MakeWMask(up, imms, immr, (long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
+		auto imm = (uint64_t) (MakeWMask(up, imms, immr, (int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
 		return (boost::format("ands %1%%2%, %3%%4%, #0x%5$#x") % r % rd % r % rn % imm).str();
 	}
 	insn_15:
@@ -4269,7 +4310,7 @@ string disassemble(uint inst, ulong pc) {
 	/* B */
 	if((inst & 0xFC000000U) == 0x14000000U) {
 		auto imm = (inst >> 0) & 0x3FFFFFFU;
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) (((uint) ((uint) (imm))) << (uint) (0x2)), 28)))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (0x2)), 28)))));
 		return (boost::format("b #0x%1$#x") % addr).str();
 	}
 	insn_17:
@@ -4277,7 +4318,7 @@ string disassemble(uint inst, ulong pc) {
 	if((inst & 0xFF000010U) == 0x54000000U) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto cond = (inst >> 0) & 0xFU;
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) (((uint) ((uint) (imm))) << (uint) (0x2)), 21)))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (0x2)), 21)))));
 		auto condstr = (string) (([=](auto temp_18) -> string { switch(temp_18) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
 		return (boost::format("b.%1% #0x%2$#x") % condstr % addr).str();
 	}
@@ -4331,8 +4372,8 @@ string disassemble(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto T = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
-		auto amount = (long) ((cmode != 0) ? (0x8) : (0x0));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto amount = (int64_t) ((cmode != 0) ? (0x8) : (0x0));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		return (boost::format("bic V%1%.%2%, #%3%, LSL #%4%0x%5$#x") % rd % T % (uint16_t) imm % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str();
 	}
 	insn_22:
@@ -4350,8 +4391,8 @@ string disassemble(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto T = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
-		auto amount = (byte) ((cmode) << (uint) (0x3));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto amount = (uint8_t) ((cmode) << (uint) (0x3));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		return (boost::format("bic V%1%.%2%, #%3%, LSL #%4%") % rd % T % (uint16_t) imm % amount).str();
 	}
 	insn_23:
@@ -4371,8 +4412,8 @@ string disassemble(uint inst, ulong pc) {
 	/* BL */
 	if((inst & 0xFC000000U) == 0x94000000U) {
 		auto imm = (inst >> 0) & 0x3FFFFFFU;
-		auto offset = (long) (SignExt<long>((uint) (((uint) ((uint) (imm))) << (uint) (0x2)), 28));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) (offset)));
+		auto offset = (int64_t) (SignExt<int64_t>((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (0x2)), 28));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) (offset)));
 		return (boost::format("bl #0x%1$#x") % addr).str();
 	}
 	insn_25:
@@ -4411,8 +4452,8 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto rs2 = (ulong) (((ulong) (byte) (rs)) + ((ulong) (long) (0x1)));
-		auto rt2 = (ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)));
+		auto rs2 = (uint64_t) (((uint64_t) (uint8_t) (rs)) + ((uint64_t) (int64_t) (0x1)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1)));
 		return (boost::format("casp %1%%2%, %3%0x%4$#x, %5%%6%, %7%0x%8$#x, [X%9%]") % r % rs % r % rs2 % r % rt % r % rt2 % rn).str();
 	}
 	insn_30:
@@ -4423,8 +4464,8 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto rs2 = (ulong) (((ulong) (byte) (rs)) + ((ulong) (long) (0x1)));
-		auto rt2 = (ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)));
+		auto rs2 = (uint64_t) (((uint64_t) (uint8_t) (rs)) + ((uint64_t) (int64_t) (0x1)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1)));
 		return (boost::format("caspa %1%%2%, %3%0x%4$#x, %5%%6%, %7%0x%8$#x, [X%9%]") % r % rs % r % rs2 % r % rt % r % rt2 % rn).str();
 	}
 	insn_31:
@@ -4435,8 +4476,8 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto rs2 = (ulong) (((ulong) (byte) (rs)) + ((ulong) (long) (0x1)));
-		auto rt2 = (ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)));
+		auto rs2 = (uint64_t) (((uint64_t) (uint8_t) (rs)) + ((uint64_t) (int64_t) (0x1)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1)));
 		return (boost::format("caspal %1%%2%, %3%0x%4$#x, %5%%6%, %7%0x%8$#x, [X%9%]") % r % rs % r % rs2 % r % rt % r % rt2 % rn).str();
 	}
 	insn_32:
@@ -4447,8 +4488,8 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto rs2 = (ulong) (((ulong) (byte) (rs)) + ((ulong) (long) (0x1)));
-		auto rt2 = (ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1)));
+		auto rs2 = (uint64_t) (((uint64_t) (uint8_t) (rs)) + ((uint64_t) (int64_t) (0x1)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1)));
 		return (boost::format("caspl %1%%2%, %3%0x%4$#x, %5%%6%, %7%0x%8$#x, [X%9%]") % r % rs % r % rs2 % r % rt % r % rt2 % rn).str();
 	}
 	insn_33:
@@ -4458,7 +4499,7 @@ string disassemble(uint inst, ulong pc) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto rs = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) ((uint) ((imm) << (uint) (0x2)))), 21)))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) ((uint32_t) ((imm) << (uint) (0x2)))), 21)))));
 		return (boost::format("cbnz %1%%2%, #0x%3$#x") % r % rs % addr).str();
 	}
 	insn_34:
@@ -4468,7 +4509,7 @@ string disassemble(uint inst, ulong pc) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto rs = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) ((uint) ((imm) << (uint) (0x2)))), 21)))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) ((uint32_t) ((imm) << (uint) (0x2)))), 21)))));
 		return (boost::format("cbz %1%%2%, #0x%3$#x") % r % rs % addr).str();
 	}
 	insn_35:
@@ -4540,7 +4581,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_32) -> string { switch(temp_32) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_32) -> string { switch(temp_32) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("cmeq V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % T % rn % T % rm % T).str();
 	}
 	insn_42:
@@ -4559,7 +4600,7 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_36) -> string { switch(temp_36) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_36) -> string { switch(temp_36) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("cmeq V%1%.%2%, V%3%.%4%, #0") % rd % T % rn % T).str();
 	}
 	insn_44:
@@ -4580,7 +4621,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_40) -> string { switch(temp_40) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_40) -> string { switch(temp_40) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("cmgt V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % T % rn % T % rm % T).str();
 	}
 	insn_46:
@@ -4599,7 +4640,7 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_44) -> string { switch(temp_44) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_44) -> string { switch(temp_44) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("cmeq V%1%.%2%, V%3%.%4%, #0") % rd % T % rn % T).str();
 	}
 	insn_48:
@@ -4609,7 +4650,7 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_46) -> string { switch(temp_46) { case 0x0: return string("8B"); case 0x1: return string("16B"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_46) -> string { switch(temp_46) { case 0x0: return string("8B"); case 0x1: return string("16B"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("cnt V%1%.%2%, V%3%.%4%") % rd % t % rn % t).str();
 	}
 	insn_49:
@@ -4683,26 +4724,26 @@ string disassemble(uint inst, ulong pc) {
 		auto T = string("");
 		auto index = 0x0;
 		auto size = 0x0;
-		if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0xF))))) == (0x0)) ? 1U : 0U)) != 0) {
+		if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF))))) == (0x0)) ? 1U : 0U)) != 0) {
 			throw "Not implemented";
 		} else {
-			if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
+			if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
 				T = string("B");
-				index = (byte) ((imm) >> (uint) (0x1));
+				index = (uint8_t) ((imm) >> (uint) (0x1));
 				size = 0x1;
 			} else {
-				if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x3))))) == (0x2)) ? 1U : 0U)) != 0) {
+				if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x3))))) == (0x2)) ? 1U : 0U)) != 0) {
 					T = string("H");
-					index = (byte) ((imm) >> (uint) (0x2));
+					index = (uint8_t) ((imm) >> (uint) (0x2));
 					size = 0x2;
 				} else {
-					if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x7))))) == (0x4)) ? 1U : 0U)) != 0) {
+					if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x7))))) == (0x4)) ? 1U : 0U)) != 0) {
 						T = string("S");
-						index = (byte) ((imm) >> (uint) (0x3));
+						index = (uint8_t) ((imm) >> (uint) (0x3));
 						size = 0x4;
 					} else {
 						T = string("D");
-						index = (byte) ((imm) >> (uint) (0x4));
+						index = (uint8_t) ((imm) >> (uint) (0x4));
 						size = 0x8;
 					}
 				}
@@ -4721,30 +4762,30 @@ string disassemble(uint inst, ulong pc) {
 		auto T = string("");
 		auto index = 0x0;
 		auto size = 0x0;
-		if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0xF))))) == (0x0)) ? 1U : 0U)) != 0) {
+		if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF))))) == (0x0)) ? 1U : 0U)) != 0) {
 			throw "Not implemented";
 		} else {
-			if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
+			if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
 				Ts = string("B");
 				T = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
-				index = (byte) ((imm) >> (uint) (0x1));
+				index = (uint8_t) ((imm) >> (uint) (0x1));
 				size = 0x1;
 			} else {
-				if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x3))))) == (0x2)) ? 1U : 0U)) != 0) {
+				if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x3))))) == (0x2)) ? 1U : 0U)) != 0) {
 					Ts = string("H");
 					T = (string) ((Q != 0) ? (string("8H")) : (string("4H")));
-					index = (byte) ((imm) >> (uint) (0x2));
+					index = (uint8_t) ((imm) >> (uint) (0x2));
 					size = 0x2;
 				} else {
-					if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x7))))) == (0x4)) ? 1U : 0U)) != 0) {
+					if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x7))))) == (0x4)) ? 1U : 0U)) != 0) {
 						Ts = string("S");
 						T = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-						index = (byte) ((imm) >> (uint) (0x3));
+						index = (uint8_t) ((imm) >> (uint) (0x3));
 						size = 0x4;
 					} else {
 						Ts = string("D");
 						T = (string) ((Q != 0) ? (string("2D")) : throw "Not implemented");
-						index = (byte) ((imm) >> (uint) (0x4));
+						index = (uint8_t) ((imm) >> (uint) (0x4));
 						size = 0x8;
 					}
 				}
@@ -4759,9 +4800,9 @@ string disassemble(uint inst, ulong pc) {
 		auto imm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto size = ((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0xF))))) == (0x0)) ? 1U : 0U) != 0) ? throw "Not implemented" : ((long) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0xF))))) == (0x8)) ? 1U : 0U) != 0) ? (0x40) : (0x20)));
+		auto size = ((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF))))) == (0x0)) ? 1U : 0U) != 0) ? throw "Not implemented" : ((int64_t) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF))))) == (0x8)) ? 1U : 0U) != 0) ? (0x40) : (0x20)));
 		auto r = (string) (((bool) (((size) == (0x40)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto T = ((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0xF))))) == (0x0)) ? 1U : 0U) != 0) ? throw "Not implemented" : ((string) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x1))))) == (0x1)) ? 1U : 0U) != 0) ? ((string) ((Q != 0) ? (string("16B")) : (string("8B")))) : ((string) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x3))))) == (0x2)) ? 1U : 0U) != 0) ? ((string) ((Q != 0) ? (string("8H")) : (string("4H")))) : ((string) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x7))))) == (0x4)) ? 1U : 0U) != 0) ? ((string) ((Q != 0) ? (string("4S")) : (string("2S")))) : ((string) ((Q != 0) ? (string("2D")) : throw "Not implemented"))))))));
+		auto T = ((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF))))) == (0x0)) ? 1U : 0U) != 0) ? throw "Not implemented" : ((string) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x1))))) == (0x1)) ? 1U : 0U) != 0) ? ((string) ((Q != 0) ? (string("16B")) : (string("8B")))) : ((string) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x3))))) == (0x2)) ? 1U : 0U) != 0) ? ((string) ((Q != 0) ? (string("8H")) : (string("4H")))) : ((string) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x7))))) == (0x4)) ? 1U : 0U) != 0) ? ((string) ((Q != 0) ? (string("4S")) : (string("2S")))) : ((string) ((Q != 0) ? (string("2D")) : throw "Not implemented"))))))));
 		return (boost::format("dup V%1%.%2%, %3%%4%") % rd % T % r % rn).str();
 	}
 	insn_58:
@@ -4787,7 +4828,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (ulong) (MakeWMask(up, imms, immr, (long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
+		auto imm = (uint64_t) (MakeWMask(up, imms, immr, (int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
 		return (boost::format("and %1%%2%, %3%%4%, #0x%5$#x") % r % rd % r % rn % imm).str();
 	}
 	insn_60:
@@ -4862,7 +4903,7 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_68) -> string { switch(temp_68) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_68) -> string { switch(temp_68) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("fabs V%1%.%2%, V%3%.%4%") % rd % t % rn % t).str();
 	}
 	insn_67:
@@ -4883,7 +4924,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_72) -> string { switch(temp_72) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_72) -> string { switch(temp_72) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("fadd V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % ts % rn % ts % rm % ts).str();
 	}
 	insn_69:
@@ -4903,7 +4944,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_74) -> string { switch(temp_74) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_74) -> string { switch(temp_74) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("faddp V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % t % rn % t % rm % t).str();
 	}
 	insn_71:
@@ -4929,8 +4970,8 @@ string disassemble(uint inst, ulong pc) {
 		auto ac = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto top = (string) (([=](auto temp_80) -> string { switch(temp_80) { case 0x0: return string("EQ"); case 0x2: return string("GE"); case 0x3: return string("GE"); case 0x6: return string("GT"); case 0x7: return string("GT"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (byte) (((byte) (((byte) (ac)) << 0)) | ((byte) (((byte) (U)) << 1)))) | ((byte) (((byte) (E)) << 2))))));
-		auto t = (string) (([=](auto temp_81) -> string { switch(temp_81) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto top = (string) (([=](auto temp_80) -> string { switch(temp_80) { case 0x0: return string("EQ"); case 0x2: return string("GE"); case 0x3: return string("GE"); case 0x6: return string("GT"); case 0x7: return string("GT"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2))))));
+		auto t = (string) (([=](auto temp_81) -> string { switch(temp_81) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("FCM%1% V%2%.%3%, V%4%.%5%, V%6%.%7%") % top % rd % t % rn % t % rm % t).str();
 	}
 	insn_73:
@@ -4942,8 +4983,8 @@ string disassemble(uint inst, ulong pc) {
 		auto op = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto top = (string) (([=](auto temp_84) -> string { switch(temp_84) { case 0x0: return string("GT"); case 0x1: return string("GE"); case 0x2: return string("EQ"); default: return string("LE"); } })((byte) ((byte) (((byte) (((byte) (U)) << 0)) | ((byte) (((byte) (op)) << 1))))));
-		auto t = (string) (([=](auto temp_85) -> string { switch(temp_85) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto top = (string) (([=](auto temp_84) -> string { switch(temp_84) { case 0x0: return string("GT"); case 0x1: return string("GE"); case 0x2: return string("EQ"); default: return string("LE"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1))))));
+		auto t = (string) (([=](auto temp_85) -> string { switch(temp_85) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("FCM%1% V%2%.%3%, V%4%.%5%, #0.0") % top % rd % t % rn % t).str();
 	}
 	insn_74:
@@ -4953,7 +4994,7 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_88) -> string { switch(temp_88) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_88) -> string { switch(temp_88) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("FCMLT V%1%.%2%, V%3%.%4%, #0.0") % rd % t % rn % t).str();
 	}
 	insn_75:
@@ -4988,7 +5029,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = string("");
 		auto r2 = string("");
-		auto tf = (byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (type)) << 2))));
+		auto tf = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (type)) << 2))));
 		switch(tf) {
 			case 0xC: {
 				r1 = string("S");
@@ -5034,7 +5075,7 @@ string disassemble(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -5082,7 +5123,7 @@ string disassemble(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -5132,7 +5173,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto o2 = (string) ((Q != 0) ? (string("2")) : (string("")));
 		auto ta = (string) ((size != 0) ? (string("2D")) : (string("4S")));
-		auto tb = (string) (([=](auto temp_96) -> string { switch(temp_96) { case 0x0: return string("4H"); case 0x1: return string("8H"); case 0x2: return string("2S"); default: return string("4S"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto tb = (string) (([=](auto temp_96) -> string { switch(temp_96) { case 0x0: return string("4H"); case 0x1: return string("8H"); case 0x2: return string("2S"); default: return string("4S"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("fcvtl%1% V%2%.%3%, V%4%.%5%") % o2 % rd % ta % rn % tb).str();
 	}
 	insn_81:
@@ -5142,7 +5183,7 @@ string disassemble(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -5190,7 +5231,7 @@ string disassemble(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -5282,7 +5323,7 @@ string disassemble(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -5330,7 +5371,7 @@ string disassemble(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -5379,7 +5420,7 @@ string disassemble(uint inst, ulong pc) {
 		auto scale = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto fbits = (ulong) (((ulong) (long) (0x40)) - ((ulong) (byte) (scale)));
+		auto fbits = (uint64_t) (((uint64_t) (int64_t) (0x40)) - ((uint64_t) (uint8_t) (scale)));
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (([=](auto temp_98) -> string { switch(temp_98) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		return (boost::format("fcvtzs %1%%2%, %3%%4%, #0x%5$#x") % r1 % rd % r2 % rn % fbits).str();
@@ -5391,7 +5432,7 @@ string disassemble(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -5440,7 +5481,7 @@ string disassemble(uint inst, ulong pc) {
 		auto scale = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto fbits = (ulong) (((ulong) (long) (0x40)) - ((ulong) (byte) (scale)));
+		auto fbits = (uint64_t) (((uint64_t) (int64_t) (0x40)) - ((uint64_t) (uint8_t) (scale)));
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (([=](auto temp_100) -> string { switch(temp_100) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		return (boost::format("fcvtzu %1%%2%, %3%%4%, #0x%5$#x") % r1 % rd % r2 % rn % fbits).str();
@@ -5452,7 +5493,7 @@ string disassemble(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -5511,7 +5552,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_104) -> string { switch(temp_104) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_104) -> string { switch(temp_104) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("fdiv V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % ts % rn % ts % rm % ts).str();
 	}
 	insn_93:
@@ -5575,9 +5616,9 @@ string disassemble(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_116) -> string { switch(temp_116) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_116) -> string { switch(temp_116) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint) (([=](auto temp_117) -> uint { switch(temp_117) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto index = (uint32_t) (([=](auto temp_117) -> uint32_t { switch(temp_117) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
 		return (boost::format("fmla V%1%.%2%, V%3%.%4%, V%5%.%6%[0x%7$#x]") % rd % T % rn % T % rm % Ts % index).str();
 	}
 	insn_99:
@@ -5588,7 +5629,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_120) -> string { switch(temp_120) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto T = (string) (([=](auto temp_120) -> string { switch(temp_120) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
 		return (boost::format("fmla V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % T % rn % T % rm % T).str();
 	}
 	insn_100:
@@ -5601,9 +5642,9 @@ string disassemble(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_122) -> string { switch(temp_122) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_122) -> string { switch(temp_122) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint) (([=](auto temp_123) -> uint { switch(temp_123) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto index = (uint32_t) (([=](auto temp_123) -> uint32_t { switch(temp_123) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
 		return (boost::format("fmls V%1%.%2%, V%3%.%4%, V%5%.%6%[0x%7$#x]") % rd % T % rn % T % rm % Ts % index).str();
 	}
 	insn_101:
@@ -5614,7 +5655,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_126) -> string { switch(temp_126) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto T = (string) (([=](auto temp_126) -> string { switch(temp_126) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
 		return (boost::format("fmls V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % T % rn % T % rm % T).str();
 	}
 	insn_102:
@@ -5626,8 +5667,8 @@ string disassemble(uint inst, ulong pc) {
 		auto ropc = (inst >> 16) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto opc = (byte) ((byte) (((byte) (((byte) (ropc)) << 0)) | ((byte) (((byte) ((byte) ((byte) (0x3)))) << 1))));
-		auto tf = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) ((byte) ((byte) (mode)))) << 3)))) | ((byte) (((byte) (type)) << 5)))) | ((byte) (((byte) (sf)) << 7))));
+		auto opc = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (ropc)) << 0)) | ((uint8_t) (((uint8_t) ((uint8_t) ((uint8_t) (0x3)))) << 1))));
+		auto tf = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) ((uint8_t) ((uint8_t) (mode)))) << 3)))) | ((uint8_t) (((uint8_t) (type)) << 5)))) | ((uint8_t) (((uint8_t) (sf)) << 7))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(tf) {
@@ -5697,7 +5738,7 @@ string disassemble(uint inst, ulong pc) {
 		auto imm = (inst >> 13) & 0xFFU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_128) -> string { switch(temp_128) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		auto sv = (float) (Bitcast<uint, float>((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((bool) ((bool) (0x0)))) << 0)) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 1)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 2)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 3)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 4)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 5)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 6)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 7)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 8)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 9)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 10)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 11)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 12)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 13)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 14)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 15)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 16)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 17)))) | ((uint) (((uint) ((bool) ((bool) (0x0)))) << 18)))))) << 0)) | ((uint) (((uint) ((byte) ((byte) ((byte) ((((ulong) (imm)) & ((ulong) (0xF)))))))) << 19)))) | ((uint) (((uint) ((byte) ((byte) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x4)))) & ((ulong) (0x3)))))))) << 23)))) | ((uint) (((uint) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 0)) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 1)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 2)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 3)))) | ((byte) (((byte) ((bool) ((bool) ((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1)))))))) << 4)))))) << 25)))) | ((uint) (((uint) ((bool) (((byte) ((((ulong) ((byte) ((imm) >> (uint) (0x6)))) & ((ulong) (0x1))))) != 0 ? 0U : 1U))) << 30)))) | ((uint) (((uint) ((bool) ((bool) ((byte) ((imm) >> (uint) (0x7)))))) << 31))))));
+		auto sv = (float) (Bitcast<uint32_t, float>((uint32_t) ((uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (((uint32_t) ((uint32_t) ((uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 1)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 2)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 3)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 4)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 5)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 6)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 7)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 8)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 9)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 10)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 11)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 12)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 13)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 14)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 15)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 16)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 17)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 18)))))) << 0)) | ((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) ((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF)))))))) << 19)))) | ((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x4)))) & ((uint64_t) (0x3)))))))) << 23)))) | ((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 0)) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 1)))) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 2)))) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 3)))) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 4)))))) << 25)))) | ((uint32_t) (((uint32_t) ((bool) (((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1))))) != 0 ? 0U : 1U))) << 30)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) ((uint8_t) ((imm) >> (uint) (0x7)))))) << 31))))));
 		return (boost::format("fmov %1%%2%, #%3%") % r % rd % sv).str();
 	}
 	insn_104:
@@ -5714,7 +5755,7 @@ string disassemble(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto T = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-		auto sv = (float) (Bitcast<uint, float>((uint) ((((uint) ((uint) ((uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (uint) (((uint) (((uint) ((uint) ((uint) (0x0)))) << 0)) | ((uint) (((uint) (h)) << 19)))) | ((uint) (((uint) (g)) << 20)))) | ((uint) (((uint) (f)) << 21)))) | ((uint) (((uint) (e)) << 22)))) | ((uint) (((uint) (d)) << 23)))) | ((uint) (((uint) (c)) << 24)))) | ((uint) (((uint) (b)) << 25)))) | ((uint) (((uint) (b)) << 26)))) | ((uint) (((uint) (b)) << 27)))) | ((uint) (((uint) (b)) << 28)))) | ((uint) (((uint) (b)) << 29)))) | ((uint) (((uint) (b)) << 30)))) | ((uint) (((uint) (a)) << 31)))))) ^ ((uint) ((uint) (((uint) ((uint) (0x1))) << (uint) (0x1E))))))));
+		auto sv = (float) (Bitcast<uint32_t, float>((uint32_t) ((((uint32_t) ((uint32_t) ((uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (((uint32_t) ((uint32_t) ((uint32_t) (0x0)))) << 0)) | ((uint32_t) (((uint32_t) (h)) << 19)))) | ((uint32_t) (((uint32_t) (g)) << 20)))) | ((uint32_t) (((uint32_t) (f)) << 21)))) | ((uint32_t) (((uint32_t) (e)) << 22)))) | ((uint32_t) (((uint32_t) (d)) << 23)))) | ((uint32_t) (((uint32_t) (c)) << 24)))) | ((uint32_t) (((uint32_t) (b)) << 25)))) | ((uint32_t) (((uint32_t) (b)) << 26)))) | ((uint32_t) (((uint32_t) (b)) << 27)))) | ((uint32_t) (((uint32_t) (b)) << 28)))) | ((uint32_t) (((uint32_t) (b)) << 29)))) | ((uint32_t) (((uint32_t) (b)) << 30)))) | ((uint32_t) (((uint32_t) (a)) << 31)))))) ^ ((uint32_t) ((uint32_t) (((uint32_t) ((uint32_t) (0x1))) << (uint) (0x1E))))))));
 		return (boost::format("fmov V%1%.%2%, #%3%") % rd % T % sv).str();
 	}
 	insn_105:
@@ -5729,7 +5770,7 @@ string disassemble(uint inst, ulong pc) {
 		auto g = (inst >> 6) & 0x1U;
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto sv = (double) (Bitcast<ulong, double>((ulong) ((((ulong) ((ulong) ((ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (((ulong) ((ulong) ((ulong) (0x0)))) << 0)) | ((ulong) (((ulong) (h)) << 48)))) | ((ulong) (((ulong) (g)) << 49)))) | ((ulong) (((ulong) (f)) << 50)))) | ((ulong) (((ulong) (e)) << 51)))) | ((ulong) (((ulong) (d)) << 52)))) | ((ulong) (((ulong) (c)) << 53)))) | ((ulong) (((ulong) (b)) << 54)))) | ((ulong) (((ulong) (b)) << 55)))) | ((ulong) (((ulong) (b)) << 56)))) | ((ulong) (((ulong) (b)) << 57)))) | ((ulong) (((ulong) (b)) << 58)))) | ((ulong) (((ulong) (b)) << 59)))) | ((ulong) (((ulong) (b)) << 60)))) | ((ulong) (((ulong) (b)) << 61)))) | ((ulong) (((ulong) (b)) << 62)))) | ((ulong) (((ulong) (a)) << 63)))))) ^ ((ulong) ((ulong) (((ulong) ((ulong) (0x1))) << (uint) (0x3E))))))));
+		auto sv = (double) (Bitcast<uint64_t, double>((uint64_t) ((((uint64_t) ((uint64_t) ((uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (((uint64_t) ((uint64_t) ((uint64_t) (0x0)))) << 0)) | ((uint64_t) (((uint64_t) (h)) << 48)))) | ((uint64_t) (((uint64_t) (g)) << 49)))) | ((uint64_t) (((uint64_t) (f)) << 50)))) | ((uint64_t) (((uint64_t) (e)) << 51)))) | ((uint64_t) (((uint64_t) (d)) << 52)))) | ((uint64_t) (((uint64_t) (c)) << 53)))) | ((uint64_t) (((uint64_t) (b)) << 54)))) | ((uint64_t) (((uint64_t) (b)) << 55)))) | ((uint64_t) (((uint64_t) (b)) << 56)))) | ((uint64_t) (((uint64_t) (b)) << 57)))) | ((uint64_t) (((uint64_t) (b)) << 58)))) | ((uint64_t) (((uint64_t) (b)) << 59)))) | ((uint64_t) (((uint64_t) (b)) << 60)))) | ((uint64_t) (((uint64_t) (b)) << 61)))) | ((uint64_t) (((uint64_t) (b)) << 62)))) | ((uint64_t) (((uint64_t) (a)) << 63)))))) ^ ((uint64_t) ((uint64_t) (((uint64_t) ((uint64_t) (0x1))) << (uint) (0x3E))))))));
 		return (boost::format("fmov V%1%.2D, #%2%") % rd % sv).str();
 	}
 	insn_106:
@@ -5753,7 +5794,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint) (([=](auto temp_132) -> uint { switch(temp_132) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto index = (uint32_t) (([=](auto temp_132) -> uint32_t { switch(temp_132) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
 		return (boost::format("fmul %1%%2%, %3%%4%, V%5%.%6%[0x%7$#x]") % Ts % rd % Ts % rn % rm % Ts % index).str();
 	}
 	insn_108:
@@ -5766,9 +5807,9 @@ string disassemble(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_134) -> string { switch(temp_134) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (sz)) << 0)) | ((byte) (((byte) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_134) -> string { switch(temp_134) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint) (([=](auto temp_135) -> uint { switch(temp_135) { case 0x2: return (uint) ((uint) (H)); case 0x3: throw "Not implemented"; default: return (uint) ((uint) ((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))))); } })((byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (sz)) << 1))))));
+		auto index = (uint32_t) (([=](auto temp_135) -> uint32_t { switch(temp_135) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
 		return (boost::format("fmul V%1%.%2%, V%3%.%4%, V%5%.%6%[0x%7$#x]") % rd % T % rn % T % rm % Ts % index).str();
 	}
 	insn_109:
@@ -5789,7 +5830,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_140) -> string { switch(temp_140) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_140) -> string { switch(temp_140) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("fmul V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % ts % rn % ts % rm % ts).str();
 	}
 	insn_111:
@@ -5808,7 +5849,7 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_144) -> string { switch(temp_144) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_144) -> string { switch(temp_144) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("fneg V%1%.%2%, V%3%.%4%") % rd % T % rn % T).str();
 	}
 	insn_113:
@@ -5904,7 +5945,7 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_164) -> string { switch(temp_164) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_164) -> string { switch(temp_164) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("frsqrte V%1%.%2%, V%3%.%4%") % rd % t % rn % t).str();
 	}
 	insn_123:
@@ -5915,7 +5956,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_166) -> string { switch(temp_166) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_166) -> string { switch(temp_166) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("frsqrts V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % t % rn % t % rm % t).str();
 	}
 	insn_124:
@@ -5945,7 +5986,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_172) -> string { switch(temp_172) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_172) -> string { switch(temp_172) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("fsub V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % ts % rn % ts % rm % ts).str();
 	}
 	insn_127:
@@ -5955,22 +5996,22 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto ts = string("");
-		auto index = (uint) ((uint) (0x0));
+		auto index = (uint32_t) ((uint32_t) (0x0));
 		auto r = string("W");
-		if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
+		if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
 			ts = string("B");
-			index = (byte) ((imm) >> (uint) (0x1));
+			index = (uint8_t) ((imm) >> (uint) (0x1));
 		} else {
-			if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x2))))) == (0x2)) ? 1U : 0U)) != 0) {
+			if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x2))))) == (0x2)) ? 1U : 0U)) != 0) {
 				ts = string("H");
-				index = (byte) ((imm) >> (uint) (0x2));
+				index = (uint8_t) ((imm) >> (uint) (0x2));
 			} else {
-				if(((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x4))))) == (0x4)) ? 1U : 0U)) != 0) {
+				if(((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x4))))) == (0x4)) ? 1U : 0U)) != 0) {
 					ts = string("S");
-					index = (byte) ((imm) >> (uint) (0x3));
+					index = (uint8_t) ((imm) >> (uint) (0x3));
 				} else {
 					ts = string("D");
-					index = (byte) ((imm) >> (uint) (0x4));
+					index = (uint8_t) ((imm) >> (uint) (0x4));
 					r = string("X");
 				}
 			}
@@ -5985,26 +6026,26 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto ts = string("");
-		auto index1 = (uint) ((uint) (0x0));
-		auto index2 = (uint) ((uint) (0x0));
-		if(((bool) ((((byte) ((((ulong) (imm5)) & ((ulong) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
+		auto index1 = (uint32_t) ((uint32_t) (0x0));
+		auto index2 = (uint32_t) ((uint32_t) (0x0));
+		if(((bool) ((((uint8_t) ((((uint64_t) (imm5)) & ((uint64_t) (0x1))))) == (0x1)) ? 1U : 0U)) != 0) {
 			ts = string("B");
-			index1 = (byte) ((imm5) >> (uint) (0x1));
+			index1 = (uint8_t) ((imm5) >> (uint) (0x1));
 			index2 = imm4;
 		} else {
-			if(((bool) ((((byte) ((((ulong) (imm5)) & ((ulong) (0x2))))) == (0x2)) ? 1U : 0U)) != 0) {
+			if(((bool) ((((uint8_t) ((((uint64_t) (imm5)) & ((uint64_t) (0x2))))) == (0x2)) ? 1U : 0U)) != 0) {
 				ts = string("H");
-				index1 = (byte) ((imm5) >> (uint) (0x2));
-				index2 = (byte) ((imm4) >> (uint) (0x1));
+				index1 = (uint8_t) ((imm5) >> (uint) (0x2));
+				index2 = (uint8_t) ((imm4) >> (uint) (0x1));
 			} else {
-				if(((bool) ((((byte) ((((ulong) (imm5)) & ((ulong) (0x4))))) == (0x4)) ? 1U : 0U)) != 0) {
+				if(((bool) ((((uint8_t) ((((uint64_t) (imm5)) & ((uint64_t) (0x4))))) == (0x4)) ? 1U : 0U)) != 0) {
 					ts = string("S");
-					index1 = (byte) ((imm5) >> (uint) (0x3));
-					index2 = (byte) ((imm4) >> (uint) (0x2));
+					index1 = (uint8_t) ((imm5) >> (uint) (0x3));
+					index2 = (uint8_t) ((imm4) >> (uint) (0x2));
 				} else {
 					ts = string("D");
-					index1 = (byte) ((imm5) >> (uint) (0x4));
-					index2 = (byte) ((imm4) >> (uint) (0x3));
+					index1 = (uint8_t) ((imm5) >> (uint) (0x4));
+					index2 = (uint8_t) ((imm4) >> (uint) (0x3));
 				}
 			}
 		}
@@ -6017,7 +6058,7 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_174) -> string { switch(temp_174) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_174) -> string { switch(temp_174) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ld1 { V%1%.%2% }, [X%3%]") % rt % T % rn).str();
 	}
 	insn_130:
@@ -6027,8 +6068,8 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_176) -> string { switch(temp_176) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_176) -> string { switch(temp_176) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ld1 { V%1%.%2%, V0x%3$#x.%4% }, [X%5%]") % rt % T % rt2 % T % rn).str();
 	}
 	insn_131:
@@ -6038,9 +6079,9 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_178) -> string { switch(temp_178) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_178) -> string { switch(temp_178) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ld1 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6% }, [X%7%]") % rt % T % rt2 % T % rt3 % T % rn).str();
 	}
 	insn_132:
@@ -6050,10 +6091,10 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_180) -> string { switch(temp_180) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_180) -> string { switch(temp_180) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ld1 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6%, V0x%7$#x.%8% }, [X%9%]") % rt % T % rt2 % T % rt3 % T % rt4 % T % rn).str();
 	}
 	insn_133:
@@ -6067,8 +6108,8 @@ string disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((opc) != (0x3)) ? 1U : 0U)))
 			goto insn_134;
-		auto t = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("B")) : ((string) (((bool) ((((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) ((((byte) ((((ulong) (size)) & ((ulong) (0x1))))) == (0x0)) ? 1U : 0U))))) != 0) ? (string("H")) : ((string) (((bool) (((opc) == (0x2)) ? 1U : 0U) != 0) ? ((string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : ((string) (((bool) ((((bool) ((bool) (((size) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) (((S) == (0x0)) ? 1U : 0U))))) != 0) ? (string("D")) : throw "Not implemented")))) : throw "Not implemented")))));
-		auto index = (uint) (([=](auto temp_182) -> uint { switch(temp_182) { case 0x0: return (uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3)))))); case 0x1: return (uint) (((uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint) (((bool) ((((byte) ((((ulong) (size)) & ((ulong) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (S)) << 0)) | ((byte) (((byte) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
+		auto t = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("B")) : ((string) (((bool) ((((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U))))) != 0) ? (string("H")) : ((string) (((bool) (((opc) == (0x2)) ? 1U : 0U) != 0) ? ((string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : ((string) (((bool) ((((bool) ((bool) (((size) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) (((S) == (0x0)) ? 1U : 0U))))) != 0) ? (string("D")) : throw "Not implemented")))) : throw "Not implemented")))));
+		auto index = (uint32_t) (([=](auto temp_182) -> uint32_t { switch(temp_182) { case 0x0: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3)))))); case 0x1: return (uint32_t) (((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint32_t) (((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (S)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
 		return (boost::format("ld1 { V%1%.%2% }[0x%3$#x], [X%4%]") % rt % t % index % rn).str();
 	}
 	insn_134:
@@ -6078,7 +6119,7 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_184) -> string { switch(temp_184) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_184) -> string { switch(temp_184) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ld1r { V%1%.%2% }, [X%3%]") % rt % t % rn).str();
 	}
 	insn_135:
@@ -6091,8 +6132,8 @@ string disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto insn_136;
-		auto t = (string) (([=](auto temp_186) -> string { switch(temp_186) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto imm = (long) (([=](auto temp_187) -> long { switch(temp_187) { case 0x0: return 0x1; case 0x1: return 0x2; case 0x2: return 0x4; default: return 0x8; } })(size));
+		auto t = (string) (([=](auto temp_186) -> string { switch(temp_186) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto imm = (int64_t) (([=](auto temp_187) -> int64_t { switch(temp_187) { case 0x0: return 0x1; case 0x1: return 0x2; case 0x2: return 0x4; default: return 0x8; } })(size));
 		return (boost::format("ld1r { V%1%.%2% }, [X%3%], #%4%0x%5$#x") % rt % t % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_136:
@@ -6105,7 +6146,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto insn_137;
-		auto t = (string) (([=](auto temp_190) -> string { switch(temp_190) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_190) -> string { switch(temp_190) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ld1r { V%1%.%2% }, [X%3%], X%4%") % rt % t % rn % rm).str();
 	}
 	insn_137:
@@ -6115,8 +6156,8 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_192) -> string { switch(temp_192) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_192) -> string { switch(temp_192) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ld2 { V%1%.%2%, V0x%3$#x.%4% }, [X%5%]") % rt % T % rt2 % T % rn).str();
 	}
 	insn_138:
@@ -6127,11 +6168,11 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x20) : (0x10))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x20) : (0x10))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto insn_139;
-		auto T = (string) (([=](auto temp_194) -> string { switch(temp_194) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_194) -> string { switch(temp_194) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ld2 { V%1%.%2%, V0x%3$#x.%4% }, [X%5%], #%6%") % rt % T % rt2 % T % rn % (uint16_t) imm).str();
 	}
 	insn_139:
@@ -6142,10 +6183,10 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto insn_140;
-		auto T = (string) (([=](auto temp_196) -> string { switch(temp_196) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_196) -> string { switch(temp_196) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ld2 { V%1%.%2%, V0x%3$#x.%4% }, [X%5%], X%6%") % rt % T % rt2 % T % rn % rm).str();
 	}
 	insn_140:
@@ -6155,9 +6196,9 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_198) -> string { switch(temp_198) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_198) -> string { switch(temp_198) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ld3 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6% }, [X%7%]") % rt % T % rt2 % T % rt3 % T % rn).str();
 	}
 	insn_141:
@@ -6168,12 +6209,12 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x30) : (0x18))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x30) : (0x18))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto insn_142;
-		auto T = (string) (([=](auto temp_200) -> string { switch(temp_200) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_200) -> string { switch(temp_200) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ld3 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6% }, [X%7%], #%8%") % rt % T % rt2 % T % rt3 % T % rn % (uint16_t) imm).str();
 	}
 	insn_142:
@@ -6184,11 +6225,11 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto insn_143;
-		auto T = (string) (([=](auto temp_202) -> string { switch(temp_202) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_202) -> string { switch(temp_202) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ld3 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6% }, [X%7%], X%8%") % rt % T % rt2 % T % rt3 % T % rn % rm).str();
 	}
 	insn_143:
@@ -6198,10 +6239,10 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_204) -> string { switch(temp_204) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_204) -> string { switch(temp_204) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ld4 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6%, V0x%7$#x.%8% }, [X%9%]") % rt % T % rt2 % T % rt3 % T % rt4 % T % rn).str();
 	}
 	insn_144:
@@ -6212,13 +6253,13 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x30) : (0x18))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x30) : (0x18))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto insn_145;
-		auto T = (string) (([=](auto temp_206) -> string { switch(temp_206) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_206) -> string { switch(temp_206) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ld4 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6%, V0x%7$#x.%8% }, [X%9%], #%10%") % rt % T % rt2 % T % rt3 % T % rt4 % T % rn % (uint16_t) imm).str();
 	}
 	insn_145:
@@ -6229,12 +6270,12 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto insn_146;
-		auto T = (string) (([=](auto temp_208) -> string { switch(temp_208) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_208) -> string { switch(temp_208) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ld4 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6%, V0x%7$#x.%8% }, [X%9%], X%10%") % rt % T % rt2 % T % rt3 % T % rt4 % T % rn % rm).str();
 	}
 	insn_146:
@@ -6291,7 +6332,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		return (boost::format("ldp %1%%2%, %3%%4%, [X%5%], #%6%0x%7$#x") % r % rt1 % r % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	insn_153:
@@ -6303,7 +6344,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		return (boost::format("ldp %1%%2%, %3%%4%, [X%5%, #%6%0x%7$#x]") % r % rt1 % r % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	insn_154:
@@ -6315,7 +6356,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_210) -> string { switch(temp_210) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_211) -> long { switch(temp_211) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_211) -> int64_t { switch(temp_211) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		return (boost::format("ldp %1%%2%, %3%%4%, [X%5%], #%6%0x%7$#x") % r % rt1 % r % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	insn_155:
@@ -6327,7 +6368,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_214) -> string { switch(temp_214) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_215) -> long { switch(temp_215) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_215) -> int64_t { switch(temp_215) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		return (boost::format("ldp %1%%2%, %3%%4%, [X%5%, #%6%0x%7$#x]!") % r % rt1 % r % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	insn_156:
@@ -6339,7 +6380,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_218) -> string { switch(temp_218) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_219) -> long { switch(temp_219) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_219) -> int64_t { switch(temp_219) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		return (boost::format("ldp %1%%2%, %3%%4%, [X%5%, #%6%0x%7$#x]") % r % rt1 % r % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	insn_157:
@@ -6349,7 +6390,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) (0x2));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) (0x2));
 		return (boost::format("ldpsw X%1%, X%2%, [X%3%, #%4%0x%5$#x]") % rt1 % rt2 % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	insn_158:
@@ -6360,7 +6401,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return (boost::format("ldr %1%%2%, [X%3%, #%4%0x%5$#x]!") % r % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_159:
@@ -6371,7 +6412,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return (boost::format("ldr %1%%2%, [X%3%], #%4%0x%5$#x") % r % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_160:
@@ -6382,7 +6423,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (ushort) ((rawimm) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto imm = (uint16_t) ((rawimm) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		return (boost::format("ldr %1%%2%, [X%3%, #0x%4$#x]") % r % rd % rn % imm).str();
 	}
 	insn_161:
@@ -6392,8 +6433,8 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 5) & 0x7FFFFU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto offset = (long) (SignExt<long>((uint) ((uint) ((uint) ((rawimm) << (uint) (0x2)))), 21));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) (offset)));
+		auto offset = (int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) ((uint32_t) ((rawimm) << (uint) (0x2)))), 21));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) (offset)));
 		return (boost::format("ldr %1%%2%, #0x%3$#x") % r % rt % addr).str();
 	}
 	insn_162:
@@ -6404,8 +6445,8 @@ string disassemble(uint inst, ulong pc) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto simm = (long) (SignExt<long>(imm, 9));
-		auto r = (string) (([=](auto temp_222) -> string { switch(temp_222) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
+		auto r = (string) (([=](auto temp_222) -> string { switch(temp_222) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ldr %1%%2%, [X%3%], #%4%0x%5$#x") % r % rt % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	insn_163:
@@ -6416,8 +6457,8 @@ string disassemble(uint inst, ulong pc) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto simm = (long) (SignExt<long>(imm, 9));
-		auto r = (string) (([=](auto temp_224) -> string { switch(temp_224) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
+		auto r = (string) (([=](auto temp_224) -> string { switch(temp_224) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ldr %1%%2%, [X%3%, #%4%0x%5$#x]!") % r % rt % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
 	insn_164:
@@ -6428,10 +6469,10 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto opc = (byte) ((byte) (((byte) (((byte) ((bool) ((bool) (0x1)))) << 0)) | ((byte) (((byte) (ropc)) << 1))));
-		auto m = (byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto opc = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x1)))) << 0)) | ((uint8_t) (((uint8_t) (ropc)) << 1))));
+		auto m = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r = (string) (([=](auto temp_226) -> string { switch(temp_226) { case 0x1: return string("B"); case 0x5: return string("H"); case 0x9: return string("S"); case 0xD: return string("D"); default: return string("Q"); } })(m));
-		auto imm = (uint) (((uint) ((uint) (rawimm))) << (uint) ((long) (([=](auto temp_227) -> long { switch(temp_227) { case 0x1: return 0x0; case 0x5: return 0x1; case 0x9: return 0x2; case 0xD: return 0x3; default: return 0x4; } })(m))));
+		auto imm = (uint32_t) (((uint32_t) ((uint32_t) (rawimm))) << (uint) ((int64_t) (([=](auto temp_227) -> int64_t { switch(temp_227) { case 0x1: return 0x0; case 0x5: return 0x1; case 0x9: return 0x2; case 0xD: return 0x3; default: return 0x4; } })(m))));
 		return (boost::format("ldr %1%%2%, [X%3%, #0x%4$#x]") % r % rt % rn % imm).str();
 	}
 	insn_165:
@@ -6441,7 +6482,7 @@ string disassemble(uint inst, ulong pc) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (([=](auto temp_230) -> string { switch(temp_230) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(size));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) (((uint) (((uint) ((byte) ((byte) (0x0)))) << 0)) | ((uint) (((uint) (imm)) << 2)))), 21)))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) (((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) (0x0)))) << 0)) | ((uint32_t) (((uint32_t) (imm)) << 2)))), 21)))));
 		return (boost::format("ldr %1%%2%, #0x%3$#x") % r % rt % addr).str();
 	}
 	insn_166:
@@ -6455,9 +6496,9 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (string("Q")) : ((string) (([=](auto temp_232) -> string { switch(temp_232) { case 0x0: return string("B"); case 0x1: return string("H"); case 0x2: return string("S"); case 0x3: return string("D"); default: throw "Not implemented"; } })(size))));
-		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto extend = (string) (([=](auto temp_233) -> string { switch(temp_233) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
-		auto amount = (ulong) (((ulong) (bool) (scale)) * ((ulong) (long) ((long) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (0x4) : ((long) (([=](auto temp_234) -> long { switch(temp_234) { case 0x0: return 0x1; case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: throw "Not implemented"; } })(size)))))));
+		auto amount = (uint64_t) (((uint64_t) (bool) (scale)) * ((uint64_t) (int64_t) ((int64_t) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (0x4) : ((int64_t) (([=](auto temp_234) -> int64_t { switch(temp_234) { case 0x0: return 0x1; case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: throw "Not implemented"; } })(size)))))));
 		return (boost::format("ldr %1%%2%, [X%3%, %4%%5%, %6% 0x%7$#x]") % r1 % rt % rn % r2 % rm % extend % amount).str();
 	}
 	insn_167:
@@ -6470,8 +6511,8 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		auto extend = (string) (([=](auto temp_238) -> string { switch(temp_238) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		return (boost::format("ldr %1%%2%, [X%3%, %4%%5%, %6% %7%0x%8$#x]") % r1 % rt % rn % r2 % rm % extend % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str();
 	}
@@ -6481,7 +6522,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return (boost::format("ldrb W%1%, [X%2%], #%3%0x%4$#x") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_169:
@@ -6490,7 +6531,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return (boost::format("ldrb W%1%, [X%2%, #%3%0x%4$#x]!") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_170:
@@ -6509,7 +6550,7 @@ string disassemble(uint inst, ulong pc) {
 		auto amount = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto str = (string) (([=](auto temp_240) -> string { switch(temp_240) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		return (boost::format("ldrb W%1%, [X%2%, %3%%4%, %5% %6%]") % rt % rn % r % rm % str % amount).str();
 	}
@@ -6519,7 +6560,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return (boost::format("ldrh W%1%, [X%2%], #%3%0x%4$#x") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_173:
@@ -6528,7 +6569,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return (boost::format("ldrh W%1%, [X%2%, #%3%0x%4$#x]!") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_174:
@@ -6537,7 +6578,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (ushort) ((rawimm) << (uint) (0x1));
+		auto imm = (uint16_t) ((rawimm) << (uint) (0x1));
 		return (boost::format("ldrh W%1%, [X%2%, #0x%3$#x]") % rt % rn % imm).str();
 	}
 	insn_175:
@@ -6548,7 +6589,7 @@ string disassemble(uint inst, ulong pc) {
 		auto amount = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto str = (string) (([=](auto temp_242) -> string { switch(temp_242) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		return (boost::format("ldrh W%1%, [X%2%, %3%%4%, %5% %6%]") % rt % rn % r % rm % str % amount).str();
 	}
@@ -6559,7 +6600,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("ldrsb %1%%2%, [X%3%], #%4%0x%5$#x") % r % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
@@ -6570,7 +6611,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("ldrsb %1%%2%, [X%3%, #%4%0x%5$#x]!") % r % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
@@ -6604,7 +6645,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("ldrsh %1%%2%, [X%3%], #%4%0x%5$#x") % r % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
@@ -6615,7 +6656,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("ldrsh %1%%2%, [X%3%, #%4%0x%5$#x]!") % r % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
@@ -6627,7 +6668,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (ushort) ((rawimm) << (uint) (0x1));
+		auto imm = (uint16_t) ((rawimm) << (uint) (0x1));
 		return (boost::format("ldrsh %1%%2%, [X%3%, #0x%4$#x]") % r % rt % rn % imm).str();
 	}
 	insn_183:
@@ -6649,7 +6690,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return (boost::format("ldrsw X%1%, [X%2%], #%3%0x%4$#x") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_185:
@@ -6658,7 +6699,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return (boost::format("ldrsw X%1%, [X%2%, #%3%0x%4$#x]!") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_186:
@@ -6667,7 +6708,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (ushort) ((rawimm) << (uint) (0x2));
+		auto imm = (uint16_t) ((rawimm) << (uint) (0x2));
 		return (boost::format("ldrsw X%1%, [X%2%, #0x%3$#x]") % rt % rn % imm).str();
 	}
 	insn_187:
@@ -6675,7 +6716,7 @@ string disassemble(uint inst, ulong pc) {
 	if((inst & 0xFF000000U) == 0x98000000U) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((uint) ((uint) (((uint) (((uint) ((byte) ((byte) (0x0)))) << 0)) | ((uint) (((uint) (imm)) << 2)))), 21)))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) (((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) (0x0)))) << 0)) | ((uint32_t) (((uint32_t) (imm)) << 2)))), 21)))));
 		return (boost::format("ldrsw X%1%, #0x%2$#x") % rt % addr).str();
 	}
 	insn_188:
@@ -6686,8 +6727,8 @@ string disassemble(uint inst, ulong pc) {
 		auto scale = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0x2));
+		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0x2));
 		auto extend = (string) (([=](auto temp_248) -> string { switch(temp_248) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		return (boost::format("ldrsw X%1%, [X%2%, %3%%4%, %5% %6%0x%7$#x]") % rt % rn % r % rm % extend % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str();
 	}
@@ -6699,7 +6740,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return (boost::format("ldur %1%%2%, [X%3%, #%4%0x%5$#x]") % r % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_190:
@@ -6708,7 +6749,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return (boost::format("ldurb W%1%, [X%2%, #%3%0x%4$#x]") % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_191:
@@ -6717,7 +6758,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return (boost::format("ldurh W%1%, [X%2%, #%3%0x%4$#x]") % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_192:
@@ -6728,7 +6769,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return (boost::format("ldursb %1%%2%, [X%3%, #%4%0x%5$#x]") % r % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_193:
@@ -6739,7 +6780,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return (boost::format("ldursh %1%%2%, [X%3%, #%4%0x%5$#x]") % r % rd % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_194:
@@ -6748,7 +6789,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return (boost::format("ldursw X%1%, [X%2%, #%3%0x%4$#x]") % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_195:
@@ -6759,8 +6800,8 @@ string disassemble(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_250) -> string { switch(temp_250) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (opc)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto imm = (long) (SignExt<long>(rawimm, 9));
+		auto r = (string) (([=](auto temp_250) -> string { switch(temp_250) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		return (boost::format("ldur %1%%2%, [X%3%, #%4%0x%5$#x]") % r % rt % rn % ((imm) < 0 ? "-" : "") % ((imm) < 0 ? -(imm) : (imm))).str();
 	}
 	insn_196:
@@ -6839,15 +6880,15 @@ string disassemble(uint inst, ulong pc) {
 		auto g = (inst >> 6) & 0x1U;
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto imm8a = (byte) ((byte) ((long) ((a != 0) ? (0xFF) : (0x0))));
-		auto imm8b = (byte) ((byte) ((long) ((b != 0) ? (0xFF) : (0x0))));
-		auto imm8c = (byte) ((byte) ((long) ((c != 0) ? (0xFF) : (0x0))));
-		auto imm8d = (byte) ((byte) ((long) ((d != 0) ? (0xFF) : (0x0))));
-		auto imm8e = (byte) ((byte) ((long) ((e != 0) ? (0xFF) : (0x0))));
-		auto imm8f = (byte) ((byte) ((long) ((f != 0) ? (0xFF) : (0x0))));
-		auto imm8g = (byte) ((byte) ((long) ((g != 0) ? (0xFF) : (0x0))));
-		auto imm8h = (byte) ((byte) ((long) ((h != 0) ? (0xFF) : (0x0))));
-		auto imm = (ulong) ((ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (((ulong) (imm8h)) << 0)) | ((ulong) (((ulong) (imm8g)) << 8)))) | ((ulong) (((ulong) (imm8f)) << 16)))) | ((ulong) (((ulong) (imm8e)) << 24)))) | ((ulong) (((ulong) (imm8d)) << 32)))) | ((ulong) (((ulong) (imm8c)) << 40)))) | ((ulong) (((ulong) (imm8b)) << 48)))) | ((ulong) (((ulong) (imm8a)) << 56))));
+		auto imm8a = (uint8_t) ((uint8_t) ((int64_t) ((a != 0) ? (0xFF) : (0x0))));
+		auto imm8b = (uint8_t) ((uint8_t) ((int64_t) ((b != 0) ? (0xFF) : (0x0))));
+		auto imm8c = (uint8_t) ((uint8_t) ((int64_t) ((c != 0) ? (0xFF) : (0x0))));
+		auto imm8d = (uint8_t) ((uint8_t) ((int64_t) ((d != 0) ? (0xFF) : (0x0))));
+		auto imm8e = (uint8_t) ((uint8_t) ((int64_t) ((e != 0) ? (0xFF) : (0x0))));
+		auto imm8f = (uint8_t) ((uint8_t) ((int64_t) ((f != 0) ? (0xFF) : (0x0))));
+		auto imm8g = (uint8_t) ((uint8_t) ((int64_t) ((g != 0) ? (0xFF) : (0x0))));
+		auto imm8h = (uint8_t) ((uint8_t) ((int64_t) ((h != 0) ? (0xFF) : (0x0))));
+		auto imm = (uint64_t) ((uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (((uint64_t) (imm8h)) << 0)) | ((uint64_t) (((uint64_t) (imm8g)) << 8)))) | ((uint64_t) (((uint64_t) (imm8f)) << 16)))) | ((uint64_t) (((uint64_t) (imm8e)) << 24)))) | ((uint64_t) (((uint64_t) (imm8d)) << 32)))) | ((uint64_t) (((uint64_t) (imm8c)) << 40)))) | ((uint64_t) (((uint64_t) (imm8b)) << 48)))) | ((uint64_t) (((uint64_t) (imm8a)) << 56))));
 		return (boost::format("movi D%1%, #0x%2$#x") % rd % imm).str();
 	}
 	insn_204:
@@ -6864,7 +6905,7 @@ string disassemble(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		return (boost::format("movi V%1%.%2%, #%3%") % rd % t % (uint16_t) imm).str();
 	}
 	insn_205:
@@ -6882,7 +6923,7 @@ string disassemble(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("8H")) : (string("4H")));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		return (boost::format("movi V%1%.%2%, #%3%") % rd % t % (uint16_t) imm).str();
 	}
 	insn_206:
@@ -6900,8 +6941,8 @@ string disassemble(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-		auto amount = (long) (([=](auto temp_252) -> long { switch(temp_252) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto amount = (int64_t) (([=](auto temp_252) -> int64_t { switch(temp_252) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		return (boost::format("movi V%1%.%2%, #%3%, LSL #%4%0x%5$#x") % rd % t % (uint16_t) imm % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str();
 	}
 	insn_207:
@@ -6916,7 +6957,7 @@ string disassemble(uint inst, ulong pc) {
 		auto g = (inst >> 6) & 0x1U;
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto imm = (ulong) ((ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (ulong) (((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (h)) << 1)))) | ((byte) (((byte) (h)) << 2)))) | ((byte) (((byte) (h)) << 3)))) | ((byte) (((byte) (h)) << 4)))) | ((byte) (((byte) (h)) << 5)))) | ((byte) (((byte) (h)) << 6)))) | ((byte) (((byte) (h)) << 7)))))) << 0)) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (g)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (g)) << 2)))) | ((byte) (((byte) (g)) << 3)))) | ((byte) (((byte) (g)) << 4)))) | ((byte) (((byte) (g)) << 5)))) | ((byte) (((byte) (g)) << 6)))) | ((byte) (((byte) (g)) << 7)))))) << 8)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (f)) << 0)) | ((byte) (((byte) (f)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (f)) << 3)))) | ((byte) (((byte) (f)) << 4)))) | ((byte) (((byte) (f)) << 5)))) | ((byte) (((byte) (f)) << 6)))) | ((byte) (((byte) (f)) << 7)))))) << 16)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (e)) << 0)) | ((byte) (((byte) (e)) << 1)))) | ((byte) (((byte) (e)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (e)) << 4)))) | ((byte) (((byte) (e)) << 5)))) | ((byte) (((byte) (e)) << 6)))) | ((byte) (((byte) (e)) << 7)))))) << 24)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (d)) << 0)) | ((byte) (((byte) (d)) << 1)))) | ((byte) (((byte) (d)) << 2)))) | ((byte) (((byte) (d)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (d)) << 5)))) | ((byte) (((byte) (d)) << 6)))) | ((byte) (((byte) (d)) << 7)))))) << 32)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (c)) << 0)) | ((byte) (((byte) (c)) << 1)))) | ((byte) (((byte) (c)) << 2)))) | ((byte) (((byte) (c)) << 3)))) | ((byte) (((byte) (c)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (c)) << 6)))) | ((byte) (((byte) (c)) << 7)))))) << 40)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (b)) << 0)) | ((byte) (((byte) (b)) << 1)))) | ((byte) (((byte) (b)) << 2)))) | ((byte) (((byte) (b)) << 3)))) | ((byte) (((byte) (b)) << 4)))) | ((byte) (((byte) (b)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (b)) << 7)))))) << 48)))) | ((ulong) (((ulong) ((byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (a)) << 0)) | ((byte) (((byte) (a)) << 1)))) | ((byte) (((byte) (a)) << 2)))) | ((byte) (((byte) (a)) << 3)))) | ((byte) (((byte) (a)) << 4)))) | ((byte) (((byte) (a)) << 5)))) | ((byte) (((byte) (a)) << 6)))) | ((byte) (((byte) (a)) << 7)))))) << 56))));
+		auto imm = (uint64_t) ((uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (uint64_t) (((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (h)) << 1)))) | ((uint8_t) (((uint8_t) (h)) << 2)))) | ((uint8_t) (((uint8_t) (h)) << 3)))) | ((uint8_t) (((uint8_t) (h)) << 4)))) | ((uint8_t) (((uint8_t) (h)) << 5)))) | ((uint8_t) (((uint8_t) (h)) << 6)))) | ((uint8_t) (((uint8_t) (h)) << 7)))))) << 0)) | ((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (g)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (g)) << 2)))) | ((uint8_t) (((uint8_t) (g)) << 3)))) | ((uint8_t) (((uint8_t) (g)) << 4)))) | ((uint8_t) (((uint8_t) (g)) << 5)))) | ((uint8_t) (((uint8_t) (g)) << 6)))) | ((uint8_t) (((uint8_t) (g)) << 7)))))) << 8)))) | ((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (f)) << 0)) | ((uint8_t) (((uint8_t) (f)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (f)) << 3)))) | ((uint8_t) (((uint8_t) (f)) << 4)))) | ((uint8_t) (((uint8_t) (f)) << 5)))) | ((uint8_t) (((uint8_t) (f)) << 6)))) | ((uint8_t) (((uint8_t) (f)) << 7)))))) << 16)))) | ((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (e)) << 0)) | ((uint8_t) (((uint8_t) (e)) << 1)))) | ((uint8_t) (((uint8_t) (e)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (e)) << 4)))) | ((uint8_t) (((uint8_t) (e)) << 5)))) | ((uint8_t) (((uint8_t) (e)) << 6)))) | ((uint8_t) (((uint8_t) (e)) << 7)))))) << 24)))) | ((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (d)) << 0)) | ((uint8_t) (((uint8_t) (d)) << 1)))) | ((uint8_t) (((uint8_t) (d)) << 2)))) | ((uint8_t) (((uint8_t) (d)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (d)) << 5)))) | ((uint8_t) (((uint8_t) (d)) << 6)))) | ((uint8_t) (((uint8_t) (d)) << 7)))))) << 32)))) | ((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (c)) << 0)) | ((uint8_t) (((uint8_t) (c)) << 1)))) | ((uint8_t) (((uint8_t) (c)) << 2)))) | ((uint8_t) (((uint8_t) (c)) << 3)))) | ((uint8_t) (((uint8_t) (c)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (c)) << 6)))) | ((uint8_t) (((uint8_t) (c)) << 7)))))) << 40)))) | ((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (b)) << 0)) | ((uint8_t) (((uint8_t) (b)) << 1)))) | ((uint8_t) (((uint8_t) (b)) << 2)))) | ((uint8_t) (((uint8_t) (b)) << 3)))) | ((uint8_t) (((uint8_t) (b)) << 4)))) | ((uint8_t) (((uint8_t) (b)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (b)) << 7)))))) << 48)))) | ((uint64_t) (((uint64_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (a)) << 0)) | ((uint8_t) (((uint8_t) (a)) << 1)))) | ((uint8_t) (((uint8_t) (a)) << 2)))) | ((uint8_t) (((uint8_t) (a)) << 3)))) | ((uint8_t) (((uint8_t) (a)) << 4)))) | ((uint8_t) (((uint8_t) (a)) << 5)))) | ((uint8_t) (((uint8_t) (a)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7)))))) << 56))));
 		return (boost::format("movi V%1%, #0x%2$#x") % rd % imm).str();
 	}
 	insn_208:
@@ -6927,7 +6968,7 @@ string disassemble(uint inst, ulong pc) {
 		auto imm = (inst >> 5) & 0xFFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (byte) ((hw) << (uint) (0x4));
+		auto shift = (uint8_t) ((hw) << (uint) (0x4));
 		return (boost::format("movk %1%%2%, #0x%3$#x, LSL #%4%") % r % rd % imm % shift).str();
 	}
 	insn_209:
@@ -6938,7 +6979,7 @@ string disassemble(uint inst, ulong pc) {
 		auto imm = (inst >> 5) & 0xFFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (byte) ((hw) << (uint) (0x4));
+		auto shift = (uint8_t) ((hw) << (uint) (0x4));
 		return (boost::format("movn %1%%2%, #0x%3$#x, LSL #%4%") % r % rd % imm % shift).str();
 	}
 	insn_210:
@@ -6949,7 +6990,7 @@ string disassemble(uint inst, ulong pc) {
 		auto imm = (inst >> 5) & 0xFFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (byte) ((hw) << (uint) (0x4));
+		auto shift = (uint8_t) ((hw) << (uint) (0x4));
 		return (boost::format("movz %1%%2%, #0x%3$#x, LSL #%4%") % r % rd % imm % shift).str();
 	}
 	insn_211:
@@ -6996,10 +7037,10 @@ string disassemble(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto rm = (byte) (((bool) (((size) == (0x2)) ? 1U : 0U) != 0) ? ((byte) ((byte) (((byte) (((byte) (rv)) << 0)) | ((byte) (((byte) (M)) << 4))))) : (rv));
-		auto t = (string) (([=](auto temp_254) -> string { switch(temp_254) { case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rm = (uint8_t) (((bool) (((size) == (0x2)) ? 1U : 0U) != 0) ? ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (rv)) << 0)) | ((uint8_t) (((uint8_t) (M)) << 4))))) : (rv));
+		auto t = (string) (([=](auto temp_254) -> string { switch(temp_254) { case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto ts = (string) (([=](auto temp_255) -> string { switch(temp_255) { case 0x1: return string("H"); case 0x2: return string("S"); default: throw "Not implemented"; } })(size));
-		auto index = (byte) (([=](auto temp_256) -> byte { switch(temp_256) { case 0x1: return (byte) ((byte) (((byte) (byte) (((byte) (((byte) (M)) << 0)) | ((byte) (((byte) (L)) << 1)))) | ((byte) (((byte) (H)) << 2)))); case 0x2: return (byte) ((byte) (((byte) (((byte) (L)) << 0)) | ((byte) (((byte) (H)) << 1)))); default: throw "Not implemented"; } })(size));
+		auto index = (uint8_t) (([=](auto temp_256) -> uint8_t { switch(temp_256) { case 0x1: return (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (M)) << 0)) | ((uint8_t) (((uint8_t) (L)) << 1)))) | ((uint8_t) (((uint8_t) (H)) << 2)))); case 0x2: return (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))); default: throw "Not implemented"; } })(size));
 		return (boost::format("mul V%1%.%2%, V%3%.%4%, V%5%.%6%[%7%]") % rd % t % rn % t % rm % ts % index).str();
 	}
 	insn_215:
@@ -7010,7 +7051,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_260) -> string { switch(temp_260) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_260) -> string { switch(temp_260) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("mul V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % t % rn % t % rm % t).str();
 	}
 	insn_216:
@@ -7028,8 +7069,8 @@ string disassemble(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("8H")) : (string("4H")));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
-		auto amount = (long) ((cmode != 0) ? (0x8) : (0x0));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
+		auto amount = (int64_t) ((cmode != 0) ? (0x8) : (0x0));
 		return (boost::format("mvni V%1%.%2%, #%3%, LSL #%4%0x%5$#x") % rd % t % (uint16_t) imm % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str();
 	}
 	insn_217:
@@ -7047,8 +7088,8 @@ string disassemble(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-		auto amount = (long) (([=](auto temp_262) -> long { switch(temp_262) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto amount = (int64_t) (([=](auto temp_262) -> int64_t { switch(temp_262) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		return (boost::format("mvni V%1%.%2%, #%3%, LSL #%4%0x%5$#x") % rd % t % (uint16_t) imm % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str();
 	}
 	insn_218:
@@ -7066,8 +7107,8 @@ string disassemble(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-		auto amount = (long) ((cmode != 0) ? (0x10) : (0x8));
-		auto imm = (byte) ((byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (byte) (((byte) (((byte) (h)) << 0)) | ((byte) (((byte) (g)) << 1)))) | ((byte) (((byte) (f)) << 2)))) | ((byte) (((byte) (e)) << 3)))) | ((byte) (((byte) (d)) << 4)))) | ((byte) (((byte) (c)) << 5)))) | ((byte) (((byte) (b)) << 6)))) | ((byte) (((byte) (a)) << 7))));
+		auto amount = (int64_t) ((cmode != 0) ? (0x10) : (0x8));
+		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		return (boost::format("mvni V%1%.%2%, #%3%, MSL #%4%0x%5$#x") % rd % t % (uint16_t) imm % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str();
 	}
 	insn_219:
@@ -7077,7 +7118,7 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_264) -> string { switch(temp_264) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_264) -> string { switch(temp_264) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("neg V%1%.%2%, V%3%.%4%") % rd % t % rn % t).str();
 	}
 	insn_220:
@@ -7108,7 +7149,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (ulong) (MakeWMask(up, imms, immr, (long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
+		auto imm = (uint64_t) (MakeWMask(up, imms, immr, (int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x20) : (0x40)), 0x1));
 		return (boost::format("orr %1%%2%, %3%%4%, #0x%5$#x") % r % rd % r % rn % imm).str();
 	}
 	insn_223:
@@ -7135,15 +7176,53 @@ string disassemble(uint inst, ulong pc) {
 		return (boost::format("orr V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % t % rn % t % rm % t).str();
 	}
 	insn_225:
+	/* PMULL[2] */
+	if((inst & 0xBF20FC00U) == 0x0E20E000U) {
+		auto Q = (inst >> 30) & 0x1U;
+		auto size = (inst >> 22) & 0x3U;
+		auto rm = (inst >> 16) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rd = (inst >> 0) & 0x1FU;
+		auto h = (string) ((Q != 0) ? (string("2")) : (string("")));
+		auto Ta = (string) (([=](auto temp_270) -> string { switch(temp_270) { case 0x0: return string("8H"); case 0x3: return string("1Q"); default: throw "Not implemented"; } })(size));
+		auto Tb = (string) (([=](auto temp_271) -> string { switch(temp_271) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x6: return string("1D"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		return (boost::format("pmull%1% V%2%.%3%, V%4%.%5%, V%6%.%7%") % h % rd % Ta % rn % Tb % rm % Tb).str();
+	}
+	insn_226:
 	/* PRFM-immediate */
 	if((inst & 0xFFC00000U) == 0xF9800000U) {
 		auto imm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto imm5 = (inst >> 0) & 0x1FU;
-		auto pimm = (ulong) (((ulong) (ushort) (imm)) * ((ulong) (long) (0x8)));
+		auto pimm = (uint64_t) (((uint64_t) (uint16_t) (imm)) * ((uint64_t) (int64_t) (0x8)));
 		return (boost::format("prfm #%1%, [X%2%, #0x%3$#x]") % imm5 % rn % pimm).str();
 	}
-	insn_226:
+	insn_227:
+	/* PRFM-literal */
+	if((inst & 0xFF000000U) == 0xD8000000U) {
+		auto imm = (inst >> 5) & 0x7FFFFU;
+		auto rt = (inst >> 0) & 0x1FU;
+		return (boost::format("prfm TODO")).str();
+	}
+	insn_228:
+	/* PRFM-register */
+	if((inst & 0xFFE00C00U) == 0xF8A00800U) {
+		auto rm = (inst >> 16) & 0x1FU;
+		auto opt = (inst >> 13) & 0x7U;
+		auto S = (inst >> 12) & 0x1U;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		return (boost::format("prfm TODO")).str();
+	}
+	insn_229:
+	/* PRFUM */
+	if((inst & 0xFFE00C00U) == 0xF8800000U) {
+		auto imm = (inst >> 12) & 0x1FFU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		return (boost::format("prfum TODO")).str();
+	}
+	insn_230:
 	/* RBIT */
 	if((inst & 0x7FFFFC00U) == 0x5AC00000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -7152,13 +7231,13 @@ string disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("rbit %1%%2%, %3%%4%") % r % rd % r % rn).str();
 	}
-	insn_227:
+	insn_231:
 	/* RET */
 	if((inst & 0xFFFFFC1FU) == 0xD65F0000U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		return (boost::format("ret X%1%") % rn).str();
 	}
-	insn_228:
+	insn_232:
 	/* REV */
 	if((inst & 0x7FFFF800U) == 0x5AC00800U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -7168,7 +7247,7 @@ string disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("rev %1%%2%, %3%%4%") % r % rd % r % rn).str();
 	}
-	insn_229:
+	insn_233:
 	/* REV16 */
 	if((inst & 0x7FFFFC00U) == 0x5AC00400U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -7177,7 +7256,7 @@ string disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("rev16 %1%%2%, %3%%4%") % r % rd % r % rn).str();
 	}
-	insn_230:
+	insn_234:
 	/* RORV */
 	if((inst & 0x7FE0FC00U) == 0x1AC02C00U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -7187,7 +7266,7 @@ string disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("rorv %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
-	insn_231:
+	insn_235:
 	/* SBCS */
 	if((inst & 0x7FE0FC00U) == 0x7A000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -7197,7 +7276,7 @@ string disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("sbcs %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
-	insn_232:
+	insn_236:
 	/* SBFM */
 	if((inst & 0x7F800000U) == 0x13000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -7209,14 +7288,14 @@ string disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("sbfm %1%%2%, %3%%4%, #%5%, #%6%") % r % rd % r % rn % immr % imms).str();
 	}
-	insn_233:
+	insn_237:
 	/* SCVTF-scalar-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E220000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -7257,7 +7336,7 @@ string disassemble(uint inst, ulong pc) {
 		}
 		return (boost::format("scvtf %1%%2%, %3%%4%") % r1 % rd % r2 % rn).str();
 	}
-	insn_234:
+	insn_238:
 	/* SCVTF-scalar */
 	if((inst & 0xFFBFFC00U) == 0x5E21D800U) {
 		auto size = (inst >> 22) & 0x1U;
@@ -7266,17 +7345,17 @@ string disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : (string("D")));
 		return (boost::format("scvtf %1%%2%, %3%%4%") % r % rd % r % rn).str();
 	}
-	insn_235:
+	insn_239:
 	/* SCVTF-vector */
 	if((inst & 0xBFBFFC00U) == 0x0E21D800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_270) -> string { switch(temp_270) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_274) -> string { switch(temp_274) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("scvtf V%1%.%2%, V%3%.%4%") % rd % t % rn % t).str();
 	}
-	insn_236:
+	insn_240:
 	/* SDIV */
 	if((inst & 0x7FE0FC00U) == 0x1AC00C00U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -7286,7 +7365,7 @@ string disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("sdiv %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
-	insn_237:
+	insn_241:
 	/* SHL-vector */
 	if((inst & 0xBF80FC00U) == 0x0F005400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7298,31 +7377,31 @@ string disassemble(uint inst, ulong pc) {
 		auto size = 0x0;
 		auto shift = 0x0;
 		if(!((bool) (((immh) != (0x0)) ? 1U : 0U)))
-			goto insn_238;
+			goto insn_242;
 		if(((bool) (((immh) == (0x1)) ? 1U : 0U)) != 0) {
 			T = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
 			size = 0x1;
-			shift = (ulong) (((ulong) (uint) ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))))) - ((ulong) (long) (0x8)));
+			shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x8)));
 		} else {
-			if(((bool) ((((byte) ((((ulong) (immh)) & ((ulong) (0xE))))) == (0x2)) ? 1U : 0U)) != 0) {
+			if(((bool) ((((uint8_t) ((((uint64_t) (immh)) & ((uint64_t) (0xE))))) == (0x2)) ? 1U : 0U)) != 0) {
 				T = (string) ((Q != 0) ? (string("8H")) : (string("4H")));
 				size = 0x2;
-				shift = (ulong) (((ulong) (uint) ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))))) - ((ulong) (long) (0x10)));
+				shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x10)));
 			} else {
-				if(((bool) ((((byte) ((((ulong) (immh)) & ((ulong) (0xC))))) == (0x4)) ? 1U : 0U)) != 0) {
+				if(((bool) ((((uint8_t) ((((uint64_t) (immh)) & ((uint64_t) (0xC))))) == (0x4)) ? 1U : 0U)) != 0) {
 					T = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
 					size = 0x4;
-					shift = (ulong) (((ulong) (uint) ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))))) - ((ulong) (long) (0x20)));
+					shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x20)));
 				} else {
 					T = (string) ((Q != 0) ? (string("2D")) : throw "Not implemented");
 					size = 0x8;
-					shift = (ulong) (((ulong) (uint) ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))))) - ((ulong) (long) (0x20)));
+					shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x20)));
 				}
 			}
 		}
 		return (boost::format("shl V%1%.%2%, V%3%.%4%, #%5%0x%6$#x") % rd % T % rn % T % ((shift) < 0 ? "-" : "") % ((shift) < 0 ? -(shift) : (shift))).str();
 	}
-	insn_238:
+	insn_242:
 	/* SMADDL */
 	if((inst & 0xFFE08000U) == 0x9B200000U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -7331,7 +7410,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		return (boost::format("smaddl X%1%, W%2%, W%3%, X%4%") % rd % rn % rm % ra).str();
 	}
-	insn_239:
+	insn_243:
 	/* SMULH */
 	if((inst & 0xFFE0FC00U) == 0x9B407C00U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -7339,7 +7418,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		return (boost::format("smulh X%1%, X%2%, X%3%") % rd % rn % rm).str();
 	}
-	insn_240:
+	insn_244:
 	/* SSHLL */
 	if((inst & 0xBF80FC00U) == 0x0F00A400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7350,21 +7429,21 @@ string disassemble(uint inst, ulong pc) {
 		auto variant = (string) ((Q != 0) ? (string("2")) : (string("")));
 		auto ta = string("");
 		auto tb = string("");
-		auto shift = (ulong) ((ulong) (0x0));
+		auto shift = (uint64_t) ((uint64_t) (0x0));
 		if(((bool) (((immh) == (0x1)) ? 1U : 0U)) != 0) {
 			ta = string("8H");
 			tb = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
-			shift = (ulong) (((ulong) (byte) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))) - ((ulong) (long) (0x8)));
+			shift = (uint64_t) (((uint64_t) (uint8_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))) - ((uint64_t) (int64_t) (0x8)));
 		} else {
-			if(((bool) ((((byte) ((((ulong) (immh)) & ((ulong) (0xE))))) == (0x2)) ? 1U : 0U)) != 0) {
+			if(((bool) ((((uint8_t) ((((uint64_t) (immh)) & ((uint64_t) (0xE))))) == (0x2)) ? 1U : 0U)) != 0) {
 				ta = string("4S");
 				tb = (string) ((Q != 0) ? (string("8H")) : (string("4H")));
-				shift = (ulong) (((ulong) (byte) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))) - ((ulong) (long) (0x10)));
+				shift = (uint64_t) (((uint64_t) (uint8_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))) - ((uint64_t) (int64_t) (0x10)));
 			} else {
-				if(((bool) ((((byte) ((((ulong) (immh)) & ((ulong) (0xC))))) == (0x4)) ? 1U : 0U)) != 0) {
+				if(((bool) ((((uint8_t) ((((uint64_t) (immh)) & ((uint64_t) (0xC))))) == (0x4)) ? 1U : 0U)) != 0) {
 					ta = string("2D");
 					tb = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-					shift = (ulong) (((ulong) (byte) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))) - ((ulong) (long) (0x20)));
+					shift = (uint64_t) (((uint64_t) (uint8_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))) - ((uint64_t) (int64_t) (0x20)));
 				} else {
 					throw "Not implemented";
 				}
@@ -7372,17 +7451,17 @@ string disassemble(uint inst, ulong pc) {
 		}
 		return (boost::format("sshll%1% V%2%.%3%, V%4%.%5%, #0x%6$#x") % variant % rd % ta % rn % tb % shift).str();
 	}
-	insn_241:
+	insn_245:
 	/* ST1-multi-no-offset-one-register */
 	if((inst & 0xBFFFF000U) == 0x0C007000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_272) -> string { switch(temp_272) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_276) -> string { switch(temp_276) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st1 { V%1%.%2% }, [X%3%]") % rt % T % rn).str();
 	}
-	insn_242:
+	insn_246:
 	/* ST1-multi-postindex-immediate-one-register */
 	if((inst & 0xBFE0F000U) == 0x0C807000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7390,13 +7469,13 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x20) : (0x10))));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x20) : (0x10))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_243;
-		auto T = (string) (([=](auto temp_274) -> string { switch(temp_274) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_247;
+		auto T = (string) (([=](auto temp_278) -> string { switch(temp_278) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st1 { V%1%.%2% }, [X%3%], #%4%") % rt % T % rn % (uint16_t) imm).str();
 	}
-	insn_243:
+	insn_247:
 	/* ST1-multi-postindex-register-one-register */
 	if((inst & 0xBFE0F000U) == 0x0C807000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7405,22 +7484,22 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_244;
-		auto T = (string) (([=](auto temp_276) -> string { switch(temp_276) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_248;
+		auto T = (string) (([=](auto temp_280) -> string { switch(temp_280) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st1 { V%1%.%2% }, [X%3%], X%4%") % rt % T % rn % rm).str();
 	}
-	insn_244:
+	insn_248:
 	/* ST1-multi-no-offset-two-registers */
 	if((inst & 0xBFFFF000U) == 0x0C00A000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_278) -> string { switch(temp_278) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_282) -> string { switch(temp_282) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st1 { V%1%.%2%, V0x%3$#x.%4% }, [X%5%]") % rt % T % rt2 % T % rn).str();
 	}
-	insn_245:
+	insn_249:
 	/* ST1-multi-postindex-immediate-two-registers */
 	if((inst & 0xBFE0F000U) == 0x0C80A000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7428,14 +7507,14 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x20) : (0x10))));
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x20) : (0x10))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_246;
-		auto T = (string) (([=](auto temp_280) -> string { switch(temp_280) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_250;
+		auto T = (string) (([=](auto temp_284) -> string { switch(temp_284) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st1 { V%1%.%2%, V0x%3$#x.%4% }, [X%5%], #%6%") % rt % T % rt2 % T % rn % (uint16_t) imm).str();
 	}
-	insn_246:
+	insn_250:
 	/* ST1-multi-postindex-register-two-registers */
 	if((inst & 0xBFE0F000U) == 0x0C80A000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7443,25 +7522,25 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_247;
-		auto T = (string) (([=](auto temp_282) -> string { switch(temp_282) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_251;
+		auto T = (string) (([=](auto temp_286) -> string { switch(temp_286) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st1 { V%1%.%2%, V0x%3$#x.%4% }, [X%5%], X%6%") % rt % T % rt2 % T % rn % rm).str();
 	}
-	insn_247:
+	insn_251:
 	/* ST1-multi-no-offset-three-registers */
 	if((inst & 0xBFFFF000U) == 0x0C006000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_284) -> string { switch(temp_284) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_288) -> string { switch(temp_288) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st1 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6% }, [X%7%]") % rt % T % rt2 % T % rt3 % T % rn).str();
 	}
-	insn_248:
+	insn_252:
 	/* ST1-multi-postindex-immediate-three-registers */
 	if((inst & 0xBFE0F000U) == 0x0C806000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7469,15 +7548,15 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x30) : (0x18))));
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x30) : (0x18))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_249;
-		auto T = (string) (([=](auto temp_286) -> string { switch(temp_286) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_253;
+		auto T = (string) (([=](auto temp_290) -> string { switch(temp_290) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st1 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6% }, [X%7%], #%8%") % rt % T % rt2 % T % rt3 % T % rn % (uint16_t) imm).str();
 	}
-	insn_249:
+	insn_253:
 	/* ST1-multi-postindex-register-three-registers */
 	if((inst & 0xBFE0F000U) == 0x0C806000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7485,27 +7564,27 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_250;
-		auto T = (string) (([=](auto temp_288) -> string { switch(temp_288) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_254;
+		auto T = (string) (([=](auto temp_292) -> string { switch(temp_292) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st1 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6% }, [X%7%], X%8%") % rt % T % rt2 % T % rt3 % T % rn % rm).str();
 	}
-	insn_250:
+	insn_254:
 	/* ST1-multi-no-offset-four-registers */
 	if((inst & 0xBFFFF000U) == 0x0C002000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_290) -> string { switch(temp_290) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_294) -> string { switch(temp_294) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st1 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6%, V0x%7$#x.%8% }, [X%9%]") % rt % T % rt2 % T % rt3 % T % rt4 % T % rn).str();
 	}
-	insn_251:
+	insn_255:
 	/* ST1-multi-postindex-immediate-four-registers */
 	if((inst & 0xBFE0F000U) == 0x0C802000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7513,16 +7592,16 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x40) : (0x20))));
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x40) : (0x20))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_252;
-		auto T = (string) (([=](auto temp_292) -> string { switch(temp_292) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_256;
+		auto T = (string) (([=](auto temp_296) -> string { switch(temp_296) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st1 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6%, V0x%7$#x.%8% }, [X%9%], #%10%") % rt % T % rt2 % T % rt3 % T % rt4 % T % rn % (uint16_t) imm).str();
 	}
-	insn_252:
+	insn_256:
 	/* ST1-multi-postindex-register-four-registers */
 	if((inst & 0xBFE0F000U) == 0x0C802000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7530,15 +7609,15 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_253;
-		auto T = (string) (([=](auto temp_294) -> string { switch(temp_294) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_257;
+		auto T = (string) (([=](auto temp_298) -> string { switch(temp_298) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st1 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6%, V0x%7$#x.%8% }, [X%9%], X%10%") % rt % T % rt2 % T % rt3 % T % rt4 % T % rn % rm).str();
 	}
-	insn_253:
+	insn_257:
 	/* ST1-single-no-offset */
 	if((inst & 0xBFFF2000U) == 0x0D000000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7548,23 +7627,23 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((opc) != (0x3)) ? 1U : 0U)))
-			goto insn_254;
-		auto t = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("B")) : ((string) (((bool) ((((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) ((((byte) ((((ulong) (size)) & ((ulong) (0x1))))) == (0x0)) ? 1U : 0U))))) != 0) ? (string("H")) : ((string) (((bool) (((opc) == (0x2)) ? 1U : 0U) != 0) ? ((string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : ((string) (((bool) ((((bool) ((bool) (((size) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) (((S) == (0x0)) ? 1U : 0U))))) != 0) ? (string("D")) : throw "Not implemented")))) : throw "Not implemented")))));
-		auto index = (uint) (([=](auto temp_296) -> uint { switch(temp_296) { case 0x0: return (uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3)))))); case 0x1: return (uint) (((uint) ((uint) ((byte) ((byte) (((byte) (byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (S)) << 2)))) | ((byte) (((byte) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint) (((bool) ((((byte) ((((ulong) (size)) & ((ulong) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (S)) << 0)) | ((byte) (((byte) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
+			goto insn_258;
+		auto t = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("B")) : ((string) (((bool) ((((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U))))) != 0) ? (string("H")) : ((string) (((bool) (((opc) == (0x2)) ? 1U : 0U) != 0) ? ((string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : ((string) (((bool) ((((bool) ((bool) (((size) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) (((S) == (0x0)) ? 1U : 0U))))) != 0) ? (string("D")) : throw "Not implemented")))) : throw "Not implemented")))));
+		auto index = (uint32_t) (([=](auto temp_300) -> uint32_t { switch(temp_300) { case 0x0: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3)))))); case 0x1: return (uint32_t) (((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint32_t) (((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (S)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
 		return (boost::format("st1 { V%1%.%2% }[0x%3$#x], [X%4%]") % rt % t % index % rn).str();
 	}
-	insn_254:
+	insn_258:
 	/* ST2-multi-no-offset */
 	if((inst & 0xBFFFF000U) == 0x0C008000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_298) -> string { switch(temp_298) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_302) -> string { switch(temp_302) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st2 { V%1%.%2%, V0x%3$#x.%4% }, [X%5%]") % rt % T % rt2 % T % rn).str();
 	}
-	insn_255:
+	insn_259:
 	/* ST2-multi-postindex-immediate */
 	if((inst & 0xBFE0F000U) == 0x0C808000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7572,14 +7651,14 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x20) : (0x10))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x20) : (0x10))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_256;
-		auto T = (string) (([=](auto temp_300) -> string { switch(temp_300) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_260;
+		auto T = (string) (([=](auto temp_304) -> string { switch(temp_304) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st2 { V%1%.%2%, V0x%3$#x.%4% }, [X%5%], #%6%") % rt % T % rt2 % T % rn % (uint16_t) imm).str();
 	}
-	insn_256:
+	insn_260:
 	/* ST2-multi-postindex-register */
 	if((inst & 0xBFE0F000U) == 0x0C808000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7587,25 +7666,25 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_257;
-		auto T = (string) (([=](auto temp_302) -> string { switch(temp_302) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_261;
+		auto T = (string) (([=](auto temp_306) -> string { switch(temp_306) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st2 { V%1%.%2%, V0x%3$#x.%4% }, [X%5%], X%6%") % rt % T % rt2 % T % rn % rm).str();
 	}
-	insn_257:
+	insn_261:
 	/* ST3-multi-no-offset */
 	if((inst & 0xBFFFF000U) == 0x0C004000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_304) -> string { switch(temp_304) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_308) -> string { switch(temp_308) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st3 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6% }, [X%7%]") % rt % T % rt2 % T % rt3 % T % rn).str();
 	}
-	insn_258:
+	insn_262:
 	/* ST3-multi-postindex-immediate */
 	if((inst & 0xBFE0F000U) == 0x0C804000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7613,15 +7692,15 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x30) : (0x18))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x30) : (0x18))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_259;
-		auto T = (string) (([=](auto temp_306) -> string { switch(temp_306) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_263;
+		auto T = (string) (([=](auto temp_310) -> string { switch(temp_310) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st3 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6% }, [X%7%], #%8%") % rt % T % rt2 % T % rt3 % T % rn % (uint16_t) imm).str();
 	}
-	insn_259:
+	insn_263:
 	/* ST3-multi-postindex-register */
 	if((inst & 0xBFE0F000U) == 0x0C804000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7629,27 +7708,27 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_260;
-		auto T = (string) (([=](auto temp_308) -> string { switch(temp_308) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_264;
+		auto T = (string) (([=](auto temp_312) -> string { switch(temp_312) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st3 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6% }, [X%7%], X%8%") % rt % T % rt2 % T % rt3 % T % rn % rm).str();
 	}
-	insn_260:
+	insn_264:
 	/* ST4-multi-no-offset */
 	if((inst & 0xBFFFF000U) == 0x0C000000U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
-		auto T = (string) (([=](auto temp_310) -> string { switch(temp_310) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
+		auto T = (string) (([=](auto temp_314) -> string { switch(temp_314) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st4 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6%, V0x%7$#x.%8% }, [X%9%]") % rt % T % rt2 % T % rt3 % T % rt4 % T % rn).str();
 	}
-	insn_261:
+	insn_265:
 	/* ST4-multi-postindex-immediate */
 	if((inst & 0xBFE0F000U) == 0x0C800000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7657,16 +7736,16 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
-		auto imm = (byte) ((byte) ((long) ((Q != 0) ? (0x40) : (0x2B))));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x40) : (0x2B))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
-			goto insn_262;
-		auto T = (string) (([=](auto temp_312) -> string { switch(temp_312) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_266;
+		auto T = (string) (([=](auto temp_316) -> string { switch(temp_316) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st4 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6%, V0x%7$#x.%8% }, [X%9%], #%10%") % rt % T % rt2 % T % rt3 % T % rt4 % T % rn % (uint16_t) imm).str();
 	}
-	insn_262:
+	insn_266:
 	/* ST4-multi-postindex-register */
 	if((inst & 0xBFE0F000U) == 0x0C800000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -7674,15 +7753,15 @@ string disassemble(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rt2 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x1))))) % ((ulong) (long) (0x20)));
-		auto rt3 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x2))))) % ((ulong) (long) (0x20)));
-		auto rt4 = (ulong) (((ulong) (ulong) ((ulong) (((ulong) (byte) (rt)) + ((ulong) (long) (0x3))))) % ((ulong) (long) (0x20)));
+		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
+		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
-			goto insn_263;
-		auto T = (string) (([=](auto temp_314) -> string { switch(temp_314) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+			goto insn_267;
+		auto T = (string) (([=](auto temp_318) -> string { switch(temp_318) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("st4 { V%1%.%2%, V0x%3$#x.%4%, V0x%5$#x.%6%, V0x%7$#x.%8% }, [X%9%], X%10%") % rt % T % rt2 % T % rt3 % T % rt4 % T % rn % rm).str();
 	}
-	insn_263:
+	insn_267:
 	/* STLR */
 	if((inst & 0xBFFFFC00U) == 0x889FFC00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -7691,21 +7770,21 @@ string disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("stlr %1%%2%, [X%3%]") % r % rt % rn).str();
 	}
-	insn_264:
+	insn_268:
 	/* STLRB */
 	if((inst & 0xFFFFFC00U) == 0x089FFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		return (boost::format("stlrb W%1%, [X%2%]") % rt % rn).str();
 	}
-	insn_265:
+	insn_269:
 	/* STLRH */
 	if((inst & 0xFFFFFC00U) == 0x489FFC00U) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		return (boost::format("stlrh W%1%, [X%2%]") % rt % rn).str();
 	}
-	insn_266:
+	insn_270:
 	/* STLXR */
 	if((inst & 0xBFE0FC00U) == 0x8800FC00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -7715,7 +7794,7 @@ string disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("stlxr W%1%, %2%%3%, [X%4%]") % rs % r % rt % rn).str();
 	}
-	insn_267:
+	insn_271:
 	/* STLXRB */
 	if((inst & 0xFFE0FC00U) == 0x0800FC00U) {
 		auto rs = (inst >> 16) & 0x1FU;
@@ -7723,7 +7802,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		return (boost::format("stlxrr W%1%, W%2%, [X%3%]") % rs % rt % rn).str();
 	}
-	insn_268:
+	insn_272:
 	/* STP-postindex */
 	if((inst & 0x7FC00000U) == 0x28800000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -7732,10 +7811,10 @@ string disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		return (boost::format("stp %1%%2%, %3%%4%, [X%5%], #%6%0x%7$#x") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
-	insn_269:
+	insn_273:
 	/* STP-preindex */
 	if((inst & 0x7FC00000U) == 0x29800000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -7744,10 +7823,10 @@ string disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		return (boost::format("stp %1%%2%, %3%%4%, [X%5%, #%6%0x%7$#x]!") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
-	insn_270:
+	insn_274:
 	/* STP-signed-offset */
 	if((inst & 0x7FC00000U) == 0x29000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -7756,10 +7835,10 @@ string disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		return (boost::format("stp %1%%2%, %3%%4%, [X%5%, #%6%0x%7$#x]") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
-	insn_271:
+	insn_275:
 	/* STP-simd-postindex */
 	if((inst & 0x3FC00000U) == 0x2C800000U) {
 		auto opc = (inst >> 30) & 0x3U;
@@ -7767,11 +7846,11 @@ string disassemble(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_316) -> string { switch(temp_316) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_317) -> long { switch(temp_317) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_320) -> string { switch(temp_320) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_321) -> int64_t { switch(temp_321) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		return (boost::format("stp %1%%2%, %3%%4%, [X%5%], #%6%0x%7$#x") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
-	insn_272:
+	insn_276:
 	/* STP-simd-preindex */
 	if((inst & 0x3FC00000U) == 0x2D800000U) {
 		auto opc = (inst >> 30) & 0x3U;
@@ -7779,11 +7858,11 @@ string disassemble(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_320) -> string { switch(temp_320) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_321) -> long { switch(temp_321) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_324) -> string { switch(temp_324) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_325) -> int64_t { switch(temp_325) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		return (boost::format("stp %1%%2%, %3%%4%, [X%5%, #%6%0x%7$#x]!") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
-	insn_273:
+	insn_277:
 	/* STP-simd-signed-offset */
 	if((inst & 0x3FC00000U) == 0x2D000000U) {
 		auto opc = (inst >> 30) & 0x3U;
@@ -7791,11 +7870,11 @@ string disassemble(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_324) -> string { switch(temp_324) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (long) (((long) (SignExt<long>(imm, 7))) << (uint) ((long) (([=](auto temp_325) -> long { switch(temp_325) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_328) -> string { switch(temp_328) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_329) -> int64_t { switch(temp_329) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		return (boost::format("stp %1%%2%, %3%%4%, [X%5%, #%6%0x%7$#x]") % r % rt1 % r % rt2 % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
-	insn_274:
+	insn_278:
 	/* STR-immediate-postindex */
 	if((inst & 0xBFE00C00U) == 0xB8000400U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -7803,10 +7882,10 @@ string disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return (boost::format("str %1%%2%, [X%3%], #%4%0x%5$#x") % r % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
-	insn_275:
+	insn_279:
 	/* STR-immediate-preindex */
 	if((inst & 0xBFE00C00U) == 0xB8000C00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -7814,10 +7893,10 @@ string disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return (boost::format("str %1%%2%, [X%3%, #%4%0x%5$#x]!") % r % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
-	insn_276:
+	insn_280:
 	/* STR-immediate-unsigned-offset */
 	if((inst & 0xBFC00000U) == 0xB9000000U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -7825,10 +7904,10 @@ string disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto pimm = (ulong) (((ulong) ((ulong) (imm))) << (uint) ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto pimm = (uint64_t) (((uint64_t) ((uint64_t) (imm))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		return (boost::format("str %1%%2%, [X%3%, #0x%4$#x]") % r % rs % rd % pimm).str();
 	}
-	insn_277:
+	insn_281:
 	/* STR-register */
 	if((inst & 0xBFE00C00U) == 0xB8200800U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -7838,12 +7917,12 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		auto extend = (string) (([=](auto temp_328) -> string { switch(temp_328) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
+		auto extend = (string) (([=](auto temp_332) -> string { switch(temp_332) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		return (boost::format("str %1%%2%, [X%3%, %4%%5%, %6% %7%0x%8$#x]") % r1 % rt % rn % r2 % rm % extend % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str();
 	}
-	insn_278:
+	insn_282:
 	/* STR-simd-postindex */
 	if((inst & 0x3F600C00U) == 0x3C000400U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -7851,12 +7930,12 @@ string disassemble(uint inst, ulong pc) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_330) -> string { switch(temp_330) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
+		auto r = (string) (([=](auto temp_334) -> string { switch(temp_334) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return (boost::format("str %1%%2%, [X%3%], #%4%0x%5$#x") % r % rt % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
-	insn_279:
+	insn_283:
 	/* STR-simd-preindex */
 	if((inst & 0x3F600C00U) == 0x3C000C00U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -7864,13 +7943,13 @@ string disassemble(uint inst, ulong pc) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_332) -> string { switch(temp_332) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
-		auto scale = (byte) ((byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (opc)) << 2))));
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
+		auto r = (string) (([=](auto temp_336) -> string { switch(temp_336) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto scale = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 2))));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return (boost::format("str %1%%2%, [X%3%, #%4%0x%5$#x]!") % r % rt % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
-	insn_280:
+	insn_284:
 	/* STR-simd-unsigned-offset */
 	if((inst & 0x3F400000U) == 0x3D000000U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -7878,12 +7957,12 @@ string disassemble(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_334) -> string { switch(temp_334) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
-		auto scale = (byte) ((byte) (((byte) (((byte) (size)) << 0)) | ((byte) (((byte) (opc)) << 2))));
+		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
+		auto r = (string) (([=](auto temp_338) -> string { switch(temp_338) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto scale = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 2))));
 		return (boost::format("str %1%%2%, [X%3%, #0x%4$#x]") % r % rt % rn % imm).str();
 	}
-	insn_281:
+	insn_285:
 	/* STR-simd-register */
 	if((inst & 0x3F600C00U) == 0x3C200800U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -7893,32 +7972,32 @@ string disassemble(uint inst, ulong pc) {
 		auto scale = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r1 = (string) (([=](auto temp_336) -> string { switch(temp_336) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
-		auto r2 = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto amount = (long) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((long) (([=](auto temp_337) -> long { switch(temp_337) { case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: return (long) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (0x4) : (0x0)); } })(size))));
-		auto extend = (string) (([=](auto temp_338) -> string { switch(temp_338) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
+		auto r1 = (string) (([=](auto temp_340) -> string { switch(temp_340) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((int64_t) (([=](auto temp_341) -> int64_t { switch(temp_341) { case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: return (int64_t) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (0x4) : (0x0)); } })(size))));
+		auto extend = (string) (([=](auto temp_342) -> string { switch(temp_342) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
 		return (boost::format("str %1%%2%, [X%3%, %4%, %5% %6%0x%7$#x]") % r1 % rt % rn % r2 % extend % ((amount) < 0 ? "-" : "") % ((amount) < 0 ? -(amount) : (amount))).str();
 	}
-	insn_282:
+	insn_286:
 	/* STRB-immediate-postindex */
 	if((inst & 0xFFE00C00U) == 0x38000400U) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return (boost::format("strb W%1%, [X%2%], #%3%0x%4$#x") % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
-	insn_283:
+	insn_287:
 	/* STRB-immediate-preindex */
 	if((inst & 0xFFE00C00U) == 0x38000C00U) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return (boost::format("strb W%1%, [X%2%, #%3%0x%4$#x]!") % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
-	insn_284:
+	insn_288:
 	/* STRB-immediate-unsigned-offset */
 	if((inst & 0xFFC00000U) == 0x39000000U) {
 		auto imm = (inst >> 10) & 0xFFFU;
@@ -7926,7 +8005,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		return (boost::format("strb W%1%, [X%2%, #0x%3$#x]") % rt % rn % imm).str();
 	}
-	insn_285:
+	insn_289:
 	/* STRB-register */
 	if((inst & 0xFFE00C00U) == 0x38200800U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -7934,38 +8013,38 @@ string disassemble(uint inst, ulong pc) {
 		auto amount = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_342) -> string { switch(temp_342) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto str = (string) (([=](auto temp_346) -> string { switch(temp_346) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		return (boost::format("strb W%1%, [X%2%, %3%%4%, %5% %6%]") % rt % rn % r % rm % str % amount).str();
 	}
-	insn_286:
+	insn_290:
 	/* STRH-immediate-postindex */
 	if((inst & 0xFFE00C00U) == 0x78000400U) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return (boost::format("strh W%1%, [X%2%], #%3%0x%4$#x") % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
-	insn_287:
+	insn_291:
 	/* STRH-immediate-preindex */
 	if((inst & 0xFFE00C00U) == 0x78000C00U) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rs = (inst >> 0) & 0x1FU;
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return (boost::format("strh W%1%, [X%2%, #%3%0x%4$#x]!") % rs % rd % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
-	insn_288:
+	insn_292:
 	/* STRH-immediate-unsigned-offset */
 	if((inst & 0xFFC00000U) == 0x79000000U) {
 		auto rawimm = (inst >> 10) & 0xFFFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (ushort) ((rawimm) << (uint) (0x1));
+		auto imm = (uint16_t) ((rawimm) << (uint) (0x1));
 		return (boost::format("strh W%1%, [X%2%, #0x%3$#x]") % rt % rn % imm).str();
 	}
-	insn_289:
+	insn_293:
 	/* STRH-register */
 	if((inst & 0xFFE00C00U) == 0x78200800U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -7973,11 +8052,11 @@ string disassemble(uint inst, ulong pc) {
 		auto amount = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (((byte) ((((ulong) (option)) & ((ulong) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_344) -> string { switch(temp_344) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
+		auto str = (string) (([=](auto temp_348) -> string { switch(temp_348) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		return (boost::format("strh W%1%, [X%2%, %3%%4%, %5% %6%]") % rt % rn % r % rm % str % amount).str();
 	}
-	insn_290:
+	insn_294:
 	/* STUR */
 	if((inst & 0xBFE00C00U) == 0xB8000000U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -7985,10 +8064,10 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto offset = (long) (SignExt<long>(imm, 9));
+		auto offset = (int64_t) (SignExt<int64_t>(imm, 9));
 		return (boost::format("stur %1%%2%, [X%3%, #%4%0x%5$#x]") % r % rt % rn % ((offset) < 0 ? "-" : "") % ((offset) < 0 ? -(offset) : (offset))).str();
 	}
-	insn_291:
+	insn_295:
 	/* STUR-simd */
 	if((inst & 0x3F600C00U) == 0x3C000000U) {
 		auto size = (inst >> 30) & 0x3U;
@@ -7996,30 +8075,38 @@ string disassemble(uint inst, ulong pc) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto rop = (byte) ((byte) (((byte) (byte) (((byte) (((byte) ((bool) ((bool) (0x0)))) << 0)) | ((byte) (((byte) (opc)) << 1)))) | ((byte) (((byte) (size)) << 2))));
-		auto r = (string) (([=](auto temp_346) -> string { switch(temp_346) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
-		auto simm = (long) (SignExt<long>(imm, 9));
+		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
+		auto r = (string) (([=](auto temp_350) -> string { switch(temp_350) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		return (boost::format("stur %1%%2%, [X%3%, #%4%0x%5$#x]") % r % rt % rn % ((simm) < 0 ? "-" : "") % ((simm) < 0 ? -(simm) : (simm))).str();
 	}
-	insn_292:
+	insn_296:
 	/* STURB */
 	if((inst & 0xFFE00C00U) == 0x38000000U) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto offset = (long) (SignExt<long>(imm, 9));
+		auto offset = (int64_t) (SignExt<int64_t>(imm, 9));
 		return (boost::format("sturb W%1%, [X%2%, #%3%0x%4$#x]") % rt % rn % ((offset) < 0 ? "-" : "") % ((offset) < 0 ? -(offset) : (offset))).str();
 	}
-	insn_293:
+	insn_297:
 	/* STURH */
 	if((inst & 0xFFE00C00U) == 0x78000000U) {
 		auto imm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto offset = (long) (SignExt<long>(imm, 9));
+		auto offset = (int64_t) (SignExt<int64_t>(imm, 9));
 		return (boost::format("sturh W%1%, [X%2%, #%3%0x%4$#x]") % rt % rn % ((offset) < 0 ? "-" : "") % ((offset) < 0 ? -(offset) : (offset))).str();
 	}
-	insn_294:
+	insn_298:
+	/* STXRB */
+	if((inst & 0xFFE0FC00U) == 0x08007C00U) {
+		auto rs = (inst >> 16) & 0x1FU;
+		auto rn = (inst >> 5) & 0x1FU;
+		auto rt = (inst >> 0) & 0x1FU;
+		return (boost::format("stxrb W%1%, W%2%, [X%3%]") % rs % rt % rn).str();
+	}
+	insn_299:
 	/* STXR */
 	if((inst & 0xBFE0FC00U) == 0x88007C00U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -8029,7 +8116,7 @@ string disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("stxr W%1%, %2%%3%, [X%4%]") % rs % r % rt % rn).str();
 	}
-	insn_295:
+	insn_300:
 	/* STXP */
 	if((inst & 0xBFE08000U) == 0x88200000U) {
 		auto size = (inst >> 30) & 0x1U;
@@ -8040,7 +8127,7 @@ string disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("stxp W%1%, %2%%3%, %4%%5%, [X%6%]") % rs % r % rt % r % rt2 % rn).str();
 	}
-	insn_296:
+	insn_301:
 	/* SUB-immediate */
 	if((inst & 0x7F800000U) == 0x51000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -8049,10 +8136,10 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (long) (((bool) (((sh) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0xC));
+		auto shift = (int64_t) (((bool) (((sh) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0xC));
 		return (boost::format("sub %1%%2%, %3%%4%, #0x%5$#x, LSL #%6%0x%7$#x") % r % rd % r % rn % imm % ((shift) < 0 ? "-" : "") % ((shift) < 0 ? -(shift) : (shift))).str();
 	}
-	insn_297:
+	insn_302:
 	/* SUB-extended-register */
 	if((inst & 0x7FE00000U) == 0x4B200000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -8062,11 +8149,11 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_348) -> string { switch(temp_348) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_349) -> string { switch(temp_349) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_352) -> string { switch(temp_352) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_353) -> string { switch(temp_353) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		return (boost::format("sub %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r1 % rd % r1 % rn % r2 % rm % extend % imm).str();
 	}
-	insn_298:
+	insn_303:
 	/* SUB-shifted-register */
 	if((inst & 0x7F200000U) == 0x4B000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -8076,10 +8163,10 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_352) -> string { switch(temp_352) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_356) -> string { switch(temp_356) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		return (boost::format("sub %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str();
 	}
-	insn_299:
+	insn_304:
 	/* SUBS-extended-register */
 	if((inst & 0x7FE00000U) == 0x6B200000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -8089,11 +8176,11 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (((bool) ((((byte) ((((ulong) (option)) & ((ulong) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_354) -> string { switch(temp_354) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_355) -> string { switch(temp_355) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_358) -> string { switch(temp_358) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_359) -> string { switch(temp_359) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		return (boost::format("subs %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r1 % rd % r1 % rn % r2 % rm % extend % imm).str();
 	}
-	insn_300:
+	insn_305:
 	/* SUBS-shifted-register */
 	if((inst & 0x7F200000U) == 0x6B000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -8104,10 +8191,10 @@ string disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto mode32 = (bool) (((size) == (0x0)) ? 1U : 0U);
 		auto r = (string) ((mode32 != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_358) -> string { switch(temp_358) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_362) -> string { switch(temp_362) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		return (boost::format("subs %1%%2%, %3%%4%, %5%%6%, %7% #%8%") % r % rd % r % rn % r % rm % shiftstr % imm).str();
 	}
-	insn_301:
+	insn_306:
 	/* SUBS-immediate */
 	if((inst & 0x7F800000U) == 0x71000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -8116,16 +8203,16 @@ string disassemble(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_360) -> string { switch(temp_360) { case 0x0: return string("LSL #0"); case 0x1: return string("LSL #12"); default: throw "Not implemented"; } })(shift));
+		auto shiftstr = (string) (([=](auto temp_364) -> string { switch(temp_364) { case 0x0: return string("LSL #0"); case 0x1: return string("LSL #12"); default: throw "Not implemented"; } })(shift));
 		return (boost::format("subs %1%%2%, %3%%4%, #0x%5$#x, %6%") % r % rd % r % rn % imm % shiftstr).str();
 	}
-	insn_302:
+	insn_307:
 	/* SVC */
 	if((inst & 0xFFE0001FU) == 0xD4000001U) {
 		auto imm = (inst >> 5) & 0xFFFFU;
 		return (boost::format("svc #0x%1$#x") % imm).str();
 	}
-	insn_303:
+	insn_308:
 	/* SYS */
 	if((inst & 0xFFF80000U) == 0xD5080000U) {
 		auto op1 = (inst >> 16) & 0x7U;
@@ -8135,7 +8222,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		return (boost::format("sys #%1%, %2%, %3%, #%4%, X%5%") % op1 % cn % cm % op2 % rt).str();
 	}
-	insn_304:
+	insn_309:
 	/* TBZ */
 	if((inst & 0x7F000000U) == 0x36000000U) {
 		auto upper = (inst >> 31) & 0x1U;
@@ -8143,11 +8230,11 @@ string disassemble(uint inst, ulong pc) {
 		auto offset = (inst >> 5) & 0x3FFFU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((upper) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (uint) ((((uint) ((uint) (((uint) ((uint) (upper))) << (uint) (0x5)))) | ((uint) ((uint) ((uint) (bottom))))));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((ushort) (((ushort) ((ushort) (offset))) << (uint) (0x2)), 16)))));
+		auto imm = (uint32_t) ((((uint32_t) ((uint32_t) (((uint32_t) ((uint32_t) (upper))) << (uint) (0x5)))) | ((uint32_t) ((uint32_t) ((uint32_t) (bottom))))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint16_t) (((uint16_t) ((uint16_t) (offset))) << (uint) (0x2)), 16)))));
 		return (boost::format("tbz %1%%2%, #0x%3$#x, 0x%4$#x") % r % rt % imm % addr).str();
 	}
-	insn_305:
+	insn_310:
 	/* TBNZ */
 	if((inst & 0x7F000000U) == 0x37000000U) {
 		auto upper = (inst >> 31) & 0x1U;
@@ -8155,24 +8242,24 @@ string disassemble(uint inst, ulong pc) {
 		auto offset = (inst >> 5) & 0x3FFFU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((upper) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto imm = (uint) ((((uint) ((uint) (((uint) ((uint) (upper))) << (uint) (0x5)))) | ((uint) ((uint) ((uint) (bottom))))));
-		auto addr = (ulong) (((ulong) (ulong) ((ulong) (pc))) + ((ulong) (long) ((long) (SignExt<long>((ushort) (((ushort) ((ushort) (offset))) << (uint) (0x2)), 16)))));
+		auto imm = (uint32_t) ((((uint32_t) ((uint32_t) (((uint32_t) ((uint32_t) (upper))) << (uint) (0x5)))) | ((uint32_t) ((uint32_t) ((uint32_t) (bottom))))));
+		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint16_t) (((uint16_t) ((uint16_t) (offset))) << (uint) (0x2)), 16)))));
 		return (boost::format("tbnz %1%%2%, #0x%3$#x, 0x%4$#x") % r % rt % imm % addr).str();
 	}
-	insn_306:
+	insn_311:
 	/* UADDLV */
 	if((inst & 0xBF3FFC00U) == 0x2E303800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_362) -> string { switch(temp_362) { case 0x0: return string("H"); case 0x1: return string("S"); case 0x2: return string("D"); default: throw "Not implemented"; } })(size));
-		auto t = (string) (([=](auto temp_363) -> string { switch(temp_363) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
-		auto esize = (long) ((0x8) << (uint) (size));
-		auto count = (long) (((long) (long) ((long) ((Q != 0) ? (0x80) : (0x40)))) / ((long) (long) (esize)));
+		auto r = (string) (([=](auto temp_366) -> string { switch(temp_366) { case 0x0: return string("H"); case 0x1: return string("S"); case 0x2: return string("D"); default: throw "Not implemented"; } })(size));
+		auto t = (string) (([=](auto temp_367) -> string { switch(temp_367) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto esize = (int64_t) ((0x8) << (uint) (size));
+		auto count = (int64_t) (((int64_t) (int64_t) ((int64_t) ((Q != 0) ? (0x80) : (0x40)))) / ((int64_t) (int64_t) (esize)));
 		return (boost::format("uaddlv %1%%2%, V%3%.%4%") % r % rd % rn % t).str();
 	}
-	insn_307:
+	insn_312:
 	/* UADDW[2] */
 	if((inst & 0xBF20FC00U) == 0x2E201000U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -8183,7 +8270,7 @@ string disassemble(uint inst, ulong pc) {
 		auto o2 = (string) ((Q != 0) ? (string("2")) : (string("")));
 		auto Ta = string("");
 		auto Tb = string("");
-		switch((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))) {
+		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				Ta = string("8H");
 				Tb = string("8B");
@@ -8221,7 +8308,7 @@ string disassemble(uint inst, ulong pc) {
 		}
 		return (boost::format("uaddw%1% V%2%.%3%, V%4%.%5%, V%6%.%7%") % o2 % rd % Ta % rn % Ta % rm % Tb).str();
 	}
-	insn_308:
+	insn_313:
 	/* UBFM */
 	if((inst & 0x7F800000U) == 0x53000000U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -8233,14 +8320,14 @@ string disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("ubfm %1%%2%, %3%%4%, #%5%, #%6%") % r % rd % r % rn % immr % imms).str();
 	}
-	insn_309:
+	insn_314:
 	/* UCVTF-scalar-gpr-integer */
 	if((inst & 0x7F3FFC00U) == 0x1E230000U) {
 		auto size = (inst >> 31) & 0x1U;
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto st = (byte) ((byte) (((byte) (((byte) (type)) << 0)) | ((byte) (((byte) (size)) << 2))));
+		auto st = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
 		auto r1 = string("");
 		auto r2 = string("");
 		switch(st) {
@@ -8281,7 +8368,7 @@ string disassemble(uint inst, ulong pc) {
 		}
 		return (boost::format("ucvtf %1%%2%, %3%%4%") % r1 % rd % r2 % rn).str();
 	}
-	insn_310:
+	insn_315:
 	/* UCVTF-scalar-integer */
 	if((inst & 0xFFBFFC00U) == 0x7E21D800U) {
 		auto size = (inst >> 22) & 0x1U;
@@ -8290,17 +8377,17 @@ string disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : (string("D")));
 		return (boost::format("ucvtf %1%%2%, %3%%4%") % r % rd % r % rn).str();
 	}
-	insn_311:
+	insn_316:
 	/* UCVTF-vector */
 	if((inst & 0xBFBFFC00U) == 0x2E21D800U) {
 		auto Q = (inst >> 30) & 0x1U;
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_366) -> string { switch(temp_366) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_370) -> string { switch(temp_370) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ucvtf V%1%.%2%, V%3%.%4%") % rd % t % rn % t).str();
 	}
-	insn_312:
+	insn_317:
 	/* UDIV */
 	if((inst & 0x7FE0FC00U) == 0x1AC00800U) {
 		auto size = (inst >> 31) & 0x1U;
@@ -8310,7 +8397,7 @@ string disassemble(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		return (boost::format("udiv %1%%2%, %3%%4%, %5%%6%") % r % rd % r % rn % r % rm).str();
 	}
-	insn_313:
+	insn_318:
 	/* UMADDL */
 	if((inst & 0xFFE08000U) == 0x9BA00000U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -8319,7 +8406,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		return (boost::format("umaddl X%1%, W%2%, W%3%, X%4%") % rd % rn % rm % ra).str();
 	}
-	insn_314:
+	insn_319:
 	/* UMOV */
 	if((inst & 0xBFE0FC00U) == 0x0E003C00U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -8329,32 +8416,32 @@ string disassemble(uint inst, ulong pc) {
 		auto T = string("");
 		auto index = 0x0;
 		auto r = (string) ((Q != 0) ? (string("X")) : (string("W")));
-		auto size = (long) ((Q != 0) ? (0x40) : ((long) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x1))))) == (0x1)) ? 1U : 0U) != 0) ? (0x8) : ((long) (((bool) ((((byte) ((((ulong) (imm)) & ((ulong) (0x3))))) == (0x2)) ? 1U : 0U) != 0) ? (0x10) : (0x20))))));
+		auto size = (int64_t) ((Q != 0) ? (0x40) : ((int64_t) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x1))))) == (0x1)) ? 1U : 0U) != 0) ? (0x8) : ((int64_t) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x3))))) == (0x2)) ? 1U : 0U) != 0) ? (0x10) : (0x20))))));
 		switch(size) {
 			case 0x8: {
 				T = string("B");
-				index = (byte) ((imm) >> (uint) (0x1));
+				index = (uint8_t) ((imm) >> (uint) (0x1));
 				break;
 			}
 			case 0x10: {
 				T = string("H");
-				index = (byte) ((imm) >> (uint) (0x2));
+				index = (uint8_t) ((imm) >> (uint) (0x2));
 				break;
 			}
 			case 0x20: {
 				T = string("S");
-				index = (byte) ((imm) >> (uint) (0x3));
+				index = (uint8_t) ((imm) >> (uint) (0x3));
 				break;
 			}
 			default: {
 				T = string("D");
-				index = (byte) ((imm) >> (uint) (0x4));
+				index = (uint8_t) ((imm) >> (uint) (0x4));
 				break;
 			}
 		}
 		return (boost::format("umov %1%%2%, V%3%.%4%[%5%0x%6$#x]") % r % rd % rn % T % ((index) < 0 ? "-" : "") % ((index) < 0 ? -(index) : (index))).str();
 	}
-	insn_315:
+	insn_320:
 	/* UMULH */
 	if((inst & 0xFFE0FC00U) == 0x9BC07C00U) {
 		auto rm = (inst >> 16) & 0x1FU;
@@ -8362,7 +8449,7 @@ string disassemble(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		return (boost::format("umulh X%1%, X%2%, X%3%") % rd % rn % rm).str();
 	}
-	insn_316:
+	insn_321:
 	/* USHL-vector */
 	if((inst & 0xBF20FC00U) == 0x2E204400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -8370,10 +8457,10 @@ string disassemble(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_368) -> string { switch(temp_368) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_372) -> string { switch(temp_372) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("ushl V%1%.%2%, V%3%.%4%, V%5%.%6%") % rd % t % rn % t % rm % t).str();
 	}
-	insn_317:
+	insn_322:
 	/* USHLL-vector */
 	if((inst & 0xBF80FC00U) == 0x2F00A400U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -8386,25 +8473,25 @@ string disassemble(uint inst, ulong pc) {
 		auto size = 0x0;
 		auto shift = 0x0;
 		if(!((bool) (((immh) != (0x0)) ? 1U : 0U)))
-			goto insn_318;
+			goto insn_323;
 		auto i2 = (string) ((Q != 0) ? (string("2")) : (string("")));
 		if(((bool) (((immh) == (0x1)) ? 1U : 0U)) != 0) {
 			Ta = string("8H");
 			Tb = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
 			size = 0x0;
-			shift = (ulong) (((ulong) (uint) ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))))) - ((ulong) (long) (0x8)));
+			shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x8)));
 		} else {
-			if(((bool) ((((byte) ((((ulong) (immh)) & ((ulong) (0xE))))) == (0x2)) ? 1U : 0U)) != 0) {
+			if(((bool) ((((uint8_t) ((((uint64_t) (immh)) & ((uint64_t) (0xE))))) == (0x2)) ? 1U : 0U)) != 0) {
 				Ta = string("4S");
 				Tb = (string) ((Q != 0) ? (string("8H")) : (string("4H")));
 				size = 0x1;
-				shift = (ulong) (((ulong) (uint) ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))))) - ((ulong) (long) (0x10)));
+				shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x10)));
 			} else {
-				if(((bool) ((((byte) ((((ulong) (immh)) & ((ulong) (0xC))))) == (0x4)) ? 1U : 0U)) != 0) {
+				if(((bool) ((((uint8_t) ((((uint64_t) (immh)) & ((uint64_t) (0xC))))) == (0x4)) ? 1U : 0U)) != 0) {
 					Ta = string("2D");
 					Tb = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
 					size = 0x2;
-					shift = (ulong) (((ulong) (uint) ((uint) ((uint) ((byte) ((byte) (((byte) (((byte) (immb)) << 0)) | ((byte) (((byte) (immh)) << 3)))))))) - ((ulong) (long) (0x20)));
+					shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x20)));
 				} else {
 					throw "Not implemented";
 				}
@@ -8412,32 +8499,32 @@ string disassemble(uint inst, ulong pc) {
 		}
 		return (boost::format("ushll%1% V%2%.%3%, V%4%.%5%, #%6%0x%7$#x") % i2 % rd % Ta % rn % Tb % ((shift) < 0 ? "-" : "") % ((shift) < 0 ? -(shift) : (shift))).str();
 	}
-	insn_318:
+	insn_323:
 	/* XTN */
 	if((inst & 0xFF3FFC00U) == 0x0E212800U) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto tb = (string) (([=](auto temp_370) -> string { switch(temp_370) { case 0x0: return string("8B"); case 0x1: return string("4H"); case 0x2: return string("2S"); default: throw "Not implemented"; } })(size));
-		auto ta = (string) (([=](auto temp_371) -> string { switch(temp_371) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto tb = (string) (([=](auto temp_374) -> string { switch(temp_374) { case 0x0: return string("8B"); case 0x1: return string("4H"); case 0x2: return string("2S"); default: throw "Not implemented"; } })(size));
+		auto ta = (string) (([=](auto temp_375) -> string { switch(temp_375) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
 		return (boost::format("xtn V%1%.%2%, V%3%.%4%") % rd % tb % rn % ta).str();
 	}
-	insn_319:
+	insn_324:
 	/* XTN2 */
 	if((inst & 0xFF3FFC00U) == 0x4E212800U) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto tb = (string) (([=](auto temp_374) -> string { switch(temp_374) { case 0x0: return string("16B"); case 0x1: return string("8H"); case 0x2: return string("4S"); default: throw "Not implemented"; } })(size));
-		auto ta = (string) (([=](auto temp_375) -> string { switch(temp_375) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto tb = (string) (([=](auto temp_378) -> string { switch(temp_378) { case 0x0: return string("16B"); case 0x1: return string("8H"); case 0x2: return string("4S"); default: throw "Not implemented"; } })(size));
+		auto ta = (string) (([=](auto temp_379) -> string { switch(temp_379) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
 		return (boost::format("xtn2 V%1%.%2%, V%3%.%4%") % rd % tb % rn % ta).str();
 	}
-	insn_320:
+	insn_325:
 	/* YIELD */
 	if((inst & 0xFFFFFFFFU) == 0xD503203FU) {
 		return (boost::format("yield")).str();
 	}
-	insn_321:
+	insn_326:
 	/* ZIP */
 	if((inst & 0xBF20BC00U) == 0x0E003800U) {
 		auto Q = (inst >> 30) & 0x1U;
@@ -8446,11 +8533,11 @@ string disassemble(uint inst, ulong pc) {
 		auto op = (inst >> 14) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto i = (byte) ((byte) ((ulong) (((ulong) (bool) (op)) + ((ulong) (long) (0x1)))));
-		auto T = (string) (([=](auto temp_378) -> string { switch(temp_378) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((byte) ((byte) (((byte) (((byte) (Q)) << 0)) | ((byte) (((byte) (size)) << 1))))));
+		auto i = (uint8_t) ((uint8_t) ((uint64_t) (((uint64_t) (bool) (op)) + ((uint64_t) (int64_t) (0x1)))));
+		auto T = (string) (([=](auto temp_382) -> string { switch(temp_382) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return (boost::format("zip%1% V%2%.%3%, V%4%.%5%, V%6%.%7%") % (uint16_t) i % rd % T % rn % T % rm % T).str();
 	}
-	insn_322:
+	insn_327:
 
     return "";
 }

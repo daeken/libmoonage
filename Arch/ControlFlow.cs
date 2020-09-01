@@ -106,7 +106,7 @@ namespace Arch {
 				if(list[1].Type.Runtime) {
 					if(a.StartsWith("throw")) a = "null";
 					if(b.StartsWith("throw")) b = "null";
-					return $"Ternary<{GenerateType(list[1].Type.AsCompiletime())}, {GenerateType(list[2].Type.AsCompiletime())}>((RuntimeValue<{GenerateType(list[1].Type.AsCompiletime())}>) ({GenerateExpression(list[1])}), {a}, {b})";
+					return $"Ternary<{GenerateType(list[1].Type.AsCompiletime())}, {GenerateType(list[2].Type.AsCompiletime())}>((LlvmRuntimeValue<{GenerateType(list[1].Type.AsCompiletime())}>) ({GenerateExpression(list[1])}), {a}, {b})";
 				}
 				
 				if(!a.StartsWith("throw")) a = $"({a})";
@@ -169,7 +169,7 @@ namespace Arch {
 					return null;
 				});
 			
-			Statement("when", _ => EType.Unit,
+			Statement("when", list => EType.Unit.AsRuntime(list[1].Type.Runtime),
 				(c, list) => {
 					c += $"if(({GenerateExpression(list[1])}) != 0) {{";
 					c++;
@@ -268,21 +268,21 @@ namespace Arch {
 				list => $"CallSvc({GenerateExpression(list[1])})")
 				.NoInterpret();
 			
-			Expression("branch", _ => EType.Unit.AsRuntime(), list => $"Branch({GenerateExpression(list[1])})")
+			BranchExpression("branch", _ => EType.Unit.AsRuntime(), list => $"Branch({GenerateExpression(list[1])})")
 				.Interpret((list, state) => state.Registers["PC"] = state.Evaluate(list[1]));
-			Expression("branch-linked", _ => EType.Unit.AsRuntime(), list => $"BranchLinked({GenerateExpression(list[1])})")
+			BranchExpression("branch-linked", _ => EType.Unit.AsRuntime(), list => $"BranchLinked({GenerateExpression(list[1])})")
 				.Interpret((list, state) => {
 					state.Registers["X30"] = state.GetRegister("PC") + 4;
 					return state.Registers["PC"] = state.Evaluate(list[1]);
 				});
-			Expression("branch-linked-register", _ => EType.Unit.AsRuntime(), list => $"BranchLinkedRegister({GenerateExpression(list[1])})")
+			BranchExpression("branch-linked-register", _ => EType.Unit.AsRuntime(), list => $"BranchLinkedRegister({GenerateExpression(list[1])})")
 				.Interpret((list, state) => {
 					state.Registers["X30"] = state.GetRegister("PC") + 4;
 					return state.Registers["PC"] = state.GetRegister($"X{state.Evaluate(list[1])}");
 				});
-			Expression("branch-register", _ => EType.Unit.AsRuntime(), list => $"BranchRegister({GenerateExpression(list[1])})")
+			BranchExpression("branch-register", _ => EType.Unit.AsRuntime(), list => $"BranchRegister({GenerateExpression(list[1])})")
 				.Interpret((list, state) => state.Registers["PC"] = state.GetRegister($"X{state.Evaluate(list[1])}"));
-			Expression("branch-default", _ => EType.Unit.AsRuntime(), list => "Branch(pc + 4)")
+			BranchExpression("branch-default", _ => EType.Unit.AsRuntime(), list => "Branch(pc + 4)")
 				.Interpret((list, state) => state.Registers["PC"] = state.GetRegister("PC") + 4);
 			
 			Expression("unimplemented", _ => EType.Unit, _ => "throw \"Not implemented\"").NoInterpret();

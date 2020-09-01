@@ -57,6 +57,20 @@ namespace Arch {
 			if(Core.Expressions.ContainsKey(name)) throw new Exception();
 			return new Capture("Expression", name, func => Core.Expressions[name] = (signature, compiletime, runtime ?? compiletime, func));
 		}
+		public static Capture BranchExpression(string name, Func<PList, EType> signature, Func<PList, string> compiletime, Func<PList, string> runtime = null) {
+			if(Core.Expressions.ContainsKey(name)) throw new Exception();
+			var oc = compiletime;
+			compiletime = list => {
+				Core.HasBranch = true;
+				return oc(list);
+			};
+			var or = runtime ?? oc;
+			runtime = list => {
+				Core.HasBranch = true;
+				return or(list);
+			};
+			return new Capture("Expression", name, func => Core.Expressions[name] = (signature, compiletime, runtime, func));
+		}
 		public static Capture Expression(IEnumerable<string> names, Func<PList, EType> signature, Func<PList, string> compiletime, Func<PList, string> runtime = null) {
 			var nameList = names.ToList();
 			return new Capture("Expressions", $"[ {string.Join(" ", nameList)} ]",
@@ -82,6 +96,7 @@ namespace Arch {
 
 	public class Core {
 		public static string NextLabel;
+		public static bool HasBranch;
 
 		public static readonly Dictionary<string, (Func<PList, EType> Signature, Action<CodeBuilder, PList> CompileTime,
 			Action<CodeBuilder, PList> RunTime, Func<PList, ExecutionState, dynamic> Execute)>
@@ -175,7 +190,6 @@ namespace Arch {
 				GenerateRuntimeStatement(c, list);
 				return;
 			}
-
 			switch(list[0]) {
 				case PName(var name) when Statements.ContainsKey(name):
 					Statements[name].CompileTime(c, list);
@@ -223,11 +237,11 @@ namespace Arch {
 					case EInt i:
 						switch(i.Width) {
 							case int x when x == 1: return "bool";
-							case int x when x > 64: return i.Signed ? "Int128" : "UInt128";
-							case int x when x > 32: return i.Signed ? "long" : "ulong";
-							case int x when x > 16: return i.Signed ? "int" : "uint";
-							case int x when x > 8: return i.Signed ? "short" : "ushort";
-							default: return i.Signed ? "sbyte" : "byte";
+							case int x when x > 64: return i.Signed ? "__int128_t" : "__uint128_t";
+							case int x when x > 32: return i.Signed ? "int64_t" : "uint64_t";
+							case int x when x > 16: return i.Signed ? "int32_t" : "uint32_t";
+							case int x when x > 8: return i.Signed ? "int16_t" : "uint16_t";
+							default: return i.Signed ? "int8_t" : "uint8_t";
 						}
 					case EFloat f:
 						switch(f.Width) {
@@ -241,7 +255,7 @@ namespace Arch {
 			}
 
 			return Context == ContextTypes.Recompiler && type.Runtime
-				? $"RuntimeValue<{__GenerateType()}>"
+				? $"LlvmRuntimeValue<{__GenerateType()}>"
 				: __GenerateType();
 		}
 

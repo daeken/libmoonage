@@ -14,13 +14,9 @@ using std::get;
 typedef uint64_t ulong;
 typedef uint32_t uint;
 typedef uint16_t ushort;
-typedef uint8_t byte;
-typedef int8_t sbyte;
-typedef __uint128_t UInt128;
-typedef __int128_t Int128;
 
 template<typename T> using Vector128 = T __attribute__((ext_vector_type(16 / sizeof(T)), unaligned));
-template<typename T> constexpr bool is_vector_t() { return sizeof(T) == 16 && !(std::is_same<T, UInt128>() || std::is_same<T, Int128>()); }
+template<typename T> constexpr bool is_vector_t() { return sizeof(T) == 16 && !(std::is_same<T, __uint128_t>() || std::is_same<T, __int128_t>()); }
 template<typename T> using element_t = typeof(((T) {})[0]);
 template<typename T> constexpr bool is_int_ptr_vec_t() {
     if constexpr(std::is_integral<T>() || std::is_pointer<T>())
@@ -43,6 +39,7 @@ template<typename T> constexpr bool is_floating_point() {
         return std::is_floating_point<T>();
 }
 template<typename T> constexpr int element_count() { return 16 / sizeof(element_t<T>); }
+#include "vectorHelpers.h"
 
 template<template<typename...> class Template, typename T>
 struct is_instantiation_of : std::false_type {};
@@ -54,10 +51,34 @@ using is_std_function = is_instantiation_of<std::function, T>;
 
 extern EXPORTED thread_local llvm::LLVMContext Context;
 extern EXPORTED thread_local llvm::IRBuilder<> Builder;
+
+#include "xbyak/xbyak.h"
+using namespace Xbyak::util;
+
+struct LightCode : Xbyak::CodeGenerator {
+public:
+    inline LightCode() : CodeGenerator(Xbyak::DEFAULT_MAX_CODE_SIZE, Xbyak::AutoGrow) {}
+};
+
+class _LightLabel {
+public:
+    Xbyak::Label label;
+};
+using LightLabel = std::shared_ptr<_LightLabel>;
+
+struct BlockContext {
+    ulong LR = -1UL;
+};
+
+extern EXPORTED thread_local int LightLocalOffset;
+extern EXPORTED thread_local LightCode* LC;
+class LightRecompiler;
+extern EXPORTED thread_local LightRecompiler LightRecompilerInstance;
 class Recompiler;
 extern EXPORTED thread_local Recompiler RecompilerInstance;
 llvm::Module* getModule();
 void emitted();
+void lightEmitted();
 
 extern const int instructionClassCount;
 const char* getInstructionClass(uint inst);
@@ -174,8 +195,8 @@ inline ulong CountLeadingZeros(ulong v) {
 }
 
 inline Vector128<float> VectorCountBits(Vector128<float> vec, long elems) {
-    auto ret = (Vector128<byte>) {};
-    auto ivec = reinterpret_cast<Vector128<byte>>(vec);
+    auto ret = (Vector128<uint8_t>) {};
+    auto ivec = reinterpret_cast<Vector128<uint8_t>>(vec);
     for(auto i = 0; i < elems; ++i)
         ret[i] = __builtin_popcount(ivec[i]);
     return reinterpret_cast<Vector128<float>>(ret);
@@ -183,10 +204,10 @@ inline Vector128<float> VectorCountBits(Vector128<float> vec, long elems) {
 
 inline Vector128<float> VectorExtract(Vector128<float> _a, Vector128<float> _b, uint Q, uint _index) {
     auto index = (int) _index;
-    auto a = reinterpret_cast<Vector128<byte>>(_a);
-    auto b = reinterpret_cast<Vector128<byte>>(_b);
+    auto a = reinterpret_cast<Vector128<uint8_t>>(_a);
+    auto b = reinterpret_cast<Vector128<uint8_t>>(_b);
 
-    auto r = (Vector128<byte>) {};
+    auto r = (Vector128<uint8_t>) {};
     auto count = Q == 0 ? 8 : 16;
 
     if(count == 8) {
@@ -221,7 +242,7 @@ inline Vector128<float> VectorFrsqrte(Vector128<float> input, int bits, int elem
 inline ulong VectorSumUnsigned(Vector128<float> vec, long esize, long count) {
     switch(esize) {
         case 8: {
-            auto bvec = reinterpret_cast<Vector128<byte>>(vec);
+            auto bvec = reinterpret_cast<Vector128<uint8_t>>(vec);
             auto sum = 0UL;
             for(auto i = 0; i < count; ++i)
                 sum += bvec[i];
@@ -245,6 +266,6 @@ inline ulong FloatToFixed64(double fvalue, int fbits) {
 }
 
 template <class T>
-inline byte CompareAndSwap(T* ptr, T value, T comparand) {
+inline uint8_t CompareAndSwap(T* ptr, T value, T comparand) {
     return __atomic_compare_exchange_n(ptr, &comparand, value, false, __ATOMIC_RELAXED, __ATOMIC_RELAXED) ? 0 : 1;
 }

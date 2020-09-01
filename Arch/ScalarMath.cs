@@ -102,7 +102,7 @@ namespace Arch {
 				}, list => {
 					if(!(list[1].Type is EInt(false, var bs))) throw new NotSupportedException();
 					return
-						$"(({GenerateExpression(list[1])}) << ((RuntimeValue<uint>) ({bs} - ({GenerateExpression(list[2])})))) | (({GenerateExpression(list[1])}) >> ((RuntimeValue<uint>) ({GenerateExpression(list[2])})))";
+						$"(({GenerateExpression(list[1])}) << ((LlvmRuntimeValue<uint>) ({bs} - ({GenerateExpression(list[2])})))) | (({GenerateExpression(list[1])}) >> ((LlvmRuntimeValue<uint>) ({GenerateExpression(list[2])})))";
 				}).Interpret((list, state) => {
 					var left = state.Evaluate(list[1]);
 					var right = (int) state.Evaluate(list[2]);
@@ -206,7 +206,7 @@ namespace Arch {
 
 			Expression("float-to-fixed-point", list => TypeFromName(list[2]).AsRuntime(list[1].Type.Runtime || list[3].Type.Runtime), 
 				list => $"FloatToFixed{((EInt) list.Type).Width}({GenerateExpression(list[1])}, (int) ({GenerateExpression(list[3])}))", 
-				list => $"Call<{(((EInt) list.Type).Width == 64 ? "ulong" : "uint")}, {GenerateType(list[1].Type.AsCompiletime())}, int>(FloatToFixed{((EInt) list.Type).Width}, {GenerateExpression(list[1])}, (RuntimeValue<int>) ({GenerateExpression(list[3])}))")
+				list => $"Call<{(((EInt) list.Type).Width == 64 ? "ulong" : "uint")}, {GenerateType(list[1].Type.AsCompiletime())}, int>(FloatToFixed{((EInt) list.Type).Width}, {GenerateExpression(list[1])}, (LlvmRuntimeValue<int>) ({GenerateExpression(list[3])}))")
 				.Interpret((list, state) => {
 					var width = ((EInt) list.Type).Width;
 					var swidth = ((EFloat) list[1].Type).Width;

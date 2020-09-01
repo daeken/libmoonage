@@ -24,7 +24,9 @@ namespace Arch {
 				list => $"reinterpret_cast<Vector128<float>>(({GenerateExpression(list[1])}) - (Vector128<{GenerateType(list[1].Type)}>) {{}})",
 				list => $"(({GenerateType(list[1].Type.AsRuntime())}) ({GenerateExpression(list[1])})).CreateVector()")
 				.Interpret((list, state) => Vector128<byte>.FromDynamic(state.Evaluate(list[1])));
-			Expression("vector-zero-top", list => EType.Vector.AsRuntime(), list => GenerateExpression(list[1]))
+			Expression("vector-zero-top", list => EType.Vector.AsRuntime(), 
+				list => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint64_t>>({GenerateExpression(list[1])})[0] - (Vector128<uint64_t>) {{}})", 
+				list => $"({GenerateExpression(list[1])}).ZeroTop()")
 				.Interpret((list, state) => state.Evaluate(list[1]).ZeroTop());
 			Expression("vector-insert", _ => EType.Unit,
 				list => $"reinterpret_cast<Vector128<{GenerateType(list[3].Type)}>*>(&(state->V[(int) ({GenerateExpression(list[1])})]))[0][{GenerateExpression(list[2])}] = {GenerateExpression(list[3])}",
@@ -128,7 +130,7 @@ namespace Arch {
 				}, 
 				list => list[3] switch {
 					PInt(32) => $"({GenerateExpression(list[1])}) + ({GenerateExpression(list[2])})", 
-					PInt(64) => $"(RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<double>>) ({GenerateExpression(list[1])}) + (RuntimeValue<Vector128<double>>) ({GenerateExpression(list[2])}))",
+					PInt(64) => $"(LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ({GenerateExpression(list[1])}) + (LlvmRuntimeValue<Vector128<double>>) ({GenerateExpression(list[2])}))",
 					_ => throw new NotSupportedException()
 				}).Interpret((list, state) => (int) state.Evaluate(list[3]) switch {
 					8 => Vector128<byte>.Ensure(state.Evaluate(list[1])) + Vector128<byte>.Ensure(state.Evaluate(list[2])), 
@@ -146,7 +148,7 @@ namespace Arch {
 				}, 
 				list => list[3] switch {
 					PInt(32) => $"({GenerateExpression(list[1])}) - ({GenerateExpression(list[2])})", 
-					PInt(64) => $"(RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<double>>) ({GenerateExpression(list[1])}) - (RuntimeValue<Vector128<double>>) ({GenerateExpression(list[2])}))",
+					PInt(64) => $"(LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ({GenerateExpression(list[1])}) - (LlvmRuntimeValue<Vector128<double>>) ({GenerateExpression(list[2])}))",
 					_ => throw new NotSupportedException()
 				}).Interpret((list, state) => (int) state.Evaluate(list[3]) switch {
 					8 => Vector128<byte>.Ensure(state.Evaluate(list[1])) - Vector128<byte>.Ensure(state.Evaluate(list[2])), 
@@ -164,7 +166,7 @@ namespace Arch {
 				}, 
 				list => list[3] switch {
 					PInt(32) => $"({GenerateExpression(list[1])}) * ({GenerateExpression(list[2])})", 
-					PInt(64) => $"(RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<double>>) ({GenerateExpression(list[1])}) * (RuntimeValue<Vector128<double>>) ({GenerateExpression(list[2])}))",
+					PInt(64) => $"(LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ({GenerateExpression(list[1])}) * (LlvmRuntimeValue<Vector128<double>>) ({GenerateExpression(list[2])}))",
 					_ => throw new NotSupportedException()
 				}).Interpret((list, state) => (int) state.Evaluate(list[3]) switch {
 					8 => Vector128<byte>.Ensure(state.Evaluate(list[1])) * Vector128<byte>.Ensure(state.Evaluate(list[2])), 
@@ -180,22 +182,22 @@ namespace Arch {
 					: $"({GenerateExpression(elem)})";
 			string RuntimeCastVector(PTree elem, string type) =>
 				elem.Type is EVector
-					? $"((RuntimeValue<Vector128<{type}>>) ({GenerateExpression(elem)}))"
+					? $"((LlvmRuntimeValue<Vector128<{type}>>) ({GenerateExpression(elem)}))"
 					: $"({GenerateExpression(elem)})";
 			
 			Expression("vec-uint+", list => EType.Vector.AsRuntime(list.AnyRuntime), 
 				list => list[3] switch {
-					PInt(8) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<byte>>({GenerateExpression(list[1])}) + ({CastVector(list[2], "byte")}))",
-					PInt(16) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ushort>>({GenerateExpression(list[1])}) + ({CastVector(list[2], "ushort")}))",
-					PInt(32) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint>>({GenerateExpression(list[1])}) + ({CastVector(list[2], "uint")}))",
-					PInt(64) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ulong>>({GenerateExpression(list[1])}) + ({CastVector(list[2], "ulong")}))",
+					PInt(8) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[1])}) + ({CastVector(list[2], "uint8_t")}))",
+					PInt(16) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint16_t>>({GenerateExpression(list[1])}) + ({CastVector(list[2], "uint16_t")}))",
+					PInt(32) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint32_t>>({GenerateExpression(list[1])}) + ({CastVector(list[2], "uint32_t")}))",
+					PInt(64) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint64_t>>({GenerateExpression(list[1])}) + ({CastVector(list[2], "uint64_t")}))",
 					_ => throw new NotSupportedException()
 				}, 
 				list => list[3] switch {
-					PInt(8) => $"(RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<byte>>) ({GenerateExpression(list[1])}) + {RuntimeCastVector(list[2], "byte")})",
-					PInt(16) => $"(RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<ushort>>) ({GenerateExpression(list[1])}) + {RuntimeCastVector(list[2], "ushort")})",
-					PInt(32) => $"(RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<uint>>) ({GenerateExpression(list[1])}) + {RuntimeCastVector(list[2], "uint")})",
-					PInt(64) => $"(RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<ulong>>) ({GenerateExpression(list[1])}) + {RuntimeCastVector(list[2], "ulong")})",
+					PInt(8) => $"(LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint8_t>>) ({GenerateExpression(list[1])}) + {RuntimeCastVector(list[2], "uint8_t")})",
+					PInt(16) => $"(LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint16_t>>) ({GenerateExpression(list[1])}) + {RuntimeCastVector(list[2], "uint16_t")})",
+					PInt(32) => $"(LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint32_t>>) ({GenerateExpression(list[1])}) + {RuntimeCastVector(list[2], "uint32_t")})",
+					PInt(64) => $"(LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint64_t>>) ({GenerateExpression(list[1])}) + {RuntimeCastVector(list[2], "uint64_t")})",
 					_ => throw new NotSupportedException()
 				}).Interpret((list, state) => (int) state.Evaluate(list[3]) switch {
 					8 => Vector128<byte>.Ensure(state.Evaluate(list[1])) + Vector128<byte>.Ensure(state.Evaluate(list[2])), 
@@ -207,17 +209,17 @@ namespace Arch {
 			
 			Expression("vec-uint*", list => EType.Vector.AsRuntime(list.AnyRuntime), 
 				list => list[3] switch {
-					PInt(8) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<byte>>({GenerateExpression(list[1])}) * ({CastVector(list[2], "byte")}))",
-					PInt(16) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ushort>>({GenerateExpression(list[1])}) * ({CastVector(list[2], "ushort")}))",
-					PInt(32) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint>>({GenerateExpression(list[1])}) * ({CastVector(list[2], "uint")}))",
-					PInt(64) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<ulong>>({GenerateExpression(list[1])}) * ({CastVector(list[2], "ulong")}))",
+					PInt(8) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[1])}) * ({CastVector(list[2], "uint8_t")}))",
+					PInt(16) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint16_t>>({GenerateExpression(list[1])}) * ({CastVector(list[2], "uint16_t")}))",
+					PInt(32) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint32_t>>({GenerateExpression(list[1])}) * ({CastVector(list[2], "uint32_t")}))",
+					PInt(64) => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint64_t>>({GenerateExpression(list[1])}) * ({CastVector(list[2], "uint64_t")}))",
 					_ => throw new NotSupportedException()
 				}, 
 				list => list[3] switch {
-					PInt(8) => $"(RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<byte>>) ({GenerateExpression(list[1])}) * {RuntimeCastVector(list[2], "byte")})",
-					PInt(16) => $"(RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<ushort>>) ({GenerateExpression(list[1])}) * {RuntimeCastVector(list[2], "ushort")})",
-					PInt(32) => $"(RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<uint>>) ({GenerateExpression(list[1])}) * {RuntimeCastVector(list[2], "uint")})",
-					PInt(64) => $"(RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<ulong>>) ({GenerateExpression(list[1])}) * {RuntimeCastVector(list[2], "ulong")})",
+					PInt(8) => $"(LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint8_t>>) ({GenerateExpression(list[1])}) * {RuntimeCastVector(list[2], "uint8_t")})",
+					PInt(16) => $"(LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint16_t>>) ({GenerateExpression(list[1])}) * {RuntimeCastVector(list[2], "uint16_t")})",
+					PInt(32) => $"(LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint32_t>>) ({GenerateExpression(list[1])}) * {RuntimeCastVector(list[2], "uint32_t")})",
+					PInt(64) => $"(LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint64_t>>) ({GenerateExpression(list[1])}) * {RuntimeCastVector(list[2], "uint64_t")})",
 					_ => throw new NotSupportedException()
 				}).Interpret((list, state) => (int) state.Evaluate(list[3]) switch {
 					8 => Vector128<byte>.Ensure(state.Evaluate(list[1])) * Vector128<byte>.Ensure(state.Evaluate(list[2])), 
@@ -235,7 +237,7 @@ namespace Arch {
 				}, 
 				list => list[3] switch {
 					PInt(32) => $"({GenerateExpression(list[1])}) / ({GenerateExpression(list[2])})", 
-					PInt(64) => $"(RuntimeValue<Vector128<float>>) ((RuntimeValue<Vector128<double>>) ({GenerateExpression(list[1])}) / (RuntimeValue<Vector128<double>>) ({GenerateExpression(list[2])}))",
+					PInt(64) => $"(LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ({GenerateExpression(list[1])}) / (LlvmRuntimeValue<Vector128<double>>) ({GenerateExpression(list[2])}))",
 					_ => throw new NotSupportedException()
 				}).Interpret((list, state) => (int) state.Evaluate(list[3]) switch {
 					8 => Vector128<byte>.Ensure(state.Evaluate(list[1])) / Vector128<byte>.Ensure(state.Evaluate(list[2])), 
@@ -246,23 +248,23 @@ namespace Arch {
 				});
 			
 			Expression("vec&", list => list[1].Type, 
-				list => $"reinterpret_cast<Vector128<float>>((reinterpret_cast<Vector128<byte>>({GenerateExpression(list[1])}) & reinterpret_cast<Vector128<byte>>({GenerateExpression(list[2])})))",
-				list => $"(RuntimeValue<Vector128<float>>) ((((RuntimeValue<Vector128<byte>>) ({GenerateExpression(list[1])})) & ((RuntimeValue<Vector128<byte>>) ({GenerateExpression(list[2])}))))")
+				list => $"reinterpret_cast<Vector128<float>>((reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[1])}) & reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[2])})))",
+				list => $"(LlvmRuntimeValue<Vector128<float>>) ((((LlvmRuntimeValue<Vector128<uint8_t>>) ({GenerateExpression(list[1])})) & ((LlvmRuntimeValue<Vector128<uint8_t>>) ({GenerateExpression(list[2])}))))")
 				.Interpret((list, state) => Vector128<byte>.Ensure(state.Evaluate(list[1])) & Vector128<byte>.Ensure(state.Evaluate(list[2])));
 			
 			Expression("vec&~", list => list[1].Type, 
-				list => $"reinterpret_cast<Vector128<float>>(~(reinterpret_cast<Vector128<byte>>({GenerateExpression(list[1])}) & reinterpret_cast<Vector128<byte>>({GenerateExpression(list[2])})))",
-				list => $"(RuntimeValue<Vector128<float>>) (~(((RuntimeValue<Vector128<byte>>) ({GenerateExpression(list[1])})) & ((RuntimeValue<Vector128<byte>>) ({GenerateExpression(list[2])}))))")
+				list => $"reinterpret_cast<Vector128<float>>(~(reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[1])}) & reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[2])})))",
+				list => $"(LlvmRuntimeValue<Vector128<float>>) (~(((LlvmRuntimeValue<Vector128<uint8_t>>) ({GenerateExpression(list[1])})) & ((LlvmRuntimeValue<Vector128<uint8_t>>) ({GenerateExpression(list[2])}))))")
 				.Interpret((list, state) => ~(Vector128<byte>.Ensure(state.Evaluate(list[1])) & Vector128<byte>.Ensure(state.Evaluate(list[2]))));
 			
 			Expression("vec|", list => list[1].Type, 
-				list => $"reinterpret_cast<Vector128<float>>((reinterpret_cast<Vector128<byte>>({GenerateExpression(list[1])}) | reinterpret_cast<Vector128<byte>>({GenerateExpression(list[2])})))",
-				list => $"(RuntimeValue<Vector128<float>>) ((((RuntimeValue<Vector128<byte>>) ({GenerateExpression(list[1])})) | ((RuntimeValue<Vector128<byte>>) ({GenerateExpression(list[2])}))))")
+				list => $"reinterpret_cast<Vector128<float>>((reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[1])}) | reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[2])})))",
+				list => $"(LlvmRuntimeValue<Vector128<float>>) ((((LlvmRuntimeValue<Vector128<uint8_t>>) ({GenerateExpression(list[1])})) | ((LlvmRuntimeValue<Vector128<uint8_t>>) ({GenerateExpression(list[2])}))))")
 				.Interpret((list, state) => Vector128<byte>.Ensure(state.Evaluate(list[1])) | Vector128<byte>.Ensure(state.Evaluate(list[2])));
 		
 			Expression("vec^", list => list[1].Type, 
-				list => $"reinterpret_cast<Vector128<float>>((reinterpret_cast<Vector128<byte>>({GenerateExpression(list[1])}) ^ reinterpret_cast<Vector128<byte>>({GenerateExpression(list[2])})))",
-				list => $"(RuntimeValue<Vector128<float>>) ((((RuntimeValue<Vector128<byte>>) ({GenerateExpression(list[1])})) ^ ((RuntimeValue<Vector128<byte>>) ({GenerateExpression(list[2])}))))")
+				list => $"reinterpret_cast<Vector128<float>>((reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[1])}) ^ reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[2])})))",
+				list => $"(LlvmRuntimeValue<Vector128<float>>) ((((LlvmRuntimeValue<Vector128<uint8_t>>) ({GenerateExpression(list[1])})) ^ ((LlvmRuntimeValue<Vector128<uint8_t>>) ({GenerateExpression(list[2])}))))")
 				.Interpret((list, state) => Vector128<byte>.Ensure(state.Evaluate(list[1])) ^ Vector128<byte>.Ensure(state.Evaluate(list[2])));
 		}
 	}

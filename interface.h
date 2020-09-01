@@ -6,14 +6,23 @@
 
 struct CpuState;
 
+enum CodeSource {
+    Execution,
+    Speculation,
+    LlvmOptimizer,
+    LightOptimizer,
+    END
+};
+
+const int CodeSourceCount = (int) CodeSource::END;
+
 // NOTE: All methods could be accessed from any thread, as there's one CPU per thread.
 // Ensure that your methods are concurrency-safe
 class CpuInterface {
 public:
     // This will get hit before each instruction fetch; keep it lightweight
     // When fetching a new block, state will be valid; otherwise, nullptr
-    // fromOptimizer will be true if this is being invoked from the optimizer, otherwise false
-    virtual bool isValidCodePointer(bool fromOptimizer, uint64_t addr, CpuState* state) = 0;
+    virtual bool isValidCodePointer(CodeSource codeSource, uint64_t addr, CpuState* state) = 0;
 
     // Called when a svc occurs. Returning false will halt emulation, true will continue
     virtual bool Svc(uint32_t svc, CpuState* state) = 0;

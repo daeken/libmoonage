@@ -32,15 +32,11 @@ class Local {
 public:
     bool used = false;
     llvm::Value* pointer;
-    Property<RuntimeValue<T>> value{
-        [=]() { return RuntimeValue<T>([=]() { used = true; return Builder.CreateLoad(pointer); }); },
+    Property<LlvmRuntimeValue<T>> value{
+        [=]() { return LlvmRuntimeValue<T>([=]() { used = true; return Builder.CreateLoad(pointer); }); },
         [=](auto val) { used = true; Builder.CreateStore(val, pointer); }
     };
     inline Local() : pointer(Builder.CreateAlloca(LlvmType<T>())) { }
-};
-
-struct BlockContext {
-    ulong LR = -1UL;
 };
 
 int Svc(ulong recompilerPtr, uint svc, ulong state);
@@ -77,13 +73,13 @@ public:
     std::vector<std::tuple<LabelTag, LabelTag>> loadRegistersLabels, storeRegistersLabels;
     unordered_map<ulong, LabelTag> blockLabels;
     queue<tuple<BlockContext, ulong>> blocksNeeded;
-    RuntimeValue<ulong> CpuStateRef{nullptr};
+    LlvmRuntimeValue<ulong> CpuStateRef{nullptr};
 #define FieldAddress(name) (CpuStateRef + offsetof(CpuState, name))
 
-    Indexer<RuntimeValue<ulong>> XR{
+    Indexer<LlvmRuntimeValue<ulong>> XR{
         [=](auto reg) {
             if(reg == 31)
-                return (RuntimeValue<ulong>) 0UL;
+                return (LlvmRuntimeValue<ulong>) 0UL;
             return GetLocal<ulong>(offsetof(CpuState, X0) + reg * 8)->value();
         },
         [=](auto reg, auto value) {
@@ -94,7 +90,7 @@ public:
             GetLocal<ulong>(offsetof(CpuState, X0) + reg * 8)->value = value;
         }
     };
-    Indexer<RuntimeValue<Vector128<float>>> VR{
+    Indexer<LlvmRuntimeValue<Vector128<float>>> VR{
         [=](auto reg) {
             return GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value;
         },
@@ -102,67 +98,67 @@ public:
             GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value = value;
         }
     };
-    Indexer<RuntimeValue<byte>> VBR{
+    Indexer<LlvmRuntimeValue<uint8_t>> VBR{
         [=](auto reg) {
             auto vec = GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value();
-            return vec.template Element<byte>(0);
+            return vec.template Element<uint8_t>(0);
         },
         [=](auto reg, auto value) {
-            GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value = RuntimeValue<Vector128<byte>>([value]() {
-                auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<byte>>()), value, (RuntimeValue<int>) 0);
+            GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value = LlvmRuntimeValue<Vector128<uint8_t>>([value]() {
+                auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<uint8_t>>()), value, (LlvmRuntimeValue<int>) 0);
                 for(auto i = 1; i < 16; ++i)
-                    bvec = Builder.CreateInsertElement(bvec, (RuntimeValue<byte>) 0, (RuntimeValue<int>) i);
+                    bvec = Builder.CreateInsertElement(bvec, (LlvmRuntimeValue<uint8_t>) 0, (LlvmRuntimeValue<int>) i);
                 return bvec;
             });
         }
     };
-    Indexer<RuntimeValue<ushort>> VHR{
+    Indexer<LlvmRuntimeValue<ushort>> VHR{
             [=](auto reg) {
                 auto vec = GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value();
                 return vec.template Element<ushort>(0);
             },
             [=](auto reg, auto value) {
-                GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value = RuntimeValue<Vector128<ushort>>([value]() {
-                    auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<ushort>>()), value, (RuntimeValue<int>) 0);
+                GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value = LlvmRuntimeValue<Vector128<ushort>>([value]() {
+                    auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<ushort>>()), value, (LlvmRuntimeValue<int>) 0);
                     for(auto i = 1; i < 8; ++i)
-                        bvec = Builder.CreateInsertElement(bvec, (RuntimeValue<ushort>) 0, (RuntimeValue<int>) i);
+                        bvec = Builder.CreateInsertElement(bvec, (LlvmRuntimeValue<ushort>) 0, (LlvmRuntimeValue<int>) i);
                     return bvec;
                 });
             }
     };
-    Indexer<RuntimeValue<float>> VSR{
+    Indexer<LlvmRuntimeValue<float>> VSR{
             [=](auto reg) {
                 auto vec = GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value();
                 return vec.template Element<float>(0);
             },
             [=](auto reg, auto value) {
-                GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value = RuntimeValue<Vector128<float>>([value]() {
-                    auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<float>>()), value, (RuntimeValue<int>) 0);
+                GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value = LlvmRuntimeValue<Vector128<float>>([value]() {
+                    auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<float>>()), value, (LlvmRuntimeValue<int>) 0);
                     for(auto i = 1; i < 4; ++i)
-                        bvec = Builder.CreateInsertElement(bvec, (RuntimeValue<float>) 0, (RuntimeValue<int>) i);
+                        bvec = Builder.CreateInsertElement(bvec, (LlvmRuntimeValue<float>) 0, (LlvmRuntimeValue<int>) i);
                     return bvec;
                 });
             }
     };
-    Indexer<RuntimeValue<double>> VDR{
+    Indexer<LlvmRuntimeValue<double>> VDR{
             [=](auto reg) {
                 auto vec = GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value();
                 return vec.template Element<double>(0);
             },
             [=](auto reg, auto value) {
-                GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value = RuntimeValue<Vector128<double>>([value]() {
-                    auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<double>>()), value, (RuntimeValue<int>) 0);
-                    return Builder.CreateInsertElement(bvec, (RuntimeValue<double>) 0.0, (RuntimeValue<int>) 1);
+                GetLocal<Vector128<float>>(offsetof(CpuState, V0) + (reg * 16))->value = LlvmRuntimeValue<Vector128<double>>([value]() {
+                    auto bvec = Builder.CreateInsertElement(llvm::UndefValue::get(LlvmType<Vector128<double>>()), value, (LlvmRuntimeValue<int>) 0);
+                    return Builder.CreateInsertElement(bvec, (LlvmRuntimeValue<double>) 0.0, (LlvmRuntimeValue<int>) 1);
                 });
             }
     };
 
-#define DIRECT_FIELD(name) Property<RuntimeValue<decltype(CpuState::name)>> name##R{ \
+#define DIRECT_FIELD(name) Property<LlvmRuntimeValue<decltype(CpuState::name)>> name##R{ \
     [=]() { return Field<decltype(CpuState::name)>(offsetof(CpuState, name)); }, \
     [=](auto value) { Field(offsetof(CpuState, name), value); } \
 }
 
-#define FIELD(name) Property<RuntimeValue<decltype(CpuState::name)>> name##R{ \
+#define FIELD(name) Property<LlvmRuntimeValue<decltype(CpuState::name)>> name##R{ \
     [=]() { return GetLocal<decltype(CpuState::name)>(offsetof(CpuState, name))->value; }, \
     [=](auto value) { GetLocal<decltype(CpuState::name)>(offsetof(CpuState, name))->value = value; } \
 }
@@ -178,7 +174,7 @@ public:
     FIELD(NZCV_Z);
     FIELD(NZCV_C);
     FIELD(NZCV_V);
-    Property<RuntimeValue<ulong>> NZCVR{
+    Property<LlvmRuntimeValue<ulong>> NZCVR{
         [=]() { return (NZCV_NR() << 31) | (NZCV_ZR() << 30) | (NZCV_CR() << 29) | (NZCV_VR() << 28); },
         [=](auto value) {
             NZCV_NR = (value >> 31) & 1;
@@ -189,8 +185,8 @@ public:
     };
 
     template<typename T>
-    inline RuntimeValue<T> Field(int offset) const {
-        return RuntimeValue<T>([=]() {
+    inline LlvmRuntimeValue<T> Field(int offset) const {
+        return LlvmRuntimeValue<T>([=]() {
             auto addr = CpuStateRef + offset;
             auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<T*>());
             return Builder.CreateLoad(ptr);
@@ -198,29 +194,29 @@ public:
     }
 
     template<typename T>
-    inline void Field(int offset, RuntimeValue<T> value) const {
+    inline void Field(int offset, LlvmRuntimeValue<T> value) const {
         auto addr = CpuStateRef + offset;
         auto ptr = Builder.CreateIntToPtr(addr.Emit(), LlvmType<T*>());
         Builder.CreateStore(value, ptr);
     }
 
     template<typename T>
-    inline RuntimeValue<T> SignExtRuntime(RuntimeValue<ulong> value, int size) const {
-        return RuntimeValue<T>([=]() {
+    inline LlvmRuntimeValue<T> SignExtRuntime(LlvmRuntimeValue<ulong> value, int size) const {
+        return LlvmRuntimeValue<T>([=]() {
             return Builder.CreateSExt(Builder.CreateTrunc(value, llvm::Type::getIntNTy(Builder.getContext(), size)), LlvmType<T>());
         });
     }
 
     template<typename RetType, typename ... ArgTypes, typename = std::enable_if_t<!std::is_void_v<RetType>>>
-    inline RuntimeValue<RetType> Call(RetType (*func)(ArgTypes ...), RuntimeValue<ArgTypes> ... args) const {
-        return RuntimeValue<RetType>([=]() {
-            return Builder.CreateCall(Builder.CreateIntToPtr((RuntimeValue<ulong>) (ulong) func, LlvmType<std::function<RetType(ArgTypes ...)>*>()), { args.Emit()... });
+    inline LlvmRuntimeValue<RetType> Call(RetType (*func)(ArgTypes ...), LlvmRuntimeValue<ArgTypes> ... args) const {
+        return LlvmRuntimeValue<RetType>([=]() {
+            return Builder.CreateCall(Builder.CreateIntToPtr((LlvmRuntimeValue<ulong>) (ulong) func, LlvmType<std::function<RetType(ArgTypes ...)>*>()), {args.Emit()... });
         });
     }
 
     template<typename RetType, typename ... ArgTypes, typename = std::enable_if_t<std::is_void_v<RetType>>>
-    inline void Call(void (*func)(ArgTypes ...), RuntimeValue<ArgTypes> ... args) const {
-        Builder.CreateCall(Builder.CreateIntToPtr((RuntimeValue<ulong>) (ulong) func, LlvmType<std::function<void(ArgTypes ...)>>()), { args.Emit()... });
+    inline void Call(void (*func)(ArgTypes ...), LlvmRuntimeValue<ArgTypes> ... args) const {
+        Builder.CreateCall(Builder.CreateIntToPtr((LlvmRuntimeValue<ulong>) (ulong) func, LlvmType<std::function<void(ArgTypes ...)>>()), {args.Emit()... });
     }
 
     inline LabelTag DefineLabel() const { return std::make_shared<_LabelTag>([=]() { return llvm::BasicBlock::Create(Builder.getContext(), "", function); }); }
@@ -253,7 +249,7 @@ public:
             suppressedBranch = label->id;
         justBranched = true;
     }
-    inline void BranchIf(const RuntimeValue<bool>& cond, LabelTag _if, LabelTag _else) {
+    inline void BranchIf(const LlvmRuntimeValue<bool>& cond, LabelTag _if, LabelTag _else) {
         if(justBranched) return;
         usedLabels.insert(_if->id);
         usedLabels.insert(_else->id);
@@ -322,10 +318,10 @@ public:
     inline void BranchLinkedRegister(int reg) { WithLink([=]() { BranchRegister(reg); }); }
 
     template<typename T>
-    inline RuntimeValue<byte> CompareAndSwap(RuntimePointer<T> pointer, RuntimeValue<T> value, RuntimeValue<T> comparand) {
-        return RuntimeValue<byte>([=]() {
+    inline LlvmRuntimeValue<uint8_t> CompareAndSwap(LlvmRuntimePointer<T> pointer, LlvmRuntimeValue<T> value, LlvmRuntimeValue<T> comparand) {
+        return LlvmRuntimeValue<uint8_t>([=]() {
             return Builder.CreateSelect(
-                Builder.CreateExtractValue(
+                    Builder.CreateExtractValue(
                     Builder.CreateAtomicCmpXchg(
                         pointer.pointer, comparand, value,
                         llvm::AtomicOrdering::SequentiallyConsistent,
@@ -333,7 +329,7 @@ public:
                         false
                     ), 1
                 ),
-                (RuntimeValue<byte>) 0, (RuntimeValue<byte>) 1
+                    (LlvmRuntimeValue<uint8_t>) 0, (LlvmRuntimeValue<uint8_t>) 1
             );
         });
     }
@@ -342,8 +338,8 @@ public:
 };
 
 template<typename CondT, typename ValueT>
-inline RuntimeValue<ValueT> Ternary(RuntimeValue<CondT> cond, RuntimeValue<ValueT> a, RuntimeValue<ValueT> b) {
-    return RuntimeValue<ValueT>([=]() {
+inline LlvmRuntimeValue<ValueT> Ternary(LlvmRuntimeValue<CondT> cond, LlvmRuntimeValue<ValueT> a, LlvmRuntimeValue<ValueT> b) {
+    return LlvmRuntimeValue<ValueT>([=]() {
         auto rec = &RecompilerInstance;
         auto if_ = rec->DefineLabel(), else_ = rec->DefineLabel(), end = rec->DefineLabel();
         rec->BranchIf(cond, if_, else_);

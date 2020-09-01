@@ -46,6 +46,12 @@
         (= (nzcv v) (& (== (>> $operand1 bits1) (>> $operand2 bits1)) (!= (>> usum bits1) (>> $operand1 bits1))))
         usum))
 
+(defm polynomial* (op1 op2 iwidth otype)
+    (let result (otype (^ op1 op1))
+        (for (i iwidth)
+            (when (& (>> op1 i) 1)
+                (= result (^ result (<< (otype op2) i)))))))
+
 (defm fcmp (_a _b)
     (let $a _a (let $b _b)
         (= (nzcv) (u32 (<<
@@ -3891,11 +3897,53 @@
         (let tv (vec| (vec rn) (vec rm))
             (= (vec rd) (if Q tv (vector-zero-top tv))))))
 
+(def PMULL[2]
+    "0 Q 0 01110 ss 1 mmmmm 1110 00 nnnnn ddddd"
+    "pmull$h V$rd.$Ta, V$rn.$Tb, V$rm.$Tb"
+    (names (Q Q) (size s) (rm m) (rn n) (rd d))
+    (let h (if Q "2" "")
+        (let Ta (match size
+            0b00 "8H"
+            0b11 "1Q"
+            (unimplemented)))
+        (let Tb (match (: size Q)
+            0b00_0 "8B"
+            0b00_1 "16B"
+            0b11_0 "1D"
+            0b11_1 "2D"
+            (unimplemented))))
+    (if (== size 0b11)
+        (block
+            (polynomial* (vector-element (vec rn) Q u64) (vector-element (vec rm) Q u64) 64 u128)
+            (= (vec rd) (bitcast result vec)))
+        (unimplemented)))
+
 (def PRFM-immediate
     "11 111 0 01 10 iiiiiiiiiiii nnnnn ttttt"
     "prfm #$imm5, [X$rn, #$pimm]"
     (names (imm i) (rn n) (imm5 t))
     (let pimm (* imm 8))
+    (block))
+
+(def PRFM-literal
+    "11 011 0 00 iiiiiiiiiiiiiiiiiii ttttt"
+    "prfm TODO"
+    (names (imm i) (rt t))
+    (block)
+    (block))
+
+(def PRFM-register
+    "11 111 0 00 10 1 mmmmm ooo S 10 nnnnn ttttt"
+    "prfm TODO"
+    (names (rm m) (opt o) (S S) (rn n) (rt t))
+    (block)
+    (block))
+
+(def PRFUM
+    "11 111 0 00 10 0 iiiiiiiii 00 nnnnn ttttt"
+    "prfum TODO"
+    (names (imm i) (rn n) (rt t))
+    (block)
     (block))
 
 (def RBIT
@@ -5263,6 +5311,13 @@
     (names (imm i) (rn n) (rt t))
     (let offset (signext imm i64))
     (store (+ (gpr-or-sp64 rn) offset) (u16 (gpr64 rt))))
+
+(def STXRB
+    "00 001000 0 0 0 sssss 0 11111 nnnnn ttttt"
+    "stxrb W$rs, W$rt, [X$rn]"
+    (names (rs s) (rn n) (rt t))
+    (block)
+    (= (gpr32 rs) (store-exclusive (gpr-or-sp64 rn) (u8 (gpr32 rt)))))
 
 (def STXR
     "1f 001000 0 0 0 sssss 0 11111 nnnnn ttttt"

@@ -47,7 +47,7 @@ void Recompiler::run(ulong pc, ulong sp) {
     while(true) {
         auto block = Cache.GetBlock(pc);
         if(block->func == nullptr) {
-            if(!interface->isValidCodePointer(isOptimizer, pc, (CpuState*) &state))
+            if(!interface->isValidCodePointer(isOptimizer ? CodeSource::LlvmOptimizer : CodeSource::Execution, pc, (CpuState*) &state))
                 return;
             block->mutex.lock();
             if(block->func == nullptr)
@@ -81,7 +81,7 @@ void Recompiler::runOne() {
     auto pc = state.PC;
     auto block = Cache.GetBlock(pc);
     if(block->func == nullptr) {
-        if(!interface->isValidCodePointer(isOptimizer, pc, (CpuState*) &state))
+        if(!interface->isValidCodePointer(isOptimizer ? CodeSource::LlvmOptimizer : CodeSource::Execution, pc, (CpuState*) &state))
             return;
         block->mutex.lock();
         if(block->func == nullptr)
@@ -99,7 +99,7 @@ void Recompiler::precompile(ulong pc) {
     assert(interface != nullptr);
     auto block = Cache.GetBlock(pc);
     if(block->func == nullptr) {
-        if(!interface->isValidCodePointer(isOptimizer, pc, (CpuState*) &state))
+        if(!interface->isValidCodePointer(isOptimizer ? CodeSource::LlvmOptimizer : CodeSource::Execution, pc, (CpuState*) &state))
             return;
         block->mutex.lock();
         if(block->func == nullptr)
@@ -118,7 +118,7 @@ void Recompiler::recompileMultiple(Block *block) {
     module = std::make_unique<llvm::Module>("moonage", Builder.getContext());
     function = llvm::Function::Create((llvm::FunctionType*) LlvmType<std::function<void(ulong)>>(), llvm::Function::ExternalLinkage, name, module.get());
     auto farg = function->arg_begin();
-    CpuStateRef = RuntimeValue<ulong>([farg]() { return farg; });
+    CpuStateRef = LlvmRuntimeValue<ulong>([farg]() { return farg; });
 
     llvm::legacy::FunctionPassManager pm{module.get()};
     pm.add(llvm::createInstructionCombiningPass(true));
@@ -175,7 +175,7 @@ void Recompiler::recompileMultiple(Block *block) {
             if(recompiled.count(pc)) break;
             recompiled.insert(pc);
             Label(label);
-            if(!interface->isValidCodePointer(isOptimizer, pc, nullptr)) {
+            if(!interface->isValidCodePointer(isOptimizer ? CodeSource::LlvmOptimizer : CodeSource::Execution, pc, nullptr)) {
                 BranchToR = pc;
                 Branch(std::get<0>(storeRegistersLabels[0]));
                 break;

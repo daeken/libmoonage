@@ -6,9 +6,10 @@ namespace Arch {
 			Expression("load", list => TypeFromName(list[2]).AsRuntime(),
 				list => {
 					var type = GenerateType(list.Type);
-					if(type == "Vector128<float>")
+					/*if(type == "Vector128<float>")
 						return $"LoadVector({GenerateExpression(list[1])})";
-					return $"*({type}*) ({GenerateExpression(list[1])})";
+					return $"*({type}*) ({GenerateExpression(list[1])})";*/
+					return $"ReadMemory<{type}>({GenerateExpression(list[1])})";
 				},
 				list =>
 					$"((RuntimePointer<{GenerateType(list.Type.AsCompiletime())}>) ({GenerateExpression(list[1])})).value()")
@@ -24,9 +25,10 @@ namespace Arch {
 			Expression("store", _ => EType.Unit.AsRuntime(),
 				list => {
 					var type = GenerateType(list[2].Type);
-					if(type == "Vector128<float>")
+					/*if(type == "Vector128<float>")
 						return $"StoreVector({GenerateExpression(list[1])}, {GenerateExpression(list[2])})";
-					return $"*({GenerateType(list[2].Type)}*) ({GenerateExpression(list[1])}) = {GenerateExpression(list[2])}";
+					return $"*({GenerateType(list[2].Type)}*) ({GenerateExpression(list[1])}) = {GenerateExpression(list[2])}";*/
+					return $"WriteMemory<{type}>({GenerateExpression(list[1])}, {GenerateExpression(list[2])})";
 				},
 				list =>
 					$"((RuntimePointer<{GenerateType(list[2].Type.AsCompiletime())}>) ({GenerateExpression(list[1])})).value({GenerateExpression(list[2])})")

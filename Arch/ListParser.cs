@@ -91,6 +91,12 @@ namespace Arch {
 
 		public bool AnyRuntime => Type.Runtime || Children.Any(x => x.Type.Runtime);
 
+		public PList AsCompiletime()
+			=>
+				!AnyRuntime
+					? this
+					: new PList(this.Select(x => x is PList sl ? sl.AsCompiletime() : x)) {Type = Type.AsCompiletime()};
+
 		public PList MapLeaves(Func<PTree, PTree> mapper) {
 			var c = new List<PTree>();
 			var modified = false;

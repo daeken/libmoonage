@@ -38,10 +38,10 @@ namespace Arch {
 								return;
 							
 							case PName("vec-b"):
-								c += $"state->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<Vector128<float>>((Vector128<byte>) {{ {GenerateExpression(list[2])}, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }});";
+								c += $"state->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<Vector128<float>>((Vector128<uint8_t>) {{ {GenerateExpression(list[2])}, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }});";
 								return;
 							case PName("vec-h"):
-								c += $"state->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<Vector128<float>>((Vector128<ushort>) {{ {GenerateExpression(list[2])}, 0, 0, 0, 0, 0, 0, 0 }});";
+								c += $"state->V[(int) ({GenerateExpression(sub[1])})] = reinterpret_cast<Vector128<float>>((Vector128<uint16_t>) {{ {GenerateExpression(list[2])}, 0, 0, 0, 0, 0, 0, 0 }});";
 								return;
 							case PName("vec-s"):
 								c += $"state->V[(int) ({GenerateExpression(sub[1])})] = (Vector128<float>) {{ {GenerateExpression(list[2])}, 0, 0, 0 }};";
@@ -65,16 +65,16 @@ namespace Arch {
 					if(list[1] is PList sub)
 						switch(sub[0]) {
 							case PName("gpr32"):
-								c += $"XR[(int) {GenerateExpression(sub[1])}] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ({GenerateExpression(list[2])});";
+								c += $"XR[(int) {GenerateExpression(sub[1])}] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ({GenerateExpression(list[2])});";
 								return;
 							case PName("gpr-or-sp32"):
 								c += $"if({GenerateExpression(sub[1])} == 31)";
 								c++;
-								c += $"SPR = (RuntimeValue<ulong>) (RuntimeValue<uint>) ({GenerateExpression(list[2])});";
+								c += $"SPR = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ({GenerateExpression(list[2])});";
 								c--;
 								c += "else";
 								c++;
-								c += $"XR[(int) {GenerateExpression(sub[1])}] = (RuntimeValue<ulong>) (RuntimeValue<uint>) ({GenerateExpression(list[2])});";
+								c += $"XR[(int) {GenerateExpression(sub[1])}] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ({GenerateExpression(list[2])});";
 								c--;
 								return;
 							case PName("gpr64"):
@@ -91,7 +91,7 @@ namespace Arch {
 								c--;
 								return;
 							case PName("sr"):
-								c += $"Call<void, ulong, uint, uint, uint, uint, uint, ulong>(SR, (ulong) this, {GenerateExpression(sub[1])}, {GenerateExpression(sub[2])}, {GenerateExpression(sub[3])}, {GenerateExpression(sub[4])}, {GenerateExpression(sub[5])}, {GenerateExpression(list[2])});";
+								c += $"Call<void, ulong, uint, uint, uint, uint, uint, ulong>(SR, (uint64_t) this, {GenerateExpression(sub[1])}, {GenerateExpression(sub[2])}, {GenerateExpression(sub[3])}, {GenerateExpression(sub[4])}, {GenerateExpression(sub[5])}, {GenerateExpression(list[2])});";
 								return;
 							case PName("nzcv") when sub.Count == 1:
 								c += $"NZCVR = {GenerateExpression(list[2])};";

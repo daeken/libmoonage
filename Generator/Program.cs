@@ -13,6 +13,7 @@ namespace Generator {
 		static void Main(string[] args) {
 			BuildDisassembler(Defs);
 			BuildInterpreter(Defs);
+			BuildLightRecompiler(Defs);
 			BuildRecompiler(Defs);
 		}
 
@@ -158,8 +159,54 @@ namespace Generator {
 			using var fp = File.Open("../recompiler.generated.cpp", FileMode.Truncate);
 			using var sw = new StreamWriter(fp);
 			sw.Write(File.ReadAllText("recompilerStub.cpp").Replace("/*%CODE%*/", c.Code)
-				.Replace("/*%FUNCS%*/", fc.Code));
+				.Replace("/*%FUNCS%*/", fc.Code.Replace("LlvmRuntimeValue", "LlvmRuntimeValue").Replace("RuntimePointer", "LlvmRuntimePointer")));
 			dsw.Close();
+		}
+		
+		static void BuildLightRecompiler(List<Def> defs) {
+			string Rename(string name) => name.Replace('-', '_').Replace('.', '_').Replace('[', '_').Replace(']', '_');
+			Context = ContextTypes.Recompiler;
+
+			var c = new CodeBuilder();
+			c++;
+
+			foreach(var def in defs) {
+				c += $"if((inst & 0x{def.Mask:X8}U) == 0x{def.Match:X8}U) {{";
+				c++;
+				//c += $"printf(\"Instruction: {def.Name}\\n\");";
+				c += $"if({Rename(def.Name)}(inst, pc)) return true;";
+				c--;
+				c += "}";
+			}
+
+			var fc = new CodeBuilder();
+
+			foreach(var def in defs) {
+				NextLabel = "unimplemented";
+				fc += "";
+				fc += $"/* {def.Name} */";
+				fc += $"bool LightRecompiler::{Rename(def.Name)}(uint inst, ulong pc) {{";
+				fc++;
+				fc += "{";
+				fc++;
+				GenerateFields(fc, def);
+				GenerateStatement(fc, def.Decode);
+				GenerateStatement(fc, def.Eval);
+				fc += "return true;";
+				fc--;
+				fc += "}";
+				fc--;
+				fc += "unimplemented:";
+				fc++;
+				fc += "return false;";
+				fc--;
+				fc += "}";
+			}
+
+			using var fp = File.Open("../lightRecompiler.generated.cpp", FileMode.Truncate);
+			using var sw = new StreamWriter(fp);
+			sw.Write(File.ReadAllText("lightRecompilerStub.cpp").Replace("/*%CODE%*/", c.Code)
+				.Replace("/*%FUNCS%*/", fc.Code.Replace("LlvmRuntimeValue", "LightRuntimeValue").Replace("RuntimePointer", "LightRuntimePointer").Replace("LabelTag", "LightLabel")));
 		}
 	}
 }

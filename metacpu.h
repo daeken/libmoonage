@@ -6,20 +6,26 @@
 #include "interface.h"
 #include "interpreter.h"
 #include "recompiler.h"
+#include "lightRecompiler.h"
 
 enum MetaMode {
+    Undefined,
     Interpreting,
-    Recompiling,
-    Optimizing
+    LightRecompiling,
+    LlvmRecompiling
 };
 
 class EXPORTED MetaCpu {
 public:
-    MetaCpu(CpuInterface* interface, MetaMode mode = MetaMode::Optimizing, int optimizationThreshold = 500);
+    MetaCpu(CpuInterface* interface);
+    void setBaseline(MetaMode mode);
+    void enableOptimizer(MetaMode mode, int threshold);
+    void initialize();
     void run(uint64_t pc, uint64_t sp);
     CpuInterface* interface;
     CpuState* state;
     Interpreter* interpreter;
-    MetaMode mode;
-    int optimizationThreshold;
+    bool initialized;
+    MetaMode baseline;
+    int llvmOptimizerThreshold, lightOptimizerThreshold;
 };

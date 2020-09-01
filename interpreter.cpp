@@ -14,7 +14,7 @@ void Interpreter::run(ulong pc, ulong sp) {
     state->SP = sp;
     bailOut = false;
     while(!bailOut) {
-        if(!interface->isValidCodePointer(false, state->PC, state))
+        if(!interface->isValidCodePointer(CodeSource::Execution, state->PC, state))
             break;
         runOne();
     }
@@ -53,7 +53,7 @@ void Interpreter::runBlock(ulong pc) {
     state->PC = pc;
     bailOut = false;
     while(!bailOut) {
-        if(!interface->isValidCodePointer(false, state->PC, state))
+        if(!interface->isValidCodePointer(CodeSource::Execution, state->PC, state))
             break;
         auto inst = *(uint*) state->PC;
         /*auto _asm = disassemble(inst, state->PC);
@@ -64,6 +64,9 @@ void Interpreter::runBlock(ulong pc) {
         if(logInstructions)
             cout << "Running instruction for 0x" << hex << state->PC << " (" << inst << ") - " << _asm << endl;*/
         state->BranchTo = (ulong) -3L;
+        /*for(auto i = 0; i < 31; ++i)
+            if(state->X[i] == 0xee007265636e756f)
+                __builtin_trap();*/
         if(!interpret(inst, state->PC)) {
             interface->Error((boost::format("Interpretation failed at %1$#x --- %2$#x") % state->PC % inst).str());
         }

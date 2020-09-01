@@ -9,7 +9,7 @@ using namespace std;
 
 #define TEST_INSTRUCTION(inst, dasm) inst,
 const uint32_t test_insts[] = {
-#include "../test_instructions.generated.h"
+//#include "../test_instructions.generated.h"
 };
 
 void dumpregs(CpuState* state) {
