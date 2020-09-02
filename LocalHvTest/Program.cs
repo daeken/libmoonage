@@ -99,7 +99,8 @@ namespace LocalHvTest {
                 
                 vcpu.Debug = new KvmGuestDebug { Control = KvmGuestDebug.ENABLE | KvmGuestDebug.SINGLESTEP };
 
-                vcpu.Run();
+                if(!vcpu.Run())
+                    return false;
                 
                 foreach(var num in outRegs)
                     if(num == 0x1000)
@@ -120,14 +121,15 @@ namespace LocalHvTest {
         }
         
         static void Main(string[] args) {
-			Core.Defs.Select(x => x.Name).Where(x => !x.StartsWith("CAS")).OrderBy(x => x).ForEach(name => {
+			Parallel.ForEach(Core.Defs.Select(x => x.Name).Where(x => !x.StartsWith("CAS")).OrderBy(x => x), name => {
                 var def = Core.Defs.First(x => x.Name == name);
-                Console.WriteLine("Generating tests");
-                var tg = new TestGen(def);
+                Console.WriteLine($"Generating tests for {name}");
                 try {
-                    Parallel.ForEach(tg.InstructionsWithConditions, x => {
-                        var (insn, disasm, conds) = x;
-                        Console.WriteLine(disasm);
+                    var tg = new TestGen(def);
+                    //Parallel.ForEach(tg.InstructionsWithConditions, x => {
+                    //    var (insn, disasm, conds) = x;
+                    foreach(var (insn, disasm, conds) in tg.InstructionsWithConditions) {
+                        //Console.WriteLine($"{disasm} -- {conds.Count} condition sets");
                         var idata = BitConverter.GetBytes(insn);
                         foreach(var (pre, post) in conds) {
                             var ms = new HashSet<ulong>();
@@ -183,8 +185,8 @@ namespace LocalHvTest {
                             var em = new Dictionary<ulong, byte[]>();
                             var nenzcv = false;
                             var enzcv = nzcv;
-                            pre.PrettyPrint();
-                            post.PrettyPrint();
+                            //pre.PrettyPrint();
+                            //post.PrettyPrint();
                             foreach(var (k, v) in post) {
                                 if(k is ulong addr) {
                                     addr <<= 12;
@@ -197,7 +199,7 @@ namespace LocalHvTest {
                                 } else if(k is string reg) {
                                     if(reg[0] == 'X') {
                                         var rn = int.Parse(reg.Substring(1));
-                                        outRegs.Add((int) rn);
+                                        outRegs.Add(rn);
                                         er[rn] = (ulong) v;
                                     } else if(reg == "SP") {
                                         outRegs.Add(34);
@@ -207,7 +209,7 @@ namespace LocalHvTest {
                                         er[32] = (ulong) v;
                                     } else if(reg[0] == 'V') {
                                         var rn = int.Parse(reg.Substring(1));
-                                        outVecs.Add((int) rn);
+                                        outVecs.Add(rn);
                                         var vec = (Vector128<ulong>) v.As<ulong>();
                                         ev[rn] = (vec[0], vec[1]);
                                     } else if(reg[0] == 'N') {
@@ -276,16 +278,14 @@ namespace LocalHvTest {
                                 Assert.AreEqual(a, b, $"[0x{addr:X}]");
                             }*/
                         }
-                    });
-                } catch(AggregateException ae) {
-                    foreach(var e in ae.InnerExceptions) {
-                        if(e is MagicException me) {
-                            Console.WriteLine($"Legit failure? {me.Disasm} -- {me.Failure}");
-                        } else
-                            Console.WriteLine(e);
-                    }
+                    }//);
+                } catch(MagicException me) {
+                    Console.WriteLine($"Legit failure? {name} -- {me.Disasm} -- {me.Failure}");
+                } catch(Exception e) {
+                    Console.WriteLine($"Exception in {name} -- {e}");
                 }
             });
+            Console.WriteLine("Completed tests");
 		}
 	}
 }

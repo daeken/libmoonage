@@ -15,6 +15,7 @@ namespace Arch {
                 new LinkedList<(string Name, int Bits, int Shift)>(def.Fields.Select(x =>
                     (Name: x.Key, x.Value.Bits, x.Value.Shift)));
             IEnumerable<uint> Sub(LinkedList<(string Name, int Bits, int Shift)> parse) {
+                if(parse.Count == 0) yield break;
                 var (name, bits, shift) = parse.First.Value;
                 parse.RemoveFirst();
                 var values = new List<uint> { 0, 1 };
