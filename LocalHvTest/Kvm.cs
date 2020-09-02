@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace HvTest {
+namespace LocalHvTest {
     public class KvmException : Exception {
         public KvmException(string message) : base(message) {}
     }

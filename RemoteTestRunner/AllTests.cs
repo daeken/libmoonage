@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using Arch;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
@@ -11,8 +12,9 @@ namespace RemoteTestRunner {
     [Parallelizable(ParallelScope.All)]
     public class Tests {
         [Test, TestCaseSource("GetTestCases")]
+        [Parallelizable(ParallelScope.All)]
         public void TestDef(string name) {
-            var client = new TcpClient("10.0.0.39", 12347);
+            var client = new TcpClient("localhost", 12347);
             var socket = client.Client;
 
             void WriteAll(byte[] data) {
@@ -44,10 +46,10 @@ namespace RemoteTestRunner {
             }
             
             var def = Core.Defs.First(x => x.Name == name);
+            Console.WriteLine("Generating tests");
             var tg = new TestGen(def);
-            var ran = false;
-            foreach(var (insn, disasm, conds) in tg.InstructionsWithConditions) {
-                ran = true;
+            Parallel.ForEach(tg.InstructionsWithConditions, x => {
+                var (insn, disasm, conds) = x;
                 Console.WriteLine(disasm);
                 var idata = BitConverter.GetBytes(insn);
                 foreach(var (pre, post) in conds) {
@@ -61,7 +63,8 @@ namespace RemoteTestRunner {
                             Write(addr << 12);
                             if(!(v is byte[] data)) throw new Exception();
                             if(data.Length == 8192)
-                                Console.WriteLine($"Foo? {insn:X} {BitConverter.ToUInt32(data, 4):X} {BitConverter.ToUInt64(data, 4):X}");
+                                Console.WriteLine(
+                                    $"Foo? {insn:X} {BitConverter.ToUInt32(data, 4):X} {BitConverter.ToUInt64(data, 4):X}");
                             Write((ulong) data.Length);
                             WriteAll(data);
                         } else if(k is string reg) {
@@ -106,6 +109,7 @@ namespace RemoteTestRunner {
                         } else
                             throw new NotImplementedException(k.ToPrettyString());
                     }
+
                     var er = new Dictionary<ulong, ulong>();
                     var ev = new Dictionary<ulong, (ulong, ulong)>();
                     var em = new Dictionary<ulong, byte[]>();
@@ -167,6 +171,7 @@ namespace RemoteTestRunner {
                         } else
                             throw new NotImplementedException(k.ToPrettyString());
                     }
+
                     Write(1);
                     Write(32);
                     Write(TestGen.PC);
@@ -199,8 +204,10 @@ namespace RemoteTestRunner {
                     for(var i = 0; i < (int) rc; ++i) {
                         var rn = Read();
                         var v = Read();
-                        Assert.AreEqual(er[rn], v, rn switch { 34 => "SP", 32 => "PC", 0x1000 => "NZCV", _ => $"X{rn}" });
+                        Assert.AreEqual(er[rn], v,
+                            rn switch { 34 => "SP", 32 => "PC", 0x1000 => "NZCV", _ => $"X{rn}" });
                     }
+
                     var vc = Read();
                     Assert.AreEqual(ev.Count, (int) vc);
                     for(var i = 0; i < (int) vc; ++i) {
@@ -226,7 +233,7 @@ namespace RemoteTestRunner {
                         Assert.AreEqual(a, b, $"[0x{addr:X}]");
                     }
                 }
-            }
+            });
             Assert.Pass();
         }
 
