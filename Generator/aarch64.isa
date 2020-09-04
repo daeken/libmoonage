@@ -281,7 +281,7 @@
     "and V$rd.$ts, V$rn.$ts, V$rm.$ts"
     (names (Q Q) (rm m) (rn n) (rd d))
     (let ts (if Q "16B" "8B"))
-    (let v (vector-zero-top (vec& (vec rn) (vec rm)))
+    (let v (vec& (vec rn) (vec rm))
         (= (vec rd) (if Q v (vector-zero-top v)))))
 
 (def ANDS-shifted-register
@@ -479,8 +479,8 @@
     "bsl V$rd.$T, V$rn.$T, V$rm.$T"
     (names (Q Q) (rm m) (rn n) (rd d))
     (let T (if Q "16B" "8B"))
-    (mlet (d (vec rd) a (vec rn) b (vec rm))
-        (= (vec rd) (vec^ b (vec& (vec^ b a) d)))))
+    (mlet (d (vec rd) a (vec rn) b (vec rm) v (vec^ b (vec& (vec^ b a) d)))
+        (= (vec rd) (if Q v (vector-zero-top v)))))
 
 (def CASP
     "0 f 001000 0 0 1 sssss 0 11111 nnnnn ttttt"
@@ -2489,6 +2489,7 @@
         (= (vec rt) (vector-all (u8 0)))
         (= (vec rt2) (vector-all (u8 0)))
         (= (vec rt3) (vector-all (u8 0)))
+        (= (vec rt4) (vector-all (u8 0)))
         (match size
             0b00 (qfor i 8 16 (ld1-sub rt 1 u8  0))
             0b01 (qfor i 4  8 (ld1-sub rt 2 u16 0))
@@ -2813,7 +2814,7 @@
     "0 Q 0011001 1 0 mmmmm 0000 ss nnnnn ttttt"
     "ld4 { V$rt.$T, V$rt2.$T, V$rt3.$T, V$rt4.$T }, [X$rn], #$imm"
     (names (Q Q) (rm m) (size s) (rn n) (rt t))
-    (mlet (rt2 (% (+ rt 1) 32) rt3 (% (+ rt 2) 32) rt4 (% (+ rt 3) 32) imm (u8 (if Q 48 24)))
+    (mlet (rt2 (% (+ rt 1) 32) rt3 (% (+ rt 2) 32) rt4 (% (+ rt 3) 32) imm (u8 (if Q 64 32)))
         (requires (== rm 0b11111))
         (let T (match (: size Q)
             0b00_0 "8B"
@@ -5141,7 +5142,7 @@
 
 (def STR-simd-register
     "ff 111 1 00 x0 1 mmmmm ooo s 10 nnnnn ttttt"
-    "str $r1$rt, [X$rn, $r2, $extend $amount]"
+    "str $r1$rt, [X$rn, $r2$rm, $extend $amount]"
     (names (size f) (opc x) (rm m) (option o) (scale s) (rn n) (rt t))
     (block
         (let rop (: size opc (u1 0)))
