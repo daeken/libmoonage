@@ -14,12 +14,12 @@ namespace Arch {
         public static implicit operator UInt128Wrapper(ulong value) => new UInt128Wrapper(value);
         public static implicit operator UInt128Wrapper(long value) => new UInt128Wrapper(value);
 
-        public static implicit operator byte(UInt128Wrapper value) => unchecked((byte) value.Value);
+        public static implicit operator byte(UInt128Wrapper value) => unchecked((byte) (uint) value.Value);
         public static implicit operator sbyte(UInt128Wrapper value) => unchecked((sbyte) value.Value);
         public static implicit operator ushort(UInt128Wrapper value) => unchecked((ushort) value.Value);
         public static implicit operator short(UInt128Wrapper value) => unchecked((short) value.Value);
         public static implicit operator uint(UInt128Wrapper value) => unchecked((uint) value.Value);
-        public static implicit operator int(UInt128Wrapper value) => unchecked((int) value.Value);
+        public static implicit operator int(UInt128Wrapper value) => unchecked((int) (uint) (ulong) value.Value.LoInt64Bits);
         public static implicit operator ulong(UInt128Wrapper value) => unchecked((ulong) value.Value);
         public static implicit operator long(UInt128Wrapper value) => unchecked((long) value.Value);
 

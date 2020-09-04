@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using MoreLinq;
 
 namespace Arch {
     public class TestGen {
@@ -52,21 +55,22 @@ namespace Arch {
 
                 Instructions[inst] = disasm;
             }
+            Console.WriteLine($"{def.Name} -- {Instructions.Count} instructions");
         }
 
         public
-            IEnumerable<(uint Inst, string Disasm, List<(Dictionary<object, dynamic>, Dictionary<object, dynamic>)>)>
+            ParallelQuery<(uint Inst, string Disasm, List<(Dictionary<object, dynamic>, Dictionary<object, dynamic>)>)>
             InstructionsWithConditions =>
-                Instructions.Select(x => {
+                Instructions.AsParallel().Select(x => {
                     var cond = CreateConditions(Def, x.Key);
                     //Console.WriteLine($"Generated {cond.Count} condition sets for {x.Value}");
                     return (x.Key, x.Value, cond);
                 });
 
         List<(Dictionary<object, dynamic>, Dictionary<object, dynamic>)> CreateConditions(Def def, uint inst) {
-            var preconditionSets = new Queue<Dictionary<object, dynamic>>();
+            var preconditionSets = new ConcurrentQueue<Dictionary<object, dynamic>>();
             preconditionSets.Enqueue(new Dictionary<object, dynamic>());
-            var conditionSets = new List<(Dictionary<object, dynamic>, Dictionary<object, dynamic>)>();
+            var conditionSets = new ConcurrentBag<(Dictionary<object, dynamic>, Dictionary<object, dynamic>)>();
 
             var masterState = ExecutionState.Cleanroom();
             masterState.Registers["PC"] = PC;
@@ -114,15 +118,16 @@ namespace Arch {
                 if(postconditions.Count > 0)
                     conditionSets.Add((preconditions, postconditions));
             }
-            
+
             while(preconditionSets.TryDequeue(out var preconditions)) {
                 try {
                     Map(preconditions);
-                } catch(BailoutException) {
-                } catch(MissingRegisterException mrpe) {
+                } catch(BailoutException) { } catch(MissingRegisterException mrpe) {
                     if(mrpe.Register.StartsWith("NZCV")) {
-                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) {[mrpe.Register] = 0UL});
-                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) {[mrpe.Register] = 1UL});
+                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions)
+                            { [mrpe.Register] = 0UL });
+                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions)
+                            { [mrpe.Register] = 1UL });
                     } else if(mrpe.Register[0] == 'X' || mrpe.Register == "SP") {
                         for(var i = 0; i < 4; ++i) {
                             var value = 1UL << (i * 16);
@@ -133,35 +138,43 @@ namespace Arch {
                                 [mrpe.Register] = ~value
                             });
                         }
+
                         preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) {
                             [mrpe.Register] = 1UL << 63
                         });
                         preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) {
                             [mrpe.Register] = 1UL << 31
                         });
-                    }  else if(mrpe.Register[0] == 'V') {
-                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) { [mrpe.Register] = new Vector128<byte>(0) });
-                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) { [mrpe.Register] = new Vector128<byte>(1) });
-                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) { [mrpe.Register] = new Vector128<byte>(0xFF) });
-                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) { [mrpe.Register] = new Vector128<float>(123f) });
-                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) { [mrpe.Register] = new Vector128<float>(-123f) });
-                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) { [mrpe.Register] = new Vector128<double>(123.0) });
-                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) { [mrpe.Register] = new Vector128<double>(-123.0) });
-                    }
-                    else throw new NotImplementedException($"Register {mrpe.Register}");
+                    } else if(mrpe.Register[0] == 'V') {
+                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions)
+                            { [mrpe.Register] = new Vector128<byte>(0) });
+                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions)
+                            { [mrpe.Register] = new Vector128<byte>(1) });
+                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions)
+                            { [mrpe.Register] = new Vector128<byte>(0xFF) });
+                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions)
+                            { [mrpe.Register] = new Vector128<float>(123f) });
+                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions)
+                            { [mrpe.Register] = new Vector128<float>(-123f) });
+                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions)
+                            { [mrpe.Register] = new Vector128<double>(123.0) });
+                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions)
+                            { [mrpe.Register] = new Vector128<double>(-123.0) });
+                    } else throw new NotImplementedException($"Register {mrpe.Register}");
                 } catch(MissingMemoryException mmpe) {
                     if(mmpe.Address > 0xFFFF_FFFF_FFFFUL)
                         continue;
                     var page = mmpe.Address >> 12;
                     var offset = (int) (mmpe.Address & 0xFFF);
+                    var twoPage = offset >= 0xE00;
                     var data = new[] {
-                        new byte[] { 0 }, new byte[] { 1 }, new byte[] { 0xFF }, 
-                        BitConverter.GetBytes(123f), BitConverter.GetBytes(-123f), 
+                        new byte[] { 0 }, new byte[] { 1 }, new byte[] { 0xFF },
+                        BitConverter.GetBytes(123f), BitConverter.GetBytes(-123f),
                         BitConverter.GetBytes(123.0), BitConverter.GetBytes(-123.0)
                     };
                     foreach(var bytes in data) {
-                        var mdata = new byte[8192];
-                        for(var i = offset; i < 8192 - bytes.Length; i += bytes.Length)
+                        var mdata = new byte[4096];
+                        for(var i = offset; i < 4096 - bytes.Length; i += bytes.Length)
                             Array.Copy(bytes, 0, mdata, i, bytes.Length);
                         for(var i = offset - bytes.Length; i >= 0; i -= bytes.Length)
                             Array.Copy(bytes, 0, mdata, i, bytes.Length);
@@ -169,12 +182,17 @@ namespace Arch {
                             Array.Copy(BitConverter.GetBytes(inst), 0, mdata, 0, 4);
                         else if(page == (PC >> 12) - 1)
                             Array.Copy(BitConverter.GetBytes(inst), 0, mdata, 0x1000, 4);
-                        preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) { [page] = mdata });
+                        if(twoPage) {
+                            preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) {
+                                [page] = mdata,
+                                [page + 1] = mdata,
+                            });
+                        } else
+                            preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) { [page] = mdata });
                     }
                 }
             }
-
-            return conditionSets;
+            return conditionSets.ToList();
         }
 
         string Disassemble(Def def, uint inst) {

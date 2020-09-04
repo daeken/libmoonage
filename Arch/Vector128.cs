@@ -33,6 +33,8 @@ namespace Arch {
             handle.Free();
         }
 
+        public static Vector128<T> FromBytes(byte[] data) => new Vector128<byte>(data).As<T>();
+
         public unsafe Vector128<U> As<U>() where U : struct {
             if(typeof(T) == typeof(U)) return (Vector128<U>) (object) this;
             var handle = GCHandle.Alloc(Data, GCHandleType.Pinned);

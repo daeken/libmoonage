@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Arch {
     public static class Extensions {
@@ -21,6 +22,20 @@ namespace Arch {
             if(b is bool)
                 b = b ? 1UL : 0UL;
             return func((ulong) a, (ulong) b); // TODO: Make this cast to the proper type
+        }
+
+        public static byte[] GetBytes(this object _value) {
+            dynamic value = _value;
+            if(value is Int128Wrapper i128)
+                return BitConverter.GetBytes(i128.Value.LoInt64Bits)
+                    .Concat(BitConverter.GetBytes(i128.Value.HiInt64Bits)).ToArray();
+            if(value is UInt128Wrapper u128)
+                return BitConverter.GetBytes(u128.Value.LoInt64Bits)
+                    .Concat(BitConverter.GetBytes(u128.Value.HiInt64Bits)).ToArray();
+            var vt = _value.GetType();
+            if(vt.IsGenericType && vt.GetGenericTypeDefinition() == typeof(Vector128<>))
+                return value.As<byte>().Data;
+            return BitConverter.GetBytes(value);
         }
 
         public static object If<T>(this object value, Func<T, dynamic> func) => value is T tvalue ? func(tvalue) : value;

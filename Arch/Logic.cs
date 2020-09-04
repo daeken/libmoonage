@@ -248,6 +248,7 @@ namespace Arch {
 						EInt(false, 64) => BitConverter.ToUInt64(bytes),
 						EFloat(32) => BitConverter.ToSingle(bytes), 
 						EFloat(64) => BitConverter.ToDouble(bytes), 
+						EVector _ => Vector128<float>.FromBytes(bytes), 
 						{} type => throw new NotSupportedException($"Cannot bitcast to type {type}")
 					};
 				});

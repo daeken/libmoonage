@@ -92,7 +92,7 @@ namespace Arch {
             var page = addr >> 12;
             if(!Memory.TryGetValue(page, out var mem))
                 mem = Memory[page] = new byte[8192];
-            var bytes = BitConverter.GetBytes(value);
+            var bytes = ((object) value).GetBytes();
             Array.Copy(bytes, 0, mem, (int) (addr - (page << 12)), bytes.Length);
         }
     }

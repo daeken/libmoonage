@@ -1,5 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Threading;
+using Arch;
 
 namespace LocalHvTest {
     public class KvmException : Exception {
@@ -12,10 +14,11 @@ namespace LocalHvTest {
         public override bool IsInvalid => handle == new IntPtr(-1) || handle == new IntPtr(0xFFFFFFFF);
     }
 
-    public unsafe class MmappedRegion {
+    public unsafe class MmappedRegion : IDisposable {
         public readonly SafeUnixHandle Handle;
         public readonly void* Pointer;
         readonly ulong Length;
+        bool Disposed;
 
         [DllImport("libc", EntryPoint = "mmap")]
         static extern void* Mmap(void* addr, ulong length, int prot, int flags, int fd, ulong offset);
@@ -23,12 +26,24 @@ namespace LocalHvTest {
         static extern void Munmap(void* addr, ulong length);
 
         public MmappedRegion(SafeUnixHandle handle, int size = 0x1000, int offset = 0) {
-            Pointer = Mmap(null, Length = (ulong) size, 4|2, 0x10, (int) handle.DangerousGetHandle(), (ulong) offset);
+            Pointer = Mmap(null, Length = (ulong) size, 4|2, 1, (int) handle.DangerousGetHandle(), (ulong) offset);
             if(Pointer == null) throw new KvmException("Could not mmap region");
         }
 
-        ~MmappedRegion() {
-            Munmap(Pointer, Length);
+        ~MmappedRegion() => Dispose(false);
+
+        void ReleaseUnmanagedResources() => Munmap(Pointer, Length);
+
+        void Dispose(bool disposing) {
+            if(disposing && !Disposed) {
+                ReleaseUnmanagedResources();
+                Disposed = true;
+            }
+        }
+
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 
@@ -260,20 +275,55 @@ namespace LocalHvTest {
 
         public bool Run() => Ioctls.VcpuRun(Handle);
 
+        public void Stop() {
+            try {
+                using var region = new MmappedRegion(Handle);
+                var x = (byte*) region.Pointer;
+                x[1] = 1;
+            } catch(Exception e) {
+                Console.WriteLine($"Failed to stop VCPU: {e}");
+            }
+        }
+
         public void Dispose() => Handle?.Dispose();
     }
 
     public class Vm : IDisposable {
+        internal readonly Kvm Kvm;
         internal readonly SafeUnixHandle Handle;
 
-        internal Vm(SafeUnixHandle handle) => Handle = handle;
+        internal Vm(Kvm kvm, SafeUnixHandle handle) {
+            Kvm = kvm;
+            Handle = handle;
+        }
 
         public bool SetUserMemoryRegion(KvmUserspaceMemoryRegion region) => Ioctls.VmSetUserMemoryRegion(Handle, region) == 0;
 
         public VCpu CreateVCpu(int id) {
-            var handle = Ioctls.VmCreateVcpu(Handle, id);
-            if(Handle.IsInvalid) throw new KvmException("Could not create VCpu");
-            return new VCpu(handle);
+            lock(Kvm) {
+                var handle = Ioctls.VmCreateVcpu(Handle, id);
+                if(Handle.IsInvalid) throw new KvmException("Could not create VCpu");
+                return new VCpu(handle);
+            }
+        }
+
+        public VCpu CreateVCpu(int id, bool retry) {
+            if(!retry) return CreateVCpu(id);
+            var retries = 0;
+            while(true) {
+                lock(Kvm) {
+                    var handle = Ioctls.VmCreateVcpu(Handle, id);
+                    if(!Handle.IsInvalid)
+                        return new VCpu(handle);
+                }
+                if((++retries % 10) == 0) {
+                    Console.WriteLine($"Retried {retries} times -- collecting GC just in case");
+                    using var hc = new HangChecker("GC collect in CreateVCpu");
+                    GC.Collect();
+                }
+
+                Thread.Sleep(10);
+            }
         }
 
         public bool GetArmPreferredTarget(out KvmVcpuInit init) => Ioctls.VmArmPreferredTarget(Handle, out init);
@@ -292,9 +342,37 @@ namespace LocalHvTest {
         }
 
         public Vm CreateVm() {
-            var handle = Ioctls.KvmCreateVm(Handle);
-            if(Handle.IsInvalid) throw new KvmException("Could not create VM");
-            return new Vm(handle);
+            lock(this) {
+                var handle = Ioctls.KvmCreateVm(Handle);
+                if(Handle.IsInvalid) throw new KvmException("Could not create VM");
+                return new Vm(this, handle);
+            }
+        }
+
+        public (Vm, VCpu) CreateVmAndVCpu() {
+            var retries = 0;
+            while(true) {
+                Vm vm;
+                try {
+                    vm = CreateVm();
+                } catch(Exception) {
+                    goto fail;
+                }
+
+                try {
+                    var vcpu = vm.CreateVCpu(0);
+                    return (vm, vcpu);
+                } catch(Exception) {
+                    vm.Dispose();
+                }
+                fail:
+                if((++retries % 10) == 0) {
+                    Console.WriteLine($"Retried {retries} times -- collecting GC just in case");
+                    using var hc = new HangChecker("GC collect in CreateVmAndVCpu");
+                    GC.Collect();
+                }
+                Thread.Sleep(10);
+            }
         }
     }
 }

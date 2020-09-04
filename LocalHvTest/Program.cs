@@ -2,8 +2,10 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Arch;
 using MoreLinq;
@@ -11,9 +13,6 @@ using PrettyPrinter;
 
 namespace LocalHvTest {
 	class Program {
-        static readonly Kvm Kvm = new Kvm();
-        static readonly ConcurrentQueue<ulong> PageBaseQueue = new ConcurrentQueue<ulong>();
-
         class MagicException : Exception {
             public readonly uint Insn;
             public readonly string Disasm, Failure;
@@ -42,96 +41,158 @@ namespace LocalHvTest {
             }
         }
 
-        class PageBase {
-            public readonly ulong Addr;
-
-            public PageBase(ulong addr) => Addr = addr;
-            ~PageBase() => PageBaseQueue.Enqueue(Addr);
+        static bool RunWithTimeout(int ms, Action func) {
+            var tcsStart = new TaskCompletionSource<bool>();
+            var tcsComplete = new TaskCompletionSource<bool>();
+            var thread = new Thread(() => {
+                tcsStart.SetResult(true);
+                func();
+                tcsComplete.SetResult(true);
+            });
+            thread.Start();
+            tcsStart.Task.Wait();
+            return tcsComplete.Task.Wait(ms) || tcsComplete.Task.IsCompleted;
         }
 
-        static PageBase GetPageBase() {
-            if(PageBaseQueue.TryDequeue(out var addr)) return new PageBase(addr);
-            addr = (ulong) Marshal.AllocHGlobal(0x3000);
-            while((addr & 0xFFF) != 0) addr++;
-            return new PageBase(addr);
-        }
-
-        public static bool Run(Dictionary<int, ulong> registers, Dictionary<int, (ulong, ulong)> vectors, Dictionary<ulong, byte[]> memory, List<int> outRegs, List<int> outVecs, List<ulong> outMem) {
-            try {
-                using var vm = Kvm.CreateVm();
-                using var vcpu = vm.CreateVCpu(0);
-                if(!vm.GetArmPreferredTarget(out var init))
-                    return false;
-                if(!vcpu.Init(init))
-                    return false;
-                vcpu.CPACR_EL1 = 3 << 20;
-                //Console.WriteLine($"Alignment flag: {vcpu.SCTLR_EL1 & 2}");
-                vcpu.SCTLR_EL1 &= ~(1UL << 1);
-                Debug.Assert(memory.Count <= 7);
-                foreach(var (num, value) in registers)
-                    if(num == 0x1000)
-                        vcpu.NZCV = value;
-                    else
-                        vcpu.X[num] = value;
-                foreach(var (num, value) in vectors)
-                    vcpu.V[num] = value;
-
-                var mi = 0;
-                var caddrs = new Dictionary<ulong, ulong>();
-                var pagebases = new List<PageBase>();
-                foreach(var (addr, data) in memory) {
-                    var pb = GetPageBase();
-                    pagebases.Add(pb);
-                    Marshal.Copy(data, 0, (IntPtr) pb.Addr, data.Length);
-                    //Console.WriteLine($"Attempting to assign memory at 0x{addr:X}");
-                    if(!vm.SetUserMemoryRegion(new KvmUserspaceMemoryRegion {
-                        Slot = (uint) mi,
-                        Flags = 0,
-                        GuestPhysAddr = addr,
-                        MemorySize = 0x2000,
-                        UserspaceAddr = pb.Addr
-                    })) {
-                        Console.WriteLine($"Failed to assign memory region for addr 0x{addr:X}");
-                        return false;
-                    }
-                    caddrs[addr] = pb.Addr;
+        class Worker {
+            readonly Kvm Kvm = new Kvm();
+            readonly ulong[] PageBases = new ulong[8];
+            
+            public Worker() {
+                for(var i = 0; i < 8; ++i) {
+                    var addr = (ulong) Marshal.AllocHGlobal(0x2000);
+                    while((addr & 0xFFF) != 0) addr++;
+                    PageBases[i] = addr;
                 }
-                
-                vcpu.Debug = new KvmGuestDebug { Control = KvmGuestDebug.ENABLE | KvmGuestDebug.SINGLESTEP };
+            }
+            
+            public bool Run(Dictionary<int, ulong> registers, Dictionary<int, (ulong, ulong)> vectors,
+                Dictionary<ulong, byte[]> memory, List<int> outRegs, List<int> outVecs, List<ulong> outMem) {
+                try {
+                    var (_vm, _vcpu) = HangChecker.Check("CreateVmAndVCpu", () => Kvm.CreateVmAndVCpu());
+                    using var vm = _vm;
+                    using var vcpu = _vcpu;
+                    //using var vm = HangChecker.Check("CreateVM", () => Kvm.CreateVm());
+                    //using var vcpu = HangChecker.Check("CreateVCpu", () => vm.CreateVCpu(0, true));
+                    if(!vm.GetArmPreferredTarget(out var init))
+                        return false;
+                    if(!vcpu.Init(init))
+                        return false;
+                    vcpu.CPACR_EL1 = 3 << 20;
+                    //Console.WriteLine($"Alignment flag: {vcpu.SCTLR_EL1 & 2}");
+                    vcpu.SCTLR_EL1 &= ~(1UL << 1);
+                    Debug.Assert(memory.Count <= 7);
+                    foreach(var (num, value) in registers)
+                        if(num == 0x1000)
+                            vcpu.NZCV = value;
+                        else
+                            vcpu.X[num] = value;
+                    foreach(var (num, value) in vectors)
+                        vcpu.V[num] = value;
 
-                if(!vcpu.Run())
+                    var mi = 0;
+                    var caddrs = new Dictionary<ulong, ulong>();
+                    foreach(var (addr, data) in memory) {
+                        Marshal.Copy(data, 0, (IntPtr) PageBases[mi], data.Length);
+                        //Console.WriteLine($"Attempting to assign memory at 0x{addr:X}");
+                        if(!vm.SetUserMemoryRegion(new KvmUserspaceMemoryRegion {
+                            Slot = (uint) mi,
+                            Flags = 0,
+                            GuestPhysAddr = addr,
+                            MemorySize = 0x1000,
+                            UserspaceAddr = PageBases[mi]
+                        })) {
+                            Console.WriteLine($"Failed to assign memory region for addr 0x{addr:X}");
+                            return false;
+                        }
+
+                        caddrs[addr] = PageBases[mi++];
+                    }
+
+                    vcpu.Debug = new KvmGuestDebug { Control = KvmGuestDebug.ENABLE | KvmGuestDebug.SINGLESTEP };
+
+                    /*var success = false;
+                    if(!RunWithTimeout(500, () => { success = vcpu.Run(); })) {
+                        vcpu.Stop();
+                        throw new TimeoutException();
+                    }*/
+                    var success = HangChecker.Check("VCpu Run", vcpu.Run);
+
+                    if(!success) return false;
+
+                    foreach(var num in outRegs)
+                        if(num == 0x1000)
+                            registers[0x1000] = vcpu.NZCV;
+                        else
+                            registers[num] = vcpu.X[num];
+                    foreach(var num in outVecs)
+                        vectors[num] = vcpu.V[num];
+
+                    foreach(var addr in outMem)
+                        Marshal.Copy((IntPtr) caddrs[addr], memory[addr], 0, memory[addr].Length);
+
+                    return true;
+                } catch(KvmException e) {
+                    Console.WriteLine(e);
                     return false;
-                
-                foreach(var num in outRegs)
-                    if(num == 0x1000)
-                        registers[0x1000] = vcpu.NZCV;
-                    else
-                        registers[num] = vcpu.X[num];
-                foreach(var num in outVecs)
-                    vectors[num] = vcpu.V[num];
-
-                foreach(var addr in outMem)
-                    Marshal.Copy((IntPtr) caddrs[addr], memory[addr], 0, memory[addr].Length);
-                
-                return true;
-            } catch(KvmException e) {
-                Console.WriteLine(e);
-                return false;
+                }
             }
         }
-        
+
+        static string Hexdump(ulong addr, byte[] memory) {
+            var ret = "<pre>";
+            for(var i = 0; i < memory.Length; i += 32) {
+                ret += $"{addr + (ulong) i:X04}  ";
+                for(var j = 0; j < 32 && i + j < memory.Length; ++j) {
+                    ret += $"{memory[i + j]:X02} ";
+                    if(j % 8 == 7) ret += " ";
+                }
+                ret += "\n";
+            }
+            ret += $"{addr + (ulong) memory.Length:X04}</pre>";
+            return ret;
+        }
+
         static void Main(string[] args) {
-			Parallel.ForEach(Core.Defs.Select(x => x.Name).Where(x => !x.StartsWith("CAS")).OrderBy(x => x), name => {
+            HangChecker.Run();
+
+            var defs = Core.Defs.Select(x => x.Name).Where(x => !x.StartsWith("CAS")).OrderBy(x => x).ToList();
+
+            try {
+                File.Delete("/home/daeken/testresults/index.html");
+            } catch(Exception) { }
+            using var ofp = File.OpenWrite("/home/daeken/testresults/index.html");
+            using var sw = new StreamWriter(ofp);
+            
+            var availableWorkers = new ConcurrentQueue<Worker>(Enumerable.Range(0, Environment.ProcessorCount).Select(_ => new Worker()));
+            void WithWorker(Action<Worker> func) {
+                while(true) {
+                    if(availableWorkers.TryDequeue(out var worker)) {
+                        try {
+                            func(worker);
+                        } finally {
+                            availableWorkers.Enqueue(worker);
+                        }
+                        return;
+                    }
+                    Thread.Sleep(1);
+                }
+            }
+
+            var successes = 0;
+            var failures = 0;
+            foreach(var name in defs) {
+                //if(name != "CCMN-immediate") continue;
+                var failed = false;
                 var def = Core.Defs.First(x => x.Name == name);
-                Console.WriteLine($"Generating tests for {name}");
                 try {
                     var tg = new TestGen(def);
-                    //Parallel.ForEach(tg.InstructionsWithConditions, x => {
-                    //    var (insn, disasm, conds) = x;
-                    foreach(var (insn, disasm, conds) in tg.InstructionsWithConditions) {
-                        //Console.WriteLine($"{disasm} -- {conds.Count} condition sets");
+                    tg.InstructionsWithConditions.ForAll(x => {
+                        var (insn, disasm, conds) = x;
                         var idata = BitConverter.GetBytes(insn);
                         foreach(var (pre, post) in conds) {
+                            //if(post.ContainsKey("PC"))
+                            //    continue;
                             var ms = new HashSet<ulong>();
                             var nnzcv = false;
                             var nzcv = 0UL;
@@ -143,7 +204,8 @@ namespace LocalHvTest {
                             var outMem = new List<ulong>();
                             foreach(var (k, v) in pre) {
                                 if(k is ulong addr) {
-                                    ms.Add(addr << 12);
+                                    addr <<= 12;
+                                    ms.Add(addr);
                                     if(!(v is byte[] data)) throw new Exception();
                                     mem[addr] = data;
                                 } else if(k is string reg) {
@@ -194,7 +256,7 @@ namespace LocalHvTest {
                                     em[addr] = (byte[]) v;
                                     if(!ms.Contains(addr)) {
                                         ms.Add(addr);
-                                        mem[addr] = new byte[0];
+                                        mem[addr] = new byte[0x1000];
                                     }
                                 } else if(k is string reg) {
                                     if(reg[0] == 'X') {
@@ -250,8 +312,20 @@ namespace LocalHvTest {
                             void Throw(string description) =>
                                 throw new MagicException(insn, disasm, description, pre, er, regs, ev, vecs, em, mem);
 
-                            if(!Run(regs, vecs, mem, outRegs, outVecs, outMem))
-                                Throw("Execution");
+                            var success = false;
+                            for(var i = 0; i < 10; ++i)
+                                try {
+                                    WithWorker(worker => {
+                                        if(!worker.Run(regs, vecs, mem, outRegs, outVecs, outMem))
+                                            Throw("Execution");
+                                    });
+                                    success = true;
+                                    break;
+                                } catch(TimeoutException) {
+                                    Console.WriteLine($"Timeout on {name} -- {disasm} -- attempt {i}");
+                                }
+
+                            if(!success) Throw("Timeout");
 
                             foreach(var rn in outRegs)
                                 if(er[rn] != regs[rn])
@@ -264,28 +338,136 @@ namespace LocalHvTest {
                                 if(eb != gb) Throw($"V{rn}H");
                             }
 
-                            /*var mc = Read();
-                            Assert.AreEqual(em.Count, mc);
-                            for(var i = 0; i < (int) mc; ++i) {
-                                var addr = Read();
-                                var len = (int) Read();
-                                var td = new byte[len];
-                                ReadAll(td);
-                                var ml = Math.Min(len, em[addr].Length);
-                                var (a, b) = ml == len && em[addr].Length == ml
-                                    ? (em[addr], td)
-                                    : (em[addr].Take(ml).ToArray(), td.Take(ml).ToArray());
-                                Assert.AreEqual(a, b, $"[0x{addr:X}]");
-                            }*/
+                            foreach(var addr in outMem) {
+                                var e = em[addr];
+                                var g = mem[addr];
+                                var ml = Math.Min(g.Length, e.Length);
+                                var (a, b) = ml == g.Length && e.Length == ml
+                                    ? (e, g)
+                                    : (e.Take(ml).ToArray(), g.Take(ml).ToArray());
+                                for(var i = 0; i < ml; ++i)
+                                    if(e[i] != g[i]) {
+                                        Throw($"[0x{addr + (ulong) i:X}]");
+                                        break;
+                                    }
+                            }
                         }
-                    }//);
-                } catch(MagicException me) {
-                    Console.WriteLine($"Legit failure? {name} -- {me.Disasm} -- {me.Failure}");
+                    });
+                } catch(AggregateException ae) {
+                    failed = true;
+                    var ie = ae.InnerExceptions.First();
+                    if(ie is MagicException me)
+                        lock(sw) {
+                            sw.WriteLine($"<h1>{name}</h1>");
+                            sw.WriteLine(
+                                $"Instruction: {string.Join(' ', BitConverter.GetBytes(me.Insn).Select(x => $"{x:X02}"))}<br>");
+                            sw.WriteLine($"Disassembly: <code>{me.Disasm}</code><br>");
+                            sw.WriteLine($"Failure: {me.Failure}<br>");
+                            if(me.Preconditions.Count != 0) {
+                                sw.WriteLine("Preconditions:<br><table border=1><tr><th>Key</th><th>Value</th></tr>");
+                                foreach(var (k, v) in me.Preconditions) {
+                                    if(k is ulong addr) {
+                                        addr <<= 12;
+                                        if(!(v is byte[] data)) throw new Exception();
+                                        sw.WriteLine($"<tr><td>0x{addr:X}</td><td>{Hexdump(addr, data)}</td>");
+                                    } else if(k is string reg) {
+                                        sw.Write($"<tr><td>{reg}</td><td>");
+                                        if(reg[0] == 'X' || reg == "SP" || reg == "PC" || reg[0] == 'N')
+                                            sw.Write($"0x{(ulong) v:X}");
+                                        else if(reg[0] == 'V') {
+                                            var ri = ulong.Parse(reg.Substring(1));
+                                            var vec = (Vector128<byte>) v.As<byte>();
+                                            sw.Write(string.Join(' ', vec.Data.Select(x => $"{x:X02}")));
+                                        }
+
+                                        sw.WriteLine("</td></tr>");
+                                    }
+                                }
+
+                                sw.WriteLine("</table>");
+                            }
+
+                            sw.WriteLine(
+                                "Postconditions:<br><table border=1><tr><th></th><th>Key</th><th>Emu</th><th>CPU</th></tr>");
+                            foreach(var rn in me.ExpectedRegisters.Keys) {
+                                var ev = me.ExpectedRegisters[rn];
+                                ulong? gv = null;
+                                if(me.GotRegisters.TryGetValue(rn, out var _gv))
+                                    gv = _gv;
+                                sw.Write($"<tr><td>{(gv.HasValue && ev == gv ? "&#x2705;" : "&#x274C;")}</td>");
+                                sw.Write(
+                                    $"<td>{rn switch { 34 => "SP", 32 => "PC", 0x1000 => "NZCV", _ => $"X{rn}" }}</td>");
+                                sw.Write($"<td>0x{ev:X}</td>");
+                                if(gv.HasValue)
+                                    sw.WriteLine($"<td>0x{gv.Value:X}</td></tr>");
+                                else
+                                    sw.WriteLine($"<td>Undefined</td></tr>");
+                            }
+
+                            foreach(var rn in me.ExpectedVectors.Keys) {
+                                var ev = me.ExpectedVectors[rn];
+                                (ulong, ulong)? gv = null;
+                                if(me.GotVectors.TryGetValue(rn, out var _gv))
+                                    gv = _gv;
+                                sw.Write(
+                                    $"<tr><td>{(gv.HasValue && ev.Item1 == gv.Value.Item1 && ev.Item2 == gv.Value.Item2 ? "&#x2705;" : "&#x274C;")}</td>");
+                                sw.Write($"<td>V{rn}</td>");
+                                sw.Write(
+                                    $"<td>{string.Join(' ', BitConverter.GetBytes(ev.Item1).Concat(BitConverter.GetBytes(ev.Item2)).Select(x => $"{x:X02}"))}</td>");
+                                if(gv.HasValue)
+                                    sw.WriteLine(
+                                        $"<td>{string.Join(' ', BitConverter.GetBytes(gv.Value.Item1).Concat(BitConverter.GetBytes(gv.Value.Item2)).Select(x => $"{x:X02}"))}</td></tr>");
+                                else
+                                    sw.WriteLine("<td>Undefined</td></tr>");
+                            }
+
+                            foreach(var addr in me.ExpectedMemory.Keys) {
+                                var e = me.ExpectedMemory[addr];
+                                if(!me.GotMemory.TryGetValue(addr, out var g))
+                                    g = null;
+                                var ml = g == null ? e.Length : Math.Min(g.Length, e.Length);
+                                var (a, b) = g == null || (ml == g.Length && e.Length == ml)
+                                    ? (e, g)
+                                    : (e.Take(ml).ToArray(), g.Take(ml).ToArray());
+                                sw.Write(
+                                    $"<tr><td>{(g != null && a.Zip(b).All(x => x.First == x.Second) ? "&#x2705;" : "&#x274C;")}</td>");
+                                sw.Write($"<td>0x{addr:X}</td>");
+                                sw.Write($"<td>{Hexdump(addr, a)}</td>");
+                                sw.WriteLine($"<td>{(g != null ? Hexdump(addr, b) : "Undefined")}</td></tr>");
+                            }
+
+                            sw.WriteLine("</table>");
+                            sw.Flush();
+                        }
+                    else
+                        lock(sw) {
+                            sw.WriteLine($"<h1>{name}</h1>");
+                            sw.WriteLine($"<pre>{ie.ToString().Replace("&", "&amp;").Replace("<", "&lt;")}</pre>");
+                            sw.Flush();
+                        }
                 } catch(Exception e) {
-                    Console.WriteLine($"Exception in {name} -- {e}");
+                    failed = true;
+                    lock(sw) {
+                        sw.WriteLine($"<h1>{name}</h1>");
+                        sw.WriteLine($"<pre>{e.ToString().Replace("&", "&amp;").Replace("<", "&lt;")}</pre>");
+                        sw.Flush();
+                    }
                 }
-            });
-            Console.WriteLine("Completed tests");
+
+                lock(defs) {
+                    if(failed)
+                        failures++;
+                    else
+                        successes++;
+                    Console.Write($"{failures+successes}/{defs.Count}  --  ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write($"{successes} passed  ");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"{failures} failed");
+                    Console.ResetColor();
+                    GC.Collect();
+                }
+            }
 		}
 	}
 }
