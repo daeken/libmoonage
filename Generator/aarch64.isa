@@ -3505,7 +3505,7 @@
             0b010 "UXTW"
             0b110 "SXTW"
             0b111 "SXTX"
-            (undefined))))
+            (unimplemented))))
     (let offset (<< (if (== option 0b110)
             (u64 (signext (gpr32 rm) i64))
             (if (& option 1)
@@ -5112,7 +5112,7 @@
             0b110 "SXTW"
             0b111 "SXTX"
             0b011 "LSL"
-            (undefined))))
+            (unimplemented))))
     (let offset (<< (if (== option 0b110)
             (u64 (signext (gpr32 rm) i64))
             (if (& option 1)
@@ -5218,8 +5218,8 @@
             0b010 "UXTW"
             0b110 "SXTW"
             0b111 "SXTX"
-            0b011 (if (!= rop 0b0000) "LSL" (undefined))
-            (undefined))))
+            0b011 (if (!= rop 0b0000) "LSL" (unimplemented))
+            (unimplemented))))
     (let offset (<< (if (== option 0b110)
             (u64 (signext (gpr32 rm) i64))
             (if (& option 1)
