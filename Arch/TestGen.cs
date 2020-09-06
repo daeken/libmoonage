@@ -59,7 +59,7 @@ namespace Arch {
         }
 
         public
-            ParallelQuery<(uint Inst, string Disasm, List<(Dictionary<object, dynamic>, Dictionary<object, dynamic>)>)>
+            ParallelQuery<(uint Inst, string Disasm, IEnumerable<(Dictionary<object, dynamic>, Dictionary<object, dynamic>)>)>
             InstructionsWithConditions =>
                 Instructions.AsParallel().Select(x => {
                     var cond = CreateConditions(Def, x.Key);
@@ -67,11 +67,10 @@ namespace Arch {
                     return (x.Key, x.Value, cond);
                 });
 
-        List<(Dictionary<object, dynamic>, Dictionary<object, dynamic>)> CreateConditions(Def def, uint inst) {
-            var preconditionSets = new ConcurrentQueue<Dictionary<object, dynamic>>();
+        IEnumerable<(Dictionary<object, dynamic>, Dictionary<object, dynamic>)> CreateConditions(Def def, uint inst) {
+            var preconditionSets = new Queue<Dictionary<object, dynamic>>();
             preconditionSets.Enqueue(new Dictionary<object, dynamic>());
-            var conditionSets = new ConcurrentBag<(Dictionary<object, dynamic>, Dictionary<object, dynamic>)>();
-
+            
             var masterState = ExecutionState.Cleanroom();
             masterState.Registers["PC"] = PC;
             var masterLocals = masterState.Locals;
@@ -80,10 +79,11 @@ namespace Arch {
             try {
                 masterState.Evaluate((PTree) def.Decode);
             } catch(BailoutException) {
-                return null;
+                yield break;
             }
 
-            void Map(Dictionary<object, dynamic> preconditions) {
+            (Dictionary<object, dynamic>, Dictionary<object, dynamic>)?
+            Map(Dictionary<object, dynamic> preconditions) {
                 var state = ExecutionState.Cleanroom();
                 state.Registers["PC"] = PC;
                 foreach(var (key, value) in preconditions) {
@@ -116,12 +116,14 @@ namespace Arch {
                 if(postconditions.TryGetValue("PC", out var pc) && pc == PC)
                     postconditions.Remove("PC");
                 if(postconditions.Count > 0)
-                    conditionSets.Add((preconditions, postconditions));
+                    return (preconditions, postconditions);
+                return null;
             }
 
             while(preconditionSets.TryDequeue(out var preconditions)) {
+                (Dictionary<object, dynamic>, Dictionary<object, dynamic>)? cs = null;
                 try {
-                    Map(preconditions);
+                    cs = Map(preconditions);
                 } catch(BailoutException) { } catch(MissingRegisterException mrpe) {
                     if(mrpe.Register.StartsWith("NZCV")) {
                         preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions)
@@ -191,8 +193,10 @@ namespace Arch {
                             preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) { [page] = mdata });
                     }
                 }
+
+                if(cs != null)
+                    yield return cs.Value;
             }
-            return conditionSets.ToList();
         }
 
         string Disassemble(Def def, uint inst) {
