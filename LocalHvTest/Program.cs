@@ -358,13 +358,13 @@ namespace LocalHvTest {
                     var ie = ae.InnerExceptions.First();
                     if(ie is MagicException me)
                         lock(sw) {
-                            sw.WriteLine($"<h1>{name}</h1>");
+                            sw.WriteLine($"<instruction><instname>{name}</instname>");
                             sw.WriteLine(
-                                $"Instruction: {string.Join(' ', BitConverter.GetBytes(me.Insn).Select(x => $"{x:X02}"))}<br>");
-                            sw.WriteLine($"Disassembly: <code>{me.Disasm}</code><br>");
-                            sw.WriteLine($"Failure: {me.Failure}<br>");
+                                $"<instruction>{string.Join(' ', BitConverter.GetBytes(me.Insn).Select(x => $"{x:X02}"))}</instruction>");
+                            sw.WriteLine($"<disasm>{me.Disasm}</disasm>");
+                            sw.WriteLine($"<failure>{me.Failure}</failure>");
                             if(me.Preconditions.Count != 0) {
-                                sw.WriteLine("Preconditions:<br><table border=1><tr><th>Key</th><th>Value</th></tr>");
+                                sw.WriteLine("<preconditions>");
                                 foreach(var (k, v) in me.Preconditions) {
                                     if(k is ulong addr) {
                                         addr <<= 12;
@@ -384,11 +384,11 @@ namespace LocalHvTest {
                                     }
                                 }
 
-                                sw.WriteLine("</table>");
+                                sw.WriteLine("</preconditions>");
                             }
 
                             sw.WriteLine(
-                                "Postconditions:<br><table border=1><tr><th></th><th>Key</th><th>Emu</th><th>CPU</th></tr>");
+                                "<postconditions>");
                             foreach(var rn in me.ExpectedRegisters.Keys) {
                                 var ev = me.ExpectedRegisters[rn];
                                 ulong? gv = null;
@@ -436,20 +436,23 @@ namespace LocalHvTest {
                                 sw.WriteLine($"<td>{(g != null ? Hexdump(addr, b) : "Undefined")}</td></tr>");
                             }
 
-                            sw.WriteLine("</table>");
+                            sw.WriteLine("</postconditions>");
+                            sw.WriteLine("</instruction>");
                             sw.Flush();
                         }
                     else
                         lock(sw) {
-                            sw.WriteLine($"<h1>{name}</h1>");
+                            sw.WriteLine($"<instruction><instname>{name}</instname>");
                             sw.WriteLine($"<pre>{ie.ToString().Replace("&", "&amp;").Replace("<", "&lt;")}</pre>");
+                            sw.WriteLine("</instruction>");
                             sw.Flush();
                         }
                 } catch(Exception e) {
                     failed = true;
                     lock(sw) {
-                        sw.WriteLine($"<h1>{name}</h1>");
+                        sw.WriteLine($"<instruction><instname>{name}</instname>");
                         sw.WriteLine($"<pre>{e.ToString().Replace("&", "&amp;").Replace("<", "&lt;")}</pre>");
+                        sw.WriteLine("</instruction>");
                         sw.Flush();
                     }
                 }
