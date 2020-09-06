@@ -78,7 +78,7 @@ function copyTest(id) {
 	return false;
 }
 </script>'''
-print '<h1>%i/323 Failing Tests</h1>' % len(insns)
+print '<h1>%i/322 Failing Tests</h1>' % len(insns)
 print '<ul>'
 for insn in insns:
 	if 'exc' in insn:

@@ -155,7 +155,8 @@ namespace LocalHvTest {
         static void Main(string[] args) {
             HangChecker.Run();
 
-            var defs = Core.Defs.Select(x => x.Name).Where(x => !x.StartsWith("CAS")).OrderBy(x => x).ToList();
+            var defs = Core.Defs.Select(x => x.Name).Where(x => !x.StartsWith("CAS") && x != "BRK").OrderBy(x => x)
+                .ToList();
 
             try {
                 File.Delete("testresults.xml");
