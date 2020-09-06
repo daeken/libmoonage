@@ -23,6 +23,7 @@ namespace Arch {
         public readonly Dictionary<string, dynamic> Locals = new Dictionary<string,dynamic>();
         public readonly Dictionary<string, dynamic> Registers = new Dictionary<string, dynamic>();
         public readonly Dictionary<ulong, byte[]> Memory = new Dictionary<ulong, byte[]>();
+        public bool ReadSP;
         
         public static ExecutionState Cleanroom() => new ExecutionState();
 
@@ -70,6 +71,8 @@ namespace Arch {
         public dynamic GetRegister(string name) {
             if(name == "X31")
                 return 0UL;
+            if(name == "SP")
+                ReadSP = true;
             if(Registers.TryGetValue(name, out var value))
                 return value;
             throw new MissingRegisterException(name);
@@ -80,8 +83,14 @@ namespace Arch {
                 throw new BailoutException();
             if((addr & 0x7) != 0)
                 throw new BailoutException();
+            if(ReadSP && (Registers["SP"] & 0xF) != 0)
+                throw new BailoutException();
             var page = addr >> 12;
             if(!Memory.TryGetValue(page, out var mem)) throw new MissingMemoryException(addr, type);
+            if(addr - (page << 12) > 0xF00) {
+                if(!Memory.TryGetValue(page + 1, out var mem2)) throw new MissingMemoryException(addr, type);
+                mem = mem.Concat(mem2).ToArray();
+            }
             mem = mem.Skip((int) (addr - (page << 12))).ToArray();
             return type switch {
                 EInt(false, 8) => (dynamic) mem[0], 
@@ -102,6 +111,8 @@ namespace Arch {
             if(addr > 0xFF_FFFF_FFFFUL)
                 throw new BailoutException();
             if((addr & 0x7) != 0)
+                throw new BailoutException();
+            if(ReadSP && (Registers["SP"] & 0xF) != 0)
                 throw new BailoutException();
             var page = addr >> 12;
             if(!Memory.TryGetValue(page, out var mem))

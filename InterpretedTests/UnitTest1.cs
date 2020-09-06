@@ -345,6 +345,20 @@ namespace InterpretedTests {
 			}.Run();
 		
 		[Test]
+		public void FMLA_vector_2() =>
+			new InsnTest {
+				Class = "FMLA-vector",
+				Instruction = 0x0e20cc20,
+				Preconditions = {
+					["V0"] = ToVector("01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01"), 
+					["V1"] = ToVector("00 00 00 00 00 C0 5E C0 00 00 00 00 00 C0 5E C0"), 
+				},
+				Postconditions = {
+					["V0"] = ToVector("01 01 01 01 BF FE 9F 81 00 00 00 00 00 00 00 00"), 
+				}
+			}.Run();
+
+		[Test]
 		public void FMLS_by_element_vector_spdp() =>
 			new InsnTest {
 				Class = "FMLS-by-element-vector-spdp",
@@ -633,6 +647,20 @@ namespace InterpretedTests {
 			}.Run();
 		
 		[Test]
+		public void SDIV_2() =>
+			new InsnTest {
+				Class = "SDIV",
+				Instruction = 0x1ac20c62,
+				Preconditions = {
+					["X2"] = 0x1, 
+					["X3"] = 0xFFFFFFFFFFFFFFFE, 
+				},
+				Postconditions = {
+					["X2"] = 0xFFFFFFFE, 
+				}
+			}.Run();
+
+		[Test]
 		public void SHL_vector() =>
 			new InsnTest {
 				Class = "SHL-vector",
@@ -645,6 +673,36 @@ namespace InterpretedTests {
 				}
 			}.Run();
 		
+		[Test]
+		public void SUB_extended_register() =>
+			new InsnTest {
+				Class = "SUB-extended-register",
+				Instruction = 0xcb20c002,
+				Preconditions = {
+					["X0"] = 0xFFFFFFFFFFFFFFFE, 
+				},
+				Postconditions = {
+					["X2"] = 0x0, 
+				}
+			}.Run();
+		
+		[Test]
+		public void SUBS_extended_register() =>
+			new InsnTest {
+				Class = "SUBS-extended-register",
+				Instruction = 0xeb20c002,
+				Preconditions = {
+					["X0"] = 0xFFFFFFFFFFFFFFFE, 
+				},
+				Postconditions = {
+					["X2"] = 0x0, 
+					["NZCV-N"] = 0, 
+					["NZCV-Z"] = 1, 
+					["NZCV-C"] = 1, 
+					["NZCV-V"] = 0, 
+				}
+			}.Run();
+
 		[Test]
 		public void SUBS_immediate() =>
 			new InsnTest {
@@ -661,6 +719,19 @@ namespace InterpretedTests {
 				}
 			}.Run();
 		
+		[Test]
+		public void UADDLV() =>
+			new InsnTest {
+				Class = "UADDLV",
+				Instruction = 0x6eb03800,
+				Preconditions = {
+					["V0"] = ToVector("FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF"), 
+				},
+				Postconditions = {
+					["V0"] = ToVector("FC FF FF FF 03 00 00 00 00 00 00 00 00 00 00 00"), 
+				}
+			}.Run();
+
 		[Test]
 		public void USHL_vector() =>
 			new InsnTest {

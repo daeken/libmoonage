@@ -66,7 +66,7 @@ namespace Arch {
 				list => $"Call<Vector128<float>, Vector128<float>, long>(VectorCountBits, {GenerateExpression(list[1])}, {GenerateExpression(list[2])})")
 				.NoInterpret(); // TODO: Implement
 
-			Expression("vector-sum-unsigned", _ => new EInt(false, 32),
+			Expression("vector-sum-unsigned", _ => new EInt(false, 64),
 				list => $"VectorSumUnsigned({GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])})", 
 				list => $"Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, {GenerateExpression(list[1])}, {GenerateExpression(list[2])}, {GenerateExpression(list[3])})")
 				.Interpret((list, state) => {
@@ -173,7 +173,7 @@ namespace Arch {
 					16 => Vector128<ushort>.Ensure(state.Evaluate(list[1])) * Vector128<ushort>.Ensure(state.Evaluate(list[2])), 
 					32 => Vector128<float>.Ensure(state.Evaluate(list[1])) * Vector128<float>.Ensure(state.Evaluate(list[2])), 
 					64 => Vector128<double>.Ensure(state.Evaluate(list[1])) * Vector128<double>.Ensure(state.Evaluate(list[2])), 
-					{} value => throw new NotSupportedException($"Size not supported in vec-: {value}")
+					{} value => throw new NotSupportedException($"Size not supported in vec*: {value}")
 				});
 
 			string CastVector(PTree elem, string type) =>

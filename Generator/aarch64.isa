@@ -22,6 +22,8 @@
     0b10 "ASR"
     "ROR"))
 
+(defm with-fp16 (code) (unimplemented))
+
 (defm do-shift32 (value shift-type amount) (do-shift-common value shift-type amount u32 i32))
 (defm do-shift64 (value shift-type amount) (do-shift-common value shift-type amount u64 i64))
 (defm do-shift-common (value shift-type amount utype itype)
@@ -1221,7 +1223,7 @@
         0b01 "D"
         (unimplemented)))
     (match type
-        0b11 (= (vec-h rd) (u16 (+ (vec-h rn) (vec-h rm))))
+        0b11 (with-fp16 (= (vec-h rd) (u16 (+ (vec-h rn) (vec-h rm)))))
         0b00 (= (vec-s rd) (+ (vec-s rn) (vec-s rm)))
         0b01 (= (vec-d rd) (+ (vec-d rn) (vec-d rm)))
         (unimplemented)))
@@ -1507,8 +1509,8 @@
             0b0100 (block (= r1 "S") (= r2 "D"))
             (unimplemented)))
     (match tf
-        0b1100 (= (vec-s rd) (f32 (vec-h rn)))
-        0b1101 (= (vec-d rd) (f64 (vec-h rn)))
+        0b1100 (with-fp16 (= (vec-s rd) (f32 (vec-h rn))))
+        0b1101 (with-fp16 (= (vec-d rd) (f64 (vec-h rn))))
         0b0011 (= (vec-h rd) (u16 (vec-s rn)))
         0b0001 (= (vec-d rd) (f64 (vec-s rn)))
         0b0111 (= (vec-h rd) (u16 (vec-d rn)))
@@ -5463,15 +5465,15 @@
                 m) imm))))
         (if (== (& option 0b011) 0b011)
             (= (gpr-or-sp64 rd) (- (gpr-or-sp64 rn) (<< (gpr64 rm) imm)))
-            (let m (u64 (gpr32 rm))
-                (= (gpr-or-sp64 rd) (- (gpr-or-sp64 rn) (<< (match option
+            (let m (gpr32 rm)
+                (= (gpr-or-sp64 rd) (- (gpr-or-sp64 rn) (<< (u64 (match option
                     0b000 (& m 0xFF)
                     0b001 (& m 0xFFFF)
                     0b010 (& m 0xFFFFFFFF)
-                    0b100 (u64 (signext (u8 m) i64))
-                    0b101 (u64 (signext (u16 m) i64))
-                    0b110 (u64 (signext m i64))
-                    m) imm)))))))
+                    0b100 (signext (u8 m) i64)
+                    0b101 (signext (u16 m) i64)
+                    0b110 (signext m i64)
+                    m)) imm)))))))
 
 (def SUB-shifted-register
     "f 1 0 01011 ss 0 mmmmm iiiiii nnnnn ddddd"
@@ -5523,15 +5525,15 @@
                 m) imm)) 1)))
         (if (== (& option 0b011) 0b011)
             (= (gpr64 rd) (add-with-carry-set-nzcv64 (gpr-or-sp64 rn) (~ (<< (gpr64 rm) imm)) 1))
-            (let m (u64 (gpr32 rm))
-                (= (gpr64 rd) (add-with-carry-set-nzcv64 (gpr-or-sp64 rn) (~ (<< (match option
+            (let m (gpr32 rm)
+                (= (gpr64 rd) (add-with-carry-set-nzcv64 (gpr-or-sp64 rn) (~ (<< (u64 (match option
                     0b000 (& m 0xFF)
                     0b001 (& m 0xFFFF)
                     0b010 (& m 0xFFFFFFFF)
-                    0b100 (u64 (signext (u8 m) i64))
-                    0b101 (u64 (signext (u16 m) i64))
-                    0b110 (u64 (signext m i64))
-                    m) imm)) 1))))))
+                    0b100 (signext (u8 m) i64)
+                    0b101 (signext (u16 m) i64)
+                    0b110 (signext m i64)
+                    m)) imm)) 1))))))
 
 (def SUBS-shifted-register
     "s 1 1 01011 hh 0 mmmmm iiiiii nnnnn ddddd"
