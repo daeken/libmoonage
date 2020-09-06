@@ -17,7 +17,7 @@ def diff(a, b):
 			ret += '<font color="red">%s</font>' % x
 	return ret + '<font color="green">%s</font>' % a[mlen:]
 
-tree = ET.parse('tests.xml')
+tree = ET.parse('testresults.xml')
 root = tree.getroot()
 insns = []
 for insn in root:
