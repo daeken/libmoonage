@@ -158,9 +158,9 @@ namespace LocalHvTest {
             var defs = Core.Defs.Select(x => x.Name).Where(x => !x.StartsWith("CAS")).OrderBy(x => x).ToList();
 
             try {
-                File.Delete("/home/daeken/testresults/index.html");
+                File.Delete("testresults.xml");
             } catch(Exception) { }
-            using var ofp = File.OpenWrite("/home/daeken/testresults/index.html");
+            using var ofp = File.OpenWrite("testresults.xml");
             using var sw = new StreamWriter(ofp);
             sw.WriteLine("<instructions>");
             var availableWorkers = new ConcurrentQueue<Worker>(Enumerable.Range(0, Environment.ProcessorCount).Select(_ => new Worker()));
