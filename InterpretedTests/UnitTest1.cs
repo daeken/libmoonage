@@ -71,6 +71,23 @@ namespace InterpretedTests {
 			}.Run();
 		
 		[Test]
+		public void ADDS_extended_register_2() =>
+			new InsnTest {
+				Class = "ADDS-extended-register",
+				Instruction = 0xab20c002,
+				Preconditions = {
+					["X0"] = 0xFFFFFFFFFFFFFFFE, 
+				},
+				Postconditions = {
+					["X2"] = 0xFFFFFFFFFFFFFFFC, 
+					["NZCV-N"] = 1, 
+					["NZCV-Z"] = 0, 
+					["NZCV-C"] = 1, 
+					["NZCV-V"] = 0, 
+				}
+			}.Run();
+		
+		[Test]
 		public void ADDS_immediate() =>
 			new InsnTest {
 				Class = "ADDS-immediate",
@@ -95,7 +112,7 @@ namespace InterpretedTests {
 				Preconditions = { ["V0"] = ToVector("00 00 00 00 00 C0 5E C0 00 00 00 00 00 C0 5E C0") }, 
 				Postconditions = { ["V0"] = ToVector("00 00 00 00 00 C0 5E C0 00 00 00 00 00 C0 5E C0") }
 			}.Run();
-
+		
 		[Test]
 		public void BIC_vector_immediate_16bit() =>
 			new InsnTest {
