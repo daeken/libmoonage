@@ -74,28 +74,28 @@ namespace Arch {
 					var count = (int) state.Evaluate(list[3]);
 					switch(esize) {
 						case 8: {
-							var vector = state.GetRegister($"V{state.Evaluate(list[1])}").As<byte>();
+							var vector = state.Evaluate(list[1]).As<byte>();
 							var sum = 0UL;
 							for(var i = 0; i < count; ++i)
 								sum += (ulong) vector[i];
 							return sum;
 						}
 						case 16: {
-							var vector = state.GetRegister($"V{state.Evaluate(list[1])}").As<ushort>();
+							var vector = state.Evaluate(list[1]).As<ushort>();
 							var sum = 0UL;
 							for(var i = 0; i < count; ++i)
 								sum += (ulong) vector[i];
 							return sum;
 						}
 						case 32: {
-							var vector = state.GetRegister($"V{state.Evaluate(list[1])}").As<uint>();
+							var vector = state.Evaluate(list[1]).As<uint>();
 							var sum = 0UL;
 							for(var i = 0; i < count; ++i)
 								sum += (ulong) vector[i];
 							return sum;
 						}
 						case 64: {
-							var vector = state.GetRegister($"V{state.Evaluate(list[1])}").As<ulong>();
+							var vector = state.Evaluate(list[1]).As<ulong>();
 							var sum = 0UL;
 							for(var i = 0; i < count; ++i)
 								sum += (ulong) vector[i];

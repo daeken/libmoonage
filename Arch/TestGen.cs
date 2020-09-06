@@ -59,13 +59,11 @@ namespace Arch {
         }
 
         public
-            ParallelQuery<(uint Inst, string Disasm, IEnumerable<(Dictionary<object, dynamic>, Dictionary<object, dynamic>)>)>
+            ParallelQuery<(uint Inst, string Disasm, Dictionary<object, dynamic> Preconditions,
+                Dictionary<object, dynamic> Postconditions)>
             InstructionsWithConditions =>
-                Instructions.AsParallel().Select(x => {
-                    var cond = CreateConditions(Def, x.Key);
-                    //Console.WriteLine($"Generated {cond.Count} condition sets for {x.Value}");
-                    return (x.Key, x.Value, cond);
-                });
+            Instructions.AsParallel().Select(x => (x.Key, x.Value, CreateConditions(Def, x.Key)))
+                .SelectMany(x => x.Item3.Select(y => (x.Key, x.Value, y.Item1, y.Item2)));
 
         IEnumerable<(Dictionary<object, dynamic>, Dictionary<object, dynamic>)> CreateConditions(Def def, uint inst) {
             var preconditionSets = new Queue<Dictionary<object, dynamic>>();
@@ -180,10 +178,8 @@ namespace Arch {
                             Array.Copy(bytes, 0, mdata, i, bytes.Length);
                         for(var i = offset - bytes.Length; i >= 0; i -= bytes.Length)
                             Array.Copy(bytes, 0, mdata, i, bytes.Length);
-                        if(page == PC >> 12)
+                        if(page == PC >> 12 || page + 1 == PC >> 12)
                             Array.Copy(BitConverter.GetBytes(inst), 0, mdata, 0, 4);
-                        else if(page == (PC >> 12) - 1)
-                            Array.Copy(BitConverter.GetBytes(inst), 0, mdata, 0x1000, 4);
                         if(twoPage) {
                             preconditionSets.Enqueue(new Dictionary<object, dynamic>(preconditions) {
                                 [page] = mdata,

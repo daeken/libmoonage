@@ -162,7 +162,7 @@ namespace LocalHvTest {
             } catch(Exception) { }
             using var ofp = File.OpenWrite("/home/daeken/testresults/index.html");
             using var sw = new StreamWriter(ofp);
-            
+            sw.WriteLine("<instructions>");
             var availableWorkers = new ConcurrentQueue<Worker>(Enumerable.Range(0, Environment.ProcessorCount).Select(_ => new Worker()));
             void WithWorker(Action<Worker> func) {
                 while(true) {
@@ -187,169 +187,165 @@ namespace LocalHvTest {
                 try {
                     var tg = new TestGen(def);
                     tg.InstructionsWithConditions.ForAll(x => {
-                        var (insn, disasm, conds) = x;
-                        var idata = BitConverter.GetBytes(insn);
-                        foreach(var (pre, post) in conds) {
-                            //if(post.ContainsKey("PC"))
-                            //    continue;
-                            var ms = new HashSet<ulong>();
-                            var nnzcv = false;
-                            var nzcv = 0UL;
-                            var regs = new Dictionary<int, ulong>();
-                            var vecs = new Dictionary<int, (ulong, ulong)>();
-                            var mem = new Dictionary<ulong, byte[]>();
-                            var outRegs = new List<int>();
-                            var outVecs = new List<int>();
-                            var outMem = new List<ulong>();
-                            foreach(var (k, v) in pre) {
-                                if(k is ulong addr) {
-                                    addr <<= 12;
+                        var (insn, disasm, pre, post) = x;
+                        //if(post.ContainsKey("PC"))
+                        //    continue;
+                        var ms = new HashSet<ulong>();
+                        var nnzcv = false;
+                        var nzcv = 0UL;
+                        var regs = new Dictionary<int, ulong>();
+                        var vecs = new Dictionary<int, (ulong, ulong)>();
+                        var mem = new Dictionary<ulong, byte[]>();
+                        var outRegs = new List<int>();
+                        var outVecs = new List<int>();
+                        var outMem = new List<ulong>();
+                        foreach(var (k, v) in pre) {
+                            if(k is ulong addr) {
+                                addr <<= 12;
+                                ms.Add(addr);
+                                if(!(v is byte[] data)) throw new Exception();
+                                mem[addr] = data;
+                            } else if(k is string reg) {
+                                if(reg[0] == 'X')
+                                    regs[(int) ulong.Parse(reg.Substring(1))] = (ulong) v;
+                                else if(reg == "SP") {
+                                    regs[34] = (ulong) v;
+                                } else if(reg == "PC") {
+                                    regs[32] = (ulong) v;
+                                } else if(reg[0] == 'V') {
+                                    var ri = ulong.Parse(reg.Substring(1));
+                                    var vec = (Vector128<ulong>) v.As<ulong>();
+                                    vecs[(int) ri] = (vec[0], vec[1]);
+                                } else if(reg[0] == 'N') {
+                                    nnzcv = true;
+                                    var bit = ((ulong) v) & 1;
+                                    switch(reg[5]) {
+                                        case 'N':
+                                            nzcv |= bit << 31;
+                                            break;
+                                        case 'Z':
+                                            nzcv |= bit << 30;
+                                            break;
+                                        case 'C':
+                                            nzcv |= bit << 29;
+                                            break;
+                                        case 'V':
+                                            nzcv |= bit << 28;
+                                            break;
+                                    }
+                                } else
+                                    throw new NotImplementedException(reg);
+                            } else
+                                throw new NotImplementedException(k.ToPrettyString());
+                        }
+
+                        var er = new Dictionary<int, ulong>();
+                        var ev = new Dictionary<int, (ulong, ulong)>();
+                        var em = new Dictionary<ulong, byte[]>();
+                        var nenzcv = false;
+                        var enzcv = nzcv;
+                        //pre.PrettyPrint();
+                        //post.PrettyPrint();
+                        foreach(var (k, v) in post) {
+                            if(k is ulong addr) {
+                                addr <<= 12;
+                                outMem.Add(addr);
+                                em[addr] = (byte[]) v;
+                                if(!ms.Contains(addr)) {
                                     ms.Add(addr);
-                                    if(!(v is byte[] data)) throw new Exception();
-                                    mem[addr] = data;
-                                } else if(k is string reg) {
-                                    if(reg[0] == 'X')
-                                        regs[(int) ulong.Parse(reg.Substring(1))] = (ulong) v;
-                                    else if(reg == "SP") {
-                                        regs[34] = (ulong) v;
-                                    } else if(reg == "PC") {
-                                        regs[32] = (ulong) v;
-                                    } else if(reg[0] == 'V') {
-                                        var ri = ulong.Parse(reg.Substring(1));
-                                        var vec = (Vector128<ulong>) v.As<ulong>();
-                                        vecs[(int) ri] = (vec[0], vec[1]);
-                                    } else if(reg[0] == 'N') {
-                                        nnzcv = true;
-                                        var bit = ((ulong) v) & 1;
-                                        switch(reg[5]) {
-                                            case 'N':
-                                                nzcv |= bit << 31;
-                                                break;
-                                            case 'Z':
-                                                nzcv |= bit << 30;
-                                                break;
-                                            case 'C':
-                                                nzcv |= bit << 29;
-                                                break;
-                                            case 'V':
-                                                nzcv |= bit << 28;
-                                                break;
-                                        }
-                                    } else
-                                        throw new NotImplementedException(reg);
-                                } else
-                                    throw new NotImplementedException(k.ToPrettyString());
-                            }
-
-                            var er = new Dictionary<int, ulong>();
-                            var ev = new Dictionary<int, (ulong, ulong)>();
-                            var em = new Dictionary<ulong, byte[]>();
-                            var nenzcv = false;
-                            var enzcv = nzcv;
-                            //pre.PrettyPrint();
-                            //post.PrettyPrint();
-                            foreach(var (k, v) in post) {
-                                if(k is ulong addr) {
-                                    addr <<= 12;
-                                    outMem.Add(addr);
-                                    em[addr] = (byte[]) v;
-                                    if(!ms.Contains(addr)) {
-                                        ms.Add(addr);
-                                        mem[addr] = new byte[0x1000];
-                                    }
-                                } else if(k is string reg) {
-                                    if(reg[0] == 'X') {
-                                        var rn = int.Parse(reg.Substring(1));
-                                        outRegs.Add(rn);
-                                        er[rn] = (ulong) v;
-                                    } else if(reg == "SP") {
-                                        outRegs.Add(34);
-                                        er[34] = (ulong) v;
-                                    } else if(reg == "PC") {
-                                        outRegs.Add(32);
-                                        er[32] = (ulong) v;
-                                    } else if(reg[0] == 'V') {
-                                        var rn = int.Parse(reg.Substring(1));
-                                        outVecs.Add(rn);
-                                        var vec = (Vector128<ulong>) v.As<ulong>();
-                                        ev[rn] = (vec[0], vec[1]);
-                                    } else if(reg[0] == 'N') {
-                                        var bit = ((ulong) v) & 1;
-                                        nenzcv = true;
-                                        switch(reg[5]) {
-                                            case 'N':
-                                                enzcv = (enzcv & ~(1UL << 31)) | (bit << 31);
-                                                break;
-                                            case 'Z':
-                                                enzcv = (enzcv & ~(1UL << 30)) | (bit << 30);
-                                                break;
-                                            case 'C':
-                                                enzcv = (enzcv & ~(1UL << 29)) | (bit << 29);
-                                                break;
-                                            case 'V':
-                                                enzcv = (enzcv & ~(1UL << 28)) | (bit << 28);
-                                                break;
-                                        }
-                                    } else
-                                        throw new NotImplementedException(reg);
-                                } else
-                                    throw new NotImplementedException(k.ToPrettyString());
-                            }
-
-                            regs[32] = TestGen.PC;
-                            if(nenzcv) {
-                                regs[0x1000] = nzcv;
-                                outRegs.Add(0x1000);
-                                er[0x1000] = enzcv;
-                            } else if(nnzcv)
-                                regs[0x1000] = nzcv;
-
-                            if(!ms.Contains(TestGen.PC) && !ms.Contains(TestGen.PC - 0x1000)) {
-                                mem[TestGen.PC] = idata;
-                            }
-
-                            void Throw(string description) =>
-                                throw new MagicException(insn, disasm, description, pre, er, regs, ev, vecs, em, mem);
-
-                            var success = false;
-                            for(var i = 0; i < 10; ++i)
-                                try {
-                                    WithWorker(worker => {
-                                        if(!worker.Run(regs, vecs, mem, outRegs, outVecs, outMem))
-                                            Throw("Execution");
-                                    });
-                                    success = true;
-                                    break;
-                                } catch(TimeoutException) {
-                                    Console.WriteLine($"Timeout on {name} -- {disasm} -- attempt {i}");
+                                    mem[addr] = new byte[0x1000];
                                 }
-
-                            if(!success) Throw("Timeout");
-
-                            foreach(var rn in outRegs)
-                                if(er[rn] != regs[rn])
-                                    Throw(rn switch { 34 => "SP", 32 => "PC", 0x1000 => "NZCV", _ => $"X{rn}" });
-
-                            foreach(var rn in outVecs) {
-                                var (ea, eb) = ev[rn];
-                                var (ga, gb) = vecs[rn];
-                                if(ea != ga) Throw($"V{rn}L");
-                                if(eb != gb) Throw($"V{rn}H");
-                            }
-
-                            foreach(var addr in outMem) {
-                                var e = em[addr];
-                                var g = mem[addr];
-                                var ml = Math.Min(g.Length, e.Length);
-                                var (a, b) = ml == g.Length && e.Length == ml
-                                    ? (e, g)
-                                    : (e.Take(ml).ToArray(), g.Take(ml).ToArray());
-                                for(var i = 0; i < ml; ++i)
-                                    if(e[i] != g[i]) {
-                                        Throw($"[0x{addr + (ulong) i:X}]");
-                                        break;
+                            } else if(k is string reg) {
+                                if(reg[0] == 'X') {
+                                    var rn = int.Parse(reg.Substring(1));
+                                    outRegs.Add(rn);
+                                    er[rn] = (ulong) v;
+                                } else if(reg == "SP") {
+                                    outRegs.Add(34);
+                                    er[34] = (ulong) v;
+                                } else if(reg == "PC") {
+                                    outRegs.Add(32);
+                                    er[32] = (ulong) v;
+                                } else if(reg[0] == 'V') {
+                                    var rn = int.Parse(reg.Substring(1));
+                                    outVecs.Add(rn);
+                                    var vec = (Vector128<ulong>) v.As<ulong>();
+                                    ev[rn] = (vec[0], vec[1]);
+                                } else if(reg[0] == 'N') {
+                                    var bit = ((ulong) v) & 1;
+                                    nenzcv = true;
+                                    switch(reg[5]) {
+                                        case 'N':
+                                            enzcv = (enzcv & ~(1UL << 31)) | (bit << 31);
+                                            break;
+                                        case 'Z':
+                                            enzcv = (enzcv & ~(1UL << 30)) | (bit << 30);
+                                            break;
+                                        case 'C':
+                                            enzcv = (enzcv & ~(1UL << 29)) | (bit << 29);
+                                            break;
+                                        case 'V':
+                                            enzcv = (enzcv & ~(1UL << 28)) | (bit << 28);
+                                            break;
                                     }
+                                } else
+                                    throw new NotImplementedException(reg);
+                            } else
+                                throw new NotImplementedException(k.ToPrettyString());
+                        }
+
+                        regs[32] = TestGen.PC;
+                        if(nenzcv) {
+                            regs[0x1000] = nzcv;
+                            outRegs.Add(0x1000);
+                            er[0x1000] = enzcv;
+                        } else if(nnzcv)
+                            regs[0x1000] = nzcv;
+
+                        if(!ms.Contains(TestGen.PC))
+                            mem[TestGen.PC] = BitConverter.GetBytes(insn);
+
+                        void Throw(string description) =>
+                            throw new MagicException(insn, disasm, description, pre, er, regs, ev, vecs, em, mem);
+
+                        var success = false;
+                        for(var i = 0; i < 10; ++i)
+                            try {
+                                WithWorker(worker => {
+                                    if(!worker.Run(regs, vecs, mem, outRegs, outVecs, outMem))
+                                        Throw("Execution");
+                                });
+                                success = true;
+                                break;
+                            } catch(TimeoutException) {
+                                Console.WriteLine($"Timeout on {name} -- {disasm} -- attempt {i}");
                             }
+
+                        if(!success) Throw("Timeout");
+
+                        foreach(var rn in outRegs)
+                            if(er[rn] != regs[rn])
+                                Throw(rn switch { 34 => "SP", 32 => "PC", 0x1000 => "NZCV", _ => $"X{rn}" });
+
+                        foreach(var rn in outVecs) {
+                            var (ea, eb) = ev[rn];
+                            var (ga, gb) = vecs[rn];
+                            if(ea != ga) Throw($"V{rn}L");
+                            if(eb != gb) Throw($"V{rn}H");
+                        }
+
+                        foreach(var addr in outMem) {
+                            var e = em[addr];
+                            var g = mem[addr];
+                            var ml = Math.Min(g.Length, e.Length);
+                            var (a, b) = ml == g.Length && e.Length == ml
+                                ? (e, g)
+                                : (e.Take(ml).ToArray(), g.Take(ml).ToArray());
+                            for(var i = 0; i < ml; ++i)
+                                if(e[i] != g[i]) {
+                                    Throw($"[0x{addr + (ulong) i:X}]");
+                                    break;
+                                }
                         }
                     });
                 } catch(AggregateException ae) {
@@ -368,7 +364,7 @@ namespace LocalHvTest {
                                     if(k is ulong addr) {
                                         addr <<= 12;
                                         if(!(v is byte[] data)) throw new Exception();
-                                        sw.WriteLine($"<tr><td>0x{addr:X}</td><td>{Hexdump(addr, data)}</td>");
+                                        sw.WriteLine($"<tr><td>0x{addr:X}</td><td>{Hexdump(addr, data)}</td></tr>");
                                     } else if(k is string reg) {
                                         sw.Write($"<tr><td>{reg}</td><td>");
                                         if(reg[0] == 'X' || reg == "SP" || reg == "PC" || reg[0] == 'N')
@@ -470,6 +466,7 @@ namespace LocalHvTest {
                     GC.Collect();
                 }
             }
+            sw.WriteLine("</instructions>");
 		}
 	}
 }

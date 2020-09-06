@@ -84,6 +84,7 @@
     "add $r1$rd, $r1$rn, $r2$rm, $extend #$imm"
     (names (size s) (rm m) (option o) (imm i) (rn n) (rd d))
     (block
+        (requires (<= imm 4))
         (let r1 (if (== size 0) "W" "X"))
         (let r2 (if (== (& option 0b011) 0b011) "X" "W"))
         (let extend (if (== size 0)
@@ -142,6 +143,7 @@
     "add $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
     (names (size f) (shift s) (imm i) (rd d) (rn n) (rm m))
     (block
+        (requires (<= imm (if size 63 31)))
         (let r (if (== size 0) "W" "X"))
         (let shiftstr (shift-string shift)))
     (if (== size 0)
@@ -174,6 +176,7 @@
     "adds $r1$rd, $r1$rn, $r2$rm, $extend #$imm"
     (names (size s) (rm m) (option o) (imm i) (rn n) (rd d))
     (block
+        (requires (<= imm 4))
         (let r1 (if (== size 0) "W" "X"))
         (let r2 (if (== (& option 0b011) 0b011) "X" "W"))
         (let extend (if (== size 0)
@@ -232,6 +235,7 @@
     "adds $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
     (names (size f) (shift s) (rm m) (imm i) (rn n) (rd d))
     (block
+        (requires (<= imm (if size 63 31)))
         (let r (if (== size 0) "W" "X"))
         (let shiftstr (shift-string shift)))
     (if (== size 0)
@@ -272,6 +276,7 @@
     "and $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
     (names (size f) (shift s) (rm m) (imm i) (rn n) (rd d))
     (block
+        (requires (<= imm (if size 63 31)))
         (let r (if (== size 0) "W" "X"))
         (let shiftstr (shift-string shift)))
     (if (== size 0)
@@ -291,6 +296,7 @@
     "ands $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
     (names (size f) (shift s) (imm i) (rm m) (rn n) (rd d))
     (block
+        (requires (<= imm (if size 63 31)))
         (let r (if (== size 0) "W" "X"))
         (let shiftstr (shift-string shift)))
     (if (== size 0)
@@ -380,6 +386,8 @@
     (let r (if (== size 0) "W" "X"))
     (if (== size 0)
         (block
+            (requires (<= immr (if size 63 31)))
+            (requires (<= imms (if size 63 31)))
             (let dst (gpr32 rd))
             (let src (gpr32 rn))
             (let wmask (u32 (make-wmask N imms immr 0 32)))
@@ -399,6 +407,7 @@
     "bic $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
     (names (size f) (shift s) (rm m) (imm i) (rn n) (rd d))
     (block
+        (requires (<= imm (if size 63 31)))
         (let r (if (== size 0) "W" "X"))
         (let shiftstr (shift-string shift)))
     (if (== size 0)
@@ -436,6 +445,7 @@
     "bics $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
     (names (size f) (shift s) (rm m) (imm i) (rn n) (rd d))
     (block
+        (requires (<= imm (if size 63 31)))
         (let r (if (== size 0) "W" "X"))
         (let shiftstr (shift-string shift)))
     (if (== size 0)
@@ -1085,6 +1095,7 @@
     "eon $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
     (names (size f) (shift s) (rm m) (imm i) (rn n) (rd d))
     (block
+        (requires (<= imm (if size 63 31)))
         (let r (if (== size 0) "W" "X"))
         (let shiftstr (shift-string shift)))
     (if (== size 0)
@@ -1107,6 +1118,7 @@
     "eor $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
     (names (size f) (shift s) (rm m) (imm i) (rn n) (rd d))
     (block
+        (requires (<= imm (if size 63 31)))
         (let r (if (== size 0) "W" "X"))
         (let shiftstr (shift-string shift)))
     (if (== size 0)
@@ -1132,7 +1144,9 @@
     "f 00 100111 o 0 mmmmm ssssss nnnnn ddddd"
     "extr $r$rd, $r$rn, $r$rm, #$lsb"
     (names (size f) (o o) (rm m) (lsb s) (rn n) (rd d))
-    (let r (if (== size 0) "W" "X"))
+    (block
+        (requires (<= lsb (if size 63 31)))
+        (let r (if (== size 0) "W" "X")))
     (if (== size 0)
         (= (gpr32 rd) (| (<< (gpr32 rn) (- 32 lsb)) (>> (gpr32 rm) lsb)))
         (= (gpr64 rd) (| (<< (gpr64 rn) (- 64 lsb)) (>> (gpr64 rm) lsb)))))
@@ -1495,7 +1509,7 @@
         0b0100 (= (vec-s rd) (f32 (vec-d rn)))
         (unimplemented)))
 
-(defm fcvtas-sub (v) (if (>= v 0) (ceil v) (floor v)))
+(defm fcvtas-sub (v) (if (>= v 0) (round-half-up v) (round-half-down v)))
 
 (def FCVTAS-scalar-integer
     "s 0 0 11110 tt 1 00 100 000000 nnnnn ddddd"
@@ -1697,6 +1711,7 @@
     (names (size f) (type t) (scale s) (rn n) (rd d))
     (block
         (let fbits (- 64 scale))
+        (requires (<= fbits (if size 63 31)))
         (let r1 (if (== size 0) "W" "X"))
         (let r2 (match type
             0b11 "H"
@@ -1738,6 +1753,7 @@
     (names (size f) (type t) (scale s) (rn n) (rd d))
     (block
         (let fbits (- 64 scale))
+        (requires (<= fbits (if size 63 31)))
         (let r1 (if (== size 0) "W" "X"))
         (let r2 (match type
             0b11 "H"
@@ -2348,6 +2364,7 @@
     "ins V$rd.$ts[$index], $r$rn"
     (names (imm i) (rn n) (rd d))
     (block
+        (requires (!= (& imm 0b01111) 0))
         (let ts "") (let index (u32 0)) (let r "W")
         (if (== (& imm 0b00001) 0b00001)
             (block (= ts "B") (= index (>> imm 1)))
@@ -2369,6 +2386,7 @@
     "ins V$rd.$ts[$index1], V$rn.$ts[$index2]"
     (names (imm5 i) (imm4 j) (rn n) (rd d))
     (block
+        (requires (!= (& imm5 0b01111) 0))
         (let ts "") (let index1 (u32 0)) (let index2 (u32 0))
         (if (== (& imm5 0b00001) 0b00001)
             (block (= ts "B") (= index1 (>> imm5 1)) (= index2 imm4))
@@ -2925,6 +2943,9 @@
     "ldp $r$rt1, $r$rt2, [X$rn], #$simm"
     (names (size s) (imm i) (rt2 p) (rn n) (rt1 t))
     (block
+        (requires (!= rt1 rt2))
+        (requires (!= rt1 rn))
+        (requires (!= rt2 rn))
         (let r (if (== size 0) "W" "X"))
         (let simm (<< (signext imm i64) (if (== size 0) 2 3))))
     (let address (gpr-or-sp64 rn)
@@ -2942,6 +2963,7 @@
     "ldp $r$rt1, $r$rt2, [X$rn, #$simm]"
     (names (size s) (imm i) (rt2 p) (rn n) (rt1 t))
     (block
+        (requires (!= rt1 rt2))
         (let r (if (== size 0) "W" "X"))
         (let simm (<< (signext imm i64) (if (== size 0) 2 3))))
     (let address (+ (gpr-or-sp64 rn) simm)
@@ -3016,7 +3038,11 @@
     "01 101 0 010 1 iiiiiii ppppp nnnnn ttttt"
     "ldpsw X$rt1, X$rt2, [X$rn, #$simm]"
     (names (imm i) (rt2 p) (rn n) (rt1 t))
-    (let simm (<< (signext imm i64) 2))
+    (block
+        (requires (!= rt1 rt2))
+        (requires (!= rt1 rn))
+        (requires (!= rt2 rn))
+        (let simm (<< (signext imm i64) 2)))
     (let address (+ (gpr-or-sp64 rn) simm)
         (= (gpr64 rt1) (u64 (signext (load address u32) i64)))
         (= (gpr64 rt2) (u64 (signext (load (+ address 4) u32) i64)))))
@@ -3026,6 +3052,7 @@
     "ldr $r$rd, [X$rn, #$imm]!"
     (names (size s) (rawimm i) (rn n) (rd d))
     (block
+        (requires (!= rd rn))
         (let r (if (== size 0) "W" "X"))
         (let imm (signext rawimm i64)))
     (let address (+ (gpr-or-sp64 rn) imm)
@@ -3039,6 +3066,7 @@
     "ldr $r$rd, [X$rn], #$imm"
     (names (size s) (rawimm i) (rn n) (rd d))
     (block
+        (requires (!= rd rn))
         (let r (if (== size 0) "W" "X"))
         (let imm (signext rawimm i64)))
     (block
@@ -3209,7 +3237,8 @@
             0b010 "UXTW"
             0b110 "SXTW"
             0b111 "SXTX"
-            "LSL")))
+            0b011 "LSL"
+            (unimplemented))))
     (let offset (<< (if (== option 0b110)
             (u64 (signext (gpr32 rm) i64))
             (if (& option 1)
@@ -3223,7 +3252,9 @@
     "00 111 0 00 01 0 iiiiiiiii 01 nnnnn ttttt"
     "ldrb W$rt, [X$rn], #$imm"
     (names (rawimm i) (rn n) (rt t))
-    (let imm (signext rawimm i64))
+    (block
+        (requires (!= rt rn))
+        (let imm (signext rawimm i64)))
     (block
         (= (gpr32 rt) (u32 (load (gpr-or-sp64 rn) u8)))
         (= (gpr-or-sp64 rn) (+ (gpr-or-sp64 rn) imm))))
@@ -3232,7 +3263,9 @@
     "00 111 0 00 01 0 iiiiiiiii 11 nnnnn ttttt"
     "ldrb W$rt, [X$rn, #$imm]!"
     (names (rawimm i) (rn n) (rt t))
-    (let imm (signext rawimm i64))
+    (block
+        (requires (!= rt rn))
+        (let imm (signext rawimm i64)))
     (let address (+ (gpr-or-sp64 rn) imm)
         (= (gpr32 rt) (u32 (load address u8)))
         (= (gpr-or-sp64 rn) address)))
@@ -3266,7 +3299,9 @@
     "01 111 0 00 01 0 iiiiiiiii 01 nnnnn ttttt"
     "ldrh W$rt, [X$rn], #$imm"
     (names (rawimm i) (rn n) (rt t))
-    (let imm (signext rawimm i64))
+    (block
+        (requires (!= rt rn))
+        (let imm (signext rawimm i64)))
     (let address (gpr-or-sp64 rn)
         (= (gpr64 rt) (u64 (load address u16)))
         (= (gpr-or-sp64 rn) (+ address imm))))
@@ -3275,7 +3310,9 @@
     "01 111 0 00 01 0 iiiiiiiii 11 nnnnn ttttt"
     "ldrh W$rt, [X$rn, #$imm]!"
     (names (rawimm i) (rn n) (rt t))
-    (let imm (signext rawimm i64))
+    (block
+        (requires (!= rt rn))
+        (let imm (signext rawimm i64)))
     (let address (+ (gpr-or-sp64 rn) imm)
         (= (gpr64 rt) (u64 (load address u16)))
         (= (gpr-or-sp64 rn) address)))
@@ -3310,6 +3347,7 @@
     "ldrsb $r$rt, [X$rn], #$imm"
     (names (rawimm i) (opc o) (rn n) (rt t))
     (block
+        (requires (!= rt rn))
         (let imm (signext rawimm i64))
         (let r (if (== opc 1) "W" "X")))
     (let address (gpr-or-sp64 rn)
@@ -3323,6 +3361,7 @@
     "ldrsb $r$rt, [X$rn, #$imm]!"
     (names (rawimm i) (opc o) (rn n) (rt t))
     (block
+        (requires (!= rt rn))
         (let imm (signext rawimm i64))
         (let r (if (== opc 1) "W" "X")))
     (let address (+ (gpr-or-sp64 rn) imm)
@@ -3365,6 +3404,7 @@
     "ldrsh $r$rt, [X$rn], #$imm"
     (names (rawimm i) (opc o) (rn n) (rt t))
     (block
+        (requires (!= rt rn))
         (let imm (signext rawimm i64))
         (let r (if (== opc 1) "W" "X")))
     (let address (gpr-or-sp64 rn)
@@ -3378,6 +3418,7 @@
     "ldrsh $r$rt, [X$rn, #$imm]!"
     (names (rawimm i) (opc o) (rn n) (rt t))
     (block
+        (requires (!= rt rn))
         (let imm (signext rawimm i64))
         (let r (if (== opc 1) "W" "X")))
     (let address (+ (gpr-or-sp64 rn) imm)
@@ -3421,7 +3462,9 @@
     "10 111 0 00 10 0 iiiiiiiii 01 nnnnn ttttt"
     "ldrsw X$rt, [X$rn], #$imm"
     (names (rawimm i) (rn n) (rt t))
-    (let imm (signext rawimm i64))
+    (block
+        (requires (!= rt rn))
+        (let imm (signext rawimm i64)))
     (let address (gpr-or-sp64 rn)
         (= (gpr64 rt) (u64 (signext (load address u32) i64)))
         (= (gpr-or-sp64 rn) (+ address imm))))
@@ -3430,7 +3473,9 @@
     "10 111 0 00 10 0 iiiiiiiii 11 nnnnn ttttt"
     "ldrsw X$rt, [X$rn, #$imm]!"
     (names (rawimm i) (rn n) (rt t))
-    (let imm (signext rawimm i64))
+    (block
+        (requires (!= rt rn))
+        (let imm (signext rawimm i64)))
     (let address (+ (gpr-or-sp64 rn) imm)
         (= (gpr64 rt) (u64 (signext (load address u32) i64)))
         (= (gpr-or-sp64 rn) address)))
@@ -3460,7 +3505,7 @@
             0b010 "UXTW"
             0b110 "SXTW"
             0b111 "SXTX"
-            "LSL")))
+            (undefined))))
     (let offset (<< (if (== option 0b110)
             (u64 (signext (gpr32 rm) i64))
             (if (& option 1)
@@ -3671,7 +3716,7 @@
     (names (size s) (imm i) (rd d) (hw h))
     (block
         (let r (if (== size 0) "W" "X"))
-        (let shift (<< hw 4)))
+        (let shift (<< (u32 hw) 4)))
     (if (== size 0)
         (= (gpr32 rd) (| (& (gpr32 rd) (^ (u32 -1) (<< (u32 0xFFFF) shift))) (<< (u32 imm) shift)))
         (= (gpr64 rd) (| (& (gpr64 rd) (^ (u64 -1) (<< (u64 0xFFFF) shift))) (<< (u64 imm) shift)))))
@@ -3681,8 +3726,10 @@
     "movn $r$rd, #$imm, LSL #$shift"
     (names (size s) (imm i) (rd d) (hw h))
     (block
+        (when (== size 0)
+            (requires (< hw 2)))
         (let r (if (== size 0) "W" "X"))
-        (let shift (<< hw 4)))
+        (let shift (<< (u32 hw) 4)))
     (if (== size 0)
         (= (gpr32 rd) (~ (<< (u32 imm) shift)))
         (= (gpr64 rd) (~ (<< (u64 imm) shift)))))
@@ -3693,7 +3740,7 @@
     (names (size s) (imm i) (rd d) (hw h))
     (block
         (let r (if (== size 0) "W" "X"))
-        (let shift (<< hw 4)))
+        (let shift (<< (u32 hw) 4)))
     (if (== size 0)
         (= (gpr32 rd) (<< (u32 imm) shift))
         (= (gpr64 rd) (<< (u64 imm) shift))))
@@ -3794,7 +3841,7 @@
         (= (vec rd) (if Q avec (vector-zero-top avec)))))
 
 (def MVNI-vector-32bit-MSL
-    "0 Q 1 0111100000 a b c 111m 0 1 d e f g h rrrrr"
+    "0 Q 1 0111100000 a b c 110m 0 1 d e f g h rrrrr"
     "mvni V$rd.$t, #$imm, MSL #$amount"
     (names (Q Q) (cmode m) (a a) (b b) (c c) (d d) (e e) (f f) (g g) (h h) (rd r))
     (block
@@ -3863,6 +3910,7 @@
     "orn $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
     (names (size f) (shift s) (rm m) (imm i) (rn n) (rd d))
     (block
+        (requires (<= imm (if size 63 31)))
         (let r (if (== size 0) "W" "X"))
         (let shiftstr (shift-string shift)))
     (if (== size 0)
@@ -3885,6 +3933,7 @@
     "orr $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
     (names (size f) (shift s) (rm m) (imm i) (rn n) (rd d))
     (block
+        (requires (<= imm (if size 63 31)))
         (let r (if (== size 0) "W" "X"))
         (let shiftstr (shift-string shift)))
     (if (== size 0)
@@ -4031,7 +4080,9 @@
     "f 00 100110 o pppppp ssssss nnnnn ddddd"
     "sbfm $r$rd, $r$rn, #$immr, #$imms"
     (names (N o) (size f) (immr p) (imms s) (rn n) (rd d))
-    (let r (if (== size 0) "W" "X"))
+    (block
+        (requires (<= imm (if size 63 31)))
+        (let r (if (== size 0) "W" "X")))
     (if (== size 0)
         (block
             (let src (gpr32 rn))
@@ -4236,7 +4287,7 @@
     "0 Q 0011001 0 0 mmmmm 0111 ss nnnnn ttttt"
     "st1 { V$rt.$T }, [X$rn], #$imm"
     (names (Q Q) (rm m) (size s) (rn n) (rt t))
-    (let imm (u8 (if Q 32 16))
+    (let imm (u8 (if Q 16 8))
         (requires (== rm 0b11111))
         (let T (match (: size Q)
             0b00_0 "8B"
@@ -5060,7 +5111,8 @@
             0b010 "UXTW"
             0b110 "SXTW"
             0b111 "SXTX"
-            "LSL")))
+            0b011 "LSL"
+            (undefined))))
     (let offset (<< (if (== option 0b110)
             (u64 (signext (gpr32 rm) i64))
             (if (& option 1)
@@ -5166,7 +5218,8 @@
             0b010 "UXTW"
             0b110 "SXTW"
             0b111 "SXTX"
-            "LSL")))
+            0b011 (if (!= rop 0b0000) "LSL" (undefined))
+            (undefined))))
     (let offset (<< (if (== option 0b110)
             (u64 (signext (gpr32 rm) i64))
             (if (& option 1)
@@ -5363,6 +5416,7 @@
     "sub $r1$rd, $r1$rn, $r2$rm, $extend #$imm"
     (names (size s) (rm m) (option o) (imm i) (rn n) (rd d))
     (block
+        (requires (<= imm 4))
         (let r1 (if (== size 0) "W" "X"))
         (let r2 (if (== (& option 0b011) 0b011) "X" "W"))
         (let extend (if (== size 0)
@@ -5409,6 +5463,7 @@
     "sub $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
     (names (size f) (shift s) (imm i) (rd d) (rn n) (rm m))
     (block
+        (requires (<= imm (if size 63 31)))
         (let r (if (== size 0) "W" "X"))
         (let shiftstr (shift-string shift)))
     (if (== size 0)
@@ -5420,6 +5475,7 @@
     "subs $r1$rd, $r1$rn, $r2$rm, $extend #$imm"
     (names (size s) (rm m) (option o) (imm i) (rn n) (rd d))
     (block
+        (requires (<= imm 4))
         (let r1 (if (== size 0) "W" "X"))
         (let r2 (if (== (& option 0b011) 0b011) "X" "W"))
         (let extend (if (== size 0)
@@ -5466,6 +5522,7 @@
     "subs $r$rd, $r$rn, $r$rm, $shiftstr #$imm"
     (names (size s) (shift h) (rm m) (imm i) (rn n) (rd d))
     (block
+        (requires (<= imm (if size 63 31)))
         (let mode32 (== size 0))
         (let r (if mode32 "W" "X"))
         (let shiftstr (shift-string shift)))
@@ -5578,7 +5635,10 @@
     "f 10 100110 o pppppp ssssss nnnnn ddddd"
     "ubfm $r$rd, $r$rn, #$immr, #$imms"
     (names (N o) (size f) (immr p) (imms s) (rn n) (rd d))
-    (let r (if (== size 0) "W" "X"))
+    (block
+        (requires (<= imms (if size 63 31)))
+        (requires (<= immr (if size 63 31)))
+        (let r (if (== size 0) "W" "X")))
     (if (== size 0)
         (block
             (let src (gpr32 rn))
@@ -5677,10 +5737,12 @@
     (names (Q Q) (imm i) (rn n) (rd d))
     (mlet (T "" index 0
             r (if Q "X" "W")
-            size (if Q 64
-                    (if (== (& imm 0b1) 0b1) 8
-                    (if (== (& imm 0b11) 0b10) 16
-                    32))))
+            comb (: Q imm)
+            size (if (== (& 0b100001) 0b000001) 8
+                    (if (== (& 0b100011) 0b000010) 16
+                    (if (== (& 0b100111) 0b000100) 32
+                    (if (== (& 0b101111) 0b101000) 64
+                    (unimplemented))))))
         (match size
             8  (block (= T "B") (= index (>> imm 1)))
             16 (block (= T "H") (= index (>> imm 2)))

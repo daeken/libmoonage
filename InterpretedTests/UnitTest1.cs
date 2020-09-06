@@ -513,6 +513,29 @@ namespace InterpretedTests {
 			}.Run();
 		
 		[Test]
+		public void MOVK() =>
+			new InsnTest {
+				Class = "MOVK",
+				Instruction = 0x72a00022,
+				Preconditions = {
+					["X2"] = 0xFFFFFFFFFFFFFFFE, 
+				},
+				Postconditions = {
+					["X2"] = 0x1FFFE, 
+				}
+			}.Run();
+		
+		[Test]
+		public void MOVZ() =>
+			new InsnTest {
+				Class = "MOVZ",
+				Instruction = 0x52bfffc0,
+				Postconditions = {
+					["X0"] = 0xFFFE0000, 
+				}
+			}.Run();
+
+		[Test]
 		public void MVNI_vector_32bit_MSL() =>
 			new InsnTest {
 				Class = "MVNI-vector-32bit-MSL",
@@ -674,6 +697,19 @@ namespace InterpretedTests {
 				}
 			}.Run();
 		
+		[Test]
+		public void USHL_vector2() =>
+			new InsnTest {
+				Class = "USHL-vector",
+				Instruction = 0x2e214420,
+				Preconditions = {
+					["V1"] = ToVector("FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF"), 
+				},
+				Postconditions = {
+					["V0"] = ToVector("7F 7F 7F 7F 7F 7F 7F 7F 00 00 00 00 00 00 00 00"), 
+				}
+			}.Run();
+
 		[Test]
 		public void XTN() =>
 			new InsnTest {
