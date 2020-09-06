@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arch", "Arch\Arch.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalHvTest", "LocalHvTest\LocalHvTest.csproj", "{E295FD24-F2D6-4CB3-BB42-BED32D85F59D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterpretedTests", "InterpretedTests\InterpretedTests.csproj", "{D4DDD444-AF0B-4467-8024-C21315378874}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{E295FD24-F2D6-4CB3-BB42-BED32D85F59D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E295FD24-F2D6-4CB3-BB42-BED32D85F59D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E295FD24-F2D6-4CB3-BB42-BED32D85F59D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4DDD444-AF0B-4467-8024-C21315378874}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4DDD444-AF0B-4467-8024-C21315378874}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4DDD444-AF0B-4467-8024-C21315378874}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4DDD444-AF0B-4467-8024-C21315378874}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
