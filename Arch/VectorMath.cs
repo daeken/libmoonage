@@ -33,7 +33,7 @@ namespace Arch {
 				list => $"VR[(int) ({GenerateExpression(list[1])})] = VR[(int) ({GenerateExpression(list[1])})]().Insert({GenerateExpression(list[2])}, {GenerateExpression(list[3])})")
 				.Interpret((list, state) => {
 					var name = $"V{state.Evaluate(list[1])}";
-					var vector = state.GetRegister(name).As(list[3].Type);
+					var vector = state.GetRegister(name).As(list[3].Type).Copy();
 					var value = state.Evaluate(list[3]);
 					value = list[3].Type switch {
 						EInt(false, 8) => (dynamic) (byte) value, 

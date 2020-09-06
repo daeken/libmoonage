@@ -54,33 +54,6 @@ namespace InterpretedTests {
 			}.Run();
 		
 		[Test]
-		public void ADD_extended_register() =>
-			new InsnTest {
-				Class = "ADD-extended-register",
-				Instruction = 0x0b201420,
-				Preconditions = {
-					["X0"] = 0x80000000, 
-					["X1"] = 0x8000000000000000, 
-				},
-				Postconditions = {
-					["X0"] = 0x80000000, 
-				}
-			}.Run();
-		
-		[Test]
-		public void ADD_shifted_register() =>
-			new InsnTest {
-				Class = "ADD-shifted-register",
-				Instruction = 0x0b00fc02,
-				Preconditions = {
-					["X0"] = 0x80000000, 
-				},
-				Postconditions = {
-					["X2"] = 0x0, 
-				}
-			}.Run();
-		
-		[Test]
 		public void ADDS_extended_register() =>
 			new InsnTest {
 				Class = "ADDS-extended-register",
@@ -672,19 +645,6 @@ namespace InterpretedTests {
 			}.Run();
 		
 		[Test]
-		public void UMOV() =>
-			new InsnTest {
-				Class = "UMOV",
-				Instruction = 0x0e1e3c00,
-				Preconditions = {
-					["V0"] = ToVector("00 00 00 00 00 C0 5E C0 00 00 00 00 00 C0 5E C0"), 
-				},
-				Postconditions = {
-					["X0"] = 0xC05E, 
-				}
-			}.Run();
-		
-		[Test]
 		public void USHL_vector() =>
 			new InsnTest {
 				Class = "USHL-vector",
@@ -737,6 +697,19 @@ namespace InterpretedTests {
 			}.Run();
 		
 		[Test]
+		public void XTN2_2() =>
+			new InsnTest {
+				Class = "XTN2",
+				Instruction = 0x4e212800,
+				Preconditions = {
+					["V0"] = ToVector("00 00 F6 42 00 00 F6 42 00 00 F6 42 00 00 F6 42"), 
+				},
+				Postconditions = {
+					["V0"] = ToVector("00 00 F6 42 00 00 F6 42 00 F6 00 F6 00 F6 00 F6"), 
+				}
+			}.Run();
+
+		[Test]
 		public void ZIP() =>
 			new InsnTest {
 				Class = "ZIP",
@@ -746,6 +719,19 @@ namespace InterpretedTests {
 				},
 				Postconditions = {
 					["V0"] = ToVector("00 00 00 00 00 00 00 00 00 00 C0 C0 5E 5E C0 C0"), 
+				}
+			}.Run();
+		
+		[Test]
+		public void ZIP2() =>
+			new InsnTest {
+				Class = "ZIP",
+				Instruction = 0x4e403800,
+				Preconditions = {
+					["V0"] = ToVector("00 00 00 00 00 C0 5E 40 00 00 00 00 00 C0 5E 40"), 
+				},
+				Postconditions = {
+					["V0"] = ToVector("00 00 00 00 00 00 00 00 00 C0 00 C0 5E 40 5E 40"), 
 				}
 			}.Run();
 	}

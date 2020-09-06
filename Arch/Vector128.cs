@@ -33,6 +33,8 @@ namespace Arch {
             handle.Free();
         }
 
+        public unsafe Vector128<T> Copy() => new Vector128<T>(Data);
+
         public static Vector128<T> FromBytes(byte[] data) => new Vector128<byte>(data).As<T>();
 
         public unsafe Vector128<U> As<U>() where U : struct {

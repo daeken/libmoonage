@@ -466,6 +466,9 @@ namespace LocalHvTest {
                 }
             }
             sw.WriteLine("</instructions>");
+            sw.Flush();
+            sw.Close();
+            Process.GetCurrentProcess().Kill();
 		}
 	}
 }

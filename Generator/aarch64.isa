@@ -4081,7 +4081,8 @@
     "sbfm $r$rd, $r$rn, #$immr, #$imms"
     (names (N o) (size f) (immr p) (imms s) (rn n) (rd d))
     (block
-        (requires (<= imm (if size 63 31)))
+        (requires (<= imms (if size 63 31)))
+        (requires (<= immr (if size 63 31)))
         (let r (if (== size 0) "W" "X")))
     (if (== size 0)
         (block
@@ -5829,6 +5830,9 @@
             0b10_1 (block (ushll-sub 2 0 u32 u64) (ushll-sub 3 1 u32 u64))
                    (unimplemented))))
 
+(defm xtn-sub (count wide thin base)
+    (for (i count) (vector-insert rd (+ base i) (thin (vector-element v i wide)))))
+
 (def XTN
     "0 0 0 01110 ss 10000 10010 10 nnnnn ddddd"
     "xtn V$rd.$tb, V$rn.$ta"
@@ -5844,22 +5848,13 @@
             0b01 "4S"
             0b10 "2D"
             (unimplemented))))
-    (match size
-        0b00 (mlet (a (vector-element (vec rn) 0 u16) b (vector-element (vec rn) 1 u16)
-                c (vector-element (vec rn) 2 u16) d (vector-element (vec rn) 3 u16))
-            (= (vec rd) (vector-all (u64 0)))
-            (vector-insert rd 0 (u8 a))
-            (vector-insert rd 1 (u8 b))
-            (vector-insert rd 2 (u8 c))
-            (vector-insert rd 3 (u8 d)))
-        0b01 (mlet (a (vector-element (vec rn) 0 u32) b (vector-element (vec rn) 1 u32))
-            (= (vec rd) (vector-all (u64 0)))
-            (vector-insert rd 0 (u16 a))
-            (vector-insert rd 1 (u16 b)))
-        0b10 (let a (vector-element (vec rn) 0 u64)
-            (= (vec rd) (vector-all (u64 0)))
-            (vector-insert rd 0 (u32 a)))
-        (unimplemented)))
+    (let v (vec rn)
+        (= (vec rd) (vector-all (u8 0)))
+        (match size
+            0b00 (xtn-sub 8 u16 u8 0)
+            0b01 (xtn-sub 4 u32 u16 0)
+            0b10 (xtn-sub 2 u64 u32 0)
+            (unimplemented))))
 
 (def XTN2
     "0 1 0 01110 ss 10000 10010 10 nnnnn ddddd"
@@ -5876,19 +5871,12 @@
             0b01 "4S"
             0b10 "2D"
             (unimplemented))))
-    (match size
-        0b00 (mlet (a (vector-element (vec rn) 0 u16) b (vector-element (vec rn) 1 u16)
-                c (vector-element (vec rn) 2 u16) d (vector-element (vec rn) 3 u16))
-            (vector-insert rd 8 (u8 a))
-            (vector-insert rd 9 (u8 b))
-            (vector-insert rd 10 (u8 c))
-            (vector-insert rd 11 (u8 d)))
-        0b01 (mlet (a (vector-element (vec rn) 0 u32) b (vector-element (vec rn) 1 u32))
-            (vector-insert rd 4 (u16 a))
-            (vector-insert rd 5 (u16 b)))
-        0b10 (let a (vector-element (vec rn) 0 u64)
-            (vector-insert rd 2 (u32 a)))
-        (unimplemented)))
+    (let v (vec rn)
+        (match size
+            0b00 (xtn-sub 8 u16 u8 8)
+            0b01 (xtn-sub 4 u32 u16 4)
+            0b10 (xtn-sub 2 u64 u32 2)
+            (unimplemented))))
 
 (def YIELD
     "1101010100 0 00 011 0010 0000 001 11111"
@@ -5941,8 +5929,8 @@
                     (when Q
                         (vector-insert rd 4 (vector-element av (+ base 2) u16))
                         (vector-insert rd 6 (vector-element av (+ base 3) u16))
-                        (vector-insert rd 5 (vector-element bv (+ base 4) u16))
-                        (vector-insert rd 7 (vector-element bv (+ base 5) u16))))
+                        (vector-insert rd 5 (vector-element bv (+ base 2) u16))
+                        (vector-insert rd 7 (vector-element bv (+ base 3) u16))))
                 0b10 (block
                     (vector-insert rd 0 (vector-element av (+ base 0) u32))
                     (vector-insert rd 1 (vector-element bv (+ base 0) u32))
