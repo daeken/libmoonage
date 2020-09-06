@@ -193,7 +193,7 @@ namespace Arch {
 						c--;
 						c += "}";
 					}
-				}).Interpret((list, state) => Extensions.AsBool(state.Evaluate(list[1])) ? state.Evaluate(list[2]) : null);
+				}).Interpret((list, state) => Extensions.AsBool(state.Evaluate(list[1])) ? list.Skip(1).Select(x => state.Evaluate(x)).ToList() : null);
 			
 			Statement("match", list => list.Count == 3 ? list[2].Type : list[3].Type,
 				(c, list) => {

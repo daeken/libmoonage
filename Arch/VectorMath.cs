@@ -253,9 +253,9 @@ namespace Arch {
 				.Interpret((list, state) => Vector128<byte>.Ensure(state.Evaluate(list[1])) & Vector128<byte>.Ensure(state.Evaluate(list[2])));
 			
 			Expression("vec&~", list => list[1].Type, 
-				list => $"reinterpret_cast<Vector128<float>>(~(reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[1])}) & reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[2])})))",
-				list => $"(LlvmRuntimeValue<Vector128<float>>) (~(((LlvmRuntimeValue<Vector128<uint8_t>>) ({GenerateExpression(list[1])})) & ((LlvmRuntimeValue<Vector128<uint8_t>>) ({GenerateExpression(list[2])}))))")
-				.Interpret((list, state) => ~(Vector128<byte>.Ensure(state.Evaluate(list[1])) & Vector128<byte>.Ensure(state.Evaluate(list[2]))));
+				list => $"reinterpret_cast<Vector128<float>>(reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[1])}) & ~reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[2])}))",
+				list => $"(LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<uint8_t>>) ({GenerateExpression(list[1])})) & ~((LlvmRuntimeValue<Vector128<uint8_t>>) ({GenerateExpression(list[2])})))")
+				.Interpret((list, state) => Vector128<byte>.Ensure(state.Evaluate(list[1])) & ~Vector128<byte>.Ensure(state.Evaluate(list[2])));
 			
 			Expression("vec|", list => list[1].Type, 
 				list => $"reinterpret_cast<Vector128<float>>((reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[1])}) | reinterpret_cast<Vector128<uint8_t>>({GenerateExpression(list[2])})))",

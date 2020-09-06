@@ -54,7 +54,7 @@ namespace Arch {
 								"%" => unchecked(a % b), 
 								_ => throw new BailoutException()
 							}));
-			
+
 			Expression(
 				new[] { "|", "&", "^" }, FirstType,
 				list => {
@@ -66,17 +66,20 @@ namespace Arch {
 						signed = signed && s;
 						size = Math.Max(size, ba);
 					}
+
 					var stype = GenerateType(new EInt(signed, size).AsRuntime(list.AnyRuntime));
-					return list.Skip(1).Select(x => $"(({stype}) ({GenerateExpression(x)}))").Aggregate((x1, x2) => $"({x1} {list[0]} {x2})");
+					return list.Skip(1).Select(x => $"(({stype}) ({GenerateExpression(x)}))")
+						.Aggregate((x1, x2) => $"({x1} {list[0]} {x2})");
 				}).Interpret(
-					(list, state) =>
-						(state.Evaluate(list[1]), state.Evaluate(list[2])).WithCommonType((a, b) =>
+				(list, state) =>
+					list.Skip(2).Aggregate((object) state.Evaluate(list[1]), (al, bl) =>
+						((dynamic) al, state.Evaluate(bl)).WithCommonType((a, b) =>
 							list[0].AsName() switch {
-								"|" => a | b, 
-								"&" => a & b, 
-								"^" => a ^ b, 
+								"|" => a | b,
+								"&" => a & b,
+								"^" => a ^ b,
 								_ => throw new BailoutException()
-								}));
+							})));
 			
 			Expression("~", FirstType, list => $"~({GenerateExpression(list[1])})").Interpret((list, state) => ~state.Evaluate(list[1]));
 			Expression("-!", FirstType, list => $"-({GenerateExpression(list[1])})").Interpret((list, state) => -state.Evaluate(list[1]));
@@ -87,12 +90,21 @@ namespace Arch {
 			Expression("<<", FirstType, 
 				list => $"({GenerateExpression(list[1])}) << (uint) ({GenerateExpression(list[2])})", 
 				list => $"({GenerateExpression(list[1])}) << ({GenerateExpression(list[2])})")
-				.Interpret((list, state) => state.Evaluate(list[1]) << (int) state.Evaluate(list[2]));
+				.Interpret((list, state) => {
+					var shift = (int) state.Evaluate(list[2]);
+					if(list[1].Type is EInt(_, var size) && shift >= size) return 0;
+					return state.Evaluate(list[1]) << shift;
+				});
 			
 			Expression(">>", FirstType, 
 				list => $"({GenerateExpression(list[1])}) >> (uint) ({GenerateExpression(list[2])})", 
 				list => $"({GenerateExpression(list[1])}) >> ({GenerateExpression(list[2])})")
-				.Interpret((list, state) => state.Evaluate(list[1]) >> (int) state.Evaluate(list[2]));
+				.Interpret((list, state) => {
+					var shift = (int) state.Evaluate(list[2]);
+					if(list[1].Type is EInt(var signed, var size) && shift >= size)
+						return signed ? 0xFFFFFFFF_FFFFFFFFUL : 0;
+					return state.Evaluate(list[1]) >> shift;
+				});
 			
 			Expression(">>>", FirstType,
 				list => {

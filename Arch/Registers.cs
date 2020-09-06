@@ -27,7 +27,7 @@ namespace Arch {
 				.Interpret((list, state) => {
 					var reg = state.Evaluate(list[1]);
 					if(reg == 31)
-						return 0U;
+						return 0UL;
 					return (ulong) state.GetRegister($"X{reg}");
 				});
 			Expression("gpr-or-sp64", _ => new EInt(false, 64).AsRuntime(),

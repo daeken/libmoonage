@@ -26,6 +26,20 @@ namespace Arch {
         
         public static ExecutionState Cleanroom() => new ExecutionState();
 
+        dynamic Clamp(EType type, dynamic value) => type switch {
+            EInt(true, var width) when width <= 8 => (dynamic) (sbyte) Extensions.AsNonBool(value),
+            EInt(true, var width) when width <= 16 => (dynamic) (short) Extensions.AsNonBool(value),
+            EInt(true, var width) when width <= 32 => (dynamic) (int) Extensions.AsNonBool(value),
+            EInt(true, var width) when width <= 64 => (dynamic) (long) Extensions.AsNonBool(value),
+            EInt(false, var width) when width <= 8 => (dynamic) (byte) Extensions.AsNonBool(value),
+            EInt(false, var width) when width <= 16 => (dynamic) (ushort) Extensions.AsNonBool(value),
+            EInt(false, var width) when width <= 32 => (dynamic) (uint) Extensions.AsNonBool(value),
+            EInt(false, var width) when width <= 64 => (dynamic) (ulong) Extensions.AsNonBool(value),
+            EFloat(32) => (dynamic) (float) value,
+            EFloat(64) => (dynamic) (double) value,
+            _ => value
+        };
+
         public dynamic Evaluate(PTree node) {
             switch(node) {
                 case PInt pi: return !(pi.Type is EInt ei && !ei.Signed) ? (dynamic) (ulong) pi.Value : pi.Value;
@@ -36,7 +50,7 @@ namespace Arch {
                     if(Core.Statements.TryGetValue(name, out var st) && st.Execute != null)
                         return st.Execute(pl, this);
                     if(Core.Expressions.TryGetValue(name, out var et) && et.Execute != null)
-                        return et.Execute(pl, this);
+                        return Clamp(pl.Type, et.Execute(pl, this));
                     throw new NotImplementedException($"No compile-time execution of {node}");
                 }
                 default: throw new NotImplementedException($"Evaluation failed on node {node}");

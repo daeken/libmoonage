@@ -99,6 +99,12 @@ namespace Arch {
             return left[0] == right[0] && left[1] == right[1];
         }
 
+        public override bool Equals(object obj) {
+            if(obj is Vector128<T> v)
+                return Data.Zip(v.Data).All(x => x.First.Equals(x.Second));
+            return false;
+        }
+
         public override string ToString() => $"Vector128<{typeof(T).Name}> {{ {string.Join(", ", Data.Select(x => x.ToString()))} }}";
 
         public static Vector128<T> Ensure(dynamic value) =>

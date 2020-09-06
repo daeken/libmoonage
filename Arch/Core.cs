@@ -163,8 +163,10 @@ namespace Arch {
 						break;
 					}
 			}
-			
-			var ptree = ListParser.Parse(File.ReadAllText("/Users/daeken/projects/libmoonage/Generator/aarch64.isa")); // TODO: Figure out a saner approach
+
+			var cwd = Directory.GetCurrentDirectory().Split(Path.DirectorySeparatorChar);
+			cwd = cwd.TakeUntil(x => x == "libmoonage").Concat(new[] { "Generator", "aarch64.isa" }).ToArray();
+			var ptree = ListParser.Parse(File.ReadAllText(string.Join(Path.DirectorySeparatorChar, cwd)));
 			ptree = MacroProcessor.Rewrite(ptree);
 			var es = ExecutionState.Cleanroom();
 			foreach(var tle in ptree) {
