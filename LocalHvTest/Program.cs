@@ -389,9 +389,8 @@ namespace LocalHvTest {
                                 ulong? gv = null;
                                 if(me.GotRegisters.TryGetValue(rn, out var _gv))
                                     gv = _gv;
-                                sw.Write($"<tr><td>{(gv.HasValue && ev == gv ? "&#x2705;" : "&#x274C;")}</td>");
                                 sw.Write(
-                                    $"<td>{rn switch { 34 => "SP", 32 => "PC", 0x1000 => "NZCV", _ => $"X{rn}" }}</td>");
+                                    $"<tr><td>{rn switch { 34 => "SP", 32 => "PC", 0x1000 => "NZCV", _ => $"X{rn}" }}</td>");
                                 sw.Write($"<td>0x{ev:X}</td>");
                                 if(gv.HasValue)
                                     sw.WriteLine($"<td>0x{gv.Value:X}</td></tr>");
