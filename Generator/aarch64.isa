@@ -14,6 +14,8 @@
 (defm f32 (v) (cast v f32))
 (defm f64 (v) (cast v f64))
 
+(defm zero-if (Q v) (if Q v (vector-zero-top v)))
+
 (defm shift-string (shift) (match shift
     0b00 "LSL"
     0b01 "LSR"
@@ -195,12 +197,12 @@
                 "SXTX"))))
     (if (== size 0)
         (let m (gpr32 rm)
-            (= (gpr32 rd) (add-with-carry-set-nzcv32 (gpr-or-sp32 rn) (~ (<< (match option
+            (= (gpr32 rd) (add-with-carry-set-nzcv32 (gpr-or-sp32 rn) (<< (match option
                 0b000 (& m 0xFF)
                 0b001 (& m 0xFFFF)
                 0b100 (u32 (signext (u8 m) i32))
                 0b101 (u32 (signext (u16 m) i32))
-                m) imm)) 1)))
+                m) imm) 0)))
         (if (== (& option 0b011) 0b011)
             (= (gpr64 rd) (add-with-carry-set-nzcv64 (gpr-or-sp64 rn) (<< (gpr64 rm) imm) 0))
             (let m (u64 (gpr32 rm))
@@ -417,7 +419,7 @@
     (names (Q Q) (a a) (b b) (c c) (cmode x) (d d) (e e) (f f) (g g) (h h) (rd r))
     (mlet (T (if (== Q 1) "16B" "8B") amount (if cmode 8 0))
         (let imm (: a b c d e f g h)))
-    (let v (vec&~ (vec rd) (vector-all (<< (u16 imm) amount)))
+    (let v (vec&~ (vec rd) (vector-all (u16 (<< (u16 imm) amount))))
         (= (vec rd) (if Q v (vector-zero-top v)))))
 
 (def BIC-vector-immediate-32bit
@@ -1824,8 +1826,8 @@
         0b01 "D"
         (unimplemented)))
     (match type
-        0b00 (mlet (a (vec-s rn) b (vec-s rm)) (= (vec-s rd) (if (> a b) a b)))
-        0b01 (mlet (a (vec-d rn) b (vec-d rm)) (= (vec-d rd) (if (> a b) a b)))
+        0b00 (mlet (a (vec-s rn) b (vec-s rm)) (= (vec-s rd) (if (| (NaN? a) (NaN? b)) (bitcast 0xFFFFFFFF f32) (if (> a b) a b))))
+        0b01 (mlet (a (vec-d rn) b (vec-d rm)) (= (vec-d rd) (if (| (NaN? a) (NaN? b)) (bitcast 0xFFFFFFFF_FFFFFFFF f64) (if (> a b) a b))))
         (unimplemented)))
 
 (def FMAXNM-scalar
@@ -1838,8 +1840,8 @@
         0b01 "D"
         (unimplemented)))
     (match type
-        0b00 (let a (vec-s rn) (let b (vec-s rm) (= (vec-s rd) (if (> a b) a b))))
-        0b01 (let a (vec-d rn) (let b (vec-d rm) (= (vec-d rd) (if (> a b) a b))))
+        0b00 (let a (vec-s rn) (let b (vec-s rm) (= (vec-s rd) (if (NaN? a) b (if (NaN? b) a (if (> a b) a b))))))
+        0b01 (let a (vec-d rn) (let b (vec-d rm) (= (vec-d rd) (if (NaN? a) b (if (NaN? b) a (if (> a b) a b))))))
         (unimplemented)))
 
 (def FMIN-scalar
@@ -1851,8 +1853,8 @@
         0b01 "D"
         (unimplemented)))
     (match type
-        0b00 (mlet (a (vec-s rn) b (vec-s rm)) (= (vec-s rd) (if (< a b) a b)))
-        0b01 (mlet (a (vec-d rn) b (vec-d rm)) (= (vec-d rd) (if (< a b) a b)))
+        0b00 (mlet (a (vec-s rn) b (vec-s rm)) (= (vec-s rd) (if (| (NaN? a) (NaN? b)) (bitcast 0xFFFFFFFF f32) (if (< a b) a b))))
+        0b01 (mlet (a (vec-d rn) b (vec-d rm)) (= (vec-d rd) (if (| (NaN? a) (NaN? b)) (bitcast 0xFFFFFFFF_FFFFFFFF f64) (if (< a b) a b))))
         (unimplemented)))
 
 (def FMINNM-scalar
@@ -1865,8 +1867,8 @@
         0b01 "D"
         (unimplemented)))
     (match type
-        0b00 (let a (vec-s rn) (let b (vec-s rm) (= (vec-s rd) (if (< a b) a b))))
-        0b01 (let a (vec-d rn) (let b (vec-d rm) (= (vec-d rd) (if (< a b) a b))))
+        0b00 (let a (vec-s rn) (let b (vec-s rm) (= (vec-s rd) (if (NaN? a) b (if (NaN? b) a (if (< a b) a b))))))
+        0b01 (let a (vec-d rn) (let b (vec-d rm) (= (vec-d rd) (if (NaN? a) b (if (NaN? b) a (if (< a b) a b))))))
         (unimplemented)))
 
 (def FMLA-by-element-vector-spdp
@@ -1884,9 +1886,10 @@
             0b10 (u32 H)
             0b11 (unimplemented)
             (u32 (: H L)))))
-    (if sz
-        (= (vec rd) (vec+ (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f64)) 64) 64))
-        (= (vec rd) (vec+ (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f32)) 32) 32))))
+    (let v (if sz
+                (vec+ (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f64)) 64) 64)
+                (vec+ (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f32)) 32) 32))
+        (= (vec rd) (if Q v (vector-zero-top v)))))
 
 (def FMLA-vector
     "0 Q 0 01110 0 s 1 mmmmm 11001 1 nnnnn ddddd"
@@ -1897,9 +1900,9 @@
         0b01 "4S"
         0b11 "2D"
         (unimplemented)))
-    (if sz
-        (= (vec rd) (vec+ (vec rd) (vec* (vec rn) (vec rm) 64) 64))
-        (= (vec rd) (vec+ (vec rd) (vec* (vec rn) (vec rm) 32) 32))))
+    (= (vec rd) (zero-if Q (if sz
+        (vec+ (vec rd) (vec* (vec rn) (vec rm) 64) 64)
+        (vec+ (vec rd) (vec* (vec rn) (vec rm) 32) 32)))))
 
 (def FMLS-by-element-vector-spdp
     "0 Q 0 01111 1 s L mmmmm 0 1 01 H 0 nnnnn ddddd"
@@ -1916,9 +1919,9 @@
             0b10 (u32 H)
             0b11 (unimplemented)
             (u32 (: H L)))))
-    (if sz
-        (= (vec rd) (vec- (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f64)) 64) 64))
-        (= (vec rd) (vec- (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f32)) 32) 32))))
+    (= (vec rd) (zero-if Q (if sz
+        (vec- (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f64)) 64) 64)
+        (vec- (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f32)) 32) 32)))))
 
 (def FMLS-vector
     "0 Q 0 01110 1 s 1 mmmmm 11001 1 nnnnn ddddd"
@@ -1929,9 +1932,9 @@
         0b01 "4S"
         0b11 "2D"
         (unimplemented)))
-    (if sz
-        (= (vec rd) (vec- (vec rd) (vec* (vec rn) (vec rm) 64) 64))
-        (= (vec rd) (vec- (vec rd) (vec* (vec rn) (vec rm) 32) 32))))
+    (= (vec rd) (zero-if Q (if sz
+        (vec- (vec rd) (vec* (vec rn) (vec rm) 64) 64)
+        (vec- (vec rd) (vec* (vec rn) (vec rm) 32) 32)))))
 
 (def FMOV-general
     "f 0 0 11110 tt 1 0m 11o 000000 nnnnn ddddd"
@@ -1964,8 +1967,8 @@
         0b1_11_00_111 (= (vec-h rd) (   cast (gpr64 rn) u16))
         0b1_01_00_111 (= (vec-d rd) (bitcast (gpr64 rn) f64))
         0b1_01_00_110 (= (gpr64 rd) (bitcast (vec-d rn) u64))
-        0b1_10_01_110 (= (gpr64 rd) (bitcast (vec-d (| (<< rn 1) 1)) u64))
-        0b1_10_01_111 (= (vec-d (| (<< rd 1) 1)) (bitcast (gpr64 rn) f64))
+        0b1_10_01_110 (= (gpr64 rd) (vector-element (vec rn) 1 u64))
+        0b1_10_01_111 (vector-insert rd 1 (gpr64 rn))
         (unimplemented)))
 
 (def FMOV-scalar-immediate
@@ -2064,9 +2067,9 @@
                 0b10 (u32 H)
                 0b11 (unimplemented)
                 (u32 (: H L)))))
-    (if sz
-        (= (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f64)) 64))
-        (= (vec rd) (vec* (vec rn) (vector-all (vector-element (vec rm) index f32)) 32))))
+    (= (vec rd) (zero-if Q (if sz
+        (vec* (vec rn) (vector-all (vector-element (vec rm) index f64)) 64)
+        (vec* (vec rn) (vector-all (vector-element (vec rm) index f32)) 32)))))
 
 (def FMUL-scalar
     "0 0 0 11110 tt 1 mmmmm 0 000 10 nnnnn ddddd"
@@ -3840,12 +3843,12 @@
                     (vector-insert rd 4 (-! (vector-element n 4 i16))) (vector-insert rd 5 (-! (vector-element n 5 i16)))
                     (vector-insert rd 6 (-! (vector-element n 6 i16))) (vector-insert rd 7 (-! (vector-element n 7 i16))))
             0b10_0 (block
-                    (vector-insert rd 0 (-! (vector-element n 0 f32))) (vector-insert rd 1 (-! (vector-element n 1 f32))))
+                    (vector-insert rd 0 (-! (vector-element n 0 i32))) (vector-insert rd 1 (-! (vector-element n 1 i32))))
             0b10_1 (block
-                    (vector-insert rd 0 (-! (vector-element n 0 f32))) (vector-insert rd 1 (-! (vector-element n 1 f32)))
-                    (vector-insert rd 2 (-! (vector-element n 2 f32))) (vector-insert rd 3 (-! (vector-element n 3 f32))))
+                    (vector-insert rd 0 (-! (vector-element n 0 i32))) (vector-insert rd 1 (-! (vector-element n 1 i32)))
+                    (vector-insert rd 2 (-! (vector-element n 2 i32))) (vector-insert rd 3 (-! (vector-element n 3 i32))))
             0b11_1 (block
-                    (vector-insert rd 0 (-! (vector-element n 0 f64))) (vector-insert rd 1 (-! (vector-element n 1 f64))))
+                    (vector-insert rd 0 (-! (vector-element n 0 i64))) (vector-insert rd 1 (-! (vector-element n 1 i64))))
             (unimplemented))))
 
 (def NOP
@@ -3893,10 +3896,9 @@
     "orr V$rd.$t, V$rn.$t, V$rm.$t"
     (names (Q Q) (rm m) (rn n) (rd d))
     (let t (if (== Q 0) "8B" "16B"))
-    (if (== rm rn)
-        (= (vec rd) (vec rn))
-        (let tv (vec| (vec rn) (vec rm))
-            (= (vec rd) (if Q tv (vector-zero-top tv))))))
+    (= (vec rd) (zero-if Q (if (== rm rn)
+        (vec rn)
+        (vec| (vec rn) (vec rm)))))) 
 
 (def PMULL[2]
     "0 Q 0 01110 ss 1 mmmmm 1110 00 nnnnn ddddd"
@@ -4134,7 +4136,7 @@
         (= (vec rd) (vector-all (u8 0)))
         (match size
             1 (block
-                (shl-elem 0 u8) (shl-elem 0 u8)
+                (shl-elem 0 u8) (shl-elem 1 u8)
                 (shl-elem 2 u8) (shl-elem 3 u8)
                 (shl-elem 4 u8) (shl-elem 5 u8)
                 (shl-elem 6 u8) (shl-elem 7 u8)
@@ -4144,7 +4146,7 @@
                     (shl-elem 12 u8) (shl-elem 13 u8)
                     (shl-elem 14 u8) (shl-elem 15 u8)))
             2 (block
-                (shl-elem 0 u16) (shl-elem 0 u16)
+                (shl-elem 0 u16) (shl-elem 1 u16)
                 (shl-elem 2 u16) (shl-elem 3 u16)
                 (when Q
                     (shl-elem 4 u16) (shl-elem 5 u16)
@@ -5689,7 +5691,7 @@
             (= (gpr64 rd) (vector-element v index u64))
             (= (gpr32 rd) (match size
                 8  (u32 (vector-element v index u8))
-                16 (u32 (vector-element v index u8))
+                16 (u32 (vector-element v index u16))
                         (vector-element v index u32))))))
 
 (def UMULH
@@ -5699,7 +5701,7 @@
     (block)
     (= (gpr64 rd) (u64 (>> (* (cast (gpr64 rn) u128) (cast (gpr64 rm) u128)) 64))))
 
-(defm ushl-sub (i type) (vector-insert rd i (<< (vector-element n i type) (vector-element m i type))))
+(defm ushl-sub (i type) (vector-insert rd i (<< (vector-element n i type) (u8 (vector-element m i type)))))
 
 (def USHL-vector
     "0 Q 1 01110 ss 1 mmmmm 010 0 0 1 nnnnn ddddd"
