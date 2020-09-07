@@ -659,6 +659,20 @@ namespace InterpretedTests {
 					["X2"] = 0xFFFFFFFE, 
 				}
 			}.Run();
+		
+		[Test]
+		public void SDIV_3() =>
+			new InsnTest {
+				Class = "SDIV",
+				Instruction = 0x1ac20c62,
+				Preconditions = {
+					["X2"] = 0x1, 
+					["X3"] = 0xFFFFFFFFFFFFFFFE, 
+				},
+				Postconditions = {
+					["X2"] = 0xFFFFFFFE, 
+				}
+			}.Run();
 
 		[Test]
 		public void SHL_vector() =>
@@ -673,6 +687,19 @@ namespace InterpretedTests {
 				}
 			}.Run();
 		
+		[Test]
+		public void SHL_vector_2() =>
+			new InsnTest {
+				Class = "SHL-vector",
+				Instruction = 0x4f405400,
+				Preconditions = {
+					["V0"] = ToVector("01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01"), 
+				},
+				Postconditions = {
+					["V0"] = ToVector("01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01"), 
+				}
+			}.Run();
+
 		[Test]
 		public void SUB_extended_register() =>
 			new InsnTest {

@@ -4181,11 +4181,11 @@
         (let operand2 (gpr32 rm)
             (= (gpr32 rd) (if (== operand2 0)
                 (u32 0)
-                (u32 (/ (f32 (i32 (gpr32 rn))) (f32 (i32 operand2)))))))
+                (u32 (/ (i32 (gpr32 rn)) (i32 operand2))))))
         (let operand2 (gpr64 rm)
             (= (gpr64 rd) (if (== operand2 0)
                 (u64 0)
-                (u64 (/ (f64 (i64 (gpr64 rn))) (f64 (i64 operand2)))))))))
+                (u64 (/ (i64 (gpr64 rn)) (i64 operand2))))))))
 
 (defm shl-elem (i type)
     (vector-insert rd i (<< (vector-element sv i type) shift)))
@@ -4199,7 +4199,7 @@
         (if (== immh 0b0001)            (block (= T (if Q "16B" "8B")) (= size 1) (= shift (- (u32 (: immh immb)) 8)))
         (if (== (& immh 0b1110) 0b0010) (block (= T (if Q "8H" "4H")) (= size 2) (= shift (- (u32 (: immh immb)) 16)))
         (if (== (& immh 0b1100) 0b0100) (block (= T (if Q "4S" "2S")) (= size 4) (= shift (- (u32 (: immh immb)) 32)))
-                                        (block (= T (if Q "2D" (unimplemented))) (= size 8) (= shift (- (u32 (: immh immb)) 32)))))))
+                                        (block (= T (if Q "2D" (unimplemented))) (= size 8) (= shift (- (u32 (: immh immb)) 64)))))))
     (let sv (vec rn)
         (= (vec rd) (vector-all (u8 0)))
         (match size

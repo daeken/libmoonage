@@ -404,9 +404,7 @@ namespace LocalHvTest {
                                 (ulong, ulong)? gv = null;
                                 if(me.GotVectors.TryGetValue(rn, out var _gv))
                                     gv = _gv;
-                                sw.Write(
-                                    $"<tr><td>{(gv.HasValue && ev.Item1 == gv.Value.Item1 && ev.Item2 == gv.Value.Item2 ? "&#x2705;" : "&#x274C;")}</td>");
-                                sw.Write($"<td>V{rn}</td>");
+                                sw.Write($"<tr><td>V{rn}</td>");
                                 sw.Write(
                                     $"<td>{string.Join(' ', BitConverter.GetBytes(ev.Item1).Concat(BitConverter.GetBytes(ev.Item2)).Select(x => $"{x:X02}"))}</td>");
                                 if(gv.HasValue)
@@ -424,9 +422,7 @@ namespace LocalHvTest {
                                 var (a, b) = g == null || (ml == g.Length && e.Length == ml)
                                     ? (e, g)
                                     : (e.Take(ml).ToArray(), g.Take(ml).ToArray());
-                                sw.Write(
-                                    $"<tr><td>{(g != null && a.Zip(b).All(x => x.First == x.Second) ? "&#x2705;" : "&#x274C;")}</td>");
-                                sw.Write($"<td>0x{addr:X}</td>");
+                                sw.Write($"<tr><td>0x{addr:X}</td>");
                                 sw.Write($"<td>{Hexdump(addr, a)}</td>");
                                 sw.WriteLine($"<td>{(g != null ? Hexdump(addr, b) : "Undefined")}</td></tr>");
                             }
