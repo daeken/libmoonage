@@ -1850,8 +1850,8 @@
         0b01 "D"
         (unimplemented)))
     (match type
-        0b00 (mlet (a (vec-s rn) b (vec-s rm)) (= (vec-s rd) (if (| (NaN? a) (NaN? b)) (bitcast 0xFFFFFFFF f32) (if (> a b) a b))))
-        0b01 (mlet (a (vec-d rn) b (vec-d rm)) (= (vec-d rd) (if (| (NaN? a) (NaN? b)) (bitcast 0xFFFFFFFF_FFFFFFFF f64) (if (> a b) a b))))
+        0b00 (mlet (a (vec-s rn) b (vec-s rm)) (= (vec-s rd) (if (| (NaN? a) (NaN? b)) (bitcast (u32 -1) f32) (if (> a b) a b))))
+        0b01 (mlet (a (vec-d rn) b (vec-d rm)) (= (vec-d rd) (if (| (NaN? a) (NaN? b)) (bitcast (u64 -1) f64) (if (> a b) a b))))
         (unimplemented)))
 
 (def FMAXNM-scalar
@@ -1877,8 +1877,8 @@
         0b01 "D"
         (unimplemented)))
     (match type
-        0b00 (mlet (a (vec-s rn) b (vec-s rm)) (= (vec-s rd) (if (| (NaN? a) (NaN? b)) (bitcast 0xFFFFFFFF f32) (if (< a b) a b))))
-        0b01 (mlet (a (vec-d rn) b (vec-d rm)) (= (vec-d rd) (if (| (NaN? a) (NaN? b)) (bitcast 0xFFFFFFFF_FFFFFFFF f64) (if (< a b) a b))))
+        0b00 (mlet (a (vec-s rn) b (vec-s rm)) (= (vec-s rd) (if (| (NaN? a) (NaN? b)) (bitcast (u32 -1) f32) (if (< a b) a b))))
+        0b01 (mlet (a (vec-d rn) b (vec-d rm)) (= (vec-d rd) (if (| (NaN? a) (NaN? b)) (bitcast (u64 -1) f64) (if (< a b) a b))))
         (unimplemented)))
 
 (def FMINNM-scalar
@@ -3514,6 +3514,7 @@
         (let amount (if (== scale 0) 0 2))
         (let extend (match option
             0b010 "UXTW"
+            0b011 "LSL"
             0b110 "SXTW"
             0b111 "SXTX"
             (unimplemented))))
@@ -5623,8 +5624,8 @@
         (let count (/ (if Q 128 64) esize)))
     (match size
         0b00 (= (vec-h rd) (cast (vector-sum-unsigned (vec rn) esize count) u16))
-        0b01 (= (vec-s rd) (bitcast (vector-sum-unsigned (vec rn) esize count) f32))
-        0b10 (= (vec-d rd) (bitcast (u64 (vector-sum-unsigned (vec rn) esize count)) f64))
+        0b01 (= (vec-s rd) (bitcast (u32 (vector-sum-unsigned (vec rn) esize count)) f32))
+        0b10 (= (vec-d rd) (bitcast (vector-sum-unsigned (vec rn) esize count) f64))
         (unimplemented)))
 
 (defm uaddw-sub (count wide thin)

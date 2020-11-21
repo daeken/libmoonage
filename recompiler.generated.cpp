@@ -660,7 +660,7 @@ bool Recompiler::recompile(uint inst, ulong pc) {
 	if((inst & 0xBFF89C00U) == 0x2F000400U) {
 		if(MVNI_vector_32bit_LSL(inst, pc)) return true;
 	}
-	if((inst & 0xBFF8EC00U) == 0x2F00E400U) {
+	if((inst & 0xBFF8EC00U) == 0x2F00C400U) {
 		if(MVNI_vector_32bit_MSL(inst, pc)) return true;
 	}
 	if((inst & 0xBF3FFC00U) == 0x2E20B800U) {
@@ -1045,15 +1045,17 @@ bool Recompiler::ADD_extended_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x7U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= (0x4)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_1100) -> string { switch(temp_1100) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_1101) -> string { switch(temp_1101) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_1096) -> string { switch(temp_1096) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_1097) -> string { switch(temp_1097) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))).Store();
 			if(rd == 31)
-				SPR = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1102) -> LlvmRuntimeValue<uint32_t> { switch(temp_1102) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
+				SPR = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1098) -> LlvmRuntimeValue<uint32_t> { switch(temp_1098) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
 			else
-				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1103) -> LlvmRuntimeValue<uint32_t> { switch(temp_1103) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
+				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1099) -> LlvmRuntimeValue<uint32_t> { switch(temp_1099) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
 		} else {
 			if(((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U)) != 0) {
 				if(rd == 31)
@@ -1063,9 +1065,9 @@ bool Recompiler::ADD_extended_register(uint inst, ulong pc) {
 			} else {
 				auto m = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))).Store();
 				if(rd == 31)
-					SPR = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1104) -> LlvmRuntimeValue<uint64_t> { switch(temp_1104) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (m)), 32))))); default: return m; } })(option))) << (imm)))));
+					SPR = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1100) -> LlvmRuntimeValue<uint64_t> { switch(temp_1100) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (m)), 32))))); default: return m; } })(option))) << (imm)))));
 				else
-					XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1105) -> LlvmRuntimeValue<uint64_t> { switch(temp_1105) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (m)), 32))))); default: return m; } })(option))) << (imm)))));
+					XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1101) -> LlvmRuntimeValue<uint64_t> { switch(temp_1101) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (m)), 32))))); default: return m; } })(option))) << (imm)))));
 			}
 		}
 		return true;
@@ -1111,18 +1113,14 @@ bool Recompiler::ADD_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1106) -> string { switch(temp_1106) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1102) -> string { switch(temp_1102) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			if(rd == 31)
-				SPR = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1107) -> LlvmRuntimeValue<uint32_t> { switch(temp_1107) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))));
-			else
-				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1108) -> LlvmRuntimeValue<uint32_t> { switch(temp_1108) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) + ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1103) -> LlvmRuntimeValue<uint32_t> { switch(temp_1103) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))));
 		} else {
-			if(rd == 31)
-				SPR = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1109) -> LlvmRuntimeValue<uint64_t> { switch(temp_1109) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))));
-			else
-				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1110) -> LlvmRuntimeValue<uint64_t> { switch(temp_1110) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1104) -> LlvmRuntimeValue<uint64_t> { switch(temp_1104) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))));
 		}
 		return true;
 	}
@@ -1138,8 +1136,8 @@ bool Recompiler::ADD_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_1111) -> string { switch(temp_1111) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
-		auto v = ((LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1112) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1112) { case 0x0: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint16_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LlvmRuntimeValue<Vector128<uint16_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x2: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint32_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LlvmRuntimeValue<Vector128<uint32_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x3: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint64_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LlvmRuntimeValue<Vector128<uint64_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); default: throw "Not implemented"; } })(size))).Store();
+		auto ts = (string) (([=](auto temp_1105) -> string { switch(temp_1105) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto v = ((LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1106) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1106) { case 0x0: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint16_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LlvmRuntimeValue<Vector128<uint16_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x2: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint32_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LlvmRuntimeValue<Vector128<uint32_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x3: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint64_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LlvmRuntimeValue<Vector128<uint64_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); default: throw "Not implemented"; } })(size))).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LlvmRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
@@ -1156,15 +1154,17 @@ bool Recompiler::ADDS_extended_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x7U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= (0x4)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_1113) -> string { switch(temp_1113) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_1114) -> string { switch(temp_1114) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_1107) -> string { switch(temp_1107) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_1108) -> string { switch(temp_1108) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))).Store();
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=]() -> LlvmRuntimeValue<uint32_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (~((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1115) -> LlvmRuntimeValue<uint32_t> { switch(temp_1115) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint32_t) ((uint32_t) (0x1));
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1109) -> LlvmRuntimeValue<uint32_t> { switch(temp_1109) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint32_t) ((uint32_t) (0x0));
 					auto bits = (int32_t) (32);
 					auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
 					auto usum = ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) (__macro_add_with_carry_set_nzcv_common_operand1)) + ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) (__macro_add_with_carry_set_nzcv_common_operand2))))) + ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) (__macro_add_with_carry_set_nzcv_common_carryIn)))).Store();
@@ -1192,10 +1192,10 @@ bool Recompiler::ADDS_extended_register(uint inst, ulong pc) {
 						return (usum).Store();
 					})());
 			} else {
-				auto m = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))).Store();
+				auto m = ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))).Store();
 				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (([=]() -> LlvmRuntimeValue<uint64_t> {
 						auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())))).Store();
-						auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1116) -> LlvmRuntimeValue<uint64_t> { switch(temp_1116) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 64))))); default: return m; } })(option))) << (imm))))).Store();
+						auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1110) -> LlvmRuntimeValue<uint32_t> { switch(temp_1110) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 32))))); default: return m; } })(option))))) << (imm))))).Store();
 						auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint64_t) ((uint64_t) (0x0));
 						auto bits = (int32_t) (64);
 						auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
@@ -1272,12 +1272,16 @@ bool Recompiler::ADDS_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((shift) != (0x3)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1117) -> string { switch(temp_1117) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1111) -> string { switch(temp_1111) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=]() -> LlvmRuntimeValue<uint32_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]()))))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1118) -> LlvmRuntimeValue<uint32_t> { switch(temp_1118) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1112) -> LlvmRuntimeValue<uint32_t> { switch(temp_1112) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))).Store();
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint32_t) ((uint32_t) (0x0));
 					auto bits = (int32_t) (32);
 					auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
@@ -1292,7 +1296,7 @@ bool Recompiler::ADDS_shifted_register(uint inst, ulong pc) {
 		} else {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (([=]() -> LlvmRuntimeValue<uint64_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]())))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1119) -> LlvmRuntimeValue<uint64_t> { switch(temp_1119) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1113) -> LlvmRuntimeValue<uint64_t> { switch(temp_1113) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))).Store();
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint64_t) ((uint64_t) (0x0));
 					auto bits = (int32_t) (64);
 					auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
@@ -1378,12 +1382,14 @@ bool Recompiler::AND_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1120) -> string { switch(temp_1120) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1114) -> string { switch(temp_1114) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) & ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1121) -> LlvmRuntimeValue<uint32_t> { switch(temp_1121) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) & ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1115) -> LlvmRuntimeValue<uint32_t> { switch(temp_1115) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))))));
 		} else {
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1122) -> LlvmRuntimeValue<uint64_t> { switch(temp_1122) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1116) -> LlvmRuntimeValue<uint64_t> { switch(temp_1116) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))));
 		}
 		return true;
 	}
@@ -1399,7 +1405,7 @@ bool Recompiler::AND_vector(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto ts = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
-		auto v = ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) & ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)]))))))).ZeroTop())).Store();
+		auto v = ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) & ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)]))))))).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LlvmRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
@@ -1416,17 +1422,19 @@ bool Recompiler::ANDS_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1123) -> string { switch(temp_1123) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1117) -> string { switch(temp_1117) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			auto result = ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) & ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1124) -> LlvmRuntimeValue<uint32_t> { switch(temp_1124) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
+			auto result = ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) & ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1118) -> LlvmRuntimeValue<uint32_t> { switch(temp_1118) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) (result);
 			NZCV_NR = (LlvmRuntimeValue<uint32_t>) ((result) >> (0x1F));
 			NZCV_ZR = (LlvmRuntimeValue<bool>) ((result) == (0x0));
 			NZCV_CR = 0x0;
 			NZCV_VR = 0x0;
 		} else {
-			auto result = ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1125) -> LlvmRuntimeValue<uint64_t> { switch(temp_1125) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
+			auto result = ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1119) -> LlvmRuntimeValue<uint64_t> { switch(temp_1119) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
 			XR[(int) rd] = result;
 			NZCV_NR = (LlvmRuntimeValue<uint64_t>) ((result) >> (0x3F));
 			NZCV_ZR = (LlvmRuntimeValue<bool>) ((result) == (0x0));
@@ -1508,17 +1516,17 @@ bool Recompiler::B_cond(uint inst, ulong pc) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto cond = (inst >> 0) & 0xFU;
 		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (0x2)), 21)))));
-		auto condstr = (string) (([=](auto temp_1126) -> string { switch(temp_1126) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1127) -> LlvmRuntimeValue<bool> { switch(temp_1127) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_1128 = DefineLabel(), temp_1130 = DefineLabel(), temp_1129 = DefineLabel();
-		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1128, temp_1130);
-		Label(temp_1128);
+		auto condstr = (string) (([=](auto temp_1120) -> string { switch(temp_1120) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1121) -> LlvmRuntimeValue<bool> { switch(temp_1121) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_1122 = DefineLabel(), temp_1124 = DefineLabel(), temp_1123 = DefineLabel();
+		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1122, temp_1124);
+		Label(temp_1122);
 		Branch(addr);
-		Branch(temp_1129);
-		Label(temp_1130);
+		Branch(temp_1123);
+		Label(temp_1124);
 		Branch(pc + 4);
-		Branch(temp_1129);
-		Label(temp_1129);
+		Branch(temp_1123);
+		Label(temp_1123);
 		return true;
 	}
 unimplemented:
@@ -1536,6 +1544,12 @@ bool Recompiler::BFM(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
+			if(!((bool) (((immr) <= (0x1F)) ? 1U : 0U)))
+				goto unimplemented;
+			if(!((bool) (((imms) <= (0x1F)) ? 1U : 0U)))
+				goto unimplemented;
+			if(!((bool) (((N) == (0x0)) ? 1U : 0U)))
+				goto unimplemented;
 			auto dst = ((LlvmRuntimeValue<uint32_t>) ((rd) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rd]()))).Store();
 			auto src = ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]()))).Store();
 			auto wmask = (uint32_t) ((uint32_t) ((uint64_t) (MakeWMask(N, imms, immr, 0x20, 0x0))));
@@ -1543,6 +1557,12 @@ bool Recompiler::BFM(uint inst, ulong pc) {
 			auto bot = ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) (dst)) & ((LlvmRuntimeValue<uint32_t>) ((uint32_t) (~(wmask)))))))) | ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((src) << ((LlvmRuntimeValue<uint>) (32 - (immr)))) | ((src) >> ((LlvmRuntimeValue<uint>) (immr)))))) & ((LlvmRuntimeValue<uint32_t>) (wmask))))))))).Store();
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) (dst)) & ((LlvmRuntimeValue<uint32_t>) ((uint32_t) (~(tmask)))))))) | ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) (bot)) & ((LlvmRuntimeValue<uint32_t>) (tmask)))))))));
 		} else {
+			if(!((bool) (((immr) <= (0x3F)) ? 1U : 0U)))
+				goto unimplemented;
+			if(!((bool) (((imms) <= (0x3F)) ? 1U : 0U)))
+				goto unimplemented;
+			if(!(N))
+				goto unimplemented;
 			auto dst = ((LlvmRuntimeValue<uint64_t>) ((rd) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rd]())).Store();
 			auto src = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]())).Store();
 			auto wmask = (uint64_t) (MakeWMask(N, imms, immr, 0x40, 0x0));
@@ -1565,12 +1585,14 @@ bool Recompiler::BIC(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1131) -> string { switch(temp_1131) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1125) -> string { switch(temp_1125) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) & ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (~((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1132) -> LlvmRuntimeValue<uint32_t> { switch(temp_1132) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) & ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (~((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1126) -> LlvmRuntimeValue<uint32_t> { switch(temp_1126) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))))))));
 		} else {
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (~((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1133) -> LlvmRuntimeValue<uint64_t> { switch(temp_1133) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (~((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1127) -> LlvmRuntimeValue<uint64_t> { switch(temp_1127) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))));
 		}
 		return true;
 	}
@@ -1586,7 +1608,7 @@ bool Recompiler::BIC_vector_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto T = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
-		auto v = ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (~(((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) & ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)]))))))).Store();
+		auto v = ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) & ~((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LlvmRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
@@ -1611,7 +1633,7 @@ bool Recompiler::BIC_vector_immediate_16bit(uint inst, ulong pc) {
 		auto T = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
 		auto amount = (int64_t) ((cmode != 0) ? (0x8) : (0x0));
 		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
-		auto v = ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (~(((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)]))) & ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint16_t>) ((uint16_t) (((uint16_t) ((uint16_t) (imm))) << (uint) (amount)))).CreateVector()))))))).Store();
+		auto v = ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)]))) & ~((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint16_t>) ((uint16_t) ((uint16_t) ((uint16_t) (((uint16_t) ((uint16_t) (imm))) << (uint) (amount)))))).CreateVector())))))).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LlvmRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
@@ -1636,7 +1658,7 @@ bool Recompiler::BIC_vector_immediate_32bit(uint inst, ulong pc) {
 		auto T = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
 		auto amount = (uint8_t) ((cmode) << (uint) (0x3));
 		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
-		auto v = ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (~(((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)]))) & ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint32_t>) ((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (amount)))).CreateVector()))))))).Store();
+		auto v = ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)]))) & ~((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint32_t>) ((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (amount)))).CreateVector())))))).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LlvmRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
@@ -1653,14 +1675,16 @@ bool Recompiler::BICS(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1134) -> string { switch(temp_1134) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1128) -> string { switch(temp_1128) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			auto val = ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) & ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (~((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1135) -> LlvmRuntimeValue<uint32_t> { switch(temp_1135) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))))).Store();
+			auto val = ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) & ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (~((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1129) -> LlvmRuntimeValue<uint32_t> { switch(temp_1129) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))))).Store();
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) (val);
 			NZCVR = (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((val) >> (0x1F))))) << (0x1F)))) | ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<bool>) ((val) == (0x0))))) << (0x1E))))));
 		} else {
-			auto val = ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (~((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1136) -> LlvmRuntimeValue<uint64_t> { switch(temp_1136) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))))).Store();
+			auto val = ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (~((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1130) -> LlvmRuntimeValue<uint64_t> { switch(temp_1130) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))))).Store();
 			XR[(int) rd] = val;
 			NZCVR = (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((val) >> (0x3F))))) << (0x1F)))) | ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<bool>) ((val) == (0x0))))) << (0x1E))))));
 		}
@@ -1727,7 +1751,8 @@ bool Recompiler::BSL(uint inst, ulong pc) {
 		auto d = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])).Store();
 		auto a = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		auto b = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Store();
-		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((((LlvmRuntimeValue<Vector128<uint8_t>>) (b)) ^ ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((((LlvmRuntimeValue<Vector128<uint8_t>>) (b)) ^ ((LlvmRuntimeValue<Vector128<uint8_t>>) (a))))))) & ((LlvmRuntimeValue<Vector128<uint8_t>>) (d))))))))));
+		auto v = ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((((LlvmRuntimeValue<Vector128<uint8_t>>) (b)) ^ ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((((LlvmRuntimeValue<Vector128<uint8_t>>) (b)) ^ ((LlvmRuntimeValue<Vector128<uint8_t>>) (a))))))) & ((LlvmRuntimeValue<Vector128<uint8_t>>) (d))))))))))).Store();
+		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LlvmRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
 unimplemented:
@@ -1785,14 +1810,14 @@ bool Recompiler::CASPAL(uint inst, ulong pc) {
 			auto nh = ((LlvmRuntimeValue<uint32_t>) (((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1)))) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) (uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1)))]()))).Store();
 			auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 			auto data = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimePointer<uint64_t>) (address)).value())).Store();
-			LabelTag temp_1137 = DefineLabel(), temp_1139 = DefineLabel(), temp_1138 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<bool>) ((data) == ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (ch))) << (0x20)))) | ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (cl)))))))), temp_1137, temp_1139);
-			Label(temp_1137);
+			LabelTag temp_1131 = DefineLabel(), temp_1133 = DefineLabel(), temp_1132 = DefineLabel();
+			BranchIf((LlvmRuntimeValue<bool>) ((data) == ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (ch))) << (0x20)))) | ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (cl)))))))), temp_1131, temp_1133);
+			Label(temp_1131);
 			((LlvmRuntimePointer<uint64_t>) (address)).value((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (nh))) << (0x20)))) | ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (nl)))))));
-			Branch(temp_1138);
-			Label(temp_1139);
-			Branch(temp_1138);
-			Label(temp_1138);
+			Branch(temp_1132);
+			Label(temp_1133);
+			Branch(temp_1132);
+			Label(temp_1132);
 			XR[(int) rs] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (data)));
 			XR[(int) (uint64_t) (((uint64_t) (uint8_t) (rs)) + ((uint64_t) (int64_t) (0x1)))] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint64_t>) ((data) >> (0x20)))));
 		} else {
@@ -1803,15 +1828,15 @@ bool Recompiler::CASPAL(uint inst, ulong pc) {
 			auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 			auto dl = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimePointer<uint64_t>) (address)).value())).Store();
 			auto dh = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimePointer<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) (address)) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (0x8))))).value())).Store();
-			LabelTag temp_1140 = DefineLabel(), temp_1142 = DefineLabel(), temp_1141 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((dl) == (cl)))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((dh) == (ch)))))), temp_1140, temp_1142);
-			Label(temp_1140);
+			LabelTag temp_1134 = DefineLabel(), temp_1136 = DefineLabel(), temp_1135 = DefineLabel();
+			BranchIf((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((dl) == (cl)))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((dh) == (ch)))))), temp_1134, temp_1136);
+			Label(temp_1134);
 			((LlvmRuntimePointer<uint64_t>) (address)).value(nl);
 			((LlvmRuntimePointer<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) (address)) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (0x8))))).value(nh);
-			Branch(temp_1141);
-			Label(temp_1142);
-			Branch(temp_1141);
-			Label(temp_1141);
+			Branch(temp_1135);
+			Label(temp_1136);
+			Branch(temp_1135);
+			Label(temp_1135);
 			XR[(int) rs] = dl;
 			XR[(int) (uint64_t) (((uint64_t) (uint8_t) (rs)) + ((uint64_t) (int64_t) (0x1)))] = dh;
 		}
@@ -1847,25 +1872,25 @@ bool Recompiler::CBNZ(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) ((uint32_t) ((imm) << (uint) (0x2)))), 21)))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			LabelTag temp_1143 = DefineLabel(), temp_1145 = DefineLabel(), temp_1144 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<uint32_t>) ((rs) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rs]()))) != ((uint32_t) ((uint32_t) (0x0)))), temp_1143, temp_1145);
-			Label(temp_1143);
+			LabelTag temp_1137 = DefineLabel(), temp_1139 = DefineLabel(), temp_1138 = DefineLabel();
+			BranchIf((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<uint32_t>) ((rs) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rs]()))) != ((uint32_t) ((uint32_t) (0x0)))), temp_1137, temp_1139);
+			Label(temp_1137);
 			Branch(addr);
-			Branch(temp_1144);
-			Label(temp_1145);
+			Branch(temp_1138);
+			Label(temp_1139);
 			Branch(pc + 4);
-			Branch(temp_1144);
-			Label(temp_1144);
+			Branch(temp_1138);
+			Label(temp_1138);
 		} else {
-			LabelTag temp_1146 = DefineLabel(), temp_1148 = DefineLabel(), temp_1147 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<uint64_t>) ((rs) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rs]())) != ((uint64_t) ((uint64_t) (0x0)))), temp_1146, temp_1148);
-			Label(temp_1146);
+			LabelTag temp_1140 = DefineLabel(), temp_1142 = DefineLabel(), temp_1141 = DefineLabel();
+			BranchIf((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<uint64_t>) ((rs) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rs]())) != ((uint64_t) ((uint64_t) (0x0)))), temp_1140, temp_1142);
+			Label(temp_1140);
 			Branch(addr);
-			Branch(temp_1147);
-			Label(temp_1148);
+			Branch(temp_1141);
+			Label(temp_1142);
 			Branch(pc + 4);
-			Branch(temp_1147);
-			Label(temp_1147);
+			Branch(temp_1141);
+			Label(temp_1141);
 		}
 		return true;
 	}
@@ -1882,25 +1907,25 @@ bool Recompiler::CBZ(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) ((uint32_t) ((imm) << (uint) (0x2)))), 21)))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			LabelTag temp_1149 = DefineLabel(), temp_1151 = DefineLabel(), temp_1150 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<uint32_t>) ((rs) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rs]()))) == ((uint32_t) ((uint32_t) (0x0)))), temp_1149, temp_1151);
-			Label(temp_1149);
+			LabelTag temp_1143 = DefineLabel(), temp_1145 = DefineLabel(), temp_1144 = DefineLabel();
+			BranchIf((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<uint32_t>) ((rs) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rs]()))) == ((uint32_t) ((uint32_t) (0x0)))), temp_1143, temp_1145);
+			Label(temp_1143);
 			Branch(addr);
-			Branch(temp_1150);
-			Label(temp_1151);
+			Branch(temp_1144);
+			Label(temp_1145);
 			Branch(pc + 4);
-			Branch(temp_1150);
-			Label(temp_1150);
+			Branch(temp_1144);
+			Label(temp_1144);
 		} else {
-			LabelTag temp_1152 = DefineLabel(), temp_1154 = DefineLabel(), temp_1153 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<uint64_t>) ((rs) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rs]())) == ((uint64_t) ((uint64_t) (0x0)))), temp_1152, temp_1154);
-			Label(temp_1152);
+			LabelTag temp_1146 = DefineLabel(), temp_1148 = DefineLabel(), temp_1147 = DefineLabel();
+			BranchIf((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<uint64_t>) ((rs) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rs]())) == ((uint64_t) ((uint64_t) (0x0)))), temp_1146, temp_1148);
+			Label(temp_1146);
 			Branch(addr);
-			Branch(temp_1153);
-			Label(temp_1154);
+			Branch(temp_1147);
+			Label(temp_1148);
 			Branch(pc + 4);
-			Branch(temp_1153);
-			Label(temp_1153);
+			Branch(temp_1147);
+			Label(temp_1147);
 		}
 		return true;
 	}
@@ -1917,11 +1942,11 @@ bool Recompiler::CCMN_immediate(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_1155) -> string { switch(temp_1155) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1156) -> LlvmRuntimeValue<bool> { switch(temp_1156) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_1157 = DefineLabel(), temp_1159 = DefineLabel(), temp_1158 = DefineLabel();
-		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1157, temp_1159);
-		Label(temp_1157);
+		auto condstr = (string) (([=](auto temp_1149) -> string { switch(temp_1149) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1150) -> LlvmRuntimeValue<bool> { switch(temp_1150) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_1151 = DefineLabel(), temp_1153 = DefineLabel(), temp_1152 = DefineLabel();
+		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1151, temp_1153);
+		Label(temp_1151);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) 0x1F] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=]() -> LlvmRuntimeValue<uint32_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]()))))).Store();
@@ -1953,11 +1978,11 @@ bool Recompiler::CCMN_immediate(uint inst, ulong pc) {
 					return (usum).Store();
 				})());
 		}
-		Branch(temp_1158);
-		Label(temp_1159);
+		Branch(temp_1152);
+		Label(temp_1153);
 		NZCVR = (uint64_t) (((uint64_t) ((uint64_t) (nzcv))) << (uint) (0x1C));
-		Branch(temp_1158);
-		Label(temp_1158);
+		Branch(temp_1152);
+		Label(temp_1152);
 		return true;
 	}
 unimplemented:
@@ -1973,11 +1998,11 @@ bool Recompiler::CCMP_immediate(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_1160) -> string { switch(temp_1160) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1161) -> LlvmRuntimeValue<bool> { switch(temp_1161) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_1162 = DefineLabel(), temp_1164 = DefineLabel(), temp_1163 = DefineLabel();
-		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1162, temp_1164);
-		Label(temp_1162);
+		auto condstr = (string) (([=](auto temp_1154) -> string { switch(temp_1154) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1155) -> LlvmRuntimeValue<bool> { switch(temp_1155) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_1156 = DefineLabel(), temp_1158 = DefineLabel(), temp_1157 = DefineLabel();
+		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1156, temp_1158);
+		Label(temp_1156);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) 0x1F] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=]() -> LlvmRuntimeValue<uint32_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]()))))).Store();
@@ -2009,11 +2034,11 @@ bool Recompiler::CCMP_immediate(uint inst, ulong pc) {
 					return (usum).Store();
 				})());
 		}
-		Branch(temp_1163);
-		Label(temp_1164);
+		Branch(temp_1157);
+		Label(temp_1158);
 		NZCVR = (uint64_t) (((uint64_t) ((uint64_t) (nzcv))) << (uint) (0x1C));
-		Branch(temp_1163);
-		Label(temp_1163);
+		Branch(temp_1157);
+		Label(temp_1157);
 		return true;
 	}
 unimplemented:
@@ -2029,11 +2054,11 @@ bool Recompiler::CCMP_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_1165) -> string { switch(temp_1165) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1166) -> LlvmRuntimeValue<bool> { switch(temp_1166) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_1167 = DefineLabel(), temp_1169 = DefineLabel(), temp_1168 = DefineLabel();
-		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1167, temp_1169);
-		Label(temp_1167);
+		auto condstr = (string) (([=](auto temp_1159) -> string { switch(temp_1159) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1160) -> LlvmRuntimeValue<bool> { switch(temp_1160) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_1161 = DefineLabel(), temp_1163 = DefineLabel(), temp_1162 = DefineLabel();
+		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1161, temp_1163);
+		Label(temp_1161);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) 0x1F] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=]() -> LlvmRuntimeValue<uint32_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]()))))).Store();
@@ -2065,11 +2090,11 @@ bool Recompiler::CCMP_register(uint inst, ulong pc) {
 					return (usum).Store();
 				})());
 		}
-		Branch(temp_1168);
-		Label(temp_1169);
+		Branch(temp_1162);
+		Label(temp_1163);
 		NZCVR = (uint64_t) (((uint64_t) ((uint64_t) (nzcv))) << (uint) (0x1C));
-		Branch(temp_1168);
-		Label(temp_1168);
+		Branch(temp_1162);
+		Label(temp_1162);
 		return true;
 	}
 unimplemented:
@@ -2111,7 +2136,7 @@ bool Recompiler::CMEQ_register_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto V = (string) (([=](auto temp_1170) -> string { switch(temp_1170) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
+		auto V = (string) (([=](auto temp_1164) -> string { switch(temp_1164) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x3: {
 				VDR[(int) (rd)] = (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<uint64_t>) (Ternary<bool, uint64_t>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Bitcast<uint64_t>())) == ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<double>) (VDR[(int) (rm)])).Bitcast<uint64_t>())))), (uint64_t) ((uint64_t) (-0x1)), (uint64_t) ((uint64_t) (0x0))))).Bitcast<double>());
@@ -2136,7 +2161,7 @@ bool Recompiler::CMEQ_register_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_1171) -> string { switch(temp_1171) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1165) -> string { switch(temp_1165) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto a = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		auto b = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -2231,7 +2256,7 @@ bool Recompiler::CMEQ_zero_scalar(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto V = (string) (([=](auto temp_1172) -> string { switch(temp_1172) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
+		auto V = (string) (([=](auto temp_1166) -> string { switch(temp_1166) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x3: {
 				VDR[(int) (rd)] = (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<uint64_t>) (Ternary<bool, uint64_t>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Bitcast<uint64_t>())) == ((uint64_t) ((uint64_t) (0x0))))), (uint64_t) ((uint64_t) (-0x1)), (uint64_t) ((uint64_t) (0x0))))).Bitcast<double>());
@@ -2255,7 +2280,7 @@ bool Recompiler::CMEQ_zero_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_1173) -> string { switch(temp_1173) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1167) -> string { switch(temp_1167) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto a = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch(size) {
@@ -2350,7 +2375,7 @@ bool Recompiler::CMGT_register_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto V = (string) (([=](auto temp_1174) -> string { switch(temp_1174) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
+		auto V = (string) (([=](auto temp_1168) -> string { switch(temp_1168) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x3: {
 				VDR[(int) (rd)] = (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<uint64_t>) (Ternary<bool, uint64_t>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Bitcast<int64_t>())) > ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<double>) (VDR[(int) (rm)])).Bitcast<int64_t>())))), (uint64_t) ((uint64_t) (-0x1)), (uint64_t) ((uint64_t) (0x0))))).Bitcast<double>());
@@ -2375,7 +2400,7 @@ bool Recompiler::CMGT_register_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_1175) -> string { switch(temp_1175) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1169) -> string { switch(temp_1169) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto a = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		auto b = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -2470,7 +2495,7 @@ bool Recompiler::CMGT_zero_scalar(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto V = (string) (([=](auto temp_1176) -> string { switch(temp_1176) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
+		auto V = (string) (([=](auto temp_1170) -> string { switch(temp_1170) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x3: {
 				VDR[(int) (rd)] = (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<uint64_t>) (Ternary<bool, uint64_t>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Bitcast<int64_t>())) > ((int64_t) ((int64_t) (0x0))))), (uint64_t) ((uint64_t) (-0x1)), (uint64_t) ((uint64_t) (0x0))))).Bitcast<double>());
@@ -2494,7 +2519,7 @@ bool Recompiler::CMGT_zero_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_1177) -> string { switch(temp_1177) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1171) -> string { switch(temp_1171) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto a = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch(size) {
@@ -2589,8 +2614,8 @@ bool Recompiler::CNT(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1178) -> string { switch(temp_1178) { case 0x0: return string("8B"); case 0x1: return string("16B"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
-		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, long>(VectorCountBits, (LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), (int64_t) (([=](auto temp_1179) -> int64_t { switch(temp_1179) { case 0x0: return 0x8; default: return 0x10; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))))));
+		auto t = (string) (([=](auto temp_1172) -> string { switch(temp_1172) { case 0x0: return string("8B"); case 0x1: return string("16B"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, long>(VectorCountBits, (LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), (int64_t) (([=](auto temp_1173) -> int64_t { switch(temp_1173) { case 0x0: return 0x8; default: return 0x10; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))))));
 		return true;
 	}
 unimplemented:
@@ -2606,25 +2631,25 @@ bool Recompiler::CSEL(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_1180) -> string { switch(temp_1180) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1181) -> LlvmRuntimeValue<bool> { switch(temp_1181) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_1182 = DefineLabel(), temp_1184 = DefineLabel(), temp_1183 = DefineLabel();
-		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1182, temp_1184);
-		Label(temp_1182);
+		auto condstr = (string) (([=](auto temp_1174) -> string { switch(temp_1174) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1175) -> LlvmRuntimeValue<bool> { switch(temp_1175) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_1176 = DefineLabel(), temp_1178 = DefineLabel(), temp_1177 = DefineLabel();
+		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1176, temp_1178);
+		Label(temp_1176);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())));
 		} else {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]());
 		}
-		Branch(temp_1183);
-		Label(temp_1184);
+		Branch(temp_1177);
+		Label(temp_1178);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())));
 		} else {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]());
 		}
-		Branch(temp_1183);
-		Label(temp_1183);
+		Branch(temp_1177);
+		Label(temp_1177);
 		return true;
 	}
 unimplemented:
@@ -2640,25 +2665,25 @@ bool Recompiler::CSINC(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_1185) -> string { switch(temp_1185) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1186) -> LlvmRuntimeValue<bool> { switch(temp_1186) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_1187 = DefineLabel(), temp_1189 = DefineLabel(), temp_1188 = DefineLabel();
-		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1187, temp_1189);
-		Label(temp_1187);
+		auto condstr = (string) (([=](auto temp_1179) -> string { switch(temp_1179) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1180) -> LlvmRuntimeValue<bool> { switch(temp_1180) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_1181 = DefineLabel(), temp_1183 = DefineLabel(), temp_1182 = DefineLabel();
+		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1181, temp_1183);
+		Label(temp_1181);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())));
 		} else {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]());
 		}
-		Branch(temp_1188);
-		Label(temp_1189);
+		Branch(temp_1182);
+		Label(temp_1183);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())))) + ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((uint32_t) ((uint32_t) (0x1))))));
 		} else {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (0x1)));
 		}
-		Branch(temp_1188);
-		Label(temp_1188);
+		Branch(temp_1182);
+		Label(temp_1182);
 		return true;
 	}
 unimplemented:
@@ -2674,25 +2699,25 @@ bool Recompiler::CSINV(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_1190) -> string { switch(temp_1190) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1191) -> LlvmRuntimeValue<bool> { switch(temp_1191) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_1192 = DefineLabel(), temp_1194 = DefineLabel(), temp_1193 = DefineLabel();
-		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1192, temp_1194);
-		Label(temp_1192);
+		auto condstr = (string) (([=](auto temp_1184) -> string { switch(temp_1184) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1185) -> LlvmRuntimeValue<bool> { switch(temp_1185) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_1186 = DefineLabel(), temp_1188 = DefineLabel(), temp_1187 = DefineLabel();
+		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1186, temp_1188);
+		Label(temp_1186);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())));
 		} else {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]());
 		}
-		Branch(temp_1193);
-		Label(temp_1194);
+		Branch(temp_1187);
+		Label(temp_1188);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (~((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())))));
 		} else {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (~((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())));
 		}
-		Branch(temp_1193);
-		Label(temp_1193);
+		Branch(temp_1187);
+		Label(temp_1187);
 		return true;
 	}
 unimplemented:
@@ -2708,25 +2733,25 @@ bool Recompiler::CSNEG(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_1195) -> string { switch(temp_1195) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1196) -> LlvmRuntimeValue<bool> { switch(temp_1196) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_1197 = DefineLabel(), temp_1199 = DefineLabel(), temp_1198 = DefineLabel();
-		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1197, temp_1199);
-		Label(temp_1197);
+		auto condstr = (string) (([=](auto temp_1189) -> string { switch(temp_1189) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1190) -> LlvmRuntimeValue<bool> { switch(temp_1190) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_1191 = DefineLabel(), temp_1193 = DefineLabel(), temp_1192 = DefineLabel();
+		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1191, temp_1193);
+		Label(temp_1191);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())));
 		} else {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]());
 		}
-		Branch(temp_1198);
-		Label(temp_1199);
+		Branch(temp_1192);
+		Label(temp_1193);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (-((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())))))))));
 		} else {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (-((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))))));
 		}
-		Branch(temp_1198);
-		Label(temp_1198);
+		Branch(temp_1192);
+		Label(temp_1192);
 		return true;
 	}
 unimplemented:
@@ -2737,7 +2762,7 @@ unimplemented:
 bool Recompiler::DMB(uint inst, ulong pc) {
 	{
 		auto m = (inst >> 8) & 0xFU;
-		auto option = (string) (([=](auto temp_1200) -> string { switch(temp_1200) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(m));
+		auto option = (string) (([=](auto temp_1194) -> string { switch(temp_1194) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(m));
 		return true;
 	}
 unimplemented:
@@ -2748,7 +2773,7 @@ unimplemented:
 bool Recompiler::DSB(uint inst, ulong pc) {
 	{
 		auto crm = (inst >> 8) & 0xFU;
-		auto option = (string) (([=](auto temp_1201) -> string { switch(temp_1201) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(crm));
+		auto option = (string) (([=](auto temp_1195) -> string { switch(temp_1195) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(crm));
 		return true;
 	}
 unimplemented:
@@ -2855,7 +2880,7 @@ bool Recompiler::DUP_element_vector(uint inst, ulong pc) {
 			}
 		}
 		auto sv = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
-		auto tv = ((LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1202) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1202) { case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(index)))).CreateVector())); case 0x2: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) ((sv).Element<uint16_t>(index)))).CreateVector())); case 0x4: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) ((sv).Element<float>(index)))).CreateVector())); default: return (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) ((sv).Element<double>(index)))).CreateVector()); } })(size))).Store();
+		auto tv = ((LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1196) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1196) { case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(index)))).CreateVector())); case 0x2: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) ((sv).Element<uint16_t>(index)))).CreateVector())); case 0x4: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) ((sv).Element<float>(index)))).CreateVector())); default: return (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) ((sv).Element<double>(index)))).CreateVector()); } })(size))).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (tv) : ((LlvmRuntimeValue<Vector128<float>>) ((tv).ZeroTop())));
 		return true;
 	}
@@ -2890,12 +2915,14 @@ bool Recompiler::EON_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1203) -> string { switch(temp_1203) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1197) -> string { switch(temp_1197) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) ^ ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (~((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1204) -> LlvmRuntimeValue<uint32_t> { switch(temp_1204) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) ^ ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (~((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1198) -> LlvmRuntimeValue<uint32_t> { switch(temp_1198) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))))))));
 		} else {
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) ^ ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (~((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1205) -> LlvmRuntimeValue<uint64_t> { switch(temp_1205) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) ^ ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (~((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1199) -> LlvmRuntimeValue<uint64_t> { switch(temp_1199) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))));
 		}
 		return true;
 	}
@@ -2940,12 +2967,14 @@ bool Recompiler::EOR_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1206) -> string { switch(temp_1206) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1200) -> string { switch(temp_1200) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) ^ ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1207) -> LlvmRuntimeValue<uint32_t> { switch(temp_1207) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) ^ ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1201) -> LlvmRuntimeValue<uint32_t> { switch(temp_1201) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))))));
 		} else {
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) ^ ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1208) -> LlvmRuntimeValue<uint64_t> { switch(temp_1208) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) ^ ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1202) -> LlvmRuntimeValue<uint64_t> { switch(temp_1202) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))));
 		}
 		return true;
 	}
@@ -2994,6 +3023,10 @@ bool Recompiler::EXTR(uint inst, ulong pc) {
 		auto lsb = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((lsb) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((size) == (o)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]()))) << ((uint64_t) (((uint64_t) (int64_t) (0x20)) - ((uint64_t) (uint8_t) (lsb))))))) | ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (lsb)))))));
@@ -3013,7 +3046,7 @@ bool Recompiler::FABD_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1209) -> string { switch(temp_1209) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(size));
+		auto r = (string) (([=](auto temp_1203) -> string { switch(temp_1203) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rn)]))) - ((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rm)]))))).Abs());
@@ -3040,7 +3073,7 @@ bool Recompiler::FABS_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1210) -> string { switch(temp_1210) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1204) -> string { switch(temp_1204) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Abs());
@@ -3068,7 +3101,7 @@ bool Recompiler::FABS_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1211) -> string { switch(temp_1211) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_1205) -> string { switch(temp_1205) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				auto a = ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x0))).Store();
@@ -3116,10 +3149,10 @@ bool Recompiler::FADD_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1212) -> string { switch(temp_1212) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1206) -> string { switch(temp_1206) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x3: {
-				VHR[(int) (rd)] = (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (VHR[(int) (rn)]))) + ((LlvmRuntimeValue<uint16_t>) (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (VHR[(int) (rm)]))))));
+				throw "Not implemented";
 				break;
 			}
 			case 0x0: {
@@ -3149,7 +3182,7 @@ bool Recompiler::FADD_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_1213) -> string { switch(temp_1213) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_1207) -> string { switch(temp_1207) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))).ZeroTop());
@@ -3200,7 +3233,7 @@ bool Recompiler::FADDP_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1214) -> string { switch(temp_1214) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_1208) -> string { switch(temp_1208) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				auto a = ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x0))).Store();
@@ -3257,12 +3290,12 @@ bool Recompiler::FCCMP(uint inst, ulong pc) {
 		auto cond = (inst >> 12) & 0xFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
-		auto r = (string) (([=](auto temp_1215) -> string { switch(temp_1215) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		auto condstr = (string) (([=](auto temp_1216) -> string { switch(temp_1216) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1217) -> LlvmRuntimeValue<bool> { switch(temp_1217) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_1218 = DefineLabel(), temp_1220 = DefineLabel(), temp_1219 = DefineLabel();
-		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1218, temp_1220);
-		Label(temp_1218);
+		auto r = (string) (([=](auto temp_1209) -> string { switch(temp_1209) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto condstr = (string) (([=](auto temp_1210) -> string { switch(temp_1210) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1211) -> LlvmRuntimeValue<bool> { switch(temp_1211) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_1212 = DefineLabel(), temp_1214 = DefineLabel(), temp_1213 = DefineLabel();
+		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1212, temp_1214);
+		Label(temp_1212);
 		switch(type) {
 			case 0x0: {
 				auto __macro_fcmp_a = ((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Store();
@@ -3281,11 +3314,11 @@ bool Recompiler::FCCMP(uint inst, ulong pc) {
 				break;
 			}
 		}
-		Branch(temp_1219);
-		Label(temp_1220);
+		Branch(temp_1213);
+		Label(temp_1214);
 		NZCVR = (uint64_t) (((uint64_t) ((uint64_t) (nzcv))) << (uint) (0x1C));
-		Branch(temp_1219);
-		Label(temp_1219);
+		Branch(temp_1213);
+		Label(temp_1213);
 		return true;
 	}
 unimplemented:
@@ -3303,8 +3336,8 @@ bool Recompiler::FCMxx_register_vector(uint inst, ulong pc) {
 		auto ac = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto top = (string) (([=](auto temp_1221) -> string { switch(temp_1221) { case 0x0: return string("EQ"); case 0x2: return string("GE"); case 0x3: return string("GE"); case 0x6: return string("GT"); case 0x7: return string("GT"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2))))));
-		auto t = (string) (([=](auto temp_1222) -> string { switch(temp_1222) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto top = (string) (([=](auto temp_1215) -> string { switch(temp_1215) { case 0x0: return string("EQ"); case 0x2: return string("GE"); case 0x3: return string("GE"); case 0x6: return string("GT"); case 0x7: return string("GT"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2))))));
+		auto t = (string) (([=](auto temp_1216) -> string { switch(temp_1216) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				auto a1 = ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x0))).Store();
@@ -3312,8 +3345,8 @@ bool Recompiler::FCMxx_register_vector(uint inst, ulong pc) {
 				auto b1 = ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(0x0))).Store();
 				auto b2 = ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(0x1))).Store();
 				VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<int32_t>) ((int32_t) ((int32_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<float>) (([=](auto temp_1223) -> LlvmRuntimeValue<float> { switch(temp_1223) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) == (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) >= (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a1).Abs())) >= ((LlvmRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) > (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a1).Abs())) > ((LlvmRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<float>) (([=](auto temp_1224) -> LlvmRuntimeValue<float> { switch(temp_1224) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) == (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) >= (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a2).Abs())) >= ((LlvmRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) > (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a2).Abs())) > ((LlvmRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<float>) (([=](auto temp_1217) -> LlvmRuntimeValue<float> { switch(temp_1217) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) == (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) >= (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a1).Abs())) >= ((LlvmRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) > (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a1).Abs())) > ((LlvmRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<float>) (([=](auto temp_1218) -> LlvmRuntimeValue<float> { switch(temp_1218) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) == (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) >= (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a2).Abs())) >= ((LlvmRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) > (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a2).Abs())) > ((LlvmRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
 				break;
 			}
 			case 0x1: {
@@ -3326,10 +3359,10 @@ bool Recompiler::FCMxx_register_vector(uint inst, ulong pc) {
 				auto b3 = ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(0x2))).Store();
 				auto b4 = ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(0x3))).Store();
 				VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<int32_t>) ((int32_t) ((int32_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<float>) (([=](auto temp_1225) -> LlvmRuntimeValue<float> { switch(temp_1225) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) == (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) >= (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a1).Abs())) >= ((LlvmRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) > (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a1).Abs())) > ((LlvmRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<float>) (([=](auto temp_1226) -> LlvmRuntimeValue<float> { switch(temp_1226) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) == (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) >= (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a2).Abs())) >= ((LlvmRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) > (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a2).Abs())) > ((LlvmRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<float>) (([=](auto temp_1227) -> LlvmRuntimeValue<float> { switch(temp_1227) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a3) == (b3))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a3) >= (b3))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a3).Abs())) >= ((LlvmRuntimeValue<float>) ((b3).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a3) > (b3))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a3).Abs())) > ((LlvmRuntimeValue<float>) ((b3).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<float>) (([=](auto temp_1228) -> LlvmRuntimeValue<float> { switch(temp_1228) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a4) == (b4))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a4) >= (b4))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a4).Abs())) >= ((LlvmRuntimeValue<float>) ((b4).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a4) > (b4))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a4).Abs())) > ((LlvmRuntimeValue<float>) ((b4).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<float>) (([=](auto temp_1219) -> LlvmRuntimeValue<float> { switch(temp_1219) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) == (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) >= (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a1).Abs())) >= ((LlvmRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) > (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a1).Abs())) > ((LlvmRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<float>) (([=](auto temp_1220) -> LlvmRuntimeValue<float> { switch(temp_1220) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) == (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) >= (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a2).Abs())) >= ((LlvmRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) > (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a2).Abs())) > ((LlvmRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<float>) (([=](auto temp_1221) -> LlvmRuntimeValue<float> { switch(temp_1221) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a3) == (b3))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a3) >= (b3))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a3).Abs())) >= ((LlvmRuntimeValue<float>) ((b3).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a3) > (b3))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a3).Abs())) > ((LlvmRuntimeValue<float>) ((b3).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<float>) (([=](auto temp_1222) -> LlvmRuntimeValue<float> { switch(temp_1222) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a4) == (b4))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a4) >= (b4))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a4).Abs())) >= ((LlvmRuntimeValue<float>) ((b4).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a4) > (b4))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) ((a4).Abs())) > ((LlvmRuntimeValue<float>) ((b4).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
 				break;
 			}
 			case 0x3: {
@@ -3338,8 +3371,8 @@ bool Recompiler::FCMxx_register_vector(uint inst, ulong pc) {
 				auto b1 = ((LlvmRuntimeValue<double>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(0x0))).Store();
 				auto b2 = ((LlvmRuntimeValue<double>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(0x1))).Store();
 				VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<int32_t>) ((int32_t) ((int32_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<double>) (([=](auto temp_1229) -> LlvmRuntimeValue<double> { switch(temp_1229) { case 0x0: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) == (b1))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) >= (b1))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) ((a1).Abs())) >= ((LlvmRuntimeValue<double>) ((b1).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) > (b1))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) ((a1).Abs())) > ((LlvmRuntimeValue<double>) ((b1).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<double>) (([=](auto temp_1230) -> LlvmRuntimeValue<double> { switch(temp_1230) { case 0x0: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) == (b2))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) >= (b2))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) ((a2).Abs())) >= ((LlvmRuntimeValue<double>) ((b2).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) > (b2))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) ((a2).Abs())) > ((LlvmRuntimeValue<double>) ((b2).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<double>) (([=](auto temp_1223) -> LlvmRuntimeValue<double> { switch(temp_1223) { case 0x0: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) == (b1))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) >= (b1))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) ((a1).Abs())) >= ((LlvmRuntimeValue<double>) ((b1).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a1) > (b1))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) ((a1).Abs())) > ((LlvmRuntimeValue<double>) ((b1).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<double>) (([=](auto temp_1224) -> LlvmRuntimeValue<double> { switch(temp_1224) { case 0x0: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) == (b2))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) >= (b2))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x3: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) ((a2).Abs())) >= ((LlvmRuntimeValue<double>) ((b2).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x6: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a2) > (b2))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x7: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) ((a2).Abs())) > ((LlvmRuntimeValue<double>) ((b2).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
 				break;
 			}
 			default: {
@@ -3362,15 +3395,15 @@ bool Recompiler::FCMxx_zero_vector(uint inst, ulong pc) {
 		auto op = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto top = (string) (([=](auto temp_1231) -> string { switch(temp_1231) { case 0x0: return string("GT"); case 0x1: return string("GE"); case 0x2: return string("EQ"); default: return string("LE"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1))))));
-		auto t = (string) (([=](auto temp_1232) -> string { switch(temp_1232) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto top = (string) (([=](auto temp_1225) -> string { switch(temp_1225) { case 0x0: return string("GT"); case 0x1: return string("GE"); case 0x2: return string("EQ"); default: return string("LE"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1))))));
+		auto t = (string) (([=](auto temp_1226) -> string { switch(temp_1226) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				auto v1 = ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x0))).Store();
 				auto v2 = ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x1))).Store();
 				VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<int32_t>) ((int32_t) ((int32_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<float>) (([=](auto temp_1233) -> LlvmRuntimeValue<float> { switch(temp_1233) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<float>) (([=](auto temp_1234) -> LlvmRuntimeValue<float> { switch(temp_1234) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<float>) (([=](auto temp_1227) -> LlvmRuntimeValue<float> { switch(temp_1227) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<float>) (([=](auto temp_1228) -> LlvmRuntimeValue<float> { switch(temp_1228) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
 				break;
 			}
 			case 0x1: {
@@ -3379,18 +3412,18 @@ bool Recompiler::FCMxx_zero_vector(uint inst, ulong pc) {
 				auto v3 = ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x2))).Store();
 				auto v4 = ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x3))).Store();
 				VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<int32_t>) ((int32_t) ((int32_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<float>) (([=](auto temp_1235) -> LlvmRuntimeValue<float> { switch(temp_1235) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<float>) (([=](auto temp_1236) -> LlvmRuntimeValue<float> { switch(temp_1236) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<float>) (([=](auto temp_1237) -> LlvmRuntimeValue<float> { switch(temp_1237) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v3) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v3) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v3) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v3) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<float>) (([=](auto temp_1238) -> LlvmRuntimeValue<float> { switch(temp_1238) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v4) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v4) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v4) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v4) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<float>) (([=](auto temp_1229) -> LlvmRuntimeValue<float> { switch(temp_1229) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<float>) (([=](auto temp_1230) -> LlvmRuntimeValue<float> { switch(temp_1230) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<float>) (([=](auto temp_1231) -> LlvmRuntimeValue<float> { switch(temp_1231) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v3) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v3) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v3) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v3) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<float>) (([=](auto temp_1232) -> LlvmRuntimeValue<float> { switch(temp_1232) { case 0x0: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v4) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v4) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v4) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v4) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
 				break;
 			}
 			case 0x3: {
 				auto v1 = ((LlvmRuntimeValue<double>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<double>(0x0))).Store();
 				auto v2 = ((LlvmRuntimeValue<double>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<double>(0x1))).Store();
 				VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<int32_t>) ((int32_t) ((int32_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<double>) (([=](auto temp_1239) -> LlvmRuntimeValue<double> { switch(temp_1239) { case 0x0: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) > ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) >= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) == ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: return (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) <= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<double>) (([=](auto temp_1240) -> LlvmRuntimeValue<double> { switch(temp_1240) { case 0x0: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) > ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) >= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) == ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: return (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) <= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<double>) (([=](auto temp_1233) -> LlvmRuntimeValue<double> { switch(temp_1233) { case 0x0: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) > ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) >= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) == ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: return (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v1) <= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<double>) (([=](auto temp_1234) -> LlvmRuntimeValue<double> { switch(temp_1234) { case 0x0: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) > ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x1: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) >= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) == ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: return (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((v2) <= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
 				break;
 			}
 			default: {
@@ -3411,7 +3444,7 @@ bool Recompiler::FCMLT_zero_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1241) -> string { switch(temp_1241) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_1235) -> string { switch(temp_1235) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				auto v1 = ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x0))).Store();
@@ -3459,7 +3492,7 @@ bool Recompiler::FCMP(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto opc = (inst >> 3) & 0x1U;
-		auto r = (string) (([=](auto temp_1242) -> string { switch(temp_1242) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1236) -> string { switch(temp_1236) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		auto zero = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("/0")) : (string("")));
 		switch(type) {
 			case 0x0: {
@@ -3493,12 +3526,12 @@ bool Recompiler::FCSEL(uint inst, ulong pc) {
 		auto cond = (inst >> 12) & 0xFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1243) -> string { switch(temp_1243) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		auto condstr = (string) (([=](auto temp_1244) -> string { switch(temp_1244) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1245) -> LlvmRuntimeValue<bool> { switch(temp_1245) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LabelTag temp_1246 = DefineLabel(), temp_1248 = DefineLabel(), temp_1247 = DefineLabel();
-		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1246, temp_1248);
-		Label(temp_1246);
+		auto r = (string) (([=](auto temp_1237) -> string { switch(temp_1237) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto condstr = (string) (([=](auto temp_1238) -> string { switch(temp_1238) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LlvmRuntimeValue<bool>) (([=](auto temp_1239) -> LlvmRuntimeValue<bool> { switch(temp_1239) { case 0x0: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (NZCV_CR))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<bool>) (NZCV_NR)) == ((LlvmRuntimeValue<bool>) (NZCV_VR))))) & ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (!((LlvmRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LabelTag temp_1240 = DefineLabel(), temp_1242 = DefineLabel(), temp_1241 = DefineLabel();
+		BranchIf((LlvmRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LlvmRuntimeValue<bool>) (!(result))) : (result)), temp_1240, temp_1242);
+		Label(temp_1240);
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (VSR[(int) (rn)]);
@@ -3513,8 +3546,8 @@ bool Recompiler::FCSEL(uint inst, ulong pc) {
 				break;
 			}
 		}
-		Branch(temp_1247);
-		Label(temp_1248);
+		Branch(temp_1241);
+		Label(temp_1242);
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (VSR[(int) (rm)]);
@@ -3529,8 +3562,8 @@ bool Recompiler::FCSEL(uint inst, ulong pc) {
 				break;
 			}
 		}
-		Branch(temp_1247);
-		Label(temp_1247);
+		Branch(temp_1241);
+		Label(temp_1241);
 		return true;
 	}
 unimplemented:
@@ -3585,11 +3618,11 @@ bool Recompiler::FCVT(uint inst, ulong pc) {
 		}
 		switch(tf) {
 			case 0xC: {
-				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<uint16_t>) (VHR[(int) (rn)])));
+				throw "Not implemented";
 				break;
 			}
 			case 0xD: {
-				VDR[(int) (rd)] = (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<uint16_t>) (VHR[(int) (rn)])));
+				throw "Not implemented";
 				break;
 			}
 			case 0x3: {
@@ -3667,19 +3700,19 @@ bool Recompiler::FCVTAS_scalar_integer(uint inst, ulong pc) {
 		}
 		switch(st) {
 			case 0x0: {
-				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Ceil()), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Floor())))))).Bitcast<uint32_t>()));
+				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfUp()), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfDown())))))).Bitcast<uint32_t>()));
 				break;
 			}
 			case 0x4: {
-				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Ceil()), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Floor())))))).Bitcast<uint64_t>());
+				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfUp()), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfDown())))))).Bitcast<uint64_t>());
 				break;
 			}
 			case 0x1: {
-				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Ceil()), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Floor())))))).Bitcast<uint32_t>()));
+				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfUp()), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfDown())))))).Bitcast<uint32_t>()));
 				break;
 			}
 			case 0x5: {
-				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Ceil()), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Floor())))))).Bitcast<uint64_t>());
+				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfUp()), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfDown())))))).Bitcast<uint64_t>());
 				break;
 			}
 			default: {
@@ -3741,19 +3774,19 @@ bool Recompiler::FCVTAU_scalar_integer(uint inst, ulong pc) {
 		}
 		switch(st) {
 			case 0x0: {
-				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Ceil()), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Floor()))))));
+				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfUp()), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfDown()))))));
 				break;
 			}
 			case 0x4: {
-				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Ceil()), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Floor())))));
+				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfUp()), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfDown())))));
 				break;
 			}
 			case 0x1: {
-				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Ceil()), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Floor()))))));
+				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfUp()), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfDown()))))));
 				break;
 			}
 			case 0x5: {
-				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Ceil()), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Floor())))));
+				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfUp()), (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfDown())))));
 				break;
 			}
 			default: {
@@ -3776,7 +3809,7 @@ bool Recompiler::FCVTL_2_(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto o2 = (string) ((Q != 0) ? (string("2")) : (string("")));
 		auto ta = (string) ((size != 0) ? (string("2D")) : (string("4S")));
-		auto tb = (string) (([=](auto temp_1249) -> string { switch(temp_1249) { case 0x0: return string("4H"); case 0x1: return string("8H"); case 0x2: return string("2S"); default: return string("4S"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto tb = (string) (([=](auto temp_1243) -> string { switch(temp_1243) { case 0x0: return string("4H"); case 0x1: return string("8H"); case 0x2: return string("2S"); default: return string("4S"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto n = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
@@ -4189,8 +4222,10 @@ bool Recompiler::FCVTZS_scalar_fixedpoint(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto fbits = (uint64_t) (((uint64_t) (int64_t) (0x40)) - ((uint64_t) (uint8_t) (scale)));
+		if(!((bool) (((fbits) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (([=](auto temp_1250) -> string { switch(temp_1250) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r2 = (string) (([=](auto temp_1244) -> string { switch(temp_1244) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))))) {
 			case 0x0: {
 				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (Call<uint, float, int>(FloatToFixed32, (LlvmRuntimeValue<float>) (VSR[(int) (rn)]), (LlvmRuntimeValue<int>) (fbits))));
@@ -4302,8 +4337,10 @@ bool Recompiler::FCVTZU_scalar_fixedpoint(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto fbits = (uint64_t) (((uint64_t) (int64_t) (0x40)) - ((uint64_t) (uint8_t) (scale)));
+		if(!((bool) (((fbits) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (([=](auto temp_1251) -> string { switch(temp_1251) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r2 = (string) (([=](auto temp_1245) -> string { switch(temp_1245) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))))) {
 			case 0x0: {
 				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (Call<uint, float, int>(FloatToFixed32, (LlvmRuntimeValue<float>) (VSR[(int) (rn)]), (LlvmRuntimeValue<int>) (fbits))));
@@ -4413,7 +4450,7 @@ bool Recompiler::FDIV_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1252) -> string { switch(temp_1252) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1246) -> string { switch(temp_1246) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x3: {
 				throw "Not implemented";
@@ -4446,7 +4483,7 @@ bool Recompiler::FDIV_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_1253) -> string { switch(temp_1253) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_1247) -> string { switch(temp_1247) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) / ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))).ZeroTop());
@@ -4479,7 +4516,7 @@ bool Recompiler::FMADD(uint inst, ulong pc) {
 		auto ra = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1254) -> string { switch(temp_1254) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x3: return string("H"); default: throw "Not implemented"; } })(type));
+		auto t = (string) (([=](auto temp_1248) -> string { switch(temp_1248) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x3: return string("H"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rn)]))) * ((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rm)])))))) + ((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (ra)]))));
@@ -4507,18 +4544,18 @@ bool Recompiler::FMAX_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1255) -> string { switch(temp_1255) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1249) -> string { switch(temp_1249) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = ((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Store();
 				auto b = ((LlvmRuntimeValue<float>) (VSR[(int) (rm)])).Store();
-				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) > (b))), a, b));
+				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a).IsNaN()))) | ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((b).IsNaN())))))), (float) (Bitcast<uint32_t, float>((uint32_t) ((uint32_t) (-0x1)))), (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) > (b))), a, b))));
 				break;
 			}
 			case 0x1: {
 				auto a = ((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Store();
 				auto b = ((LlvmRuntimeValue<double>) (VDR[(int) (rm)])).Store();
-				VDR[(int) (rd)] = (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) > (b))), a, b));
+				VDR[(int) (rd)] = (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a).IsNaN()))) | ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((b).IsNaN())))))), (double) (Bitcast<uint64_t, double>((uint64_t) ((uint64_t) (-0x1)))), (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) > (b))), a, b))));
 				break;
 			}
 			default: {
@@ -4539,18 +4576,18 @@ bool Recompiler::FMAXNM_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1256) -> string { switch(temp_1256) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1250) -> string { switch(temp_1250) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = ((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Store();
 				auto b = ((LlvmRuntimeValue<float>) (VSR[(int) (rm)])).Store();
-				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) > (b))), a, b));
+				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a).IsNaN())), b, (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((b).IsNaN())), a, (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) > (b))), a, b))))));
 				break;
 			}
 			case 0x1: {
 				auto a = ((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Store();
 				auto b = ((LlvmRuntimeValue<double>) (VDR[(int) (rm)])).Store();
-				VDR[(int) (rd)] = (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) > (b))), a, b));
+				VDR[(int) (rd)] = (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a).IsNaN())), b, (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((b).IsNaN())), a, (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) > (b))), a, b))))));
 				break;
 			}
 			default: {
@@ -4571,18 +4608,18 @@ bool Recompiler::FMIN_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1257) -> string { switch(temp_1257) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1251) -> string { switch(temp_1251) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = ((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Store();
 				auto b = ((LlvmRuntimeValue<float>) (VSR[(int) (rm)])).Store();
-				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) < (b))), a, b));
+				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a).IsNaN()))) | ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((b).IsNaN())))))), (float) (Bitcast<uint32_t, float>((uint32_t) ((uint32_t) (-0x1)))), (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) < (b))), a, b))));
 				break;
 			}
 			case 0x1: {
 				auto a = ((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Store();
 				auto b = ((LlvmRuntimeValue<double>) (VDR[(int) (rm)])).Store();
-				VDR[(int) (rd)] = (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) < (b))), a, b));
+				VDR[(int) (rd)] = (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a).IsNaN()))) | ((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((b).IsNaN())))))), (double) (Bitcast<uint64_t, double>((uint64_t) ((uint64_t) (-0x1)))), (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) < (b))), a, b))));
 				break;
 			}
 			default: {
@@ -4603,18 +4640,18 @@ bool Recompiler::FMINNM_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1258) -> string { switch(temp_1258) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1252) -> string { switch(temp_1252) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = ((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Store();
 				auto b = ((LlvmRuntimeValue<float>) (VSR[(int) (rm)])).Store();
-				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) < (b))), a, b));
+				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a).IsNaN())), b, (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((b).IsNaN())), a, (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) < (b))), a, b))))));
 				break;
 			}
 			case 0x1: {
 				auto a = ((LlvmRuntimeValue<double>) (VDR[(int) (rn)])).Store();
 				auto b = ((LlvmRuntimeValue<double>) (VDR[(int) (rm)])).Store();
-				VDR[(int) (rd)] = (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) < (b))), a, b));
+				VDR[(int) (rd)] = (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a).IsNaN())), b, (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((b).IsNaN())), a, (LlvmRuntimeValue<double>) (Ternary<bool, double>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((a) < (b))), a, b))))));
 				break;
 			}
 			default: {
@@ -4638,14 +4675,11 @@ bool Recompiler::FMLA_by_element_vector_spdp(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_1259) -> string { switch(temp_1259) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_1253) -> string { switch(temp_1253) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint32_t) (([=](auto temp_1260) -> uint32_t { switch(temp_1260) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
-		if((sz) != 0) {
-			VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector())))))));
-		} else {
-			VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())))));
-		}
+		auto index = (uint32_t) (([=](auto temp_1254) -> uint32_t { switch(temp_1254) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
+		auto v = ((LlvmRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector())))))))) : ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())))))))).Store();
+		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LlvmRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
 unimplemented:
@@ -4660,12 +4694,8 @@ bool Recompiler::FMLA_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_1261) -> string { switch(temp_1261) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
-		if((sz) != 0) {
-			VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))));
-		} else {
-			VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))));
-		}
+		auto T = (string) (([=](auto temp_1255) -> string { switch(temp_1255) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
+		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))) : ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))) : ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))) : ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))).ZeroTop())));
 		return true;
 	}
 unimplemented:
@@ -4682,14 +4712,10 @@ bool Recompiler::FMLS_by_element_vector_spdp(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_1262) -> string { switch(temp_1262) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_1256) -> string { switch(temp_1256) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint32_t) (([=](auto temp_1263) -> uint32_t { switch(temp_1263) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
-		if((sz) != 0) {
-			VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector())))))));
-		} else {
-			VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())))));
-		}
+		auto index = (uint32_t) (([=](auto temp_1257) -> uint32_t { switch(temp_1257) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
+		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector())))))))) : ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())))))))) : ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector())))))))) : ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())))))))).ZeroTop())));
 		return true;
 	}
 unimplemented:
@@ -4704,12 +4730,8 @@ bool Recompiler::FMLS_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_1264) -> string { switch(temp_1264) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
-		if((sz) != 0) {
-			VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))));
-		} else {
-			VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))));
-		}
+		auto T = (string) (([=](auto temp_1258) -> string { switch(temp_1258) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
+		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))) : ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))) : ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))) : ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))).ZeroTop())));
 		return true;
 	}
 unimplemented:
@@ -4821,11 +4843,11 @@ bool Recompiler::FMOV_general(uint inst, ulong pc) {
 				break;
 			}
 			case 0xCE: {
-				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<double>) (VDR[(int) ((uint8_t) ((((uint64_t) ((uint8_t) ((rn) << (uint) (0x1)))) | ((uint64_t) (0x1)))))])).Bitcast<uint64_t>());
+				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(0x1));
 				break;
 			}
 			case 0xCF: {
-				VDR[(int) ((uint8_t) ((((uint64_t) ((uint8_t) ((rd) << (uint) (0x1)))) | ((uint64_t) (0x1)))))] = (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]())).Bitcast<double>());
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()));
 				break;
 			}
 			default: {
@@ -4845,7 +4867,7 @@ bool Recompiler::FMOV_scalar_immediate(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto imm = (inst >> 13) & 0xFFU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1265) -> string { switch(temp_1265) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1259) -> string { switch(temp_1259) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		auto sv = (float) (Bitcast<uint32_t, float>((uint32_t) ((uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (((uint32_t) ((uint32_t) ((uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 1)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 2)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 3)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 4)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 5)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 6)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 7)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 8)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 9)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 10)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 11)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 12)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 13)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 14)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 15)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 16)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 17)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 18)))))) << 0)) | ((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) ((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF)))))))) << 19)))) | ((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x4)))) & ((uint64_t) (0x3)))))))) << 23)))) | ((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 0)) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 1)))) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 2)))) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 3)))) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 4)))))) << 25)))) | ((uint32_t) (((uint32_t) ((bool) (((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1))))) != 0 ? 0U : 1U))) << 30)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) ((uint8_t) ((imm) >> (uint) (0x7)))))) << 31))))));
 		switch(type) {
 			case 0x0: {
@@ -4918,7 +4940,7 @@ bool Recompiler::FMSUB(uint inst, ulong pc) {
 		auto ra = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1266) -> string { switch(temp_1266) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x3: return string("H"); default: throw "Not implemented"; } })(type));
+		auto t = (string) (([=](auto temp_1260) -> string { switch(temp_1260) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x3: return string("H"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (ra)]))) - ((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rn)]))) * ((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rm)])))))));
@@ -4949,7 +4971,7 @@ bool Recompiler::FMUL_by_element_scalar_spdp(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint32_t) (([=](auto temp_1267) -> uint32_t { switch(temp_1267) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
+		auto index = (uint32_t) (([=](auto temp_1261) -> uint32_t { switch(temp_1261) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
 		if((sz) != 0) {
 			VDR[(int) (rd)] = (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (VDR[(int) (rn)]))) * ((LlvmRuntimeValue<double>) (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))));
 		} else {
@@ -4971,14 +4993,10 @@ bool Recompiler::FMUL_by_element_vector_spdp(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_1268) -> string { switch(temp_1268) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_1262) -> string { switch(temp_1262) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint32_t) (([=](auto temp_1269) -> uint32_t { switch(temp_1269) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
-		if((sz) != 0) {
-			VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector()))));
-		} else {
-			VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())));
-		}
+		auto index = (uint32_t) (([=](auto temp_1263) -> uint32_t { switch(temp_1263) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
+		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector()))))) : ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())))))) : ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LlvmRuntimeValue<Vector128<double>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector()))))) : ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())))))).ZeroTop())));
 		return true;
 	}
 unimplemented:
@@ -4992,7 +5010,7 @@ bool Recompiler::FMUL_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1270) -> string { switch(temp_1270) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1264) -> string { switch(temp_1264) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rn)]))) * ((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rm)]))));
@@ -5021,7 +5039,7 @@ bool Recompiler::FMUL_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_1271) -> string { switch(temp_1271) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_1265) -> string { switch(temp_1265) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))).ZeroTop());
@@ -5052,7 +5070,7 @@ bool Recompiler::FNEG_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1272) -> string { switch(temp_1272) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1266) -> string { switch(temp_1266) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (-((LlvmRuntimeValue<float>) (VSR[(int) (rn)])));
@@ -5080,7 +5098,7 @@ bool Recompiler::FNEG_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_1273) -> string { switch(temp_1273) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1267) -> string { switch(temp_1267) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto sv = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
@@ -5120,7 +5138,7 @@ bool Recompiler::FNMADD(uint inst, ulong pc) {
 		auto ra = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1274) -> string { switch(temp_1274) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1268) -> string { switch(temp_1268) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (-((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rn)]))) * ((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rm)])))))))) - ((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (ra)]))));
@@ -5149,7 +5167,7 @@ bool Recompiler::FNMSUB(uint inst, ulong pc) {
 		auto ra = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1275) -> string { switch(temp_1275) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1269) -> string { switch(temp_1269) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rn)]))) * ((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rm)])))))) - ((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (ra)]))));
@@ -5177,7 +5195,7 @@ bool Recompiler::FNMUL_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1276) -> string { switch(temp_1276) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1270) -> string { switch(temp_1270) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (-((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rn)]))) * ((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rm)]))))));
@@ -5204,7 +5222,7 @@ bool Recompiler::FRINTA_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1277) -> string { switch(temp_1277) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1271) -> string { switch(temp_1271) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])) < (0x0))), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfDown()), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfUp())));
@@ -5231,7 +5249,7 @@ bool Recompiler::FRINTI_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1278) -> string { switch(temp_1278) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1272) -> string { switch(temp_1272) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Round());
@@ -5258,7 +5276,7 @@ bool Recompiler::FRINTM_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1279) -> string { switch(temp_1279) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1273) -> string { switch(temp_1273) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfDown());
@@ -5285,7 +5303,7 @@ bool Recompiler::FRINTP_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1280) -> string { switch(temp_1280) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1274) -> string { switch(temp_1274) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfUp());
@@ -5312,7 +5330,7 @@ bool Recompiler::FRINTX_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1281) -> string { switch(temp_1281) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1275) -> string { switch(temp_1275) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).Round());
@@ -5339,7 +5357,7 @@ bool Recompiler::FRINTZ_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1282) -> string { switch(temp_1282) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1276) -> string { switch(temp_1276) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (Ternary<bool, float>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])) < (0x0))), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfUp()), (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfDown())));
@@ -5367,8 +5385,8 @@ bool Recompiler::FRSQRTE_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1283) -> string { switch(temp_1283) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
-		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1284) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1284) { case 0x0: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x20, 0x2))); case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x20, 0x4))); case 0x3: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x40, 0x2))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_1277) -> string { switch(temp_1277) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1278) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1278) { case 0x0: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x20, 0x2))); case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x20, 0x4))); case 0x3: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x40, 0x2))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return true;
 	}
 unimplemented:
@@ -5383,7 +5401,7 @@ bool Recompiler::FRSQRTS_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1285) -> string { switch(temp_1285) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_1279) -> string { switch(temp_1279) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((float) ((float) (0x3)))).CreateVector())) - ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))) / ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((float) ((float) (0x2)))).CreateVector())))).ZeroTop());
@@ -5414,7 +5432,7 @@ bool Recompiler::FSQRT_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1286) -> string { switch(temp_1286) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1280) -> string { switch(temp_1280) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<float>) (VSR[(int) (rn)]))).Sqrt());
@@ -5442,7 +5460,7 @@ bool Recompiler::FSUB_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1287) -> string { switch(temp_1287) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_1281) -> string { switch(temp_1281) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rn)]))) - ((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (VSR[(int) (rm)]))));
@@ -5471,7 +5489,7 @@ bool Recompiler::FSUB_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_1288) -> string { switch(temp_1288) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_1282) -> string { switch(temp_1282) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) - ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))).ZeroTop());
@@ -5502,6 +5520,8 @@ bool Recompiler::INS_general(uint inst, ulong pc) {
 		auto imm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF))))) != (0x0)) ? 1U : 0U)))
+			goto unimplemented;
 		auto ts = string("");
 		auto index = (uint32_t) ((uint32_t) (0x0));
 		auto r = string("W");
@@ -5549,6 +5569,8 @@ bool Recompiler::INS_vector(uint inst, ulong pc) {
 		auto imm4 = (inst >> 11) & 0xFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) ((((uint8_t) ((((uint64_t) (imm5)) & ((uint64_t) (0xF))))) != (0x0)) ? 1U : 0U)))
+			goto unimplemented;
 		auto ts = string("");
 		auto index1 = (uint32_t) ((uint32_t) (0x0));
 		auto index2 = (uint32_t) ((uint32_t) (0x0));
@@ -5599,7 +5621,7 @@ bool Recompiler::LD1_multi_no_offset_one_register(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_1289) -> string { switch(temp_1289) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1283) -> string { switch(temp_1283) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch(size) {
@@ -5687,7 +5709,7 @@ bool Recompiler::LD1_multi_no_offset_two_registers(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1290) -> string { switch(temp_1290) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1284) -> string { switch(temp_1284) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -5849,7 +5871,7 @@ bool Recompiler::LD1_multi_no_offset_three_registers(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1291) -> string { switch(temp_1291) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1285) -> string { switch(temp_1285) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -6085,11 +6107,12 @@ bool Recompiler::LD1_multi_no_offset_four_registers(uint inst, ulong pc) {
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1292) -> string { switch(temp_1292) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1286) -> string { switch(temp_1286) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt3)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
+		VR[(int) (rt4)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch(size) {
 			case 0x0: {
 				if((Q) != 0) {
@@ -6395,7 +6418,7 @@ bool Recompiler::LD1_single_no_offset(uint inst, ulong pc) {
 		if(!((bool) (((opc) != (0x3)) ? 1U : 0U)))
 			goto unimplemented;
 		auto t = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("B")) : ((string) (((bool) ((((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U))))) != 0) ? (string("H")) : ((string) (((bool) (((opc) == (0x2)) ? 1U : 0U) != 0) ? ((string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : ((string) (((bool) ((((bool) ((bool) (((size) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) (((S) == (0x0)) ? 1U : 0U))))) != 0) ? (string("D")) : throw "Not implemented")))) : throw "Not implemented")))));
-		auto index = (uint32_t) (([=](auto temp_1293) -> uint32_t { switch(temp_1293) { case 0x0: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3)))))); case 0x1: return (uint32_t) (((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint32_t) (((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (S)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
+		auto index = (uint32_t) (([=](auto temp_1287) -> uint32_t { switch(temp_1287) { case 0x0: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3)))))); case 0x1: return (uint32_t) (((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint32_t) (((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (S)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		switch(opc) {
 			case 0x0: {
@@ -6432,9 +6455,9 @@ bool Recompiler::LD1R_single_no_offset(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1294) -> string { switch(temp_1294) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_1288) -> string { switch(temp_1288) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-		auto sv = ((LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1295) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1295) { case 0x0: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (((LlvmRuntimePointer<uint8_t>) (address)).value()))).CreateVector())); case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimePointer<uint16_t>) (address)).value()))).CreateVector())); case 0x2: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimePointer<float>) (address)).value()))).CreateVector())); default: return (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (((LlvmRuntimePointer<double>) (address)).value()))).CreateVector()); } })(size))).Store();
+		auto sv = ((LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1289) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1289) { case 0x0: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (((LlvmRuntimePointer<uint8_t>) (address)).value()))).CreateVector())); case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimePointer<uint16_t>) (address)).value()))).CreateVector())); case 0x2: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimePointer<float>) (address)).value()))).CreateVector())); default: return (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (((LlvmRuntimePointer<double>) (address)).value()))).CreateVector()); } })(size))).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (sv) : ((LlvmRuntimeValue<Vector128<float>>) ((sv).ZeroTop())));
 		return true;
 	}
@@ -6452,10 +6475,10 @@ bool Recompiler::LD1R_single_postindex_immediate(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto t = (string) (([=](auto temp_1296) -> string { switch(temp_1296) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
-		auto imm = (int64_t) (([=](auto temp_1297) -> int64_t { switch(temp_1297) { case 0x0: return 0x1; case 0x1: return 0x2; case 0x2: return 0x4; default: return 0x8; } })(size));
+		auto t = (string) (([=](auto temp_1290) -> string { switch(temp_1290) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto imm = (int64_t) (([=](auto temp_1291) -> int64_t { switch(temp_1291) { case 0x0: return 0x1; case 0x1: return 0x2; case 0x2: return 0x4; default: return 0x8; } })(size));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-		auto sv = ((LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1298) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1298) { case 0x0: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (((LlvmRuntimePointer<uint8_t>) (address)).value()))).CreateVector())); case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimePointer<uint16_t>) (address)).value()))).CreateVector())); case 0x2: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimePointer<float>) (address)).value()))).CreateVector())); default: return (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (((LlvmRuntimePointer<double>) (address)).value()))).CreateVector()); } })(size))).Store();
+		auto sv = ((LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1292) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1292) { case 0x0: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (((LlvmRuntimePointer<uint8_t>) (address)).value()))).CreateVector())); case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimePointer<uint16_t>) (address)).value()))).CreateVector())); case 0x2: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimePointer<float>) (address)).value()))).CreateVector())); default: return (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (((LlvmRuntimePointer<double>) (address)).value()))).CreateVector()); } })(size))).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (sv) : ((LlvmRuntimeValue<Vector128<float>>) ((sv).ZeroTop())));
 		if(rn == 31)
 			SPR = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) (address)) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (imm)));
@@ -6477,9 +6500,9 @@ bool Recompiler::LD1R_single_postindex_register(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto t = (string) (([=](auto temp_1299) -> string { switch(temp_1299) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_1293) -> string { switch(temp_1293) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-		auto sv = ((LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1300) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1300) { case 0x0: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (((LlvmRuntimePointer<uint8_t>) (address)).value()))).CreateVector())); case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimePointer<uint16_t>) (address)).value()))).CreateVector())); case 0x2: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimePointer<float>) (address)).value()))).CreateVector())); default: return (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (((LlvmRuntimePointer<double>) (address)).value()))).CreateVector()); } })(size))).Store();
+		auto sv = ((LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1294) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1294) { case 0x0: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (((LlvmRuntimePointer<uint8_t>) (address)).value()))).CreateVector())); case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimePointer<uint16_t>) (address)).value()))).CreateVector())); case 0x2: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) (((LlvmRuntimePointer<float>) (address)).value()))).CreateVector())); default: return (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) (((LlvmRuntimePointer<double>) (address)).value()))).CreateVector()); } })(size))).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (sv) : ((LlvmRuntimeValue<Vector128<float>>) ((sv).ZeroTop())));
 		if(rn == 31)
 			SPR = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) (address)) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]()))));
@@ -6499,7 +6522,7 @@ bool Recompiler::LD2_multi_no_offset(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1301) -> string { switch(temp_1301) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1295) -> string { switch(temp_1295) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -6632,7 +6655,7 @@ bool Recompiler::LD2_multi_postindex_immediate(uint inst, ulong pc) {
 		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x20) : (0x10))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1302) -> string { switch(temp_1302) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1296) -> string { switch(temp_1296) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -6768,7 +6791,7 @@ bool Recompiler::LD2_multi_postindex_register(uint inst, ulong pc) {
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1303) -> string { switch(temp_1303) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1297) -> string { switch(temp_1297) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -6902,7 +6925,7 @@ bool Recompiler::LD3_multi_no_offset(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1304) -> string { switch(temp_1304) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1298) -> string { switch(temp_1298) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -7081,7 +7104,7 @@ bool Recompiler::LD3_multi_postindex_immediate(uint inst, ulong pc) {
 		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x30) : (0x18))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1305) -> string { switch(temp_1305) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1299) -> string { switch(temp_1299) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -7263,7 +7286,7 @@ bool Recompiler::LD3_multi_postindex_register(uint inst, ulong pc) {
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1306) -> string { switch(temp_1306) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1300) -> string { switch(temp_1300) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -7443,7 +7466,7 @@ bool Recompiler::LD4_multi_no_offset(uint inst, ulong pc) {
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1307) -> string { switch(temp_1307) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1301) -> string { switch(temp_1301) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -7665,10 +7688,10 @@ bool Recompiler::LD4_multi_postindex_immediate(uint inst, ulong pc) {
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
-		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x30) : (0x18))));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x40) : (0x20))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1308) -> string { switch(temp_1308) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1302) -> string { switch(temp_1302) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -7896,7 +7919,7 @@ bool Recompiler::LD4_multi_postindex_register(uint inst, ulong pc) {
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1309) -> string { switch(temp_1309) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1303) -> string { switch(temp_1303) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -8209,6 +8232,12 @@ bool Recompiler::LDP_immediate_postindex(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt1) != (rt2)) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((rt1) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((rt2) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
@@ -8237,6 +8266,8 @@ bool Recompiler::LDP_immediate_signed_offset(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt1) != (rt2)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (simm)))).Store();
@@ -8261,8 +8292,10 @@ bool Recompiler::LDP_simd_postindex(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1310) -> string { switch(temp_1310) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1311) -> int64_t { switch(temp_1311) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		if(!((bool) (((rt1) != (rt2)) ? 1U : 0U)))
+			goto unimplemented;
+		auto r = (string) (([=](auto temp_1304) -> string { switch(temp_1304) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1305) -> int64_t { switch(temp_1305) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		switch(opc) {
 			case 0x0: {
@@ -8299,8 +8332,10 @@ bool Recompiler::LDP_simd_preindex(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1312) -> string { switch(temp_1312) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1313) -> int64_t { switch(temp_1313) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		if(!((bool) (((rt1) != (rt2)) ? 1U : 0U)))
+			goto unimplemented;
+		auto r = (string) (([=](auto temp_1306) -> string { switch(temp_1306) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1307) -> int64_t { switch(temp_1307) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (simm)))).Store();
 		if(rn == 31)
 			SPR = address;
@@ -8337,8 +8372,10 @@ bool Recompiler::LDP_simd_signed_offset(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1314) -> string { switch(temp_1314) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1315) -> int64_t { switch(temp_1315) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		if(!((bool) (((rt1) != (rt2)) ? 1U : 0U)))
+			goto unimplemented;
+		auto r = (string) (([=](auto temp_1308) -> string { switch(temp_1308) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1309) -> int64_t { switch(temp_1309) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (simm)))).Store();
 		switch(opc) {
 			case 0x0: {
@@ -8370,6 +8407,12 @@ bool Recompiler::LDPSW_immediate_signed_offset(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt1) != (rt2)) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((rt1) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((rt2) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) (0x2));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (simm)))).Store();
 		XR[(int) rt1] = (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimePointer<uint32_t>) (address)).value()), 32))));
@@ -8387,6 +8430,8 @@ bool Recompiler::LDR_immediate_preindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rd) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (imm)))).Store();
@@ -8412,6 +8457,8 @@ bool Recompiler::LDR_immediate_postindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rd) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
@@ -8478,7 +8525,7 @@ bool Recompiler::LDR_simd_immediate_postindex(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
-		auto r = (string) (([=](auto temp_1316) -> string { switch(temp_1316) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_1310) -> string { switch(temp_1310) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
@@ -8525,7 +8572,7 @@ bool Recompiler::LDR_simd_immediate_preindex(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
-		auto r = (string) (([=](auto temp_1317) -> string { switch(temp_1317) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_1311) -> string { switch(temp_1311) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (simm)))).Store();
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
@@ -8573,8 +8620,8 @@ bool Recompiler::LDR_simd_immediate_unsigned_offset(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto opc = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x1)))) << 0)) | ((uint8_t) (((uint8_t) (ropc)) << 1))));
 		auto m = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
-		auto r = (string) (([=](auto temp_1318) -> string { switch(temp_1318) { case 0x1: return string("B"); case 0x5: return string("H"); case 0x9: return string("S"); case 0xD: return string("D"); default: return string("Q"); } })(m));
-		auto imm = (uint32_t) (((uint32_t) ((uint32_t) (rawimm))) << (uint) ((int64_t) (([=](auto temp_1319) -> int64_t { switch(temp_1319) { case 0x1: return 0x0; case 0x5: return 0x1; case 0x9: return 0x2; case 0xD: return 0x3; default: return 0x4; } })(m))));
+		auto r = (string) (([=](auto temp_1312) -> string { switch(temp_1312) { case 0x1: return string("B"); case 0x5: return string("H"); case 0x9: return string("S"); case 0xD: return string("D"); default: return string("Q"); } })(m));
+		auto imm = (uint32_t) (((uint32_t) ((uint32_t) (rawimm))) << (uint) ((int64_t) (([=](auto temp_1313) -> int64_t { switch(temp_1313) { case 0x1: return 0x0; case 0x5: return 0x1; case 0x9: return 0x2; case 0xD: return 0x3; default: return 0x4; } })(m))));
 		switch(m) {
 			case 0x1: {
 				VBR[(int) (rt)] = (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimePointer<uint8_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) (imm))))).value());
@@ -8609,7 +8656,7 @@ bool Recompiler::LDR_simd_literal(uint inst, ulong pc) {
 		auto size = (inst >> 30) & 0x3U;
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1320) -> string { switch(temp_1320) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(size));
+		auto r = (string) (([=](auto temp_1314) -> string { switch(temp_1314) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(size));
 		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) (((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) (0x0)))) << 0)) | ((uint32_t) (((uint32_t) (imm)) << 2)))), 21)))));
 		switch(size) {
 			case 0x0: {
@@ -8645,11 +8692,11 @@ bool Recompiler::LDR_simd_register(uint inst, ulong pc) {
 		auto scale = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r1 = (string) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (string("Q")) : ((string) (([=](auto temp_1321) -> string { switch(temp_1321) { case 0x0: return string("B"); case 0x1: return string("H"); case 0x2: return string("S"); case 0x3: return string("D"); default: throw "Not implemented"; } })(size))));
+		auto r1 = (string) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (string("Q")) : ((string) (([=](auto temp_1315) -> string { switch(temp_1315) { case 0x0: return string("B"); case 0x1: return string("H"); case 0x2: return string("S"); case 0x3: return string("D"); default: throw "Not implemented"; } })(size))));
 		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (([=](auto temp_1322) -> string { switch(temp_1322) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
-		auto amount = (uint64_t) (((uint64_t) (bool) (scale)) * ((uint64_t) (int64_t) ((int64_t) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (0x4) : ((int64_t) (([=](auto temp_1323) -> int64_t { switch(temp_1323) { case 0x0: return 0x1; case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: throw "Not implemented"; } })(size)))))));
-		auto offset = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1324) -> LlvmRuntimeValue<uint64_t> { switch(temp_1324) { case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))); case 0x3: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())); case 0x6: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())), 32))))); case 0x7: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())); default: throw "Not implemented"; } })(option))) << (amount))).Store();
+		auto extend = (string) (([=](auto temp_1316) -> string { switch(temp_1316) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto amount = (uint64_t) (((uint64_t) (bool) (scale)) * ((uint64_t) (int64_t) ((int64_t) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (0x4) : ((int64_t) (([=](auto temp_1317) -> int64_t { switch(temp_1317) { case 0x0: return 0x1; case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: throw "Not implemented"; } })(size)))))));
+		auto offset = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1318) -> LlvmRuntimeValue<uint64_t> { switch(temp_1318) { case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))); case 0x3: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())); case 0x6: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())), 32))))); case 0x7: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())); default: throw "Not implemented"; } })(option))) << (amount))).Store();
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) (offset)))).Store();
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
@@ -8691,7 +8738,7 @@ bool Recompiler::LDR_register(uint inst, ulong pc) {
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		auto extend = (string) (([=](auto temp_1325) -> string { switch(temp_1325) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto extend = (string) (([=](auto temp_1319) -> string { switch(temp_1319) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); case 0x3: return string("LSL"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LlvmRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rt] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimePointer<uint32_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) (offset))))).value()));
@@ -8710,6 +8757,8 @@ bool Recompiler::LDRB_immediate_postindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		XR[(int) rt] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint8_t>) (((LlvmRuntimePointer<uint8_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value()))));
 		if(rn == 31)
@@ -8728,6 +8777,8 @@ bool Recompiler::LDRB_immediate_preindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (imm)))).Store();
 		XR[(int) rt] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint8_t>) (((LlvmRuntimePointer<uint8_t>) (address)).value()))));
@@ -8763,7 +8814,7 @@ bool Recompiler::LDRB_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_1326) -> string { switch(temp_1326) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_1320) -> string { switch(temp_1320) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LlvmRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		XR[(int) rt] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint8_t>) (((LlvmRuntimePointer<uint8_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) (offset))))).value()));
 		return true;
@@ -8778,6 +8829,8 @@ bool Recompiler::LDRH_immediate_postindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		XR[(int) rt] = (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimePointer<uint16_t>) (address)).value())));
@@ -8797,6 +8850,8 @@ bool Recompiler::LDRH_immediate_preindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (imm)))).Store();
 		XR[(int) rt] = (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimePointer<uint16_t>) (address)).value())));
@@ -8833,7 +8888,7 @@ bool Recompiler::LDRH_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_1327) -> string { switch(temp_1327) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_1321) -> string { switch(temp_1321) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LlvmRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		XR[(int) rt] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimePointer<uint16_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) (offset))))).value()));
 		return true;
@@ -8849,6 +8904,8 @@ bool Recompiler::LDRSB_immediate_postindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
@@ -8874,6 +8931,8 @@ bool Recompiler::LDRSB_immediate_preindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (imm)))).Store();
@@ -8921,7 +8980,7 @@ bool Recompiler::LDRSB_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_1328) -> string { switch(temp_1328) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_1322) -> string { switch(temp_1322) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LlvmRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
 			XR[(int) rt] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint8_t>) (((LlvmRuntimePointer<uint8_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) (offset))))).value()), 8)))));
@@ -8941,6 +9000,8 @@ bool Recompiler::LDRSH_immediate_postindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
@@ -8966,6 +9027,8 @@ bool Recompiler::LDRSH_immediate_preindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (imm)))).Store();
@@ -9014,7 +9077,7 @@ bool Recompiler::LDRSH_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_1329) -> string { switch(temp_1329) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_1323) -> string { switch(temp_1323) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LlvmRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
 			XR[(int) rt] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimePointer<uint16_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) (offset))))).value()), 16)))));
@@ -9033,6 +9096,8 @@ bool Recompiler::LDRSW_immediate_postindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		XR[(int) rt] = (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimePointer<uint32_t>) (address)).value()), 32))));
@@ -9052,6 +9117,8 @@ bool Recompiler::LDRSW_immediate_preindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (imm)))).Store();
 		XR[(int) rt] = (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimePointer<uint32_t>) (address)).value()), 32))));
@@ -9102,7 +9169,7 @@ bool Recompiler::LDRSW_register(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0x2));
-		auto extend = (string) (([=](auto temp_1330) -> string { switch(temp_1330) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto extend = (string) (([=](auto temp_1324) -> string { switch(temp_1324) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LlvmRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		XR[(int) rt] = (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimePointer<uint32_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) (offset))))).value()), 32))));
 		return true;
@@ -9221,7 +9288,7 @@ bool Recompiler::LDUR_simd(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1331) -> string { switch(temp_1331) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_1325) -> string { switch(temp_1325) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (imm)))).Store();
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
@@ -9460,7 +9527,7 @@ bool Recompiler::MOVI_vector_32bit(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-		auto amount = (int64_t) (([=](auto temp_1332) -> int64_t { switch(temp_1332) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
+		auto amount = (int64_t) (([=](auto temp_1326) -> int64_t { switch(temp_1326) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
 		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		auto avec = ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<float>) ((float) (Bitcast<uint32_t, float>((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (amount)))))).CreateVector())).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (avec) : ((LlvmRuntimeValue<Vector128<float>>) ((avec).ZeroTop())));
@@ -9497,8 +9564,12 @@ bool Recompiler::MOVK(uint inst, ulong pc) {
 		auto hw = (inst >> 21) & 0x3U;
 		auto imm = (inst >> 5) & 0xFFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
+			if(!((bool) (((hw) < (0x2)) ? 1U : 0U)))
+				goto unimplemented;
+		}
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (uint8_t) ((hw) << (uint) (0x4));
+		auto shift = (uint32_t) (((uint32_t) ((uint32_t) (hw))) << (uint) (0x4));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rd) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rd]())))) & ((LlvmRuntimeValue<uint32_t>) ((uint32_t) ((((uint32_t) ((uint32_t) ((uint32_t) (-0x1)))) ^ ((uint32_t) ((uint32_t) (((uint32_t) ((uint32_t) (0xFFFF))) << (uint) (shift)))))))))))) | ((LlvmRuntimeValue<uint32_t>) ((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (shift)))))));
 		} else {
@@ -9517,8 +9588,12 @@ bool Recompiler::MOVN(uint inst, ulong pc) {
 		auto hw = (inst >> 21) & 0x3U;
 		auto imm = (inst >> 5) & 0xFFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
+			if(!((bool) (((hw) < (0x2)) ? 1U : 0U)))
+				goto unimplemented;
+		}
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (uint8_t) ((hw) << (uint) (0x4));
+		auto shift = (uint32_t) (((uint32_t) ((uint32_t) (hw))) << (uint) (0x4));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((uint32_t) (~((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (shift)))));
 		} else {
@@ -9538,7 +9613,7 @@ bool Recompiler::MOVZ(uint inst, ulong pc) {
 		auto imm = (inst >> 5) & 0xFFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (uint8_t) ((hw) << (uint) (0x4));
+		auto shift = (uint32_t) (((uint32_t) ((uint32_t) (hw))) << (uint) (0x4));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (shift)));
 		} else {
@@ -9614,10 +9689,10 @@ bool Recompiler::MUL_by_element(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto rm = (uint8_t) (((bool) (((size) == (0x2)) ? 1U : 0U) != 0) ? ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (rv)) << 0)) | ((uint8_t) (((uint8_t) (M)) << 4))))) : (rv));
-		auto t = (string) (([=](auto temp_1333) -> string { switch(temp_1333) { case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
-		auto ts = (string) (([=](auto temp_1334) -> string { switch(temp_1334) { case 0x1: return string("H"); case 0x2: return string("S"); default: throw "Not implemented"; } })(size));
-		auto index = (uint8_t) (([=](auto temp_1335) -> uint8_t { switch(temp_1335) { case 0x1: return (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (M)) << 0)) | ((uint8_t) (((uint8_t) (L)) << 1)))) | ((uint8_t) (((uint8_t) (H)) << 2)))); case 0x2: return (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))); default: throw "Not implemented"; } })(size));
-		auto v = ((LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1336) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1336) { case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint16_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint16_t>(index)))))); case 0x2: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint32_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint32_t>(index)))))); default: throw "Not implemented"; } })(size))).Store();
+		auto t = (string) (([=](auto temp_1327) -> string { switch(temp_1327) { case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_1328) -> string { switch(temp_1328) { case 0x1: return string("H"); case 0x2: return string("S"); default: throw "Not implemented"; } })(size));
+		auto index = (uint8_t) (([=](auto temp_1329) -> uint8_t { switch(temp_1329) { case 0x1: return (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (M)) << 0)) | ((uint8_t) (((uint8_t) (L)) << 1)))) | ((uint8_t) (((uint8_t) (H)) << 2)))); case 0x2: return (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))); default: throw "Not implemented"; } })(size));
+		auto v = ((LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1330) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1330) { case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint16_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint16_t>(index)))))); case 0x2: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint32_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint32_t>(index)))))); default: throw "Not implemented"; } })(size))).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LlvmRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
@@ -9633,8 +9708,8 @@ bool Recompiler::MUL_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1337) -> string { switch(temp_1337) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
-		auto v = ((LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1338) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1338) { case 0x0: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint16_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<uint16_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x2: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint32_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<uint32_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); default: throw "Not implemented"; } })(size))).Store();
+		auto t = (string) (([=](auto temp_1331) -> string { switch(temp_1331) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto v = ((LlvmRuntimeValue<Vector128<float>>) (([=](auto temp_1332) -> LlvmRuntimeValue<Vector128<float>> { switch(temp_1332) { case 0x0: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x1: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint16_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<uint16_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x2: return (LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<uint32_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LlvmRuntimeValue<Vector128<uint32_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); default: throw "Not implemented"; } })(size))).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LlvmRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
@@ -9682,7 +9757,7 @@ bool Recompiler::MVNI_vector_32bit_LSL(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-		auto amount = (int64_t) (([=](auto temp_1339) -> int64_t { switch(temp_1339) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
+		auto amount = (int64_t) (([=](auto temp_1333) -> int64_t { switch(temp_1333) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
 		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		auto avec = ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint32_t>) ((uint32_t) (~((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (amount)))))).CreateVector())).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (avec) : ((LlvmRuntimeValue<Vector128<float>>) ((avec).ZeroTop())));
@@ -9724,7 +9799,7 @@ bool Recompiler::NEG_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1340) -> string { switch(temp_1340) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_1334) -> string { switch(temp_1334) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto n = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
@@ -9777,20 +9852,20 @@ bool Recompiler::NEG_vector(uint inst, ulong pc) {
 				break;
 			}
 			case 0x4: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<float>) (-((LlvmRuntimeValue<float>) ((n).Element<float>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<float>) (-((LlvmRuntimeValue<float>) ((n).Element<float>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<int32_t>) (-((LlvmRuntimeValue<int32_t>) ((n).Element<int32_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<int32_t>) (-((LlvmRuntimeValue<int32_t>) ((n).Element<int32_t>(0x1)))));
 				break;
 			}
 			case 0x5: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<float>) (-((LlvmRuntimeValue<float>) ((n).Element<float>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<float>) (-((LlvmRuntimeValue<float>) ((n).Element<float>(0x1)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<float>) (-((LlvmRuntimeValue<float>) ((n).Element<float>(0x2)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<float>) (-((LlvmRuntimeValue<float>) ((n).Element<float>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<int32_t>) (-((LlvmRuntimeValue<int32_t>) ((n).Element<int32_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<int32_t>) (-((LlvmRuntimeValue<int32_t>) ((n).Element<int32_t>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<int32_t>) (-((LlvmRuntimeValue<int32_t>) ((n).Element<int32_t>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<int32_t>) (-((LlvmRuntimeValue<int32_t>) ((n).Element<int32_t>(0x3)))));
 				break;
 			}
 			case 0x7: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<double>) (-((LlvmRuntimeValue<double>) ((n).Element<double>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<double>) (-((LlvmRuntimeValue<double>) ((n).Element<double>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<int64_t>) (-((LlvmRuntimeValue<int64_t>) ((n).Element<int64_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<int64_t>) (-((LlvmRuntimeValue<int64_t>) ((n).Element<int64_t>(0x1)))));
 				break;
 			}
 			default: {
@@ -9822,12 +9897,14 @@ bool Recompiler::ORN_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1341) -> string { switch(temp_1341) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1335) -> string { switch(temp_1335) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) | ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (~((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1342) -> LlvmRuntimeValue<uint32_t> { switch(temp_1342) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) | ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (~((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1336) -> LlvmRuntimeValue<uint32_t> { switch(temp_1336) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))))))));
 		} else {
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) | ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (~((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1343) -> LlvmRuntimeValue<uint64_t> { switch(temp_1343) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) | ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (~((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1337) -> LlvmRuntimeValue<uint64_t> { switch(temp_1337) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))));
 		}
 		return true;
 	}
@@ -9872,12 +9949,14 @@ bool Recompiler::ORR_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1344) -> string { switch(temp_1344) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1338) -> string { switch(temp_1338) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) | ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1345) -> LlvmRuntimeValue<uint32_t> { switch(temp_1345) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) | ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1339) -> LlvmRuntimeValue<uint32_t> { switch(temp_1339) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))))));
 		} else {
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) | ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1346) -> LlvmRuntimeValue<uint64_t> { switch(temp_1346) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) | ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1340) -> LlvmRuntimeValue<uint64_t> { switch(temp_1340) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))));
 		}
 		return true;
 	}
@@ -9893,12 +9972,7 @@ bool Recompiler::ORR_simd_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) (((bool) (((Q) == (0x0)) ? 1U : 0U) != 0) ? (string("8B")) : (string("16B")));
-		if(((bool) (((rm) == (rn)) ? 1U : 0U)) != 0) {
-			VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]);
-		} else {
-			auto tv = ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) | ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)]))))))).Store();
-			VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? (tv) : ((LlvmRuntimeValue<Vector128<float>>) ((tv).ZeroTop())));
-		}
+		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((Q) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) (((bool) (((rm) == (rn)) ? 1U : 0U)) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) : ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) | ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)]))))))))) : ((LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<Vector128<float>>) (((bool) (((rm) == (rn)) ? 1U : 0U)) != 0 ? ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) : ((LlvmRuntimeValue<Vector128<float>>) ((LlvmRuntimeValue<Vector128<float>>) ((((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) | ((LlvmRuntimeValue<Vector128<uint8_t>>) ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)]))))))))).ZeroTop())));
 		return true;
 	}
 unimplemented:
@@ -9914,394 +9988,394 @@ bool Recompiler::PMULL_2_(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto h = (string) ((Q != 0) ? (string("2")) : (string("")));
-		auto Ta = (string) (([=](auto temp_1347) -> string { switch(temp_1347) { case 0x0: return string("8H"); case 0x3: return string("1Q"); default: throw "Not implemented"; } })(size));
-		auto Tb = (string) (([=](auto temp_1348) -> string { switch(temp_1348) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x6: return string("1D"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto Ta = (string) (([=](auto temp_1341) -> string { switch(temp_1341) { case 0x0: return string("8H"); case 0x3: return string("1Q"); default: throw "Not implemented"; } })(size));
+		auto Tb = (string) (([=](auto temp_1342) -> string { switch(temp_1342) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x6: return string("1D"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		if(((bool) (((size) == (0x3)) ? 1U : 0U)) != 0) {
 			auto result = ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q)))) ^ ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))))))))).Store();
-			LabelTag temp_1349 = DefineLabel(), temp_1350 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x0)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1349, temp_1350);
-			Label(temp_1349);
+			LabelTag temp_1343 = DefineLabel(), temp_1344 = DefineLabel();
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x0)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1343, temp_1344);
+			Label(temp_1343);
 			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x0))))));
+			Branch(temp_1344);
+			Label(temp_1344);
+			LabelTag temp_1345 = DefineLabel(), temp_1346 = DefineLabel();
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1345, temp_1346);
+			Label(temp_1345);
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1))))));
+			Branch(temp_1346);
+			Label(temp_1346);
+			LabelTag temp_1347 = DefineLabel(), temp_1348 = DefineLabel();
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1347, temp_1348);
+			Label(temp_1347);
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2))))));
+			Branch(temp_1348);
+			Label(temp_1348);
+			LabelTag temp_1349 = DefineLabel(), temp_1350 = DefineLabel();
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1349, temp_1350);
+			Label(temp_1349);
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3))))));
 			Branch(temp_1350);
 			Label(temp_1350);
 			LabelTag temp_1351 = DefineLabel(), temp_1352 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1351, temp_1352);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x4)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1351, temp_1352);
 			Label(temp_1351);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x4))))));
 			Branch(temp_1352);
 			Label(temp_1352);
 			LabelTag temp_1353 = DefineLabel(), temp_1354 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1353, temp_1354);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x5)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1353, temp_1354);
 			Label(temp_1353);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x5))))));
 			Branch(temp_1354);
 			Label(temp_1354);
 			LabelTag temp_1355 = DefineLabel(), temp_1356 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1355, temp_1356);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x6)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1355, temp_1356);
 			Label(temp_1355);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x6))))));
 			Branch(temp_1356);
 			Label(temp_1356);
 			LabelTag temp_1357 = DefineLabel(), temp_1358 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x4)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1357, temp_1358);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x7)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1357, temp_1358);
 			Label(temp_1357);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x4))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x7))))));
 			Branch(temp_1358);
 			Label(temp_1358);
 			LabelTag temp_1359 = DefineLabel(), temp_1360 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x5)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1359, temp_1360);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x8)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1359, temp_1360);
 			Label(temp_1359);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x5))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x8))))));
 			Branch(temp_1360);
 			Label(temp_1360);
 			LabelTag temp_1361 = DefineLabel(), temp_1362 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x6)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1361, temp_1362);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x9)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1361, temp_1362);
 			Label(temp_1361);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x6))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x9))))));
 			Branch(temp_1362);
 			Label(temp_1362);
 			LabelTag temp_1363 = DefineLabel(), temp_1364 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x7)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1363, temp_1364);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xA)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1363, temp_1364);
 			Label(temp_1363);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x7))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xA))))));
 			Branch(temp_1364);
 			Label(temp_1364);
 			LabelTag temp_1365 = DefineLabel(), temp_1366 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x8)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1365, temp_1366);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xB)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1365, temp_1366);
 			Label(temp_1365);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x8))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xB))))));
 			Branch(temp_1366);
 			Label(temp_1366);
 			LabelTag temp_1367 = DefineLabel(), temp_1368 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x9)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1367, temp_1368);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xC)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1367, temp_1368);
 			Label(temp_1367);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x9))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xC))))));
 			Branch(temp_1368);
 			Label(temp_1368);
 			LabelTag temp_1369 = DefineLabel(), temp_1370 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xA)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1369, temp_1370);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xD)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1369, temp_1370);
 			Label(temp_1369);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xA))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xD))))));
 			Branch(temp_1370);
 			Label(temp_1370);
 			LabelTag temp_1371 = DefineLabel(), temp_1372 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xB)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1371, temp_1372);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xE)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1371, temp_1372);
 			Label(temp_1371);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xB))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xE))))));
 			Branch(temp_1372);
 			Label(temp_1372);
 			LabelTag temp_1373 = DefineLabel(), temp_1374 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xC)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1373, temp_1374);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xF)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1373, temp_1374);
 			Label(temp_1373);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xC))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xF))))));
 			Branch(temp_1374);
 			Label(temp_1374);
 			LabelTag temp_1375 = DefineLabel(), temp_1376 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xD)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1375, temp_1376);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x10)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1375, temp_1376);
 			Label(temp_1375);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xD))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x10))))));
 			Branch(temp_1376);
 			Label(temp_1376);
 			LabelTag temp_1377 = DefineLabel(), temp_1378 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xE)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1377, temp_1378);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x11)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1377, temp_1378);
 			Label(temp_1377);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xE))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x11))))));
 			Branch(temp_1378);
 			Label(temp_1378);
 			LabelTag temp_1379 = DefineLabel(), temp_1380 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xF)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1379, temp_1380);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x12)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1379, temp_1380);
 			Label(temp_1379);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xF))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x12))))));
 			Branch(temp_1380);
 			Label(temp_1380);
 			LabelTag temp_1381 = DefineLabel(), temp_1382 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x10)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1381, temp_1382);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x13)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1381, temp_1382);
 			Label(temp_1381);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x10))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x13))))));
 			Branch(temp_1382);
 			Label(temp_1382);
 			LabelTag temp_1383 = DefineLabel(), temp_1384 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x11)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1383, temp_1384);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x14)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1383, temp_1384);
 			Label(temp_1383);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x11))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x14))))));
 			Branch(temp_1384);
 			Label(temp_1384);
 			LabelTag temp_1385 = DefineLabel(), temp_1386 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x12)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1385, temp_1386);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x15)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1385, temp_1386);
 			Label(temp_1385);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x12))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x15))))));
 			Branch(temp_1386);
 			Label(temp_1386);
 			LabelTag temp_1387 = DefineLabel(), temp_1388 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x13)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1387, temp_1388);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x16)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1387, temp_1388);
 			Label(temp_1387);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x13))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x16))))));
 			Branch(temp_1388);
 			Label(temp_1388);
 			LabelTag temp_1389 = DefineLabel(), temp_1390 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x14)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1389, temp_1390);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x17)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1389, temp_1390);
 			Label(temp_1389);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x14))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x17))))));
 			Branch(temp_1390);
 			Label(temp_1390);
 			LabelTag temp_1391 = DefineLabel(), temp_1392 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x15)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1391, temp_1392);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x18)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1391, temp_1392);
 			Label(temp_1391);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x15))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x18))))));
 			Branch(temp_1392);
 			Label(temp_1392);
 			LabelTag temp_1393 = DefineLabel(), temp_1394 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x16)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1393, temp_1394);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x19)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1393, temp_1394);
 			Label(temp_1393);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x16))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x19))))));
 			Branch(temp_1394);
 			Label(temp_1394);
 			LabelTag temp_1395 = DefineLabel(), temp_1396 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x17)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1395, temp_1396);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1A)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1395, temp_1396);
 			Label(temp_1395);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x17))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1A))))));
 			Branch(temp_1396);
 			Label(temp_1396);
 			LabelTag temp_1397 = DefineLabel(), temp_1398 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x18)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1397, temp_1398);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1B)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1397, temp_1398);
 			Label(temp_1397);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x18))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1B))))));
 			Branch(temp_1398);
 			Label(temp_1398);
 			LabelTag temp_1399 = DefineLabel(), temp_1400 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x19)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1399, temp_1400);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1C)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1399, temp_1400);
 			Label(temp_1399);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x19))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1C))))));
 			Branch(temp_1400);
 			Label(temp_1400);
 			LabelTag temp_1401 = DefineLabel(), temp_1402 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1A)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1401, temp_1402);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1D)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1401, temp_1402);
 			Label(temp_1401);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1A))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1D))))));
 			Branch(temp_1402);
 			Label(temp_1402);
 			LabelTag temp_1403 = DefineLabel(), temp_1404 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1B)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1403, temp_1404);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1E)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1403, temp_1404);
 			Label(temp_1403);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1B))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1E))))));
 			Branch(temp_1404);
 			Label(temp_1404);
 			LabelTag temp_1405 = DefineLabel(), temp_1406 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1C)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1405, temp_1406);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1F)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1405, temp_1406);
 			Label(temp_1405);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1C))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1F))))));
 			Branch(temp_1406);
 			Label(temp_1406);
 			LabelTag temp_1407 = DefineLabel(), temp_1408 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1D)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1407, temp_1408);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x20)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1407, temp_1408);
 			Label(temp_1407);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1D))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x20))))));
 			Branch(temp_1408);
 			Label(temp_1408);
 			LabelTag temp_1409 = DefineLabel(), temp_1410 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1E)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1409, temp_1410);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x21)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1409, temp_1410);
 			Label(temp_1409);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1E))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x21))))));
 			Branch(temp_1410);
 			Label(temp_1410);
 			LabelTag temp_1411 = DefineLabel(), temp_1412 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1F)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1411, temp_1412);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x22)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1411, temp_1412);
 			Label(temp_1411);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1F))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x22))))));
 			Branch(temp_1412);
 			Label(temp_1412);
 			LabelTag temp_1413 = DefineLabel(), temp_1414 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x20)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1413, temp_1414);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x23)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1413, temp_1414);
 			Label(temp_1413);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x20))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x23))))));
 			Branch(temp_1414);
 			Label(temp_1414);
 			LabelTag temp_1415 = DefineLabel(), temp_1416 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x21)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1415, temp_1416);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x24)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1415, temp_1416);
 			Label(temp_1415);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x21))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x24))))));
 			Branch(temp_1416);
 			Label(temp_1416);
 			LabelTag temp_1417 = DefineLabel(), temp_1418 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x22)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1417, temp_1418);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x25)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1417, temp_1418);
 			Label(temp_1417);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x22))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x25))))));
 			Branch(temp_1418);
 			Label(temp_1418);
 			LabelTag temp_1419 = DefineLabel(), temp_1420 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x23)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1419, temp_1420);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x26)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1419, temp_1420);
 			Label(temp_1419);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x23))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x26))))));
 			Branch(temp_1420);
 			Label(temp_1420);
 			LabelTag temp_1421 = DefineLabel(), temp_1422 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x24)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1421, temp_1422);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x27)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1421, temp_1422);
 			Label(temp_1421);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x24))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x27))))));
 			Branch(temp_1422);
 			Label(temp_1422);
 			LabelTag temp_1423 = DefineLabel(), temp_1424 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x25)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1423, temp_1424);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x28)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1423, temp_1424);
 			Label(temp_1423);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x25))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x28))))));
 			Branch(temp_1424);
 			Label(temp_1424);
 			LabelTag temp_1425 = DefineLabel(), temp_1426 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x26)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1425, temp_1426);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x29)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1425, temp_1426);
 			Label(temp_1425);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x26))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x29))))));
 			Branch(temp_1426);
 			Label(temp_1426);
 			LabelTag temp_1427 = DefineLabel(), temp_1428 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x27)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1427, temp_1428);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2A)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1427, temp_1428);
 			Label(temp_1427);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x27))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2A))))));
 			Branch(temp_1428);
 			Label(temp_1428);
 			LabelTag temp_1429 = DefineLabel(), temp_1430 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x28)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1429, temp_1430);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2B)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1429, temp_1430);
 			Label(temp_1429);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x28))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2B))))));
 			Branch(temp_1430);
 			Label(temp_1430);
 			LabelTag temp_1431 = DefineLabel(), temp_1432 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x29)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1431, temp_1432);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2C)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1431, temp_1432);
 			Label(temp_1431);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x29))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2C))))));
 			Branch(temp_1432);
 			Label(temp_1432);
 			LabelTag temp_1433 = DefineLabel(), temp_1434 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2A)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1433, temp_1434);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2D)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1433, temp_1434);
 			Label(temp_1433);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2A))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2D))))));
 			Branch(temp_1434);
 			Label(temp_1434);
 			LabelTag temp_1435 = DefineLabel(), temp_1436 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2B)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1435, temp_1436);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2E)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1435, temp_1436);
 			Label(temp_1435);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2B))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2E))))));
 			Branch(temp_1436);
 			Label(temp_1436);
 			LabelTag temp_1437 = DefineLabel(), temp_1438 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2C)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1437, temp_1438);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2F)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1437, temp_1438);
 			Label(temp_1437);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2C))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2F))))));
 			Branch(temp_1438);
 			Label(temp_1438);
 			LabelTag temp_1439 = DefineLabel(), temp_1440 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2D)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1439, temp_1440);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x30)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1439, temp_1440);
 			Label(temp_1439);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2D))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x30))))));
 			Branch(temp_1440);
 			Label(temp_1440);
 			LabelTag temp_1441 = DefineLabel(), temp_1442 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2E)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1441, temp_1442);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x31)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1441, temp_1442);
 			Label(temp_1441);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2E))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x31))))));
 			Branch(temp_1442);
 			Label(temp_1442);
 			LabelTag temp_1443 = DefineLabel(), temp_1444 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2F)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1443, temp_1444);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x32)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1443, temp_1444);
 			Label(temp_1443);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2F))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x32))))));
 			Branch(temp_1444);
 			Label(temp_1444);
 			LabelTag temp_1445 = DefineLabel(), temp_1446 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x30)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1445, temp_1446);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x33)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1445, temp_1446);
 			Label(temp_1445);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x30))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x33))))));
 			Branch(temp_1446);
 			Label(temp_1446);
 			LabelTag temp_1447 = DefineLabel(), temp_1448 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x31)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1447, temp_1448);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x34)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1447, temp_1448);
 			Label(temp_1447);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x31))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x34))))));
 			Branch(temp_1448);
 			Label(temp_1448);
 			LabelTag temp_1449 = DefineLabel(), temp_1450 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x32)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1449, temp_1450);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x35)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1449, temp_1450);
 			Label(temp_1449);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x32))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x35))))));
 			Branch(temp_1450);
 			Label(temp_1450);
 			LabelTag temp_1451 = DefineLabel(), temp_1452 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x33)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1451, temp_1452);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x36)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1451, temp_1452);
 			Label(temp_1451);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x33))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x36))))));
 			Branch(temp_1452);
 			Label(temp_1452);
 			LabelTag temp_1453 = DefineLabel(), temp_1454 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x34)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1453, temp_1454);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x37)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1453, temp_1454);
 			Label(temp_1453);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x34))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x37))))));
 			Branch(temp_1454);
 			Label(temp_1454);
 			LabelTag temp_1455 = DefineLabel(), temp_1456 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x35)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1455, temp_1456);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x38)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1455, temp_1456);
 			Label(temp_1455);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x35))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x38))))));
 			Branch(temp_1456);
 			Label(temp_1456);
 			LabelTag temp_1457 = DefineLabel(), temp_1458 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x36)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1457, temp_1458);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x39)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1457, temp_1458);
 			Label(temp_1457);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x36))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x39))))));
 			Branch(temp_1458);
 			Label(temp_1458);
 			LabelTag temp_1459 = DefineLabel(), temp_1460 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x37)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1459, temp_1460);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3A)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1459, temp_1460);
 			Label(temp_1459);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x37))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3A))))));
 			Branch(temp_1460);
 			Label(temp_1460);
 			LabelTag temp_1461 = DefineLabel(), temp_1462 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x38)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1461, temp_1462);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3B)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1461, temp_1462);
 			Label(temp_1461);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x38))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3B))))));
 			Branch(temp_1462);
 			Label(temp_1462);
 			LabelTag temp_1463 = DefineLabel(), temp_1464 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x39)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1463, temp_1464);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3C)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1463, temp_1464);
 			Label(temp_1463);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x39))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3C))))));
 			Branch(temp_1464);
 			Label(temp_1464);
 			LabelTag temp_1465 = DefineLabel(), temp_1466 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3A)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1465, temp_1466);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3D)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1465, temp_1466);
 			Label(temp_1465);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3A))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3D))))));
 			Branch(temp_1466);
 			Label(temp_1466);
 			LabelTag temp_1467 = DefineLabel(), temp_1468 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3B)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1467, temp_1468);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3E)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1467, temp_1468);
 			Label(temp_1467);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3B))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3E))))));
 			Branch(temp_1468);
 			Label(temp_1468);
 			LabelTag temp_1469 = DefineLabel(), temp_1470 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3C)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1469, temp_1470);
+			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3F)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1469, temp_1470);
 			Label(temp_1469);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3C))))));
+			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3F))))));
 			Branch(temp_1470);
 			Label(temp_1470);
-			LabelTag temp_1471 = DefineLabel(), temp_1472 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3D)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1471, temp_1472);
-			Label(temp_1471);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3D))))));
-			Branch(temp_1472);
-			Label(temp_1472);
-			LabelTag temp_1473 = DefineLabel(), temp_1474 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3E)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1473, temp_1474);
-			Label(temp_1473);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3E))))));
-			Branch(temp_1474);
-			Label(temp_1474);
-			LabelTag temp_1475 = DefineLabel(), temp_1476 = DefineLabel();
-			BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3F)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1475, temp_1476);
-			Label(temp_1475);
-			result = (LlvmRuntimeValue<__uint128_t>) ((((LlvmRuntimeValue<__uint128_t>) (result)) ^ ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) (((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<__uint128_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3F))))));
-			Branch(temp_1476);
-			Label(temp_1476);
 			VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) ((result).Bitcast<Vector128<float>>());
 		} else {
 			throw "Not implemented";
@@ -10514,6 +10588,17 @@ bool Recompiler::SBFM(uint inst, ulong pc) {
 		auto imms = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imms) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((immr) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if((size) != 0) {
+			if(!(N))
+				goto unimplemented;
+		} else {
+			if(!((bool) (((N) == (0x0)) ? 1U : 0U)))
+				goto unimplemented;
+		}
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto src = ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]()))).Store();
@@ -10635,7 +10720,7 @@ bool Recompiler::SCVTF_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1477) -> string { switch(temp_1477) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_1471) -> string { switch(temp_1471) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto n = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
@@ -10677,10 +10762,10 @@ bool Recompiler::SDIV(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto operand2 = ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))).Store();
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (Ternary<bool, uint32_t>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((operand2) == (0x0))), (uint32_t) ((uint32_t) (0x0)), (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<float>) (((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))))))) / ((LlvmRuntimeValue<float>) (LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<float>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) (operand2))))))))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (Ternary<bool, uint32_t>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((operand2) == (0x0))), (uint32_t) ((uint32_t) (0x0)), (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) (LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))))) / ((LlvmRuntimeValue<int32_t>) (LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) (operand2))))))))));
 		} else {
 			auto operand2 = ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())).Store();
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (Ternary<bool, uint64_t>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((operand2) == (0x0))), (uint64_t) ((uint64_t) (0x0)), (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<double>) (((LlvmRuntimeValue<double>) (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))))))) / ((LlvmRuntimeValue<double>) (LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<double>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) (operand2)))))))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (Ternary<bool, uint64_t>((LlvmRuntimeValue<bool>) ((LlvmRuntimeValue<bool>) ((operand2) == (0x0))), (uint64_t) ((uint64_t) (0x0)), (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) (LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))))) / ((LlvmRuntimeValue<int64_t>) (LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) (operand2)))))))));
 		}
 		return true;
 	}
@@ -10718,7 +10803,7 @@ bool Recompiler::SHL_vector(uint inst, ulong pc) {
 				} else {
 					T = (string) ((Q != 0) ? (string("2D")) : throw "Not implemented");
 					size = 0x8;
-					shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x20)));
+					shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x40)));
 				}
 			}
 		}
@@ -10727,7 +10812,7 @@ bool Recompiler::SHL_vector(uint inst, ulong pc) {
 		switch(size) {
 			case 0x1: {
 				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(0x0))) << (shift)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(0x0))) << (shift)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(0x1))) << (shift)));
 				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(0x2))) << (shift)));
 				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(0x3))) << (shift)));
 				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(0x4))) << (shift)));
@@ -10748,7 +10833,7 @@ bool Recompiler::SHL_vector(uint inst, ulong pc) {
 			}
 			case 0x2: {
 				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((sv).Element<uint16_t>(0x0))) << (shift)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((sv).Element<uint16_t>(0x0))) << (shift)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((sv).Element<uint16_t>(0x1))) << (shift)));
 				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((sv).Element<uint16_t>(0x2))) << (shift)));
 				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((sv).Element<uint16_t>(0x3))) << (shift)));
 				if((Q) != 0) {
@@ -10877,7 +10962,7 @@ bool Recompiler::ST1_multi_no_offset_one_register(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_1478) -> string { switch(temp_1478) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1472) -> string { switch(temp_1472) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -10961,10 +11046,10 @@ bool Recompiler::ST1_multi_postindex_immediate_one_register(uint inst, ulong pc)
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x20) : (0x10))));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x10) : (0x8))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1479) -> string { switch(temp_1479) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1473) -> string { switch(temp_1473) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -11054,7 +11139,7 @@ bool Recompiler::ST1_multi_postindex_register_one_register(uint inst, ulong pc) 
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1480) -> string { switch(temp_1480) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1474) -> string { switch(temp_1474) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -11142,7 +11227,7 @@ bool Recompiler::ST1_multi_no_offset_two_registers(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1481) -> string { switch(temp_1481) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1475) -> string { switch(temp_1475) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -11299,7 +11384,7 @@ bool Recompiler::ST1_multi_postindex_immediate_two_registers(uint inst, ulong pc
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1482) -> string { switch(temp_1482) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1476) -> string { switch(temp_1476) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -11459,7 +11544,7 @@ bool Recompiler::ST1_multi_postindex_register_two_registers(uint inst, ulong pc)
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1483) -> string { switch(temp_1483) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1477) -> string { switch(temp_1477) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto oaddress = (address).Store();
 		auto v = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
@@ -11618,7 +11703,7 @@ bool Recompiler::ST1_multi_no_offset_three_registers(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1484) -> string { switch(temp_1484) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1478) -> string { switch(temp_1478) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -11845,7 +11930,7 @@ bool Recompiler::ST1_multi_postindex_immediate_three_registers(uint inst, ulong 
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1485) -> string { switch(temp_1485) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1479) -> string { switch(temp_1479) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -12075,7 +12160,7 @@ bool Recompiler::ST1_multi_postindex_register_three_registers(uint inst, ulong p
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1486) -> string { switch(temp_1486) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1480) -> string { switch(temp_1480) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto oaddress = (address).Store();
 		auto v = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
@@ -12304,7 +12389,7 @@ bool Recompiler::ST1_multi_no_offset_four_registers(uint inst, ulong pc) {
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1487) -> string { switch(temp_1487) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1481) -> string { switch(temp_1481) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -12601,7 +12686,7 @@ bool Recompiler::ST1_multi_postindex_immediate_four_registers(uint inst, ulong p
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1488) -> string { switch(temp_1488) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1482) -> string { switch(temp_1482) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -12901,7 +12986,7 @@ bool Recompiler::ST1_multi_postindex_register_four_registers(uint inst, ulong pc
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1489) -> string { switch(temp_1489) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1483) -> string { switch(temp_1483) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto oaddress = (address).Store();
 		auto v = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
@@ -13201,7 +13286,7 @@ bool Recompiler::ST1_single_no_offset(uint inst, ulong pc) {
 		if(!((bool) (((opc) != (0x3)) ? 1U : 0U)))
 			goto unimplemented;
 		auto t = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("B")) : ((string) (((bool) ((((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U))))) != 0) ? (string("H")) : ((string) (((bool) (((opc) == (0x2)) ? 1U : 0U) != 0) ? ((string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : ((string) (((bool) ((((bool) ((bool) (((size) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) (((S) == (0x0)) ? 1U : 0U))))) != 0) ? (string("D")) : throw "Not implemented")))) : throw "Not implemented")))));
-		auto index = (uint32_t) (([=](auto temp_1490) -> uint32_t { switch(temp_1490) { case 0x0: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3)))))); case 0x1: return (uint32_t) (((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint32_t) (((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (S)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
+		auto index = (uint32_t) (([=](auto temp_1484) -> uint32_t { switch(temp_1484) { case 0x0: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3)))))); case 0x1: return (uint32_t) (((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint32_t) (((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (S)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(opc) {
@@ -13240,7 +13325,7 @@ bool Recompiler::ST2_multi_no_offset(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1491) -> string { switch(temp_1491) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1485) -> string { switch(temp_1485) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -13373,7 +13458,7 @@ bool Recompiler::ST2_multi_postindex_immediate(uint inst, ulong pc) {
 		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x20) : (0x10))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1492) -> string { switch(temp_1492) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1486) -> string { switch(temp_1486) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -13509,7 +13594,7 @@ bool Recompiler::ST2_multi_postindex_register(uint inst, ulong pc) {
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1493) -> string { switch(temp_1493) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1487) -> string { switch(temp_1487) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -13643,7 +13728,7 @@ bool Recompiler::ST3_multi_no_offset(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1494) -> string { switch(temp_1494) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1488) -> string { switch(temp_1488) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -13822,7 +13907,7 @@ bool Recompiler::ST3_multi_postindex_immediate(uint inst, ulong pc) {
 		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x30) : (0x18))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1495) -> string { switch(temp_1495) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1489) -> string { switch(temp_1489) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -14004,7 +14089,7 @@ bool Recompiler::ST3_multi_postindex_register(uint inst, ulong pc) {
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1496) -> string { switch(temp_1496) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1490) -> string { switch(temp_1490) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -14184,7 +14269,7 @@ bool Recompiler::ST4_multi_no_offset(uint inst, ulong pc) {
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1497) -> string { switch(temp_1497) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1491) -> string { switch(temp_1491) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -14409,7 +14494,7 @@ bool Recompiler::ST4_multi_postindex_immediate(uint inst, ulong pc) {
 		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x40) : (0x2B))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1498) -> string { switch(temp_1498) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1492) -> string { switch(temp_1492) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -14637,7 +14722,7 @@ bool Recompiler::ST4_multi_postindex_register(uint inst, ulong pc) {
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1499) -> string { switch(temp_1499) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1493) -> string { switch(temp_1493) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -15020,8 +15105,8 @@ bool Recompiler::STP_simd_postindex(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1500) -> string { switch(temp_1500) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1501) -> int64_t { switch(temp_1501) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_1494) -> string { switch(temp_1494) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1495) -> int64_t { switch(temp_1495) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rd) == 31 ? SPR() : XR[(int) rd]())).Store();
 		switch(opc) {
 			case 0x0: {
@@ -15062,8 +15147,8 @@ bool Recompiler::STP_simd_preindex(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1502) -> string { switch(temp_1502) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1503) -> int64_t { switch(temp_1503) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_1496) -> string { switch(temp_1496) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1497) -> int64_t { switch(temp_1497) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rd) == 31 ? SPR() : XR[(int) rd]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (simm)))).Store();
 		switch(opc) {
 			case 0x0: {
@@ -15104,8 +15189,8 @@ bool Recompiler::STP_simd_signed_offset(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1504) -> string { switch(temp_1504) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1505) -> int64_t { switch(temp_1505) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_1498) -> string { switch(temp_1498) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1499) -> int64_t { switch(temp_1499) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rd) == 31 ? SPR() : XR[(int) rd]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (simm)))).Store();
 		switch(opc) {
 			case 0x0: {
@@ -15216,7 +15301,7 @@ bool Recompiler::STR_register(uint inst, ulong pc) {
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		auto extend = (string) (([=](auto temp_1506) -> string { switch(temp_1506) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto extend = (string) (([=](auto temp_1500) -> string { switch(temp_1500) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); case 0x3: return string("LSL"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LlvmRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			((LlvmRuntimePointer<uint32_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) (offset))))).value((LlvmRuntimeValue<uint32_t>) ((rt) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rt]())));
@@ -15238,7 +15323,7 @@ bool Recompiler::STR_simd_postindex(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
-		auto r = (string) (([=](auto temp_1507) -> string { switch(temp_1507) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_1501) -> string { switch(temp_1501) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		auto address = ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		switch(rop) {
@@ -15286,7 +15371,7 @@ bool Recompiler::STR_simd_preindex(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
-		auto r = (string) (([=](auto temp_1508) -> string { switch(temp_1508) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_1502) -> string { switch(temp_1502) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto scale = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 2))));
 		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (simm)))).Store();
@@ -15335,7 +15420,7 @@ bool Recompiler::STR_simd_unsigned_offset(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
-		auto r = (string) (([=](auto temp_1509) -> string { switch(temp_1509) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_1503) -> string { switch(temp_1503) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto scale = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 2))));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint16_t>) ((uint16_t) ((imm) << (uint) (scale)))))).Store();
 		switch(rop) {
@@ -15381,10 +15466,10 @@ bool Recompiler::STR_simd_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
-		auto r1 = (string) (([=](auto temp_1510) -> string { switch(temp_1510) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r1 = (string) (([=](auto temp_1504) -> string { switch(temp_1504) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((int64_t) (([=](auto temp_1511) -> int64_t { switch(temp_1511) { case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: return (int64_t) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (0x4) : (0x0)); } })(size))));
-		auto extend = (string) (([=](auto temp_1512) -> string { switch(temp_1512) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((int64_t) (([=](auto temp_1505) -> int64_t { switch(temp_1505) { case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: return (int64_t) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (0x4) : (0x0)); } })(size))));
+		auto extend = (string) (([=](auto temp_1506) -> string { switch(temp_1506) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); case 0x3: return (string) (((bool) (((rop) != (0x0)) ? 1U : 0U) != 0) ? (string("LSL")) : throw "Not implemented"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LlvmRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) (offset)))).Store();
 		switch(rop) {
@@ -15479,7 +15564,7 @@ bool Recompiler::STRB_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_1513) -> string { switch(temp_1513) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_1507) -> string { switch(temp_1507) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LlvmRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		((LlvmRuntimePointer<uint8_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) (offset))))).value((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint32_t>) ((rt) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rt]())))));
 		return true;
@@ -15549,7 +15634,7 @@ bool Recompiler::STRH_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_1514) -> string { switch(temp_1514) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_1508) -> string { switch(temp_1508) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LlvmRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		((LlvmRuntimePointer<uint16_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) (offset))))).value((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint32_t>) ((rt) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rt]())))));
 		return true;
@@ -15587,7 +15672,7 @@ bool Recompiler::STUR_simd(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
-		auto r = (string) (([=](auto temp_1515) -> string { switch(temp_1515) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_1509) -> string { switch(temp_1509) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		auto address = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<int64_t>) (simm)))).Store();
 		switch(rop) {
@@ -15731,15 +15816,17 @@ bool Recompiler::SUB_extended_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x7U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= (0x4)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_1516) -> string { switch(temp_1516) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_1517) -> string { switch(temp_1517) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_1510) -> string { switch(temp_1510) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_1511) -> string { switch(temp_1511) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))).Store();
 			if(rd == 31)
-				SPR = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1518) -> LlvmRuntimeValue<uint32_t> { switch(temp_1518) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
+				SPR = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1512) -> LlvmRuntimeValue<uint32_t> { switch(temp_1512) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
 			else
-				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1519) -> LlvmRuntimeValue<uint32_t> { switch(temp_1519) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
+				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1513) -> LlvmRuntimeValue<uint32_t> { switch(temp_1513) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
 		} else {
 			if(((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U)) != 0) {
 				if(rd == 31)
@@ -15747,11 +15834,11 @@ bool Recompiler::SUB_extended_register(uint inst, ulong pc) {
 				else
 					XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << (imm)))));
 			} else {
-				auto m = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))).Store();
+				auto m = ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))).Store();
 				if(rd == 31)
-					SPR = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1520) -> LlvmRuntimeValue<uint64_t> { switch(temp_1520) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 64))))); default: return m; } })(option))) << (imm)))));
+					SPR = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1514) -> LlvmRuntimeValue<uint32_t> { switch(temp_1514) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))); case 0x6: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 32))); default: return m; } })(option))))) << (imm)))));
 				else
-					XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1521) -> LlvmRuntimeValue<uint64_t> { switch(temp_1521) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 64))))); default: return m; } })(option))) << (imm)))));
+					XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1515) -> LlvmRuntimeValue<uint32_t> { switch(temp_1515) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))); case 0x6: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 32))); default: return m; } })(option))))) << (imm)))));
 			}
 		}
 		return true;
@@ -15769,12 +15856,16 @@ bool Recompiler::SUB_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((shift) != (0x3)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1522) -> string { switch(temp_1522) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1516) -> string { switch(temp_1516) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) - ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1523) -> LlvmRuntimeValue<uint32_t> { switch(temp_1523) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]())))) - ((LlvmRuntimeValue<uint32_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1517) -> LlvmRuntimeValue<uint32_t> { switch(temp_1517) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))));
 		} else {
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) - ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1524) -> LlvmRuntimeValue<uint64_t> { switch(temp_1524) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) - ((LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1518) -> LlvmRuntimeValue<uint64_t> { switch(temp_1518) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift)))));
 		}
 		return true;
 	}
@@ -15791,14 +15882,16 @@ bool Recompiler::SUBS_extended_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x7U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= (0x4)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_1525) -> string { switch(temp_1525) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_1526) -> string { switch(temp_1526) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_1519) -> string { switch(temp_1519) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_1520) -> string { switch(temp_1520) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))).Store();
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=]() -> LlvmRuntimeValue<uint32_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (~((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1527) -> LlvmRuntimeValue<uint32_t> { switch(temp_1527) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (~((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1521) -> LlvmRuntimeValue<uint32_t> { switch(temp_1521) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))))).Store();
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint32_t) ((uint32_t) (0x1));
 					auto bits = (int32_t) (32);
 					auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
@@ -15827,10 +15920,10 @@ bool Recompiler::SUBS_extended_register(uint inst, ulong pc) {
 						return (usum).Store();
 					})());
 			} else {
-				auto m = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))).Store();
+				auto m = ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))).Store();
 				XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (([=]() -> LlvmRuntimeValue<uint64_t> {
 						auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())))).Store();
-						auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (~((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1528) -> LlvmRuntimeValue<uint64_t> { switch(temp_1528) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 64))))); default: return m; } })(option))) << (imm))))))).Store();
+						auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (~((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1522) -> LlvmRuntimeValue<uint32_t> { switch(temp_1522) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint64_t>) (m)) & ((LlvmRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (m)), 8))); case 0x5: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (m)), 16))); case 0x6: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 32))); default: return m; } })(option))))) << (imm))))))).Store();
 						auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint64_t) ((uint64_t) (0x1));
 						auto bits = (int32_t) (64);
 						auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
@@ -15859,13 +15952,17 @@ bool Recompiler::SUBS_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((shift) != (0x3)) ? 1U : 0U)))
+			goto unimplemented;
 		auto mode32 = (bool) (((size) == (0x0)) ? 1U : 0U);
 		auto r = (string) ((mode32 != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1529) -> string { switch(temp_1529) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1523) -> string { switch(temp_1523) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if((mode32) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=]() -> LlvmRuntimeValue<uint32_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]()))))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (~((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1530) -> LlvmRuntimeValue<uint32_t> { switch(temp_1530) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (~((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1524) -> LlvmRuntimeValue<uint32_t> { switch(temp_1524) { case 0x0: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<int32_t>) (((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<int32_t>) ((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LlvmRuntimeValue<uint32_t>) ((((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) << ((LlvmRuntimeValue<uint>) (32 - (imm)))) | (((LlvmRuntimeValue<uint32_t>) ((rm) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint32_t) ((uint32_t) (0x1));
 					auto bits = (int32_t) (32);
 					auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
@@ -15880,7 +15977,7 @@ bool Recompiler::SUBS_shifted_register(uint inst, ulong pc) {
 		} else {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (([=]() -> LlvmRuntimeValue<uint64_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rn) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rn]())))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (~((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1531) -> LlvmRuntimeValue<uint64_t> { switch(temp_1531) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (~((LlvmRuntimeValue<uint64_t>) (([=](auto temp_1525) -> LlvmRuntimeValue<uint64_t> { switch(temp_1525) { case 0x0: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<int64_t>) (((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<int64_t>) ((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LlvmRuntimeValue<uint>) (64 - (imm)))) | (((LlvmRuntimeValue<uint64_t>) ((rm) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LlvmRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint64_t) ((uint64_t) (0x1));
 					auto bits = (int32_t) (64);
 					auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
@@ -15908,7 +16005,7 @@ bool Recompiler::SUBS_immediate(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1532) -> string { switch(temp_1532) { case 0x0: return string("LSL #0"); case 0x1: return string("LSL #12"); default: throw "Not implemented"; } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1526) -> string { switch(temp_1526) { case 0x0: return string("LSL #0"); case 0x1: return string("LSL #12"); default: throw "Not implemented"; } })(shift));
 		auto rimm = (uint32_t) ((shift != 0) ? ((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (0xC))) : (imm));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=]() -> LlvmRuntimeValue<uint32_t> {
@@ -15982,15 +16079,15 @@ bool Recompiler::TBZ(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((upper) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (uint32_t) ((((uint32_t) ((uint32_t) (((uint32_t) ((uint32_t) (upper))) << (uint) (0x5)))) | ((uint32_t) ((uint32_t) ((uint32_t) (bottom))))));
 		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint16_t) (((uint16_t) ((uint16_t) (offset))) << (uint) (0x2)), 16)))));
-		LabelTag temp_1533 = DefineLabel(), temp_1535 = DefineLabel(), temp_1534 = DefineLabel();
-		BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rt) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rt]())) >> (imm)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1533, temp_1535);
-		Label(temp_1533);
+		LabelTag temp_1527 = DefineLabel(), temp_1529 = DefineLabel(), temp_1528 = DefineLabel();
+		BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rt) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rt]())) >> (imm)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1527, temp_1529);
+		Label(temp_1527);
 		Branch(pc + 4);
-		Branch(temp_1534);
-		Label(temp_1535);
+		Branch(temp_1528);
+		Label(temp_1529);
 		Branch(addr);
-		Branch(temp_1534);
-		Label(temp_1534);
+		Branch(temp_1528);
+		Label(temp_1528);
 		return true;
 	}
 unimplemented:
@@ -16007,15 +16104,15 @@ bool Recompiler::TBNZ(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((upper) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (uint32_t) ((((uint32_t) ((uint32_t) (((uint32_t) ((uint32_t) (upper))) << (uint) (0x5)))) | ((uint32_t) ((uint32_t) ((uint32_t) (bottom))))));
 		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint16_t) (((uint16_t) ((uint16_t) (offset))) << (uint) (0x2)), 16)))));
-		LabelTag temp_1536 = DefineLabel(), temp_1538 = DefineLabel(), temp_1537 = DefineLabel();
-		BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rt) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rt]())) >> (imm)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1536, temp_1538);
-		Label(temp_1536);
+		LabelTag temp_1530 = DefineLabel(), temp_1532 = DefineLabel(), temp_1531 = DefineLabel();
+		BranchIf((LlvmRuntimeValue<uint64_t>) ((((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((rt) == 31 ? (LlvmRuntimeValue<ulong>) 0UL : XR[(int) rt]())) >> (imm)))) & ((LlvmRuntimeValue<uint64_t>) (0x1)))), temp_1530, temp_1532);
+		Label(temp_1530);
 		Branch(addr);
-		Branch(temp_1537);
-		Label(temp_1538);
+		Branch(temp_1531);
+		Label(temp_1532);
 		Branch(pc + 4);
-		Branch(temp_1537);
-		Label(temp_1537);
+		Branch(temp_1531);
+		Label(temp_1531);
 		return true;
 	}
 unimplemented:
@@ -16029,21 +16126,21 @@ bool Recompiler::UADDLV(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1539) -> string { switch(temp_1539) { case 0x0: return string("H"); case 0x1: return string("S"); case 0x2: return string("D"); default: throw "Not implemented"; } })(size));
-		auto t = (string) (([=](auto temp_1540) -> string { switch(temp_1540) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_1533) -> string { switch(temp_1533) { case 0x0: return string("H"); case 0x1: return string("S"); case 0x2: return string("D"); default: throw "Not implemented"; } })(size));
+		auto t = (string) (([=](auto temp_1534) -> string { switch(temp_1534) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto esize = (int64_t) ((0x8) << (uint) (size));
 		auto count = (int64_t) (((int64_t) (int64_t) ((int64_t) ((Q != 0) ? (0x80) : (0x40)))) / ((int64_t) (int64_t) (esize)));
 		switch(size) {
 			case 0x0: {
-				VHR[(int) (rd)] = (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint32_t>) (Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, (LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), esize, count))));
+				VHR[(int) (rd)] = (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint64_t>) (Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, (LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), esize, count))));
 				break;
 			}
 			case 0x1: {
-				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<uint32_t>) (Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, (LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), esize, count))).Bitcast<float>());
+				VSR[(int) (rd)] = (LlvmRuntimeValue<float>) (((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint64_t>) (Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, (LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), esize, count))))).Bitcast<float>());
 				break;
 			}
 			case 0x2: {
-				VDR[(int) (rd)] = (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint64_t>) ((LlvmRuntimeValue<uint32_t>) (Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, (LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), esize, count))))).Bitcast<double>());
+				VDR[(int) (rd)] = (LlvmRuntimeValue<double>) (((LlvmRuntimeValue<uint64_t>) (Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, (LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), esize, count))).Bitcast<double>());
 				break;
 			}
 			default: {
@@ -16150,6 +16247,17 @@ bool Recompiler::UBFM(uint inst, ulong pc) {
 		auto imms = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imms) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((immr) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if((size) != 0) {
+			if(!(N))
+				goto unimplemented;
+		} else {
+			if(!((bool) (((N) == (0x0)) ? 1U : 0U)))
+				goto unimplemented;
+		}
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto src = ((LlvmRuntimeValue<uint32_t>) ((rn) == 31 ? (LlvmRuntimeValue<uint>) 0U : (LlvmRuntimeValue<uint>) (XR[(int) rn]()))).Store();
@@ -16269,7 +16377,7 @@ bool Recompiler::UCVTF_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1541) -> string { switch(temp_1541) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_1535) -> string { switch(temp_1535) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto n = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
@@ -16346,7 +16454,8 @@ bool Recompiler::UMOV(uint inst, ulong pc) {
 		auto T = string("");
 		auto index = 0x0;
 		auto r = (string) ((Q != 0) ? (string("X")) : (string("W")));
-		auto size = (int64_t) ((Q != 0) ? (0x40) : ((int64_t) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x1))))) == (0x1)) ? 1U : 0U) != 0) ? (0x8) : ((int64_t) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x3))))) == (0x2)) ? 1U : 0U) != 0) ? (0x10) : (0x20))))));
+		auto comb = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (imm)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 5))));
+		auto size = (int64_t) (((bool) ((((int64_t) (((int64_t) (0x21)))) == (0x1)) ? 1U : 0U) != 0) ? (0x8) : ((int64_t) (((bool) ((((int64_t) (((int64_t) (0x23)))) == (0x2)) ? 1U : 0U) != 0) ? (0x10) : ((int64_t) (((bool) ((((int64_t) (((int64_t) (0x27)))) == (0x4)) ? 1U : 0U) != 0) ? (0x20) : ((int64_t) (((bool) ((((int64_t) (((int64_t) (0x2F)))) == (0x28)) ? 1U : 0U) != 0) ? (0x40) : throw "Not implemented")))))));
 		switch(size) {
 			case 0x8: {
 				T = string("B");
@@ -16373,7 +16482,7 @@ bool Recompiler::UMOV(uint inst, ulong pc) {
 		if((Q) != 0) {
 			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) ((v).Element<uint64_t>(index));
 		} else {
-			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1542) -> LlvmRuntimeValue<uint32_t> { switch(temp_1542) { case 0x8: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint8_t>) ((v).Element<uint8_t>(index))))); case 0x10: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint8_t>) ((v).Element<uint8_t>(index))))); default: return (LlvmRuntimeValue<uint32_t>) ((v).Element<uint32_t>(index)); } })(size)));
+			XR[(int) rd] = (LlvmRuntimeValue<uint64_t>) (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (([=](auto temp_1536) -> LlvmRuntimeValue<uint32_t> { switch(temp_1536) { case 0x8: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint8_t>) ((v).Element<uint8_t>(index))))); case 0x10: return (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(index))))); default: return (LlvmRuntimeValue<uint32_t>) ((v).Element<uint32_t>(index)); } })(size)));
 		}
 		return true;
 	}
@@ -16402,74 +16511,74 @@ bool Recompiler::USHL_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1543) -> string { switch(temp_1543) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_1537) -> string { switch(temp_1537) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto n = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		auto m = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x0))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x1))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x1)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x2))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x2)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x3))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x3)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x4))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x4)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x5))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x5)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x6))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x6)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x7))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x7)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x0))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x0)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x1))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x2))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x3))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x3)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x4))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x4)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x5))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x5)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x6))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x6)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x7))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x7)))))));
 				break;
 			}
 			case 0x1: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x0))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x1))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x1)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x2))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x2)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x3))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x3)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x4))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x4)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x5))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x5)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x6))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x6)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x7))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x7)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x8, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x8))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x8)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x9, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x9))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x9)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xA, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xA))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xA)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xB, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xB))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xB)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xC, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xC))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xC)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xD, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xD))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xD)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xE, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xE))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xE)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xF, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xF))) << ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xF)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x0))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x0)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x1))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x2))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x3))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x3)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x4))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x4)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x5))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x5)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x6))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x6)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x7))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x7)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x8, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x8))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x8)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x9, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x9))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x9)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xA, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xA))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xA)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xB, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xB))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xB)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xC, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xC))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xC)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xD, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xD))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xD)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xE, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xE))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xE)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xF, (LlvmRuntimeValue<uint8_t>) (((LlvmRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xF))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xF)))))));
 				break;
 			}
 			case 0x2: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x0))) << ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x1))) << ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x1)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x2))) << ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x2)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x3))) << ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x0))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x0)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x1))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x2))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x3))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x3)))))));
 				break;
 			}
 			case 0x3: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x0))) << ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x1))) << ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x1)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x2))) << ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x2)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x3))) << ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x3)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x4))) << ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x4)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x5))) << ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x5)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x6))) << ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x6)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x7))) << ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x7)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x0))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x0)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x1))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x2))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x3))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x3)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x4))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x4)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x5))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x5)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x6))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x6)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x7))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x7)))))));
 				break;
 			}
 			case 0x4: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x0))) << ((LlvmRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x1))) << ((LlvmRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x0))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x0)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x1))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x1)))))));
 				break;
 			}
 			case 0x5: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x0))) << ((LlvmRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x1))) << ((LlvmRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x1)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x2))) << ((LlvmRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x2)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x3))) << ((LlvmRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x0))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x0)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x1))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x2))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x3))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x3)))))));
 				break;
 			}
 			case 0x7: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((n).Element<uint64_t>(0x0))) << ((LlvmRuntimeValue<uint64_t>) ((m).Element<uint64_t>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((n).Element<uint64_t>(0x1))) << ((LlvmRuntimeValue<uint64_t>) ((m).Element<uint64_t>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((n).Element<uint64_t>(0x0))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint64_t>) ((m).Element<uint64_t>(0x0)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<uint64_t>) ((n).Element<uint64_t>(0x1))) << ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint64_t>) ((m).Element<uint64_t>(0x1)))))));
 				break;
 			}
 			default: {
@@ -16586,33 +16695,32 @@ bool Recompiler::XTN(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto tb = (string) (([=](auto temp_1544) -> string { switch(temp_1544) { case 0x0: return string("8B"); case 0x1: return string("4H"); case 0x2: return string("2S"); default: throw "Not implemented"; } })(size));
-		auto ta = (string) (([=](auto temp_1545) -> string { switch(temp_1545) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto tb = (string) (([=](auto temp_1538) -> string { switch(temp_1538) { case 0x0: return string("8B"); case 0x1: return string("4H"); case 0x2: return string("2S"); default: throw "Not implemented"; } })(size));
+		auto ta = (string) (([=](auto temp_1539) -> string { switch(temp_1539) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto v = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
+		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch(size) {
 			case 0x0: {
-				auto a = ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x0))).Store();
-				auto b = ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x1))).Store();
-				auto c = ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x2))).Store();
-				auto d = ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x3))).Store();
-				VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint64_t>) ((uint64_t) ((uint64_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (a)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (b)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (c)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (d)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x0))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x1))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x2))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x3))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x4))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x4)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x5))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x5)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x6))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x6)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x7))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x7)))));
 				break;
 			}
 			case 0x1: {
-				auto a = ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint32_t>(0x0))).Store();
-				auto b = ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint32_t>(0x1))).Store();
-				VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint64_t>) ((uint64_t) ((uint64_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (a)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (b)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x0))), (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x1))), (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x2))), (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x3))), (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x3)))));
 				break;
 			}
 			case 0x2: {
-				auto a = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(0x0))).Store();
-				VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint64_t>) ((uint64_t) ((uint64_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (a)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x0))), (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint64_t>) ((v).Element<uint64_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x1))), (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint64_t>) ((v).Element<uint64_t>(0x1)))));
 				break;
 			}
 			default: {
@@ -16632,30 +16740,31 @@ bool Recompiler::XTN2(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto tb = (string) (([=](auto temp_1546) -> string { switch(temp_1546) { case 0x0: return string("16B"); case 0x1: return string("8H"); case 0x2: return string("4S"); default: throw "Not implemented"; } })(size));
-		auto ta = (string) (([=](auto temp_1547) -> string { switch(temp_1547) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto tb = (string) (([=](auto temp_1540) -> string { switch(temp_1540) { case 0x0: return string("16B"); case 0x1: return string("8H"); case 0x2: return string("4S"); default: throw "Not implemented"; } })(size));
+		auto ta = (string) (([=](auto temp_1541) -> string { switch(temp_1541) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto v = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		switch(size) {
 			case 0x0: {
-				auto a = ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x0))).Store();
-				auto b = ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x1))).Store();
-				auto c = ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x2))).Store();
-				auto d = ((LlvmRuntimeValue<uint16_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x3))).Store();
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x8, (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (a)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x9, (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (b)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xA, (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (c)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xB, (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) (d)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x0))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x1))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x2))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x3))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x4))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x4)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x5))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x5)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x6))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x6)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x7))), (LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint8_t>) ((LlvmRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x7)))));
 				break;
 			}
 			case 0x1: {
-				auto a = ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint32_t>(0x0))).Store();
-				auto b = ((LlvmRuntimeValue<uint32_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint32_t>(0x1))).Store();
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (a)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) (b)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x4)) + ((int64_t) (int32_t) (0x0))), (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x4)) + ((int64_t) (int32_t) (0x1))), (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x4)) + ((int64_t) (int32_t) (0x2))), (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x4)) + ((int64_t) (int32_t) (0x3))), (LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint16_t>) ((LlvmRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x3)))));
 				break;
 			}
 			case 0x2: {
-				auto a = ((LlvmRuntimeValue<uint64_t>) (((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(0x0))).Store();
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) (a)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x2)) + ((int64_t) (int32_t) (0x0))), (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint64_t>) ((v).Element<uint64_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x2)) + ((int64_t) (int32_t) (0x1))), (LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint32_t>) ((LlvmRuntimeValue<uint64_t>) ((v).Element<uint64_t>(0x1)))));
 				break;
 			}
 			default: {
@@ -16688,7 +16797,7 @@ bool Recompiler::ZIP(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto i = (uint8_t) ((uint8_t) ((uint64_t) (((uint64_t) (bool) (op)) + ((uint64_t) (int64_t) (0x1)))));
-		auto T = (string) (([=](auto temp_1548) -> string { switch(temp_1548) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1542) -> string { switch(temp_1542) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto av = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		auto bv = ((LlvmRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Store();
 		VR[(int) (rd)] = (LlvmRuntimeValue<Vector128<float>>) (((LlvmRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -16723,8 +16832,8 @@ bool Recompiler::ZIP(uint inst, ulong pc) {
 				if((Q) != 0) {
 					VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LlvmRuntimeValue<uint16_t>) ((av).Element<uint16_t>((uint64_t) (((uint64_t) (uint64_t) (base)) + ((uint64_t) (int64_t) (0x2))))));
 					VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (LlvmRuntimeValue<uint16_t>) ((av).Element<uint16_t>((uint64_t) (((uint64_t) (uint64_t) (base)) + ((uint64_t) (int64_t) (0x3))))));
-					VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LlvmRuntimeValue<uint16_t>) ((bv).Element<uint16_t>((uint64_t) (((uint64_t) (uint64_t) (base)) + ((uint64_t) (int64_t) (0x4))))));
-					VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LlvmRuntimeValue<uint16_t>) ((bv).Element<uint16_t>((uint64_t) (((uint64_t) (uint64_t) (base)) + ((uint64_t) (int64_t) (0x5))))));
+					VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LlvmRuntimeValue<uint16_t>) ((bv).Element<uint16_t>((uint64_t) (((uint64_t) (uint64_t) (base)) + ((uint64_t) (int64_t) (0x2))))));
+					VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LlvmRuntimeValue<uint16_t>) ((bv).Element<uint16_t>((uint64_t) (((uint64_t) (uint64_t) (base)) + ((uint64_t) (int64_t) (0x3))))));
 				}
 				break;
 			}

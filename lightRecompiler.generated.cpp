@@ -660,7 +660,7 @@ bool LightRecompiler::recompile(uint inst, ulong pc) {
 	if((inst & 0xBFF89C00U) == 0x2F000400U) {
 		if(MVNI_vector_32bit_LSL(inst, pc)) return true;
 	}
-	if((inst & 0xBFF8EC00U) == 0x2F00E400U) {
+	if((inst & 0xBFF8EC00U) == 0x2F00C400U) {
 		if(MVNI_vector_32bit_MSL(inst, pc)) return true;
 	}
 	if((inst & 0xBF3FFC00U) == 0x2E20B800U) {
@@ -1045,15 +1045,17 @@ bool LightRecompiler::ADD_extended_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x7U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= (0x4)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_651) -> string { switch(temp_651) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_652) -> string { switch(temp_652) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_649) -> string { switch(temp_649) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_650) -> string { switch(temp_650) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))).Store();
 			if(rd == 31)
-				SPR = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (([=](auto temp_653) -> LightRuntimeValue<uint32_t> { switch(temp_653) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
+				SPR = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (([=](auto temp_651) -> LightRuntimeValue<uint32_t> { switch(temp_651) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
 			else
-				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (([=](auto temp_654) -> LightRuntimeValue<uint32_t> { switch(temp_654) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
+				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (([=](auto temp_652) -> LightRuntimeValue<uint32_t> { switch(temp_652) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
 		} else {
 			if(((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U)) != 0) {
 				if(rd == 31)
@@ -1063,9 +1065,9 @@ bool LightRecompiler::ADD_extended_register(uint inst, ulong pc) {
 			} else {
 				auto m = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))).Store();
 				if(rd == 31)
-					SPR = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (([=](auto temp_655) -> LightRuntimeValue<uint64_t> { switch(temp_655) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (m)), 32))))); default: return m; } })(option))) << (imm)))));
+					SPR = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (([=](auto temp_653) -> LightRuntimeValue<uint64_t> { switch(temp_653) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (m)), 32))))); default: return m; } })(option))) << (imm)))));
 				else
-					XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (([=](auto temp_656) -> LightRuntimeValue<uint64_t> { switch(temp_656) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (m)), 32))))); default: return m; } })(option))) << (imm)))));
+					XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (([=](auto temp_654) -> LightRuntimeValue<uint64_t> { switch(temp_654) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (m)), 32))))); default: return m; } })(option))) << (imm)))));
 			}
 		}
 		return true;
@@ -1111,18 +1113,14 @@ bool LightRecompiler::ADD_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_657) -> string { switch(temp_657) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_655) -> string { switch(temp_655) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			if(rd == 31)
-				SPR = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_658) -> LightRuntimeValue<uint32_t> { switch(temp_658) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))));
-			else
-				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_659) -> LightRuntimeValue<uint32_t> { switch(temp_659) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) + ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_656) -> LightRuntimeValue<uint32_t> { switch(temp_656) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))));
 		} else {
-			if(rd == 31)
-				SPR = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (([=](auto temp_660) -> LightRuntimeValue<uint64_t> { switch(temp_660) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))));
-			else
-				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (([=](auto temp_661) -> LightRuntimeValue<uint64_t> { switch(temp_661) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? SPR() : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (([=](auto temp_657) -> LightRuntimeValue<uint64_t> { switch(temp_657) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))));
 		}
 		return true;
 	}
@@ -1138,8 +1136,8 @@ bool LightRecompiler::ADD_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_662) -> string { switch(temp_662) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
-		auto v = ((LightRuntimeValue<Vector128<float>>) (([=](auto temp_663) -> LightRuntimeValue<Vector128<float>> { switch(temp_663) { case 0x0: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint16_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LightRuntimeValue<Vector128<uint16_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x2: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint32_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LightRuntimeValue<Vector128<uint32_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x3: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint64_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LightRuntimeValue<Vector128<uint64_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); default: throw "Not implemented"; } })(size))).Store();
+		auto ts = (string) (([=](auto temp_658) -> string { switch(temp_658) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto v = ((LightRuntimeValue<Vector128<float>>) (([=](auto temp_659) -> LightRuntimeValue<Vector128<float>> { switch(temp_659) { case 0x0: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint16_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LightRuntimeValue<Vector128<uint16_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x2: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint32_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LightRuntimeValue<Vector128<uint32_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x3: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint64_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LightRuntimeValue<Vector128<uint64_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); default: throw "Not implemented"; } })(size))).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LightRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
@@ -1156,15 +1154,17 @@ bool LightRecompiler::ADDS_extended_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x7U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= (0x4)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_664) -> string { switch(temp_664) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_665) -> string { switch(temp_665) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_660) -> string { switch(temp_660) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_661) -> string { switch(temp_661) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))).Store();
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=]() -> LightRuntimeValue<uint32_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (~((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (([=](auto temp_666) -> LightRuntimeValue<uint32_t> { switch(temp_666) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint32_t) ((uint32_t) (0x1));
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (([=](auto temp_662) -> LightRuntimeValue<uint32_t> { switch(temp_662) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint32_t) ((uint32_t) (0x0));
 					auto bits = (int32_t) (32);
 					auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
 					auto usum = ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) (__macro_add_with_carry_set_nzcv_common_operand1)) + ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) (__macro_add_with_carry_set_nzcv_common_operand2))))) + ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) (__macro_add_with_carry_set_nzcv_common_carryIn)))).Store();
@@ -1192,10 +1192,10 @@ bool LightRecompiler::ADDS_extended_register(uint inst, ulong pc) {
 						return (usum).Store();
 					})());
 			} else {
-				auto m = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))).Store();
+				auto m = ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))).Store();
 				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (([=]() -> LightRuntimeValue<uint64_t> {
 						auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())))).Store();
-						auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (([=](auto temp_667) -> LightRuntimeValue<uint64_t> { switch(temp_667) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 64))))); default: return m; } })(option))) << (imm))))).Store();
+						auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_663) -> LightRuntimeValue<uint32_t> { switch(temp_663) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 32))))); default: return m; } })(option))))) << (imm))))).Store();
 						auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint64_t) ((uint64_t) (0x0));
 						auto bits = (int32_t) (64);
 						auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
@@ -1272,12 +1272,16 @@ bool LightRecompiler::ADDS_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((shift) != (0x3)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_668) -> string { switch(temp_668) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_664) -> string { switch(temp_664) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=]() -> LightRuntimeValue<uint32_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]()))))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_669) -> LightRuntimeValue<uint32_t> { switch(temp_669) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_665) -> LightRuntimeValue<uint32_t> { switch(temp_665) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))).Store();
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint32_t) ((uint32_t) (0x0));
 					auto bits = (int32_t) (32);
 					auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
@@ -1292,7 +1296,7 @@ bool LightRecompiler::ADDS_shifted_register(uint inst, ulong pc) {
 		} else {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (([=]() -> LightRuntimeValue<uint64_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]())))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (([=](auto temp_670) -> LightRuntimeValue<uint64_t> { switch(temp_670) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (([=](auto temp_666) -> LightRuntimeValue<uint64_t> { switch(temp_666) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))).Store();
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint64_t) ((uint64_t) (0x0));
 					auto bits = (int32_t) (64);
 					auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
@@ -1378,12 +1382,14 @@ bool LightRecompiler::AND_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_671) -> string { switch(temp_671) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_667) -> string { switch(temp_667) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) & ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_672) -> LightRuntimeValue<uint32_t> { switch(temp_672) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) & ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_668) -> LightRuntimeValue<uint32_t> { switch(temp_668) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))))));
 		} else {
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (([=](auto temp_673) -> LightRuntimeValue<uint64_t> { switch(temp_673) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (([=](auto temp_669) -> LightRuntimeValue<uint64_t> { switch(temp_669) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))));
 		}
 		return true;
 	}
@@ -1399,7 +1405,7 @@ bool LightRecompiler::AND_vector(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto ts = (string) ((Q != 0) ? (string("16B")) : (string("8B")));
-		auto v = ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) & ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)]))))))).ZeroTop())).Store();
+		auto v = ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) & ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)]))))))).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LightRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
@@ -1416,17 +1422,19 @@ bool LightRecompiler::ANDS_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_674) -> string { switch(temp_674) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_670) -> string { switch(temp_670) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			auto result = ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) & ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_675) -> LightRuntimeValue<uint32_t> { switch(temp_675) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
+			auto result = ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) & ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_671) -> LightRuntimeValue<uint32_t> { switch(temp_671) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) (result);
 			NZCV_NR = (LightRuntimeValue<uint32_t>) ((result) >> (0x1F));
 			NZCV_ZR = (LightRuntimeValue<bool>) ((result) == (0x0));
 			NZCV_CR = 0x0;
 			NZCV_VR = 0x0;
 		} else {
-			auto result = ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (([=](auto temp_676) -> LightRuntimeValue<uint64_t> { switch(temp_676) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
+			auto result = ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (([=](auto temp_672) -> LightRuntimeValue<uint64_t> { switch(temp_672) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
 			XR[(int) rd] = result;
 			NZCV_NR = (LightRuntimeValue<uint64_t>) ((result) >> (0x3F));
 			NZCV_ZR = (LightRuntimeValue<bool>) ((result) == (0x0));
@@ -1508,17 +1516,17 @@ bool LightRecompiler::B_cond(uint inst, ulong pc) {
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto cond = (inst >> 0) & 0xFU;
 		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (0x2)), 21)))));
-		auto condstr = (string) (([=](auto temp_677) -> string { switch(temp_677) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_678) -> LightRuntimeValue<bool> { switch(temp_678) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LightLabel temp_679 = DefineLabel(), temp_681 = DefineLabel(), temp_680 = DefineLabel();
-		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_679, temp_681);
-		Label(temp_679);
+		auto condstr = (string) (([=](auto temp_673) -> string { switch(temp_673) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_674) -> LightRuntimeValue<bool> { switch(temp_674) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LightLabel temp_675 = DefineLabel(), temp_677 = DefineLabel(), temp_676 = DefineLabel();
+		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_675, temp_677);
+		Label(temp_675);
 		Branch(addr);
-		Branch(temp_680);
-		Label(temp_681);
+		Branch(temp_676);
+		Label(temp_677);
 		Branch(pc + 4);
-		Branch(temp_680);
-		Label(temp_680);
+		Branch(temp_676);
+		Label(temp_676);
 		return true;
 	}
 unimplemented:
@@ -1536,6 +1544,12 @@ bool LightRecompiler::BFM(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
+			if(!((bool) (((immr) <= (0x1F)) ? 1U : 0U)))
+				goto unimplemented;
+			if(!((bool) (((imms) <= (0x1F)) ? 1U : 0U)))
+				goto unimplemented;
+			if(!((bool) (((N) == (0x0)) ? 1U : 0U)))
+				goto unimplemented;
 			auto dst = ((LightRuntimeValue<uint32_t>) ((rd) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rd]()))).Store();
 			auto src = ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]()))).Store();
 			auto wmask = (uint32_t) ((uint32_t) ((uint64_t) (MakeWMask(N, imms, immr, 0x20, 0x0))));
@@ -1543,6 +1557,12 @@ bool LightRecompiler::BFM(uint inst, ulong pc) {
 			auto bot = ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) (dst)) & ((LightRuntimeValue<uint32_t>) ((uint32_t) (~(wmask)))))))) | ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((src) << ((LightRuntimeValue<uint>) (32 - (immr)))) | ((src) >> ((LightRuntimeValue<uint>) (immr)))))) & ((LightRuntimeValue<uint32_t>) (wmask))))))))).Store();
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) (dst)) & ((LightRuntimeValue<uint32_t>) ((uint32_t) (~(tmask)))))))) | ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) (bot)) & ((LightRuntimeValue<uint32_t>) (tmask)))))))));
 		} else {
+			if(!((bool) (((immr) <= (0x3F)) ? 1U : 0U)))
+				goto unimplemented;
+			if(!((bool) (((imms) <= (0x3F)) ? 1U : 0U)))
+				goto unimplemented;
+			if(!(N))
+				goto unimplemented;
 			auto dst = ((LightRuntimeValue<uint64_t>) ((rd) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rd]())).Store();
 			auto src = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]())).Store();
 			auto wmask = (uint64_t) (MakeWMask(N, imms, immr, 0x40, 0x0));
@@ -1565,12 +1585,14 @@ bool LightRecompiler::BIC(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_682) -> string { switch(temp_682) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_678) -> string { switch(temp_678) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) & ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (~((LightRuntimeValue<uint32_t>) (([=](auto temp_683) -> LightRuntimeValue<uint32_t> { switch(temp_683) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) & ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (~((LightRuntimeValue<uint32_t>) (([=](auto temp_679) -> LightRuntimeValue<uint32_t> { switch(temp_679) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))))))));
 		} else {
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (~((LightRuntimeValue<uint64_t>) (([=](auto temp_684) -> LightRuntimeValue<uint64_t> { switch(temp_684) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (~((LightRuntimeValue<uint64_t>) (([=](auto temp_680) -> LightRuntimeValue<uint64_t> { switch(temp_680) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))));
 		}
 		return true;
 	}
@@ -1586,7 +1608,7 @@ bool LightRecompiler::BIC_vector_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto T = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
-		auto v = ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (~(((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) & ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)]))))))).Store();
+		auto v = ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) & ~((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LightRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
@@ -1611,7 +1633,7 @@ bool LightRecompiler::BIC_vector_immediate_16bit(uint inst, ulong pc) {
 		auto T = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
 		auto amount = (int64_t) ((cmode != 0) ? (0x8) : (0x0));
 		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
-		auto v = ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (~(((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)]))) & ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint16_t>) ((uint16_t) (((uint16_t) ((uint16_t) (imm))) << (uint) (amount)))).CreateVector()))))))).Store();
+		auto v = ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)]))) & ~((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint16_t>) ((uint16_t) ((uint16_t) ((uint16_t) (((uint16_t) ((uint16_t) (imm))) << (uint) (amount)))))).CreateVector())))))).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LightRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
@@ -1636,7 +1658,7 @@ bool LightRecompiler::BIC_vector_immediate_32bit(uint inst, ulong pc) {
 		auto T = (string) (((bool) (((Q) == (0x1)) ? 1U : 0U) != 0) ? (string("16B")) : (string("8B")));
 		auto amount = (uint8_t) ((cmode) << (uint) (0x3));
 		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
-		auto v = ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (~(((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)]))) & ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint32_t>) ((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (amount)))).CreateVector()))))))).Store();
+		auto v = ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)]))) & ~((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint32_t>) ((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (amount)))).CreateVector())))))).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LightRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
@@ -1653,14 +1675,16 @@ bool LightRecompiler::BICS(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_685) -> string { switch(temp_685) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_681) -> string { switch(temp_681) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			auto val = ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) & ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (~((LightRuntimeValue<uint32_t>) (([=](auto temp_686) -> LightRuntimeValue<uint32_t> { switch(temp_686) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))))).Store();
+			auto val = ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) & ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (~((LightRuntimeValue<uint32_t>) (([=](auto temp_682) -> LightRuntimeValue<uint32_t> { switch(temp_682) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))))).Store();
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) (val);
 			NZCVR = (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((val) >> (0x1F))))) << (0x1F)))) | ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<bool>) ((val) == (0x0))))) << (0x1E))))));
 		} else {
-			auto val = ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (~((LightRuntimeValue<uint64_t>) (([=](auto temp_687) -> LightRuntimeValue<uint64_t> { switch(temp_687) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))))).Store();
+			auto val = ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) & ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (~((LightRuntimeValue<uint64_t>) (([=](auto temp_683) -> LightRuntimeValue<uint64_t> { switch(temp_683) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))))).Store();
 			XR[(int) rd] = val;
 			NZCVR = (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((val) >> (0x3F))))) << (0x1F)))) | ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<bool>) ((val) == (0x0))))) << (0x1E))))));
 		}
@@ -1727,7 +1751,8 @@ bool LightRecompiler::BSL(uint inst, ulong pc) {
 		auto d = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])).Store();
 		auto a = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		auto b = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Store();
-		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((((LightRuntimeValue<Vector128<uint8_t>>) (b)) ^ ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((((LightRuntimeValue<Vector128<uint8_t>>) (b)) ^ ((LightRuntimeValue<Vector128<uint8_t>>) (a))))))) & ((LightRuntimeValue<Vector128<uint8_t>>) (d))))))))));
+		auto v = ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((((LightRuntimeValue<Vector128<uint8_t>>) (b)) ^ ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((((LightRuntimeValue<Vector128<uint8_t>>) (b)) ^ ((LightRuntimeValue<Vector128<uint8_t>>) (a))))))) & ((LightRuntimeValue<Vector128<uint8_t>>) (d))))))))))).Store();
+		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LightRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
 unimplemented:
@@ -1785,14 +1810,14 @@ bool LightRecompiler::CASPAL(uint inst, ulong pc) {
 			auto nh = ((LightRuntimeValue<uint32_t>) (((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1)))) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) (uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1)))]()))).Store();
 			auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 			auto data = ((LightRuntimeValue<uint64_t>) (((LightRuntimePointer<uint64_t>) (address)).value())).Store();
-			LightLabel temp_688 = DefineLabel(), temp_690 = DefineLabel(), temp_689 = DefineLabel();
-			BranchIf((LightRuntimeValue<bool>) ((data) == ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (ch))) << (0x20)))) | ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (cl)))))))), temp_688, temp_690);
-			Label(temp_688);
+			LightLabel temp_684 = DefineLabel(), temp_686 = DefineLabel(), temp_685 = DefineLabel();
+			BranchIf((LightRuntimeValue<bool>) ((data) == ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (ch))) << (0x20)))) | ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (cl)))))))), temp_684, temp_686);
+			Label(temp_684);
 			((LightRuntimePointer<uint64_t>) (address)).value((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (nh))) << (0x20)))) | ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (nl)))))));
-			Branch(temp_689);
-			Label(temp_690);
-			Branch(temp_689);
-			Label(temp_689);
+			Branch(temp_685);
+			Label(temp_686);
+			Branch(temp_685);
+			Label(temp_685);
 			XR[(int) rs] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (data)));
 			XR[(int) (uint64_t) (((uint64_t) (uint8_t) (rs)) + ((uint64_t) (int64_t) (0x1)))] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint64_t>) ((data) >> (0x20)))));
 		} else {
@@ -1803,15 +1828,15 @@ bool LightRecompiler::CASPAL(uint inst, ulong pc) {
 			auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 			auto dl = ((LightRuntimeValue<uint64_t>) (((LightRuntimePointer<uint64_t>) (address)).value())).Store();
 			auto dh = ((LightRuntimeValue<uint64_t>) (((LightRuntimePointer<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) (address)) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (0x8))))).value())).Store();
-			LightLabel temp_691 = DefineLabel(), temp_693 = DefineLabel(), temp_692 = DefineLabel();
-			BranchIf((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((dl) == (cl)))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((dh) == (ch)))))), temp_691, temp_693);
-			Label(temp_691);
+			LightLabel temp_687 = DefineLabel(), temp_689 = DefineLabel(), temp_688 = DefineLabel();
+			BranchIf((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((dl) == (cl)))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((dh) == (ch)))))), temp_687, temp_689);
+			Label(temp_687);
 			((LightRuntimePointer<uint64_t>) (address)).value(nl);
 			((LightRuntimePointer<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) (address)) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (0x8))))).value(nh);
-			Branch(temp_692);
-			Label(temp_693);
-			Branch(temp_692);
-			Label(temp_692);
+			Branch(temp_688);
+			Label(temp_689);
+			Branch(temp_688);
+			Label(temp_688);
 			XR[(int) rs] = dl;
 			XR[(int) (uint64_t) (((uint64_t) (uint8_t) (rs)) + ((uint64_t) (int64_t) (0x1)))] = dh;
 		}
@@ -1847,25 +1872,25 @@ bool LightRecompiler::CBNZ(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) ((uint32_t) ((imm) << (uint) (0x2)))), 21)))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			LightLabel temp_694 = DefineLabel(), temp_696 = DefineLabel(), temp_695 = DefineLabel();
-			BranchIf((LightRuntimeValue<bool>) (((LightRuntimeValue<uint32_t>) ((rs) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rs]()))) != ((uint32_t) ((uint32_t) (0x0)))), temp_694, temp_696);
-			Label(temp_694);
+			LightLabel temp_690 = DefineLabel(), temp_692 = DefineLabel(), temp_691 = DefineLabel();
+			BranchIf((LightRuntimeValue<bool>) (((LightRuntimeValue<uint32_t>) ((rs) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rs]()))) != ((uint32_t) ((uint32_t) (0x0)))), temp_690, temp_692);
+			Label(temp_690);
 			Branch(addr);
-			Branch(temp_695);
-			Label(temp_696);
+			Branch(temp_691);
+			Label(temp_692);
 			Branch(pc + 4);
-			Branch(temp_695);
-			Label(temp_695);
+			Branch(temp_691);
+			Label(temp_691);
 		} else {
-			LightLabel temp_697 = DefineLabel(), temp_699 = DefineLabel(), temp_698 = DefineLabel();
-			BranchIf((LightRuntimeValue<bool>) (((LightRuntimeValue<uint64_t>) ((rs) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rs]())) != ((uint64_t) ((uint64_t) (0x0)))), temp_697, temp_699);
-			Label(temp_697);
+			LightLabel temp_693 = DefineLabel(), temp_695 = DefineLabel(), temp_694 = DefineLabel();
+			BranchIf((LightRuntimeValue<bool>) (((LightRuntimeValue<uint64_t>) ((rs) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rs]())) != ((uint64_t) ((uint64_t) (0x0)))), temp_693, temp_695);
+			Label(temp_693);
 			Branch(addr);
-			Branch(temp_698);
-			Label(temp_699);
+			Branch(temp_694);
+			Label(temp_695);
 			Branch(pc + 4);
-			Branch(temp_698);
-			Label(temp_698);
+			Branch(temp_694);
+			Label(temp_694);
 		}
 		return true;
 	}
@@ -1882,25 +1907,25 @@ bool LightRecompiler::CBZ(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) ((uint32_t) ((imm) << (uint) (0x2)))), 21)))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			LightLabel temp_700 = DefineLabel(), temp_702 = DefineLabel(), temp_701 = DefineLabel();
-			BranchIf((LightRuntimeValue<bool>) (((LightRuntimeValue<uint32_t>) ((rs) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rs]()))) == ((uint32_t) ((uint32_t) (0x0)))), temp_700, temp_702);
-			Label(temp_700);
+			LightLabel temp_696 = DefineLabel(), temp_698 = DefineLabel(), temp_697 = DefineLabel();
+			BranchIf((LightRuntimeValue<bool>) (((LightRuntimeValue<uint32_t>) ((rs) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rs]()))) == ((uint32_t) ((uint32_t) (0x0)))), temp_696, temp_698);
+			Label(temp_696);
 			Branch(addr);
-			Branch(temp_701);
-			Label(temp_702);
+			Branch(temp_697);
+			Label(temp_698);
 			Branch(pc + 4);
-			Branch(temp_701);
-			Label(temp_701);
+			Branch(temp_697);
+			Label(temp_697);
 		} else {
-			LightLabel temp_703 = DefineLabel(), temp_705 = DefineLabel(), temp_704 = DefineLabel();
-			BranchIf((LightRuntimeValue<bool>) (((LightRuntimeValue<uint64_t>) ((rs) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rs]())) == ((uint64_t) ((uint64_t) (0x0)))), temp_703, temp_705);
-			Label(temp_703);
+			LightLabel temp_699 = DefineLabel(), temp_701 = DefineLabel(), temp_700 = DefineLabel();
+			BranchIf((LightRuntimeValue<bool>) (((LightRuntimeValue<uint64_t>) ((rs) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rs]())) == ((uint64_t) ((uint64_t) (0x0)))), temp_699, temp_701);
+			Label(temp_699);
 			Branch(addr);
-			Branch(temp_704);
-			Label(temp_705);
+			Branch(temp_700);
+			Label(temp_701);
 			Branch(pc + 4);
-			Branch(temp_704);
-			Label(temp_704);
+			Branch(temp_700);
+			Label(temp_700);
 		}
 		return true;
 	}
@@ -1917,11 +1942,11 @@ bool LightRecompiler::CCMN_immediate(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_706) -> string { switch(temp_706) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_707) -> LightRuntimeValue<bool> { switch(temp_707) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LightLabel temp_708 = DefineLabel(), temp_710 = DefineLabel(), temp_709 = DefineLabel();
-		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_708, temp_710);
-		Label(temp_708);
+		auto condstr = (string) (([=](auto temp_702) -> string { switch(temp_702) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_703) -> LightRuntimeValue<bool> { switch(temp_703) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LightLabel temp_704 = DefineLabel(), temp_706 = DefineLabel(), temp_705 = DefineLabel();
+		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_704, temp_706);
+		Label(temp_704);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) 0x1F] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=]() -> LightRuntimeValue<uint32_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]()))))).Store();
@@ -1953,11 +1978,11 @@ bool LightRecompiler::CCMN_immediate(uint inst, ulong pc) {
 					return (usum).Store();
 				})());
 		}
-		Branch(temp_709);
-		Label(temp_710);
+		Branch(temp_705);
+		Label(temp_706);
 		NZCVR = (uint64_t) (((uint64_t) ((uint64_t) (nzcv))) << (uint) (0x1C));
-		Branch(temp_709);
-		Label(temp_709);
+		Branch(temp_705);
+		Label(temp_705);
 		return true;
 	}
 unimplemented:
@@ -1973,11 +1998,11 @@ bool LightRecompiler::CCMP_immediate(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_711) -> string { switch(temp_711) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_712) -> LightRuntimeValue<bool> { switch(temp_712) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LightLabel temp_713 = DefineLabel(), temp_715 = DefineLabel(), temp_714 = DefineLabel();
-		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_713, temp_715);
-		Label(temp_713);
+		auto condstr = (string) (([=](auto temp_707) -> string { switch(temp_707) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_708) -> LightRuntimeValue<bool> { switch(temp_708) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LightLabel temp_709 = DefineLabel(), temp_711 = DefineLabel(), temp_710 = DefineLabel();
+		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_709, temp_711);
+		Label(temp_709);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) 0x1F] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=]() -> LightRuntimeValue<uint32_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]()))))).Store();
@@ -2009,11 +2034,11 @@ bool LightRecompiler::CCMP_immediate(uint inst, ulong pc) {
 					return (usum).Store();
 				})());
 		}
-		Branch(temp_714);
-		Label(temp_715);
+		Branch(temp_710);
+		Label(temp_711);
 		NZCVR = (uint64_t) (((uint64_t) ((uint64_t) (nzcv))) << (uint) (0x1C));
-		Branch(temp_714);
-		Label(temp_714);
+		Branch(temp_710);
+		Label(temp_710);
 		return true;
 	}
 unimplemented:
@@ -2029,11 +2054,11 @@ bool LightRecompiler::CCMP_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_716) -> string { switch(temp_716) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_717) -> LightRuntimeValue<bool> { switch(temp_717) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LightLabel temp_718 = DefineLabel(), temp_720 = DefineLabel(), temp_719 = DefineLabel();
-		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_718, temp_720);
-		Label(temp_718);
+		auto condstr = (string) (([=](auto temp_712) -> string { switch(temp_712) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_713) -> LightRuntimeValue<bool> { switch(temp_713) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LightLabel temp_714 = DefineLabel(), temp_716 = DefineLabel(), temp_715 = DefineLabel();
+		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_714, temp_716);
+		Label(temp_714);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) 0x1F] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=]() -> LightRuntimeValue<uint32_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]()))))).Store();
@@ -2065,11 +2090,11 @@ bool LightRecompiler::CCMP_register(uint inst, ulong pc) {
 					return (usum).Store();
 				})());
 		}
-		Branch(temp_719);
-		Label(temp_720);
+		Branch(temp_715);
+		Label(temp_716);
 		NZCVR = (uint64_t) (((uint64_t) ((uint64_t) (nzcv))) << (uint) (0x1C));
-		Branch(temp_719);
-		Label(temp_719);
+		Branch(temp_715);
+		Label(temp_715);
 		return true;
 	}
 unimplemented:
@@ -2111,7 +2136,7 @@ bool LightRecompiler::CMEQ_register_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto V = (string) (([=](auto temp_721) -> string { switch(temp_721) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
+		auto V = (string) (([=](auto temp_717) -> string { switch(temp_717) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x3: {
 				VDR[(int) (rd)] = (LightRuntimeValue<double>) (((LightRuntimeValue<uint64_t>) (Ternary<bool, uint64_t>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).Bitcast<uint64_t>())) == ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<double>) (VDR[(int) (rm)])).Bitcast<uint64_t>())))), (uint64_t) ((uint64_t) (-0x1)), (uint64_t) ((uint64_t) (0x0))))).Bitcast<double>());
@@ -2136,7 +2161,7 @@ bool LightRecompiler::CMEQ_register_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_722) -> string { switch(temp_722) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_718) -> string { switch(temp_718) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto a = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		auto b = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -2231,7 +2256,7 @@ bool LightRecompiler::CMEQ_zero_scalar(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto V = (string) (([=](auto temp_723) -> string { switch(temp_723) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
+		auto V = (string) (([=](auto temp_719) -> string { switch(temp_719) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x3: {
 				VDR[(int) (rd)] = (LightRuntimeValue<double>) (((LightRuntimeValue<uint64_t>) (Ternary<bool, uint64_t>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).Bitcast<uint64_t>())) == ((uint64_t) ((uint64_t) (0x0))))), (uint64_t) ((uint64_t) (-0x1)), (uint64_t) ((uint64_t) (0x0))))).Bitcast<double>());
@@ -2255,7 +2280,7 @@ bool LightRecompiler::CMEQ_zero_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_724) -> string { switch(temp_724) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_720) -> string { switch(temp_720) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto a = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch(size) {
@@ -2350,7 +2375,7 @@ bool LightRecompiler::CMGT_register_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto V = (string) (([=](auto temp_725) -> string { switch(temp_725) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
+		auto V = (string) (([=](auto temp_721) -> string { switch(temp_721) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x3: {
 				VDR[(int) (rd)] = (LightRuntimeValue<double>) (((LightRuntimeValue<uint64_t>) (Ternary<bool, uint64_t>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<int64_t>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).Bitcast<int64_t>())) > ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<double>) (VDR[(int) (rm)])).Bitcast<int64_t>())))), (uint64_t) ((uint64_t) (-0x1)), (uint64_t) ((uint64_t) (0x0))))).Bitcast<double>());
@@ -2375,7 +2400,7 @@ bool LightRecompiler::CMGT_register_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_726) -> string { switch(temp_726) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_722) -> string { switch(temp_722) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto a = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		auto b = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -2470,7 +2495,7 @@ bool LightRecompiler::CMGT_zero_scalar(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto V = (string) (([=](auto temp_727) -> string { switch(temp_727) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
+		auto V = (string) (([=](auto temp_723) -> string { switch(temp_723) { case 0x3: return string("D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x3: {
 				VDR[(int) (rd)] = (LightRuntimeValue<double>) (((LightRuntimeValue<uint64_t>) (Ternary<bool, uint64_t>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<int64_t>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).Bitcast<int64_t>())) > ((int64_t) ((int64_t) (0x0))))), (uint64_t) ((uint64_t) (-0x1)), (uint64_t) ((uint64_t) (0x0))))).Bitcast<double>());
@@ -2494,7 +2519,7 @@ bool LightRecompiler::CMGT_zero_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_728) -> string { switch(temp_728) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_724) -> string { switch(temp_724) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto a = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch(size) {
@@ -2589,8 +2614,8 @@ bool LightRecompiler::CNT(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_729) -> string { switch(temp_729) { case 0x0: return string("8B"); case 0x1: return string("16B"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
-		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, long>(VectorCountBits, (LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), (int64_t) (([=](auto temp_730) -> int64_t { switch(temp_730) { case 0x0: return 0x8; default: return 0x10; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))))));
+		auto t = (string) (([=](auto temp_725) -> string { switch(temp_725) { case 0x0: return string("8B"); case 0x1: return string("16B"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, long>(VectorCountBits, (LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), (int64_t) (([=](auto temp_726) -> int64_t { switch(temp_726) { case 0x0: return 0x8; default: return 0x10; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))))));
 		return true;
 	}
 unimplemented:
@@ -2606,25 +2631,25 @@ bool LightRecompiler::CSEL(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_731) -> string { switch(temp_731) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_732) -> LightRuntimeValue<bool> { switch(temp_732) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LightLabel temp_733 = DefineLabel(), temp_735 = DefineLabel(), temp_734 = DefineLabel();
-		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_733, temp_735);
-		Label(temp_733);
+		auto condstr = (string) (([=](auto temp_727) -> string { switch(temp_727) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_728) -> LightRuntimeValue<bool> { switch(temp_728) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LightLabel temp_729 = DefineLabel(), temp_731 = DefineLabel(), temp_730 = DefineLabel();
+		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_729, temp_731);
+		Label(temp_729);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())));
 		} else {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]());
 		}
-		Branch(temp_734);
-		Label(temp_735);
+		Branch(temp_730);
+		Label(temp_731);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())));
 		} else {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]());
 		}
-		Branch(temp_734);
-		Label(temp_734);
+		Branch(temp_730);
+		Label(temp_730);
 		return true;
 	}
 unimplemented:
@@ -2640,25 +2665,25 @@ bool LightRecompiler::CSINC(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_736) -> string { switch(temp_736) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_737) -> LightRuntimeValue<bool> { switch(temp_737) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LightLabel temp_738 = DefineLabel(), temp_740 = DefineLabel(), temp_739 = DefineLabel();
-		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_738, temp_740);
-		Label(temp_738);
+		auto condstr = (string) (([=](auto temp_732) -> string { switch(temp_732) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_733) -> LightRuntimeValue<bool> { switch(temp_733) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LightLabel temp_734 = DefineLabel(), temp_736 = DefineLabel(), temp_735 = DefineLabel();
+		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_734, temp_736);
+		Label(temp_734);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())));
 		} else {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]());
 		}
-		Branch(temp_739);
-		Label(temp_740);
+		Branch(temp_735);
+		Label(temp_736);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())))) + ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((uint32_t) ((uint32_t) (0x1))))));
 		} else {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (0x1)));
 		}
-		Branch(temp_739);
-		Label(temp_739);
+		Branch(temp_735);
+		Label(temp_735);
 		return true;
 	}
 unimplemented:
@@ -2674,25 +2699,25 @@ bool LightRecompiler::CSINV(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_741) -> string { switch(temp_741) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_742) -> LightRuntimeValue<bool> { switch(temp_742) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LightLabel temp_743 = DefineLabel(), temp_745 = DefineLabel(), temp_744 = DefineLabel();
-		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_743, temp_745);
-		Label(temp_743);
+		auto condstr = (string) (([=](auto temp_737) -> string { switch(temp_737) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_738) -> LightRuntimeValue<bool> { switch(temp_738) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LightLabel temp_739 = DefineLabel(), temp_741 = DefineLabel(), temp_740 = DefineLabel();
+		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_739, temp_741);
+		Label(temp_739);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())));
 		} else {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]());
 		}
-		Branch(temp_744);
-		Label(temp_745);
+		Branch(temp_740);
+		Label(temp_741);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (~((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())))));
 		} else {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (~((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())));
 		}
-		Branch(temp_744);
-		Label(temp_744);
+		Branch(temp_740);
+		Label(temp_740);
 		return true;
 	}
 unimplemented:
@@ -2708,25 +2733,25 @@ bool LightRecompiler::CSNEG(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto condstr = (string) (([=](auto temp_746) -> string { switch(temp_746) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_747) -> LightRuntimeValue<bool> { switch(temp_747) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LightLabel temp_748 = DefineLabel(), temp_750 = DefineLabel(), temp_749 = DefineLabel();
-		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_748, temp_750);
-		Label(temp_748);
+		auto condstr = (string) (([=](auto temp_742) -> string { switch(temp_742) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_743) -> LightRuntimeValue<bool> { switch(temp_743) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LightLabel temp_744 = DefineLabel(), temp_746 = DefineLabel(), temp_745 = DefineLabel();
+		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_744, temp_746);
+		Label(temp_744);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())));
 		} else {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]());
 		}
-		Branch(temp_749);
-		Label(temp_750);
+		Branch(temp_745);
+		Label(temp_746);
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (-((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())))))))));
 		} else {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (-((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))))));
 		}
-		Branch(temp_749);
-		Label(temp_749);
+		Branch(temp_745);
+		Label(temp_745);
 		return true;
 	}
 unimplemented:
@@ -2737,7 +2762,7 @@ unimplemented:
 bool LightRecompiler::DMB(uint inst, ulong pc) {
 	{
 		auto m = (inst >> 8) & 0xFU;
-		auto option = (string) (([=](auto temp_751) -> string { switch(temp_751) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(m));
+		auto option = (string) (([=](auto temp_747) -> string { switch(temp_747) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(m));
 		return true;
 	}
 unimplemented:
@@ -2748,7 +2773,7 @@ unimplemented:
 bool LightRecompiler::DSB(uint inst, ulong pc) {
 	{
 		auto crm = (inst >> 8) & 0xFU;
-		auto option = (string) (([=](auto temp_752) -> string { switch(temp_752) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(crm));
+		auto option = (string) (([=](auto temp_748) -> string { switch(temp_748) { case 0xF: return string("SY"); case 0xE: return string("ST"); case 0xD: return string("LD"); case 0xB: return string("ISH"); case 0xA: return string("ISHST"); case 0x9: return string("ISHLD"); case 0x7: return string("NSH"); case 0x6: return string("NSHST"); case 0x5: return string("NSHLD"); case 0x3: return string("OSH"); case 0x2: return string("OSHST"); default: return string("OSHLD"); } })(crm));
 		return true;
 	}
 unimplemented:
@@ -2855,7 +2880,7 @@ bool LightRecompiler::DUP_element_vector(uint inst, ulong pc) {
 			}
 		}
 		auto sv = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
-		auto tv = ((LightRuntimeValue<Vector128<float>>) (([=](auto temp_753) -> LightRuntimeValue<Vector128<float>> { switch(temp_753) { case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(index)))).CreateVector())); case 0x2: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) ((sv).Element<uint16_t>(index)))).CreateVector())); case 0x4: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) ((sv).Element<float>(index)))).CreateVector())); default: return (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) ((sv).Element<double>(index)))).CreateVector()); } })(size))).Store();
+		auto tv = ((LightRuntimeValue<Vector128<float>>) (([=](auto temp_749) -> LightRuntimeValue<Vector128<float>> { switch(temp_749) { case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(index)))).CreateVector())); case 0x2: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) ((sv).Element<uint16_t>(index)))).CreateVector())); case 0x4: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) ((sv).Element<float>(index)))).CreateVector())); default: return (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) ((sv).Element<double>(index)))).CreateVector()); } })(size))).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (tv) : ((LightRuntimeValue<Vector128<float>>) ((tv).ZeroTop())));
 		return true;
 	}
@@ -2890,12 +2915,14 @@ bool LightRecompiler::EON_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_754) -> string { switch(temp_754) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_750) -> string { switch(temp_750) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) ^ ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (~((LightRuntimeValue<uint32_t>) (([=](auto temp_755) -> LightRuntimeValue<uint32_t> { switch(temp_755) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) ^ ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (~((LightRuntimeValue<uint32_t>) (([=](auto temp_751) -> LightRuntimeValue<uint32_t> { switch(temp_751) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))))))));
 		} else {
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) ^ ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (~((LightRuntimeValue<uint64_t>) (([=](auto temp_756) -> LightRuntimeValue<uint64_t> { switch(temp_756) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) ^ ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (~((LightRuntimeValue<uint64_t>) (([=](auto temp_752) -> LightRuntimeValue<uint64_t> { switch(temp_752) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))));
 		}
 		return true;
 	}
@@ -2940,12 +2967,14 @@ bool LightRecompiler::EOR_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_757) -> string { switch(temp_757) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_753) -> string { switch(temp_753) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) ^ ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_758) -> LightRuntimeValue<uint32_t> { switch(temp_758) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) ^ ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_754) -> LightRuntimeValue<uint32_t> { switch(temp_754) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))))));
 		} else {
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) ^ ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (([=](auto temp_759) -> LightRuntimeValue<uint64_t> { switch(temp_759) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) ^ ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (([=](auto temp_755) -> LightRuntimeValue<uint64_t> { switch(temp_755) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))));
 		}
 		return true;
 	}
@@ -2994,6 +3023,10 @@ bool LightRecompiler::EXTR(uint inst, ulong pc) {
 		auto lsb = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((lsb) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((size) == (o)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]()))) << ((uint64_t) (((uint64_t) (int64_t) (0x20)) - ((uint64_t) (uint8_t) (lsb))))))) | ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (lsb)))))));
@@ -3013,7 +3046,7 @@ bool LightRecompiler::FABD_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_760) -> string { switch(temp_760) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(size));
+		auto r = (string) (([=](auto temp_756) -> string { switch(temp_756) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(size));
 		switch(size) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rn)]))) - ((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rm)]))))).Abs());
@@ -3040,7 +3073,7 @@ bool LightRecompiler::FABS_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_761) -> string { switch(temp_761) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_757) -> string { switch(temp_757) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).Abs());
@@ -3068,7 +3101,7 @@ bool LightRecompiler::FABS_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_762) -> string { switch(temp_762) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_758) -> string { switch(temp_758) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				auto a = ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x0))).Store();
@@ -3116,10 +3149,10 @@ bool LightRecompiler::FADD_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_763) -> string { switch(temp_763) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_759) -> string { switch(temp_759) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x3: {
-				VHR[(int) (rd)] = (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (VHR[(int) (rn)]))) + ((LightRuntimeValue<uint16_t>) (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (VHR[(int) (rm)]))))));
+				throw "Not implemented";
 				break;
 			}
 			case 0x0: {
@@ -3149,7 +3182,7 @@ bool LightRecompiler::FADD_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_764) -> string { switch(temp_764) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_760) -> string { switch(temp_760) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) + ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))).ZeroTop());
@@ -3200,7 +3233,7 @@ bool LightRecompiler::FADDP_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_765) -> string { switch(temp_765) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_761) -> string { switch(temp_761) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				auto a = ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x0))).Store();
@@ -3257,12 +3290,12 @@ bool LightRecompiler::FCCMP(uint inst, ulong pc) {
 		auto cond = (inst >> 12) & 0xFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto nzcv = (inst >> 0) & 0xFU;
-		auto r = (string) (([=](auto temp_766) -> string { switch(temp_766) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		auto condstr = (string) (([=](auto temp_767) -> string { switch(temp_767) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_768) -> LightRuntimeValue<bool> { switch(temp_768) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LightLabel temp_769 = DefineLabel(), temp_771 = DefineLabel(), temp_770 = DefineLabel();
-		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_769, temp_771);
-		Label(temp_769);
+		auto r = (string) (([=](auto temp_762) -> string { switch(temp_762) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto condstr = (string) (([=](auto temp_763) -> string { switch(temp_763) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_764) -> LightRuntimeValue<bool> { switch(temp_764) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LightLabel temp_765 = DefineLabel(), temp_767 = DefineLabel(), temp_766 = DefineLabel();
+		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_765, temp_767);
+		Label(temp_765);
 		switch(type) {
 			case 0x0: {
 				auto __macro_fcmp_a = ((LightRuntimeValue<float>) (VSR[(int) (rn)])).Store();
@@ -3281,11 +3314,11 @@ bool LightRecompiler::FCCMP(uint inst, ulong pc) {
 				break;
 			}
 		}
-		Branch(temp_770);
-		Label(temp_771);
+		Branch(temp_766);
+		Label(temp_767);
 		NZCVR = (uint64_t) (((uint64_t) ((uint64_t) (nzcv))) << (uint) (0x1C));
-		Branch(temp_770);
-		Label(temp_770);
+		Branch(temp_766);
+		Label(temp_766);
 		return true;
 	}
 unimplemented:
@@ -3303,8 +3336,8 @@ bool LightRecompiler::FCMxx_register_vector(uint inst, ulong pc) {
 		auto ac = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto top = (string) (([=](auto temp_772) -> string { switch(temp_772) { case 0x0: return string("EQ"); case 0x2: return string("GE"); case 0x3: return string("GE"); case 0x6: return string("GT"); case 0x7: return string("GT"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2))))));
-		auto t = (string) (([=](auto temp_773) -> string { switch(temp_773) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto top = (string) (([=](auto temp_768) -> string { switch(temp_768) { case 0x0: return string("EQ"); case 0x2: return string("GE"); case 0x3: return string("GE"); case 0x6: return string("GT"); case 0x7: return string("GT"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2))))));
+		auto t = (string) (([=](auto temp_769) -> string { switch(temp_769) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				auto a1 = ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x0))).Store();
@@ -3312,8 +3345,8 @@ bool LightRecompiler::FCMxx_register_vector(uint inst, ulong pc) {
 				auto b1 = ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(0x0))).Store();
 				auto b2 = ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(0x1))).Store();
 				VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<int32_t>) ((int32_t) ((int32_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<float>) (([=](auto temp_774) -> LightRuntimeValue<float> { switch(temp_774) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) == (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) >= (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a1).Abs())) >= ((LightRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) > (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a1).Abs())) > ((LightRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<float>) (([=](auto temp_775) -> LightRuntimeValue<float> { switch(temp_775) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) == (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) >= (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a2).Abs())) >= ((LightRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) > (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a2).Abs())) > ((LightRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<float>) (([=](auto temp_770) -> LightRuntimeValue<float> { switch(temp_770) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) == (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) >= (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a1).Abs())) >= ((LightRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) > (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a1).Abs())) > ((LightRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<float>) (([=](auto temp_771) -> LightRuntimeValue<float> { switch(temp_771) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) == (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) >= (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a2).Abs())) >= ((LightRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) > (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a2).Abs())) > ((LightRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
 				break;
 			}
 			case 0x1: {
@@ -3326,10 +3359,10 @@ bool LightRecompiler::FCMxx_register_vector(uint inst, ulong pc) {
 				auto b3 = ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(0x2))).Store();
 				auto b4 = ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(0x3))).Store();
 				VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<int32_t>) ((int32_t) ((int32_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<float>) (([=](auto temp_776) -> LightRuntimeValue<float> { switch(temp_776) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) == (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) >= (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a1).Abs())) >= ((LightRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) > (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a1).Abs())) > ((LightRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<float>) (([=](auto temp_777) -> LightRuntimeValue<float> { switch(temp_777) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) == (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) >= (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a2).Abs())) >= ((LightRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) > (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a2).Abs())) > ((LightRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<float>) (([=](auto temp_778) -> LightRuntimeValue<float> { switch(temp_778) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a3) == (b3))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a3) >= (b3))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a3).Abs())) >= ((LightRuntimeValue<float>) ((b3).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a3) > (b3))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a3).Abs())) > ((LightRuntimeValue<float>) ((b3).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<float>) (([=](auto temp_779) -> LightRuntimeValue<float> { switch(temp_779) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a4) == (b4))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a4) >= (b4))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a4).Abs())) >= ((LightRuntimeValue<float>) ((b4).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a4) > (b4))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a4).Abs())) > ((LightRuntimeValue<float>) ((b4).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<float>) (([=](auto temp_772) -> LightRuntimeValue<float> { switch(temp_772) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) == (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) >= (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a1).Abs())) >= ((LightRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) > (b1))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a1).Abs())) > ((LightRuntimeValue<float>) ((b1).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<float>) (([=](auto temp_773) -> LightRuntimeValue<float> { switch(temp_773) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) == (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) >= (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a2).Abs())) >= ((LightRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) > (b2))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a2).Abs())) > ((LightRuntimeValue<float>) ((b2).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<float>) (([=](auto temp_774) -> LightRuntimeValue<float> { switch(temp_774) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a3) == (b3))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a3) >= (b3))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a3).Abs())) >= ((LightRuntimeValue<float>) ((b3).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a3) > (b3))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a3).Abs())) > ((LightRuntimeValue<float>) ((b3).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<float>) (([=](auto temp_775) -> LightRuntimeValue<float> { switch(temp_775) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a4) == (b4))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a4) >= (b4))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x3: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a4).Abs())) >= ((LightRuntimeValue<float>) ((b4).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x6: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a4) > (b4))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x7: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) ((a4).Abs())) > ((LightRuntimeValue<float>) ((b4).Abs())))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
 				break;
 			}
 			case 0x3: {
@@ -3338,8 +3371,8 @@ bool LightRecompiler::FCMxx_register_vector(uint inst, ulong pc) {
 				auto b1 = ((LightRuntimeValue<double>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(0x0))).Store();
 				auto b2 = ((LightRuntimeValue<double>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(0x1))).Store();
 				VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<int32_t>) ((int32_t) ((int32_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<double>) (([=](auto temp_780) -> LightRuntimeValue<double> { switch(temp_780) { case 0x0: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) == (b1))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) >= (b1))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x3: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) ((a1).Abs())) >= ((LightRuntimeValue<double>) ((b1).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x6: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) > (b1))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x7: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) ((a1).Abs())) > ((LightRuntimeValue<double>) ((b1).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<double>) (([=](auto temp_781) -> LightRuntimeValue<double> { switch(temp_781) { case 0x0: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) == (b2))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) >= (b2))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x3: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) ((a2).Abs())) >= ((LightRuntimeValue<double>) ((b2).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x6: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) > (b2))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x7: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) ((a2).Abs())) > ((LightRuntimeValue<double>) ((b2).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<double>) (([=](auto temp_776) -> LightRuntimeValue<double> { switch(temp_776) { case 0x0: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) == (b1))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) >= (b1))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x3: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) ((a1).Abs())) >= ((LightRuntimeValue<double>) ((b1).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x6: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a1) > (b1))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x7: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) ((a1).Abs())) > ((LightRuntimeValue<double>) ((b1).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<double>) (([=](auto temp_777) -> LightRuntimeValue<double> { switch(temp_777) { case 0x0: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) == (b2))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) >= (b2))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x3: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) ((a2).Abs())) >= ((LightRuntimeValue<double>) ((b2).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x6: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a2) > (b2))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x7: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) ((a2).Abs())) > ((LightRuntimeValue<double>) ((b2).Abs())))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (ac)) << 0)) | ((uint8_t) (((uint8_t) (U)) << 1)))) | ((uint8_t) (((uint8_t) (E)) << 2)))))));
 				break;
 			}
 			default: {
@@ -3362,15 +3395,15 @@ bool LightRecompiler::FCMxx_zero_vector(uint inst, ulong pc) {
 		auto op = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto top = (string) (([=](auto temp_782) -> string { switch(temp_782) { case 0x0: return string("GT"); case 0x1: return string("GE"); case 0x2: return string("EQ"); default: return string("LE"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1))))));
-		auto t = (string) (([=](auto temp_783) -> string { switch(temp_783) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto top = (string) (([=](auto temp_778) -> string { switch(temp_778) { case 0x0: return string("GT"); case 0x1: return string("GE"); case 0x2: return string("EQ"); default: return string("LE"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1))))));
+		auto t = (string) (([=](auto temp_779) -> string { switch(temp_779) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				auto v1 = ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x0))).Store();
 				auto v2 = ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x1))).Store();
 				VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<int32_t>) ((int32_t) ((int32_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<float>) (([=](auto temp_784) -> LightRuntimeValue<float> { switch(temp_784) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<float>) (([=](auto temp_785) -> LightRuntimeValue<float> { switch(temp_785) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<float>) (([=](auto temp_780) -> LightRuntimeValue<float> { switch(temp_780) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<float>) (([=](auto temp_781) -> LightRuntimeValue<float> { switch(temp_781) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
 				break;
 			}
 			case 0x1: {
@@ -3379,18 +3412,18 @@ bool LightRecompiler::FCMxx_zero_vector(uint inst, ulong pc) {
 				auto v3 = ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x2))).Store();
 				auto v4 = ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x3))).Store();
 				VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<int32_t>) ((int32_t) ((int32_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<float>) (([=](auto temp_786) -> LightRuntimeValue<float> { switch(temp_786) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<float>) (([=](auto temp_787) -> LightRuntimeValue<float> { switch(temp_787) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<float>) (([=](auto temp_788) -> LightRuntimeValue<float> { switch(temp_788) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v3) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v3) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v3) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v3) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<float>) (([=](auto temp_789) -> LightRuntimeValue<float> { switch(temp_789) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v4) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v4) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v4) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v4) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<float>) (([=](auto temp_782) -> LightRuntimeValue<float> { switch(temp_782) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<float>) (([=](auto temp_783) -> LightRuntimeValue<float> { switch(temp_783) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<float>) (([=](auto temp_784) -> LightRuntimeValue<float> { switch(temp_784) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v3) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v3) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v3) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v3) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<float>) (([=](auto temp_785) -> LightRuntimeValue<float> { switch(temp_785) { case 0x0: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v4) > ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x1: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v4) >= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); case 0x2: return (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v4) == ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0))))))); default: return (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v4) <= ((float) ((float) (0x0))))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (-0x1)))), (float) (Bitcast<int32_t, float>((int32_t) ((int32_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
 				break;
 			}
 			case 0x3: {
 				auto v1 = ((LightRuntimeValue<double>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<double>(0x0))).Store();
 				auto v2 = ((LightRuntimeValue<double>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<double>(0x1))).Store();
 				VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<int32_t>) ((int32_t) ((int32_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<double>) (([=](auto temp_790) -> LightRuntimeValue<double> { switch(temp_790) { case 0x0: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) > ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x1: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) >= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) == ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: return (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) <= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<double>) (([=](auto temp_791) -> LightRuntimeValue<double> { switch(temp_791) { case 0x0: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) > ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x1: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) >= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) == ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: return (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) <= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<double>) (([=](auto temp_786) -> LightRuntimeValue<double> { switch(temp_786) { case 0x0: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) > ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x1: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) >= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) == ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: return (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v1) <= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<double>) (([=](auto temp_787) -> LightRuntimeValue<double> { switch(temp_787) { case 0x0: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) > ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x1: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) >= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); case 0x2: return (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) == ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0))))))); default: return (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((v2) <= ((double) ((double) (0x0))))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (-0x1)))), (double) (Bitcast<int64_t, double>((int64_t) ((int64_t) (0x0)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (U)) << 0)) | ((uint8_t) (((uint8_t) (op)) << 1)))))));
 				break;
 			}
 			default: {
@@ -3411,7 +3444,7 @@ bool LightRecompiler::FCMLT_zero_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_792) -> string { switch(temp_792) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_788) -> string { switch(temp_788) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				auto v1 = ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<float>(0x0))).Store();
@@ -3459,7 +3492,7 @@ bool LightRecompiler::FCMP(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto opc = (inst >> 3) & 0x1U;
-		auto r = (string) (([=](auto temp_793) -> string { switch(temp_793) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_789) -> string { switch(temp_789) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		auto zero = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("/0")) : (string("")));
 		switch(type) {
 			case 0x0: {
@@ -3493,12 +3526,12 @@ bool LightRecompiler::FCSEL(uint inst, ulong pc) {
 		auto cond = (inst >> 12) & 0xFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_794) -> string { switch(temp_794) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
-		auto condstr = (string) (([=](auto temp_795) -> string { switch(temp_795) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
-		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_796) -> LightRuntimeValue<bool> { switch(temp_796) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
-		LightLabel temp_797 = DefineLabel(), temp_799 = DefineLabel(), temp_798 = DefineLabel();
-		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_797, temp_799);
-		Label(temp_797);
+		auto r = (string) (([=](auto temp_790) -> string { switch(temp_790) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto condstr = (string) (([=](auto temp_791) -> string { switch(temp_791) { case 0x0: return string("EQ"); case 0x1: return string("NE"); case 0x2: return string("CS"); case 0x3: return string("CC"); case 0x4: return string("MI"); case 0x5: return string("PL"); case 0x6: return string("VS"); case 0x7: return string("VC"); case 0x8: return string("HI"); case 0x9: return string("LS"); case 0xA: return string("GE"); case 0xB: return string("LT"); case 0xC: return string("GT"); case 0xD: return string("LE"); default: return string("AL"); } })(cond));
+		auto result = ((LightRuntimeValue<bool>) (([=](auto temp_792) -> LightRuntimeValue<bool> { switch(temp_792) { case 0x0: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_ZR)); case 0x1: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR)); case 0x2: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_NR)); case 0x3: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_VR)); case 0x4: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (NZCV_CR))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); case 0x5: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR)))); case 0x6: return (LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<bool>) (NZCV_NR)) == ((LightRuntimeValue<bool>) (NZCV_VR))))) & ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (!((LightRuntimeValue<bool>) (NZCV_ZR)))))))); default: return 0x1; } })((uint8_t) ((cond) >> (uint) (0x1))))).Store();
+		LightLabel temp_793 = DefineLabel(), temp_795 = DefineLabel(), temp_794 = DefineLabel();
+		BranchIf((LightRuntimeValue<bool>) (((uint8_t) ((((uint8_t) ((uint8_t) ((((uint64_t) (cond)) & ((uint64_t) (0x1)))))) & ((uint8_t) ((bool) (((cond) != (0xF)) ? 1U : 0U)))))) != 0 ? ((LightRuntimeValue<bool>) (!(result))) : (result)), temp_793, temp_795);
+		Label(temp_793);
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (VSR[(int) (rn)]);
@@ -3513,8 +3546,8 @@ bool LightRecompiler::FCSEL(uint inst, ulong pc) {
 				break;
 			}
 		}
-		Branch(temp_798);
-		Label(temp_799);
+		Branch(temp_794);
+		Label(temp_795);
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (VSR[(int) (rm)]);
@@ -3529,8 +3562,8 @@ bool LightRecompiler::FCSEL(uint inst, ulong pc) {
 				break;
 			}
 		}
-		Branch(temp_798);
-		Label(temp_798);
+		Branch(temp_794);
+		Label(temp_794);
 		return true;
 	}
 unimplemented:
@@ -3585,11 +3618,11 @@ bool LightRecompiler::FCVT(uint inst, ulong pc) {
 		}
 		switch(tf) {
 			case 0xC: {
-				VSR[(int) (rd)] = (LightRuntimeValue<float>) ((LightRuntimeValue<float>) ((LightRuntimeValue<uint16_t>) (VHR[(int) (rn)])));
+				throw "Not implemented";
 				break;
 			}
 			case 0xD: {
-				VDR[(int) (rd)] = (LightRuntimeValue<double>) ((LightRuntimeValue<double>) ((LightRuntimeValue<uint16_t>) (VHR[(int) (rn)])));
+				throw "Not implemented";
 				break;
 			}
 			case 0x3: {
@@ -3667,19 +3700,19 @@ bool LightRecompiler::FCVTAS_scalar_integer(uint inst, ulong pc) {
 		}
 		switch(st) {
 			case 0x0: {
-				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).Ceil()), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).Floor())))))).Bitcast<uint32_t>()));
+				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfUp()), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfDown())))))).Bitcast<uint32_t>()));
 				break;
 			}
 			case 0x4: {
-				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).Ceil()), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).Floor())))))).Bitcast<uint64_t>());
+				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfUp()), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfDown())))))).Bitcast<uint64_t>());
 				break;
 			}
 			case 0x1: {
-				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).Ceil()), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).Floor())))))).Bitcast<uint32_t>()));
+				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfUp()), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfDown())))))).Bitcast<uint32_t>()));
 				break;
 			}
 			case 0x5: {
-				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).Ceil()), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).Floor())))))).Bitcast<uint64_t>());
+				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfUp()), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfDown())))))).Bitcast<uint64_t>());
 				break;
 			}
 			default: {
@@ -3741,19 +3774,19 @@ bool LightRecompiler::FCVTAU_scalar_integer(uint inst, ulong pc) {
 		}
 		switch(st) {
 			case 0x0: {
-				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).Ceil()), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).Floor()))))));
+				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfUp()), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfDown()))))));
 				break;
 			}
 			case 0x4: {
-				XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).Ceil()), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).Floor())))));
+				XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfUp()), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfDown())))));
 				break;
 			}
 			case 0x1: {
-				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).Ceil()), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).Floor()))))));
+				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfUp()), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfDown()))))));
 				break;
 			}
 			case 0x5: {
-				XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).Ceil()), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).Floor())))));
+				XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])) >= (0x0))), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfUp()), (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (VDR[(int) (rn)])).RoundHalfDown())))));
 				break;
 			}
 			default: {
@@ -3776,7 +3809,7 @@ bool LightRecompiler::FCVTL_2_(uint inst, ulong pc) {
 		auto rd = (inst >> 0) & 0x1FU;
 		auto o2 = (string) ((Q != 0) ? (string("2")) : (string("")));
 		auto ta = (string) ((size != 0) ? (string("2D")) : (string("4S")));
-		auto tb = (string) (([=](auto temp_800) -> string { switch(temp_800) { case 0x0: return string("4H"); case 0x1: return string("8H"); case 0x2: return string("2S"); default: return string("4S"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto tb = (string) (([=](auto temp_796) -> string { switch(temp_796) { case 0x0: return string("4H"); case 0x1: return string("8H"); case 0x2: return string("2S"); default: return string("4S"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto n = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
@@ -4189,8 +4222,10 @@ bool LightRecompiler::FCVTZS_scalar_fixedpoint(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto fbits = (uint64_t) (((uint64_t) (int64_t) (0x40)) - ((uint64_t) (uint8_t) (scale)));
+		if(!((bool) (((fbits) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (([=](auto temp_801) -> string { switch(temp_801) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r2 = (string) (([=](auto temp_797) -> string { switch(temp_797) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))))) {
 			case 0x0: {
 				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (Call<uint, float, int>(FloatToFixed32, (LightRuntimeValue<float>) (VSR[(int) (rn)]), (LightRuntimeValue<int>) (fbits))));
@@ -4302,8 +4337,10 @@ bool LightRecompiler::FCVTZU_scalar_fixedpoint(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto fbits = (uint64_t) (((uint64_t) (int64_t) (0x40)) - ((uint64_t) (uint8_t) (scale)));
+		if(!((bool) (((fbits) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto r2 = (string) (([=](auto temp_802) -> string { switch(temp_802) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r2 = (string) (([=](auto temp_798) -> string { switch(temp_798) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (type)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))))) {
 			case 0x0: {
 				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (Call<uint, float, int>(FloatToFixed32, (LightRuntimeValue<float>) (VSR[(int) (rn)]), (LightRuntimeValue<int>) (fbits))));
@@ -4413,7 +4450,7 @@ bool LightRecompiler::FDIV_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_803) -> string { switch(temp_803) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_799) -> string { switch(temp_799) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x3: {
 				throw "Not implemented";
@@ -4446,7 +4483,7 @@ bool LightRecompiler::FDIV_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_804) -> string { switch(temp_804) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_800) -> string { switch(temp_800) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) / ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))).ZeroTop());
@@ -4479,7 +4516,7 @@ bool LightRecompiler::FMADD(uint inst, ulong pc) {
 		auto ra = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_805) -> string { switch(temp_805) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x3: return string("H"); default: throw "Not implemented"; } })(type));
+		auto t = (string) (([=](auto temp_801) -> string { switch(temp_801) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x3: return string("H"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rn)]))) * ((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rm)])))))) + ((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (ra)]))));
@@ -4507,18 +4544,18 @@ bool LightRecompiler::FMAX_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_806) -> string { switch(temp_806) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_802) -> string { switch(temp_802) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = ((LightRuntimeValue<float>) (VSR[(int) (rn)])).Store();
 				auto b = ((LightRuntimeValue<float>) (VSR[(int) (rm)])).Store();
-				VSR[(int) (rd)] = (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) > (b))), a, b));
+				VSR[(int) (rd)] = (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a).IsNaN()))) | ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((b).IsNaN())))))), (float) (Bitcast<uint32_t, float>((uint32_t) ((uint32_t) (-0x1)))), (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) > (b))), a, b))));
 				break;
 			}
 			case 0x1: {
 				auto a = ((LightRuntimeValue<double>) (VDR[(int) (rn)])).Store();
 				auto b = ((LightRuntimeValue<double>) (VDR[(int) (rm)])).Store();
-				VDR[(int) (rd)] = (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) > (b))), a, b));
+				VDR[(int) (rd)] = (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a).IsNaN()))) | ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((b).IsNaN())))))), (double) (Bitcast<uint64_t, double>((uint64_t) ((uint64_t) (-0x1)))), (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) > (b))), a, b))));
 				break;
 			}
 			default: {
@@ -4539,18 +4576,18 @@ bool LightRecompiler::FMAXNM_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_807) -> string { switch(temp_807) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_803) -> string { switch(temp_803) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = ((LightRuntimeValue<float>) (VSR[(int) (rn)])).Store();
 				auto b = ((LightRuntimeValue<float>) (VSR[(int) (rm)])).Store();
-				VSR[(int) (rd)] = (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) > (b))), a, b));
+				VSR[(int) (rd)] = (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a).IsNaN())), b, (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((b).IsNaN())), a, (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) > (b))), a, b))))));
 				break;
 			}
 			case 0x1: {
 				auto a = ((LightRuntimeValue<double>) (VDR[(int) (rn)])).Store();
 				auto b = ((LightRuntimeValue<double>) (VDR[(int) (rm)])).Store();
-				VDR[(int) (rd)] = (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) > (b))), a, b));
+				VDR[(int) (rd)] = (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a).IsNaN())), b, (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((b).IsNaN())), a, (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) > (b))), a, b))))));
 				break;
 			}
 			default: {
@@ -4571,18 +4608,18 @@ bool LightRecompiler::FMIN_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_808) -> string { switch(temp_808) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_804) -> string { switch(temp_804) { case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = ((LightRuntimeValue<float>) (VSR[(int) (rn)])).Store();
 				auto b = ((LightRuntimeValue<float>) (VSR[(int) (rm)])).Store();
-				VSR[(int) (rd)] = (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) < (b))), a, b));
+				VSR[(int) (rd)] = (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a).IsNaN()))) | ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((b).IsNaN())))))), (float) (Bitcast<uint32_t, float>((uint32_t) ((uint32_t) (-0x1)))), (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) < (b))), a, b))));
 				break;
 			}
 			case 0x1: {
 				auto a = ((LightRuntimeValue<double>) (VDR[(int) (rn)])).Store();
 				auto b = ((LightRuntimeValue<double>) (VDR[(int) (rm)])).Store();
-				VDR[(int) (rd)] = (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) < (b))), a, b));
+				VDR[(int) (rd)] = (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a).IsNaN()))) | ((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((b).IsNaN())))))), (double) (Bitcast<uint64_t, double>((uint64_t) ((uint64_t) (-0x1)))), (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) < (b))), a, b))));
 				break;
 			}
 			default: {
@@ -4603,18 +4640,18 @@ bool LightRecompiler::FMINNM_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_809) -> string { switch(temp_809) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_805) -> string { switch(temp_805) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				auto a = ((LightRuntimeValue<float>) (VSR[(int) (rn)])).Store();
 				auto b = ((LightRuntimeValue<float>) (VSR[(int) (rm)])).Store();
-				VSR[(int) (rd)] = (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) < (b))), a, b));
+				VSR[(int) (rd)] = (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a).IsNaN())), b, (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((b).IsNaN())), a, (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) < (b))), a, b))))));
 				break;
 			}
 			case 0x1: {
 				auto a = ((LightRuntimeValue<double>) (VDR[(int) (rn)])).Store();
 				auto b = ((LightRuntimeValue<double>) (VDR[(int) (rm)])).Store();
-				VDR[(int) (rd)] = (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) < (b))), a, b));
+				VDR[(int) (rd)] = (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a).IsNaN())), b, (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((b).IsNaN())), a, (LightRuntimeValue<double>) (Ternary<bool, double>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((a) < (b))), a, b))))));
 				break;
 			}
 			default: {
@@ -4638,14 +4675,11 @@ bool LightRecompiler::FMLA_by_element_vector_spdp(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_810) -> string { switch(temp_810) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_806) -> string { switch(temp_806) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint32_t) (([=](auto temp_811) -> uint32_t { switch(temp_811) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
-		if((sz) != 0) {
-			VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector())))))));
-		} else {
-			VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())))));
-		}
+		auto index = (uint32_t) (([=](auto temp_807) -> uint32_t { switch(temp_807) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
+		auto v = ((LightRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector())))))))) : ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())))))))).Store();
+		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LightRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
 unimplemented:
@@ -4660,12 +4694,8 @@ bool LightRecompiler::FMLA_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_812) -> string { switch(temp_812) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
-		if((sz) != 0) {
-			VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))));
-		} else {
-			VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))));
-		}
+		auto T = (string) (([=](auto temp_808) -> string { switch(temp_808) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
+		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? ((LightRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))) : ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))) : ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))) : ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) + ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))).ZeroTop())));
 		return true;
 	}
 unimplemented:
@@ -4682,14 +4712,10 @@ bool LightRecompiler::FMLS_by_element_vector_spdp(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_813) -> string { switch(temp_813) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_809) -> string { switch(temp_809) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint32_t) (([=](auto temp_814) -> uint32_t { switch(temp_814) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
-		if((sz) != 0) {
-			VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector())))))));
-		} else {
-			VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())))));
-		}
+		auto index = (uint32_t) (([=](auto temp_810) -> uint32_t { switch(temp_810) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
+		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? ((LightRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector())))))))) : ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())))))))) : ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector())))))))) : ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())))))))).ZeroTop())));
 		return true;
 	}
 unimplemented:
@@ -4704,12 +4730,8 @@ bool LightRecompiler::FMLS_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_815) -> string { switch(temp_815) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
-		if((sz) != 0) {
-			VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))));
-		} else {
-			VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))));
-		}
+		auto T = (string) (([=](auto temp_811) -> string { switch(temp_811) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
+		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? ((LightRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))) : ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))) : ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))) : ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rd)])) - ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))))).ZeroTop())));
 		return true;
 	}
 unimplemented:
@@ -4821,11 +4843,11 @@ bool LightRecompiler::FMOV_general(uint inst, ulong pc) {
 				break;
 			}
 			case 0xCE: {
-				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<double>) (VDR[(int) ((uint8_t) ((((uint64_t) ((uint8_t) ((rn) << (uint) (0x1)))) | ((uint64_t) (0x1)))))])).Bitcast<uint64_t>());
+				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(0x1));
 				break;
 			}
 			case 0xCF: {
-				VDR[(int) ((uint8_t) ((((uint64_t) ((uint8_t) ((rd) << (uint) (0x1)))) | ((uint64_t) (0x1)))))] = (LightRuntimeValue<double>) (((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]())).Bitcast<double>());
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()));
 				break;
 			}
 			default: {
@@ -4845,7 +4867,7 @@ bool LightRecompiler::FMOV_scalar_immediate(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto imm = (inst >> 13) & 0xFFU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_816) -> string { switch(temp_816) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_812) -> string { switch(temp_812) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		auto sv = (float) (Bitcast<uint32_t, float>((uint32_t) ((uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (((uint32_t) ((uint32_t) ((uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (uint32_t) (((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 1)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 2)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 3)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 4)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 5)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 6)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 7)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 8)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 9)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 10)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 11)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 12)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 13)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 14)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 15)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 16)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 17)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) (0x0)))) << 18)))))) << 0)) | ((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) ((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF)))))))) << 19)))) | ((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x4)))) & ((uint64_t) (0x3)))))))) << 23)))) | ((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 0)) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 1)))) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 2)))) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 3)))) | ((uint8_t) (((uint8_t) ((bool) ((bool) ((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1)))))))) << 4)))))) << 25)))) | ((uint32_t) (((uint32_t) ((bool) (((uint8_t) ((((uint64_t) ((uint8_t) ((imm) >> (uint) (0x6)))) & ((uint64_t) (0x1))))) != 0 ? 0U : 1U))) << 30)))) | ((uint32_t) (((uint32_t) ((bool) ((bool) ((uint8_t) ((imm) >> (uint) (0x7)))))) << 31))))));
 		switch(type) {
 			case 0x0: {
@@ -4918,7 +4940,7 @@ bool LightRecompiler::FMSUB(uint inst, ulong pc) {
 		auto ra = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_817) -> string { switch(temp_817) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x3: return string("H"); default: throw "Not implemented"; } })(type));
+		auto t = (string) (([=](auto temp_813) -> string { switch(temp_813) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x3: return string("H"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (ra)]))) - ((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rn)]))) * ((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rm)])))))));
@@ -4949,7 +4971,7 @@ bool LightRecompiler::FMUL_by_element_scalar_spdp(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint32_t) (([=](auto temp_818) -> uint32_t { switch(temp_818) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
+		auto index = (uint32_t) (([=](auto temp_814) -> uint32_t { switch(temp_814) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
 		if((sz) != 0) {
 			VDR[(int) (rd)] = (LightRuntimeValue<double>) (((LightRuntimeValue<double>) (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (VDR[(int) (rn)]))) * ((LightRuntimeValue<double>) (LightRuntimeValue<double>) ((LightRuntimeValue<double>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))));
 		} else {
@@ -4971,14 +4993,10 @@ bool LightRecompiler::FMUL_by_element_vector_spdp(uint inst, ulong pc) {
 		auto H = (inst >> 11) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_819) -> string { switch(temp_819) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
+		auto T = (string) (([=](auto temp_815) -> string { switch(temp_815) { case 0x0: return string("2S"); case 0x2: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (sz)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))));
 		auto Ts = (string) ((sz != 0) ? (string("D")) : (string("S")));
-		auto index = (uint32_t) (([=](auto temp_820) -> uint32_t { switch(temp_820) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
-		if((sz) != 0) {
-			VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector()))));
-		} else {
-			VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())));
-		}
+		auto index = (uint32_t) (([=](auto temp_816) -> uint32_t { switch(temp_816) { case 0x2: return (uint32_t) ((uint32_t) (H)); case 0x3: throw "Not implemented"; default: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))))); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (sz)) << 1))))));
+		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? ((LightRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector()))))) : ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())))))) : ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) ((sz) != 0 ? ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * (LightRuntimeValue<Vector128<double>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<double>(index)))).CreateVector()))))) : ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<float>(index)))).CreateVector())))))).ZeroTop())));
 		return true;
 	}
 unimplemented:
@@ -4992,7 +5010,7 @@ bool LightRecompiler::FMUL_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_821) -> string { switch(temp_821) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_817) -> string { switch(temp_817) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rn)]))) * ((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rm)]))));
@@ -5021,7 +5039,7 @@ bool LightRecompiler::FMUL_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_822) -> string { switch(temp_822) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_818) -> string { switch(temp_818) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))).ZeroTop());
@@ -5052,7 +5070,7 @@ bool LightRecompiler::FNEG_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_823) -> string { switch(temp_823) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_819) -> string { switch(temp_819) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (-((LightRuntimeValue<float>) (VSR[(int) (rn)])));
@@ -5080,7 +5098,7 @@ bool LightRecompiler::FNEG_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_824) -> string { switch(temp_824) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_820) -> string { switch(temp_820) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto sv = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
@@ -5120,7 +5138,7 @@ bool LightRecompiler::FNMADD(uint inst, ulong pc) {
 		auto ra = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_825) -> string { switch(temp_825) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_821) -> string { switch(temp_821) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (-((LightRuntimeValue<float>) (((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rn)]))) * ((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rm)])))))))) - ((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (ra)]))));
@@ -5149,7 +5167,7 @@ bool LightRecompiler::FNMSUB(uint inst, ulong pc) {
 		auto ra = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_826) -> string { switch(temp_826) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_822) -> string { switch(temp_822) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rn)]))) * ((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rm)])))))) - ((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (ra)]))));
@@ -5177,7 +5195,7 @@ bool LightRecompiler::FNMUL_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_827) -> string { switch(temp_827) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_823) -> string { switch(temp_823) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (-((LightRuntimeValue<float>) (((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rn)]))) * ((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rm)]))))));
@@ -5204,7 +5222,7 @@ bool LightRecompiler::FRINTA_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_828) -> string { switch(temp_828) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_824) -> string { switch(temp_824) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])) < (0x0))), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfDown()), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfUp())));
@@ -5231,7 +5249,7 @@ bool LightRecompiler::FRINTI_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_829) -> string { switch(temp_829) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_825) -> string { switch(temp_825) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).Round());
@@ -5258,7 +5276,7 @@ bool LightRecompiler::FRINTM_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_830) -> string { switch(temp_830) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_826) -> string { switch(temp_826) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfDown());
@@ -5285,7 +5303,7 @@ bool LightRecompiler::FRINTP_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_831) -> string { switch(temp_831) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_827) -> string { switch(temp_827) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfUp());
@@ -5312,7 +5330,7 @@ bool LightRecompiler::FRINTX_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_832) -> string { switch(temp_832) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_828) -> string { switch(temp_828) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).Round());
@@ -5339,7 +5357,7 @@ bool LightRecompiler::FRINTZ_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_833) -> string { switch(temp_833) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_829) -> string { switch(temp_829) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (Ternary<bool, float>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])) < (0x0))), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfUp()), (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (VSR[(int) (rn)])).RoundHalfDown())));
@@ -5367,8 +5385,8 @@ bool LightRecompiler::FRSQRTE_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_834) -> string { switch(temp_834) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
-		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (([=](auto temp_835) -> LightRuntimeValue<Vector128<float>> { switch(temp_835) { case 0x0: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x20, 0x2))); case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x20, 0x4))); case 0x3: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x40, 0x2))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_830) -> string { switch(temp_830) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (([=](auto temp_831) -> LightRuntimeValue<Vector128<float>> { switch(temp_831) { case 0x0: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x20, 0x2))); case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x20, 0x4))); case 0x3: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (Call<Vector128<float>, Vector128<float>, int, int>(VectorFrsqrte, (LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), 0x40, 0x2))); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		return true;
 	}
 unimplemented:
@@ -5383,7 +5401,7 @@ bool LightRecompiler::FRSQRTS_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_836) -> string { switch(temp_836) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_832) -> string { switch(temp_832) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((float) ((float) (0x3)))).CreateVector())) - ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))) / ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((float) ((float) (0x2)))).CreateVector())))).ZeroTop());
@@ -5414,7 +5432,7 @@ bool LightRecompiler::FSQRT_scalar(uint inst, ulong pc) {
 		auto type = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_837) -> string { switch(temp_837) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_833) -> string { switch(temp_833) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) ((LightRuntimeValue<float>) ((LightRuntimeValue<double>) ((LightRuntimeValue<float>) (VSR[(int) (rn)]))).Sqrt());
@@ -5442,7 +5460,7 @@ bool LightRecompiler::FSUB_scalar(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_838) -> string { switch(temp_838) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
+		auto r = (string) (([=](auto temp_834) -> string { switch(temp_834) { case 0x3: return string("H"); case 0x0: return string("S"); case 0x1: return string("D"); default: throw "Not implemented"; } })(type));
 		switch(type) {
 			case 0x0: {
 				VSR[(int) (rd)] = (LightRuntimeValue<float>) (((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rn)]))) - ((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) (VSR[(int) (rm)]))));
@@ -5471,7 +5489,7 @@ bool LightRecompiler::FSUB_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto ts = (string) (([=](auto temp_839) -> string { switch(temp_839) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_835) -> string { switch(temp_835) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
 				VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) - ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))).ZeroTop());
@@ -5502,6 +5520,8 @@ bool LightRecompiler::INS_general(uint inst, ulong pc) {
 		auto imm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0xF))))) != (0x0)) ? 1U : 0U)))
+			goto unimplemented;
 		auto ts = string("");
 		auto index = (uint32_t) ((uint32_t) (0x0));
 		auto r = string("W");
@@ -5549,6 +5569,8 @@ bool LightRecompiler::INS_vector(uint inst, ulong pc) {
 		auto imm4 = (inst >> 11) & 0xFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) ((((uint8_t) ((((uint64_t) (imm5)) & ((uint64_t) (0xF))))) != (0x0)) ? 1U : 0U)))
+			goto unimplemented;
 		auto ts = string("");
 		auto index1 = (uint32_t) ((uint32_t) (0x0));
 		auto index2 = (uint32_t) ((uint32_t) (0x0));
@@ -5599,7 +5621,7 @@ bool LightRecompiler::LD1_multi_no_offset_one_register(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_840) -> string { switch(temp_840) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_836) -> string { switch(temp_836) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch(size) {
@@ -5687,7 +5709,7 @@ bool LightRecompiler::LD1_multi_no_offset_two_registers(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_841) -> string { switch(temp_841) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_837) -> string { switch(temp_837) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -5849,7 +5871,7 @@ bool LightRecompiler::LD1_multi_no_offset_three_registers(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_842) -> string { switch(temp_842) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_838) -> string { switch(temp_838) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -6085,11 +6107,12 @@ bool LightRecompiler::LD1_multi_no_offset_four_registers(uint inst, ulong pc) {
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_843) -> string { switch(temp_843) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_839) -> string { switch(temp_839) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt3)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
+		VR[(int) (rt4)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch(size) {
 			case 0x0: {
 				if((Q) != 0) {
@@ -6395,7 +6418,7 @@ bool LightRecompiler::LD1_single_no_offset(uint inst, ulong pc) {
 		if(!((bool) (((opc) != (0x3)) ? 1U : 0U)))
 			goto unimplemented;
 		auto t = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("B")) : ((string) (((bool) ((((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U))))) != 0) ? (string("H")) : ((string) (((bool) (((opc) == (0x2)) ? 1U : 0U) != 0) ? ((string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : ((string) (((bool) ((((bool) ((bool) (((size) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) (((S) == (0x0)) ? 1U : 0U))))) != 0) ? (string("D")) : throw "Not implemented")))) : throw "Not implemented")))));
-		auto index = (uint32_t) (([=](auto temp_844) -> uint32_t { switch(temp_844) { case 0x0: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3)))))); case 0x1: return (uint32_t) (((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint32_t) (((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (S)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
+		auto index = (uint32_t) (([=](auto temp_840) -> uint32_t { switch(temp_840) { case 0x0: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3)))))); case 0x1: return (uint32_t) (((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint32_t) (((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (S)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		switch(opc) {
 			case 0x0: {
@@ -6432,9 +6455,9 @@ bool LightRecompiler::LD1R_single_no_offset(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_845) -> string { switch(temp_845) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_841) -> string { switch(temp_841) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-		auto sv = ((LightRuntimeValue<Vector128<float>>) (([=](auto temp_846) -> LightRuntimeValue<Vector128<float>> { switch(temp_846) { case 0x0: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (((LightRuntimePointer<uint8_t>) (address)).value()))).CreateVector())); case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (((LightRuntimePointer<uint16_t>) (address)).value()))).CreateVector())); case 0x2: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimePointer<float>) (address)).value()))).CreateVector())); default: return (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) (((LightRuntimePointer<double>) (address)).value()))).CreateVector()); } })(size))).Store();
+		auto sv = ((LightRuntimeValue<Vector128<float>>) (([=](auto temp_842) -> LightRuntimeValue<Vector128<float>> { switch(temp_842) { case 0x0: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (((LightRuntimePointer<uint8_t>) (address)).value()))).CreateVector())); case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (((LightRuntimePointer<uint16_t>) (address)).value()))).CreateVector())); case 0x2: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimePointer<float>) (address)).value()))).CreateVector())); default: return (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) (((LightRuntimePointer<double>) (address)).value()))).CreateVector()); } })(size))).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (sv) : ((LightRuntimeValue<Vector128<float>>) ((sv).ZeroTop())));
 		return true;
 	}
@@ -6452,10 +6475,10 @@ bool LightRecompiler::LD1R_single_postindex_immediate(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto t = (string) (([=](auto temp_847) -> string { switch(temp_847) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
-		auto imm = (int64_t) (([=](auto temp_848) -> int64_t { switch(temp_848) { case 0x0: return 0x1; case 0x1: return 0x2; case 0x2: return 0x4; default: return 0x8; } })(size));
+		auto t = (string) (([=](auto temp_843) -> string { switch(temp_843) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto imm = (int64_t) (([=](auto temp_844) -> int64_t { switch(temp_844) { case 0x0: return 0x1; case 0x1: return 0x2; case 0x2: return 0x4; default: return 0x8; } })(size));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-		auto sv = ((LightRuntimeValue<Vector128<float>>) (([=](auto temp_849) -> LightRuntimeValue<Vector128<float>> { switch(temp_849) { case 0x0: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (((LightRuntimePointer<uint8_t>) (address)).value()))).CreateVector())); case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (((LightRuntimePointer<uint16_t>) (address)).value()))).CreateVector())); case 0x2: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimePointer<float>) (address)).value()))).CreateVector())); default: return (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) (((LightRuntimePointer<double>) (address)).value()))).CreateVector()); } })(size))).Store();
+		auto sv = ((LightRuntimeValue<Vector128<float>>) (([=](auto temp_845) -> LightRuntimeValue<Vector128<float>> { switch(temp_845) { case 0x0: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (((LightRuntimePointer<uint8_t>) (address)).value()))).CreateVector())); case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (((LightRuntimePointer<uint16_t>) (address)).value()))).CreateVector())); case 0x2: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimePointer<float>) (address)).value()))).CreateVector())); default: return (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) (((LightRuntimePointer<double>) (address)).value()))).CreateVector()); } })(size))).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (sv) : ((LightRuntimeValue<Vector128<float>>) ((sv).ZeroTop())));
 		if(rn == 31)
 			SPR = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) (address)) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (imm)));
@@ -6477,9 +6500,9 @@ bool LightRecompiler::LD1R_single_postindex_register(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto t = (string) (([=](auto temp_850) -> string { switch(temp_850) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_846) -> string { switch(temp_846) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x6: return string("1D"); default: return string("2D"); } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
-		auto sv = ((LightRuntimeValue<Vector128<float>>) (([=](auto temp_851) -> LightRuntimeValue<Vector128<float>> { switch(temp_851) { case 0x0: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (((LightRuntimePointer<uint8_t>) (address)).value()))).CreateVector())); case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (((LightRuntimePointer<uint16_t>) (address)).value()))).CreateVector())); case 0x2: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimePointer<float>) (address)).value()))).CreateVector())); default: return (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) (((LightRuntimePointer<double>) (address)).value()))).CreateVector()); } })(size))).Store();
+		auto sv = ((LightRuntimeValue<Vector128<float>>) (([=](auto temp_847) -> LightRuntimeValue<Vector128<float>> { switch(temp_847) { case 0x0: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (((LightRuntimePointer<uint8_t>) (address)).value()))).CreateVector())); case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (((LightRuntimePointer<uint16_t>) (address)).value()))).CreateVector())); case 0x2: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((LightRuntimeValue<float>) (((LightRuntimePointer<float>) (address)).value()))).CreateVector())); default: return (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<double>) ((LightRuntimeValue<double>) (((LightRuntimePointer<double>) (address)).value()))).CreateVector()); } })(size))).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (sv) : ((LightRuntimeValue<Vector128<float>>) ((sv).ZeroTop())));
 		if(rn == 31)
 			SPR = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) (address)) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]()))));
@@ -6499,7 +6522,7 @@ bool LightRecompiler::LD2_multi_no_offset(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_852) -> string { switch(temp_852) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_848) -> string { switch(temp_848) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -6632,7 +6655,7 @@ bool LightRecompiler::LD2_multi_postindex_immediate(uint inst, ulong pc) {
 		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x20) : (0x10))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_853) -> string { switch(temp_853) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_849) -> string { switch(temp_849) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -6768,7 +6791,7 @@ bool LightRecompiler::LD2_multi_postindex_register(uint inst, ulong pc) {
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_854) -> string { switch(temp_854) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_850) -> string { switch(temp_850) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -6902,7 +6925,7 @@ bool LightRecompiler::LD3_multi_no_offset(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_855) -> string { switch(temp_855) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_851) -> string { switch(temp_851) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -7081,7 +7104,7 @@ bool LightRecompiler::LD3_multi_postindex_immediate(uint inst, ulong pc) {
 		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x30) : (0x18))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_856) -> string { switch(temp_856) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_852) -> string { switch(temp_852) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -7263,7 +7286,7 @@ bool LightRecompiler::LD3_multi_postindex_register(uint inst, ulong pc) {
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_857) -> string { switch(temp_857) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_853) -> string { switch(temp_853) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -7443,7 +7466,7 @@ bool LightRecompiler::LD4_multi_no_offset(uint inst, ulong pc) {
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_858) -> string { switch(temp_858) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_854) -> string { switch(temp_854) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -7665,10 +7688,10 @@ bool LightRecompiler::LD4_multi_postindex_immediate(uint inst, ulong pc) {
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
-		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x30) : (0x18))));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x40) : (0x20))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_859) -> string { switch(temp_859) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_855) -> string { switch(temp_855) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -7896,7 +7919,7 @@ bool LightRecompiler::LD4_multi_postindex_register(uint inst, ulong pc) {
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_860) -> string { switch(temp_860) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_856) -> string { switch(temp_856) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		VR[(int) (rt)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		VR[(int) (rt2)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -8209,6 +8232,12 @@ bool LightRecompiler::LDP_immediate_postindex(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt1) != (rt2)) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((rt1) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((rt2) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
@@ -8237,6 +8266,8 @@ bool LightRecompiler::LDP_immediate_signed_offset(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt1) != (rt2)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (simm)))).Store();
@@ -8261,8 +8292,10 @@ bool LightRecompiler::LDP_simd_postindex(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_861) -> string { switch(temp_861) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_862) -> int64_t { switch(temp_862) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		if(!((bool) (((rt1) != (rt2)) ? 1U : 0U)))
+			goto unimplemented;
+		auto r = (string) (([=](auto temp_857) -> string { switch(temp_857) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_858) -> int64_t { switch(temp_858) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		switch(opc) {
 			case 0x0: {
@@ -8299,8 +8332,10 @@ bool LightRecompiler::LDP_simd_preindex(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_863) -> string { switch(temp_863) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_864) -> int64_t { switch(temp_864) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		if(!((bool) (((rt1) != (rt2)) ? 1U : 0U)))
+			goto unimplemented;
+		auto r = (string) (([=](auto temp_859) -> string { switch(temp_859) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_860) -> int64_t { switch(temp_860) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (simm)))).Store();
 		if(rn == 31)
 			SPR = address;
@@ -8337,8 +8372,10 @@ bool LightRecompiler::LDP_simd_signed_offset(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_865) -> string { switch(temp_865) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
-		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_866) -> int64_t { switch(temp_866) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
+		if(!((bool) (((rt1) != (rt2)) ? 1U : 0U)))
+			goto unimplemented;
+		auto r = (string) (([=](auto temp_861) -> string { switch(temp_861) { case 0x0: return string("S"); case 0x1: return string("D"); default: return string("Q"); } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_862) -> int64_t { switch(temp_862) { case 0x0: return 0x2; case 0x1: return 0x3; default: return 0x4; } })(opc))));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (simm)))).Store();
 		switch(opc) {
 			case 0x0: {
@@ -8370,6 +8407,12 @@ bool LightRecompiler::LDPSW_immediate_signed_offset(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt1) != (rt2)) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((rt1) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((rt2) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) (0x2));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (simm)))).Store();
 		XR[(int) rt1] = (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) (((LightRuntimePointer<uint32_t>) (address)).value()), 32))));
@@ -8387,6 +8430,8 @@ bool LightRecompiler::LDR_immediate_preindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rd) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (imm)))).Store();
@@ -8412,6 +8457,8 @@ bool LightRecompiler::LDR_immediate_postindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rd) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
@@ -8478,7 +8525,7 @@ bool LightRecompiler::LDR_simd_immediate_postindex(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
-		auto r = (string) (([=](auto temp_867) -> string { switch(temp_867) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_863) -> string { switch(temp_863) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
@@ -8525,7 +8572,7 @@ bool LightRecompiler::LDR_simd_immediate_preindex(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
-		auto r = (string) (([=](auto temp_868) -> string { switch(temp_868) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_864) -> string { switch(temp_864) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (simm)))).Store();
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
@@ -8573,8 +8620,8 @@ bool LightRecompiler::LDR_simd_immediate_unsigned_offset(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto opc = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x1)))) << 0)) | ((uint8_t) (((uint8_t) (ropc)) << 1))));
 		auto m = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 2))));
-		auto r = (string) (([=](auto temp_869) -> string { switch(temp_869) { case 0x1: return string("B"); case 0x5: return string("H"); case 0x9: return string("S"); case 0xD: return string("D"); default: return string("Q"); } })(m));
-		auto imm = (uint32_t) (((uint32_t) ((uint32_t) (rawimm))) << (uint) ((int64_t) (([=](auto temp_870) -> int64_t { switch(temp_870) { case 0x1: return 0x0; case 0x5: return 0x1; case 0x9: return 0x2; case 0xD: return 0x3; default: return 0x4; } })(m))));
+		auto r = (string) (([=](auto temp_865) -> string { switch(temp_865) { case 0x1: return string("B"); case 0x5: return string("H"); case 0x9: return string("S"); case 0xD: return string("D"); default: return string("Q"); } })(m));
+		auto imm = (uint32_t) (((uint32_t) ((uint32_t) (rawimm))) << (uint) ((int64_t) (([=](auto temp_866) -> int64_t { switch(temp_866) { case 0x1: return 0x0; case 0x5: return 0x1; case 0x9: return 0x2; case 0xD: return 0x3; default: return 0x4; } })(m))));
 		switch(m) {
 			case 0x1: {
 				VBR[(int) (rt)] = (LightRuntimeValue<uint8_t>) (((LightRuntimePointer<uint8_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) (imm))))).value());
@@ -8609,7 +8656,7 @@ bool LightRecompiler::LDR_simd_literal(uint inst, ulong pc) {
 		auto size = (inst >> 30) & 0x3U;
 		auto imm = (inst >> 5) & 0x7FFFFU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_871) -> string { switch(temp_871) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(size));
+		auto r = (string) (([=](auto temp_867) -> string { switch(temp_867) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(size));
 		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint32_t) ((uint32_t) (((uint32_t) (((uint32_t) ((uint8_t) ((uint8_t) (0x0)))) << 0)) | ((uint32_t) (((uint32_t) (imm)) << 2)))), 21)))));
 		switch(size) {
 			case 0x0: {
@@ -8645,11 +8692,11 @@ bool LightRecompiler::LDR_simd_register(uint inst, ulong pc) {
 		auto scale = (inst >> 12) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r1 = (string) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (string("Q")) : ((string) (([=](auto temp_872) -> string { switch(temp_872) { case 0x0: return string("B"); case 0x1: return string("H"); case 0x2: return string("S"); case 0x3: return string("D"); default: throw "Not implemented"; } })(size))));
+		auto r1 = (string) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (string("Q")) : ((string) (([=](auto temp_868) -> string { switch(temp_868) { case 0x0: return string("B"); case 0x1: return string("H"); case 0x2: return string("S"); case 0x3: return string("D"); default: throw "Not implemented"; } })(size))));
 		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (([=](auto temp_873) -> string { switch(temp_873) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
-		auto amount = (uint64_t) (((uint64_t) (bool) (scale)) * ((uint64_t) (int64_t) ((int64_t) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (0x4) : ((int64_t) (([=](auto temp_874) -> int64_t { switch(temp_874) { case 0x0: return 0x1; case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: throw "Not implemented"; } })(size)))))));
-		auto offset = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (([=](auto temp_875) -> LightRuntimeValue<uint64_t> { switch(temp_875) { case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))); case 0x3: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())); case 0x6: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())), 32))))); case 0x7: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())); default: throw "Not implemented"; } })(option))) << (amount))).Store();
+		auto extend = (string) (([=](auto temp_869) -> string { switch(temp_869) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto amount = (uint64_t) (((uint64_t) (bool) (scale)) * ((uint64_t) (int64_t) ((int64_t) (((bool) ((((bool) ((bool) (((size) == (0x0)) ? 1U : 0U))) & ((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))))) != 0) ? (0x4) : ((int64_t) (([=](auto temp_870) -> int64_t { switch(temp_870) { case 0x0: return 0x1; case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: throw "Not implemented"; } })(size)))))));
+		auto offset = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (([=](auto temp_871) -> LightRuntimeValue<uint64_t> { switch(temp_871) { case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))); case 0x3: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())); case 0x6: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())), 32))))); case 0x7: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())); default: throw "Not implemented"; } })(option))) << (amount))).Store();
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) (offset)))).Store();
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
@@ -8691,7 +8738,7 @@ bool LightRecompiler::LDR_register(uint inst, ulong pc) {
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		auto extend = (string) (([=](auto temp_876) -> string { switch(temp_876) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto extend = (string) (([=](auto temp_872) -> string { switch(temp_872) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); case 0x3: return string("LSL"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LightRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rt] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimePointer<uint32_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) (offset))))).value()));
@@ -8710,6 +8757,8 @@ bool LightRecompiler::LDRB_immediate_postindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		XR[(int) rt] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint8_t>) (((LightRuntimePointer<uint8_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))).value()))));
 		if(rn == 31)
@@ -8728,6 +8777,8 @@ bool LightRecompiler::LDRB_immediate_preindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (imm)))).Store();
 		XR[(int) rt] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint8_t>) (((LightRuntimePointer<uint8_t>) (address)).value()))));
@@ -8763,7 +8814,7 @@ bool LightRecompiler::LDRB_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_877) -> string { switch(temp_877) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_873) -> string { switch(temp_873) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LightRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		XR[(int) rt] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint8_t>) (((LightRuntimePointer<uint8_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) (offset))))).value()));
 		return true;
@@ -8778,6 +8829,8 @@ bool LightRecompiler::LDRH_immediate_postindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		XR[(int) rt] = (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint16_t>) (((LightRuntimePointer<uint16_t>) (address)).value())));
@@ -8797,6 +8850,8 @@ bool LightRecompiler::LDRH_immediate_preindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (imm)))).Store();
 		XR[(int) rt] = (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint16_t>) (((LightRuntimePointer<uint16_t>) (address)).value())));
@@ -8833,7 +8888,7 @@ bool LightRecompiler::LDRH_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_878) -> string { switch(temp_878) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_874) -> string { switch(temp_874) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LightRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		XR[(int) rt] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint16_t>) (((LightRuntimePointer<uint16_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) (offset))))).value()));
 		return true;
@@ -8849,6 +8904,8 @@ bool LightRecompiler::LDRSB_immediate_postindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
@@ -8874,6 +8931,8 @@ bool LightRecompiler::LDRSB_immediate_preindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (imm)))).Store();
@@ -8921,7 +8980,7 @@ bool LightRecompiler::LDRSB_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_879) -> string { switch(temp_879) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_875) -> string { switch(temp_875) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LightRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
 			XR[(int) rt] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint8_t>) (((LightRuntimePointer<uint8_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) (offset))))).value()), 8)))));
@@ -8941,6 +9000,8 @@ bool LightRecompiler::LDRSH_immediate_postindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
@@ -8966,6 +9027,8 @@ bool LightRecompiler::LDRSH_immediate_preindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto r = (string) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (imm)))).Store();
@@ -9014,7 +9077,7 @@ bool LightRecompiler::LDRSH_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_880) -> string { switch(temp_880) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_876) -> string { switch(temp_876) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LightRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		if(((bool) (((opc) == (0x1)) ? 1U : 0U)) != 0) {
 			XR[(int) rt] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint16_t>) (((LightRuntimePointer<uint16_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) (offset))))).value()), 16)))));
@@ -9033,6 +9096,8 @@ bool LightRecompiler::LDRSW_immediate_postindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		XR[(int) rt] = (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) (((LightRuntimePointer<uint32_t>) (address)).value()), 32))));
@@ -9052,6 +9117,8 @@ bool LightRecompiler::LDRSW_immediate_preindex(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
+		if(!((bool) (((rt) != (rn)) ? 1U : 0U)))
+			goto unimplemented;
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (imm)))).Store();
 		XR[(int) rt] = (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) (((LightRuntimePointer<uint32_t>) (address)).value()), 32))));
@@ -9102,7 +9169,7 @@ bool LightRecompiler::LDRSW_register(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : (0x2));
-		auto extend = (string) (([=](auto temp_881) -> string { switch(temp_881) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto extend = (string) (([=](auto temp_877) -> string { switch(temp_877) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LightRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		XR[(int) rt] = (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) (((LightRuntimePointer<uint32_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) (offset))))).value()), 32))));
 		return true;
@@ -9221,7 +9288,7 @@ bool LightRecompiler::LDUR_simd(uint inst, ulong pc) {
 		auto rawimm = (inst >> 12) & 0x1FFU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_882) -> string { switch(temp_882) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_878) -> string { switch(temp_878) { case 0x0: return string("B"); case 0x2: return string("H"); case 0x4: return string("S"); case 0x6: return string("D"); case 0x1: return string("Q"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto imm = (int64_t) (SignExt<int64_t>(rawimm, 9));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (imm)))).Store();
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (opc)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
@@ -9460,7 +9527,7 @@ bool LightRecompiler::MOVI_vector_32bit(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-		auto amount = (int64_t) (([=](auto temp_883) -> int64_t { switch(temp_883) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
+		auto amount = (int64_t) (([=](auto temp_879) -> int64_t { switch(temp_879) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
 		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		auto avec = ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<float>) ((float) (Bitcast<uint32_t, float>((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (amount)))))).CreateVector())).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (avec) : ((LightRuntimeValue<Vector128<float>>) ((avec).ZeroTop())));
@@ -9497,8 +9564,12 @@ bool LightRecompiler::MOVK(uint inst, ulong pc) {
 		auto hw = (inst >> 21) & 0x3U;
 		auto imm = (inst >> 5) & 0xFFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
+			if(!((bool) (((hw) < (0x2)) ? 1U : 0U)))
+				goto unimplemented;
+		}
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (uint8_t) ((hw) << (uint) (0x4));
+		auto shift = (uint32_t) (((uint32_t) ((uint32_t) (hw))) << (uint) (0x4));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rd) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rd]())))) & ((LightRuntimeValue<uint32_t>) ((uint32_t) ((((uint32_t) ((uint32_t) ((uint32_t) (-0x1)))) ^ ((uint32_t) ((uint32_t) (((uint32_t) ((uint32_t) (0xFFFF))) << (uint) (shift)))))))))))) | ((LightRuntimeValue<uint32_t>) ((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (shift)))))));
 		} else {
@@ -9517,8 +9588,12 @@ bool LightRecompiler::MOVN(uint inst, ulong pc) {
 		auto hw = (inst >> 21) & 0x3U;
 		auto imm = (inst >> 5) & 0xFFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
+			if(!((bool) (((hw) < (0x2)) ? 1U : 0U)))
+				goto unimplemented;
+		}
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (uint8_t) ((hw) << (uint) (0x4));
+		auto shift = (uint32_t) (((uint32_t) ((uint32_t) (hw))) << (uint) (0x4));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((uint32_t) (~((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (shift)))));
 		} else {
@@ -9538,7 +9613,7 @@ bool LightRecompiler::MOVZ(uint inst, ulong pc) {
 		auto imm = (inst >> 5) & 0xFFFFU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shift = (uint8_t) ((hw) << (uint) (0x4));
+		auto shift = (uint32_t) (((uint32_t) ((uint32_t) (hw))) << (uint) (0x4));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (shift)));
 		} else {
@@ -9614,10 +9689,10 @@ bool LightRecompiler::MUL_by_element(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto rm = (uint8_t) (((bool) (((size) == (0x2)) ? 1U : 0U) != 0) ? ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (rv)) << 0)) | ((uint8_t) (((uint8_t) (M)) << 4))))) : (rv));
-		auto t = (string) (([=](auto temp_884) -> string { switch(temp_884) { case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
-		auto ts = (string) (([=](auto temp_885) -> string { switch(temp_885) { case 0x1: return string("H"); case 0x2: return string("S"); default: throw "Not implemented"; } })(size));
-		auto index = (uint8_t) (([=](auto temp_886) -> uint8_t { switch(temp_886) { case 0x1: return (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (M)) << 0)) | ((uint8_t) (((uint8_t) (L)) << 1)))) | ((uint8_t) (((uint8_t) (H)) << 2)))); case 0x2: return (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))); default: throw "Not implemented"; } })(size));
-		auto v = ((LightRuntimeValue<Vector128<float>>) (([=](auto temp_887) -> LightRuntimeValue<Vector128<float>> { switch(temp_887) { case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint16_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<uint16_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint16_t>(index)))))); case 0x2: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint32_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint32_t>(index)))))); default: throw "Not implemented"; } })(size))).Store();
+		auto t = (string) (([=](auto temp_880) -> string { switch(temp_880) { case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto ts = (string) (([=](auto temp_881) -> string { switch(temp_881) { case 0x1: return string("H"); case 0x2: return string("S"); default: throw "Not implemented"; } })(size));
+		auto index = (uint8_t) (([=](auto temp_882) -> uint8_t { switch(temp_882) { case 0x1: return (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (M)) << 0)) | ((uint8_t) (((uint8_t) (L)) << 1)))) | ((uint8_t) (((uint8_t) (H)) << 2)))); case 0x2: return (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (L)) << 0)) | ((uint8_t) (((uint8_t) (H)) << 1)))); default: throw "Not implemented"; } })(size));
+		auto v = ((LightRuntimeValue<Vector128<float>>) (([=](auto temp_883) -> LightRuntimeValue<Vector128<float>> { switch(temp_883) { case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint16_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<uint16_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint16_t>(index)))))); case 0x2: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint32_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint32_t>(index)))))); default: throw "Not implemented"; } })(size))).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LightRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
@@ -9633,8 +9708,8 @@ bool LightRecompiler::MUL_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_888) -> string { switch(temp_888) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
-		auto v = ((LightRuntimeValue<Vector128<float>>) (([=](auto temp_889) -> LightRuntimeValue<Vector128<float>> { switch(temp_889) { case 0x0: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint16_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<uint16_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x2: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint32_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<uint32_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); default: throw "Not implemented"; } })(size))).Store();
+		auto t = (string) (([=](auto temp_884) -> string { switch(temp_884) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto v = ((LightRuntimeValue<Vector128<float>>) (([=](auto temp_885) -> LightRuntimeValue<Vector128<float>> { switch(temp_885) { case 0x0: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x1: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint16_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<uint16_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); case 0x2: return (LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<uint32_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) * ((LightRuntimeValue<Vector128<uint32_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])))))); default: throw "Not implemented"; } })(size))).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (v) : ((LightRuntimeValue<Vector128<float>>) ((v).ZeroTop())));
 		return true;
 	}
@@ -9682,7 +9757,7 @@ bool LightRecompiler::MVNI_vector_32bit_LSL(uint inst, ulong pc) {
 		auto h = (inst >> 5) & 0x1U;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) ((Q != 0) ? (string("4S")) : (string("2S")));
-		auto amount = (int64_t) (([=](auto temp_890) -> int64_t { switch(temp_890) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
+		auto amount = (int64_t) (([=](auto temp_886) -> int64_t { switch(temp_886) { case 0x0: return 0x0; case 0x1: return 0x8; case 0x2: return 0x10; case 0x3: return 0x18; default: throw "Not implemented"; } })(cmode));
 		auto imm = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (h)) << 0)) | ((uint8_t) (((uint8_t) (g)) << 1)))) | ((uint8_t) (((uint8_t) (f)) << 2)))) | ((uint8_t) (((uint8_t) (e)) << 3)))) | ((uint8_t) (((uint8_t) (d)) << 4)))) | ((uint8_t) (((uint8_t) (c)) << 5)))) | ((uint8_t) (((uint8_t) (b)) << 6)))) | ((uint8_t) (((uint8_t) (a)) << 7))));
 		auto avec = ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint32_t>) ((uint32_t) (~((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (amount)))))).CreateVector())).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (avec) : ((LightRuntimeValue<Vector128<float>>) ((avec).ZeroTop())));
@@ -9724,7 +9799,7 @@ bool LightRecompiler::NEG_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_891) -> string { switch(temp_891) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_887) -> string { switch(temp_887) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto n = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
@@ -9777,20 +9852,20 @@ bool LightRecompiler::NEG_vector(uint inst, ulong pc) {
 				break;
 			}
 			case 0x4: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<float>) (-((LightRuntimeValue<float>) ((n).Element<float>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<float>) (-((LightRuntimeValue<float>) ((n).Element<float>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<int32_t>) (-((LightRuntimeValue<int32_t>) ((n).Element<int32_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<int32_t>) (-((LightRuntimeValue<int32_t>) ((n).Element<int32_t>(0x1)))));
 				break;
 			}
 			case 0x5: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<float>) (-((LightRuntimeValue<float>) ((n).Element<float>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<float>) (-((LightRuntimeValue<float>) ((n).Element<float>(0x1)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<float>) (-((LightRuntimeValue<float>) ((n).Element<float>(0x2)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<float>) (-((LightRuntimeValue<float>) ((n).Element<float>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<int32_t>) (-((LightRuntimeValue<int32_t>) ((n).Element<int32_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<int32_t>) (-((LightRuntimeValue<int32_t>) ((n).Element<int32_t>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<int32_t>) (-((LightRuntimeValue<int32_t>) ((n).Element<int32_t>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<int32_t>) (-((LightRuntimeValue<int32_t>) ((n).Element<int32_t>(0x3)))));
 				break;
 			}
 			case 0x7: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<double>) (-((LightRuntimeValue<double>) ((n).Element<double>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<double>) (-((LightRuntimeValue<double>) ((n).Element<double>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<int64_t>) (-((LightRuntimeValue<int64_t>) ((n).Element<int64_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<int64_t>) (-((LightRuntimeValue<int64_t>) ((n).Element<int64_t>(0x1)))));
 				break;
 			}
 			default: {
@@ -9822,12 +9897,14 @@ bool LightRecompiler::ORN_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_892) -> string { switch(temp_892) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_888) -> string { switch(temp_888) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) | ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (~((LightRuntimeValue<uint32_t>) (([=](auto temp_893) -> LightRuntimeValue<uint32_t> { switch(temp_893) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) | ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (~((LightRuntimeValue<uint32_t>) (([=](auto temp_889) -> LightRuntimeValue<uint32_t> { switch(temp_889) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))))))));
 		} else {
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) | ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (~((LightRuntimeValue<uint64_t>) (([=](auto temp_894) -> LightRuntimeValue<uint64_t> { switch(temp_894) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) | ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (~((LightRuntimeValue<uint64_t>) (([=](auto temp_890) -> LightRuntimeValue<uint64_t> { switch(temp_890) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))));
 		}
 		return true;
 	}
@@ -9872,12 +9949,14 @@ bool LightRecompiler::ORR_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_895) -> string { switch(temp_895) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_891) -> string { switch(temp_891) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) | ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_896) -> LightRuntimeValue<uint32_t> { switch(temp_896) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) | ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_892) -> LightRuntimeValue<uint32_t> { switch(temp_892) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))))));
 		} else {
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) | ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (([=](auto temp_897) -> LightRuntimeValue<uint64_t> { switch(temp_897) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) | ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (([=](auto temp_893) -> LightRuntimeValue<uint64_t> { switch(temp_893) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))));
 		}
 		return true;
 	}
@@ -9893,12 +9972,7 @@ bool LightRecompiler::ORR_simd_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto t = (string) (((bool) (((Q) == (0x0)) ? 1U : 0U) != 0) ? (string("8B")) : (string("16B")));
-		if(((bool) (((rm) == (rn)) ? 1U : 0U)) != 0) {
-			VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]);
-		} else {
-			auto tv = ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) | ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)]))))))).Store();
-			VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? (tv) : ((LightRuntimeValue<Vector128<float>>) ((tv).ZeroTop())));
-		}
+		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((Q) != 0 ? ((LightRuntimeValue<Vector128<float>>) (((bool) (((rm) == (rn)) ? 1U : 0U)) != 0 ? ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) : ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) | ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)]))))))))) : ((LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<Vector128<float>>) (((bool) (((rm) == (rn)) ? 1U : 0U)) != 0 ? ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])) : ((LightRuntimeValue<Vector128<float>>) ((LightRuntimeValue<Vector128<float>>) ((((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]))) | ((LightRuntimeValue<Vector128<uint8_t>>) ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)]))))))))).ZeroTop())));
 		return true;
 	}
 unimplemented:
@@ -9914,394 +9988,394 @@ bool LightRecompiler::PMULL_2_(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto h = (string) ((Q != 0) ? (string("2")) : (string("")));
-		auto Ta = (string) (([=](auto temp_898) -> string { switch(temp_898) { case 0x0: return string("8H"); case 0x3: return string("1Q"); default: throw "Not implemented"; } })(size));
-		auto Tb = (string) (([=](auto temp_899) -> string { switch(temp_899) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x6: return string("1D"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto Ta = (string) (([=](auto temp_894) -> string { switch(temp_894) { case 0x0: return string("8H"); case 0x3: return string("1Q"); default: throw "Not implemented"; } })(size));
+		auto Tb = (string) (([=](auto temp_895) -> string { switch(temp_895) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x6: return string("1D"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		if(((bool) (((size) == (0x3)) ? 1U : 0U)) != 0) {
 			auto result = ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q)))) ^ ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))))))))).Store();
-			LightLabel temp_900 = DefineLabel(), temp_901 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x0)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_900, temp_901);
-			Label(temp_900);
+			LightLabel temp_896 = DefineLabel(), temp_897 = DefineLabel();
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x0)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_896, temp_897);
+			Label(temp_896);
 			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x0))))));
+			Branch(temp_897);
+			Label(temp_897);
+			LightLabel temp_898 = DefineLabel(), temp_899 = DefineLabel();
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_898, temp_899);
+			Label(temp_898);
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1))))));
+			Branch(temp_899);
+			Label(temp_899);
+			LightLabel temp_900 = DefineLabel(), temp_901 = DefineLabel();
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_900, temp_901);
+			Label(temp_900);
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2))))));
 			Branch(temp_901);
 			Label(temp_901);
 			LightLabel temp_902 = DefineLabel(), temp_903 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_902, temp_903);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_902, temp_903);
 			Label(temp_902);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3))))));
 			Branch(temp_903);
 			Label(temp_903);
 			LightLabel temp_904 = DefineLabel(), temp_905 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_904, temp_905);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x4)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_904, temp_905);
 			Label(temp_904);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x4))))));
 			Branch(temp_905);
 			Label(temp_905);
 			LightLabel temp_906 = DefineLabel(), temp_907 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_906, temp_907);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x5)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_906, temp_907);
 			Label(temp_906);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x5))))));
 			Branch(temp_907);
 			Label(temp_907);
 			LightLabel temp_908 = DefineLabel(), temp_909 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x4)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_908, temp_909);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x6)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_908, temp_909);
 			Label(temp_908);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x4))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x6))))));
 			Branch(temp_909);
 			Label(temp_909);
 			LightLabel temp_910 = DefineLabel(), temp_911 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x5)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_910, temp_911);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x7)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_910, temp_911);
 			Label(temp_910);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x5))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x7))))));
 			Branch(temp_911);
 			Label(temp_911);
 			LightLabel temp_912 = DefineLabel(), temp_913 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x6)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_912, temp_913);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x8)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_912, temp_913);
 			Label(temp_912);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x6))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x8))))));
 			Branch(temp_913);
 			Label(temp_913);
 			LightLabel temp_914 = DefineLabel(), temp_915 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x7)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_914, temp_915);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x9)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_914, temp_915);
 			Label(temp_914);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x7))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x9))))));
 			Branch(temp_915);
 			Label(temp_915);
 			LightLabel temp_916 = DefineLabel(), temp_917 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x8)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_916, temp_917);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xA)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_916, temp_917);
 			Label(temp_916);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x8))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xA))))));
 			Branch(temp_917);
 			Label(temp_917);
 			LightLabel temp_918 = DefineLabel(), temp_919 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x9)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_918, temp_919);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xB)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_918, temp_919);
 			Label(temp_918);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x9))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xB))))));
 			Branch(temp_919);
 			Label(temp_919);
 			LightLabel temp_920 = DefineLabel(), temp_921 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xA)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_920, temp_921);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xC)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_920, temp_921);
 			Label(temp_920);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xA))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xC))))));
 			Branch(temp_921);
 			Label(temp_921);
 			LightLabel temp_922 = DefineLabel(), temp_923 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xB)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_922, temp_923);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xD)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_922, temp_923);
 			Label(temp_922);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xB))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xD))))));
 			Branch(temp_923);
 			Label(temp_923);
 			LightLabel temp_924 = DefineLabel(), temp_925 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xC)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_924, temp_925);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xE)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_924, temp_925);
 			Label(temp_924);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xC))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xE))))));
 			Branch(temp_925);
 			Label(temp_925);
 			LightLabel temp_926 = DefineLabel(), temp_927 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xD)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_926, temp_927);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xF)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_926, temp_927);
 			Label(temp_926);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xD))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xF))))));
 			Branch(temp_927);
 			Label(temp_927);
 			LightLabel temp_928 = DefineLabel(), temp_929 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xE)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_928, temp_929);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x10)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_928, temp_929);
 			Label(temp_928);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xE))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x10))))));
 			Branch(temp_929);
 			Label(temp_929);
 			LightLabel temp_930 = DefineLabel(), temp_931 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0xF)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_930, temp_931);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x11)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_930, temp_931);
 			Label(temp_930);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0xF))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x11))))));
 			Branch(temp_931);
 			Label(temp_931);
 			LightLabel temp_932 = DefineLabel(), temp_933 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x10)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_932, temp_933);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x12)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_932, temp_933);
 			Label(temp_932);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x10))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x12))))));
 			Branch(temp_933);
 			Label(temp_933);
 			LightLabel temp_934 = DefineLabel(), temp_935 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x11)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_934, temp_935);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x13)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_934, temp_935);
 			Label(temp_934);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x11))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x13))))));
 			Branch(temp_935);
 			Label(temp_935);
 			LightLabel temp_936 = DefineLabel(), temp_937 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x12)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_936, temp_937);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x14)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_936, temp_937);
 			Label(temp_936);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x12))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x14))))));
 			Branch(temp_937);
 			Label(temp_937);
 			LightLabel temp_938 = DefineLabel(), temp_939 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x13)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_938, temp_939);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x15)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_938, temp_939);
 			Label(temp_938);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x13))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x15))))));
 			Branch(temp_939);
 			Label(temp_939);
 			LightLabel temp_940 = DefineLabel(), temp_941 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x14)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_940, temp_941);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x16)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_940, temp_941);
 			Label(temp_940);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x14))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x16))))));
 			Branch(temp_941);
 			Label(temp_941);
 			LightLabel temp_942 = DefineLabel(), temp_943 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x15)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_942, temp_943);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x17)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_942, temp_943);
 			Label(temp_942);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x15))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x17))))));
 			Branch(temp_943);
 			Label(temp_943);
 			LightLabel temp_944 = DefineLabel(), temp_945 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x16)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_944, temp_945);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x18)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_944, temp_945);
 			Label(temp_944);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x16))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x18))))));
 			Branch(temp_945);
 			Label(temp_945);
 			LightLabel temp_946 = DefineLabel(), temp_947 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x17)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_946, temp_947);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x19)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_946, temp_947);
 			Label(temp_946);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x17))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x19))))));
 			Branch(temp_947);
 			Label(temp_947);
 			LightLabel temp_948 = DefineLabel(), temp_949 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x18)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_948, temp_949);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1A)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_948, temp_949);
 			Label(temp_948);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x18))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1A))))));
 			Branch(temp_949);
 			Label(temp_949);
 			LightLabel temp_950 = DefineLabel(), temp_951 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x19)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_950, temp_951);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1B)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_950, temp_951);
 			Label(temp_950);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x19))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1B))))));
 			Branch(temp_951);
 			Label(temp_951);
 			LightLabel temp_952 = DefineLabel(), temp_953 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1A)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_952, temp_953);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1C)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_952, temp_953);
 			Label(temp_952);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1A))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1C))))));
 			Branch(temp_953);
 			Label(temp_953);
 			LightLabel temp_954 = DefineLabel(), temp_955 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1B)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_954, temp_955);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1D)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_954, temp_955);
 			Label(temp_954);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1B))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1D))))));
 			Branch(temp_955);
 			Label(temp_955);
 			LightLabel temp_956 = DefineLabel(), temp_957 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1C)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_956, temp_957);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1E)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_956, temp_957);
 			Label(temp_956);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1C))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1E))))));
 			Branch(temp_957);
 			Label(temp_957);
 			LightLabel temp_958 = DefineLabel(), temp_959 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1D)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_958, temp_959);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1F)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_958, temp_959);
 			Label(temp_958);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1D))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1F))))));
 			Branch(temp_959);
 			Label(temp_959);
 			LightLabel temp_960 = DefineLabel(), temp_961 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1E)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_960, temp_961);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x20)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_960, temp_961);
 			Label(temp_960);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1E))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x20))))));
 			Branch(temp_961);
 			Label(temp_961);
 			LightLabel temp_962 = DefineLabel(), temp_963 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x1F)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_962, temp_963);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x21)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_962, temp_963);
 			Label(temp_962);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x1F))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x21))))));
 			Branch(temp_963);
 			Label(temp_963);
 			LightLabel temp_964 = DefineLabel(), temp_965 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x20)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_964, temp_965);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x22)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_964, temp_965);
 			Label(temp_964);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x20))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x22))))));
 			Branch(temp_965);
 			Label(temp_965);
 			LightLabel temp_966 = DefineLabel(), temp_967 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x21)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_966, temp_967);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x23)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_966, temp_967);
 			Label(temp_966);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x21))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x23))))));
 			Branch(temp_967);
 			Label(temp_967);
 			LightLabel temp_968 = DefineLabel(), temp_969 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x22)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_968, temp_969);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x24)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_968, temp_969);
 			Label(temp_968);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x22))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x24))))));
 			Branch(temp_969);
 			Label(temp_969);
 			LightLabel temp_970 = DefineLabel(), temp_971 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x23)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_970, temp_971);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x25)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_970, temp_971);
 			Label(temp_970);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x23))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x25))))));
 			Branch(temp_971);
 			Label(temp_971);
 			LightLabel temp_972 = DefineLabel(), temp_973 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x24)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_972, temp_973);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x26)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_972, temp_973);
 			Label(temp_972);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x24))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x26))))));
 			Branch(temp_973);
 			Label(temp_973);
 			LightLabel temp_974 = DefineLabel(), temp_975 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x25)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_974, temp_975);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x27)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_974, temp_975);
 			Label(temp_974);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x25))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x27))))));
 			Branch(temp_975);
 			Label(temp_975);
 			LightLabel temp_976 = DefineLabel(), temp_977 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x26)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_976, temp_977);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x28)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_976, temp_977);
 			Label(temp_976);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x26))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x28))))));
 			Branch(temp_977);
 			Label(temp_977);
 			LightLabel temp_978 = DefineLabel(), temp_979 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x27)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_978, temp_979);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x29)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_978, temp_979);
 			Label(temp_978);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x27))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x29))))));
 			Branch(temp_979);
 			Label(temp_979);
 			LightLabel temp_980 = DefineLabel(), temp_981 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x28)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_980, temp_981);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2A)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_980, temp_981);
 			Label(temp_980);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x28))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2A))))));
 			Branch(temp_981);
 			Label(temp_981);
 			LightLabel temp_982 = DefineLabel(), temp_983 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x29)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_982, temp_983);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2B)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_982, temp_983);
 			Label(temp_982);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x29))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2B))))));
 			Branch(temp_983);
 			Label(temp_983);
 			LightLabel temp_984 = DefineLabel(), temp_985 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2A)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_984, temp_985);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2C)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_984, temp_985);
 			Label(temp_984);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2A))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2C))))));
 			Branch(temp_985);
 			Label(temp_985);
 			LightLabel temp_986 = DefineLabel(), temp_987 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2B)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_986, temp_987);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2D)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_986, temp_987);
 			Label(temp_986);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2B))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2D))))));
 			Branch(temp_987);
 			Label(temp_987);
 			LightLabel temp_988 = DefineLabel(), temp_989 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2C)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_988, temp_989);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2E)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_988, temp_989);
 			Label(temp_988);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2C))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2E))))));
 			Branch(temp_989);
 			Label(temp_989);
 			LightLabel temp_990 = DefineLabel(), temp_991 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2D)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_990, temp_991);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2F)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_990, temp_991);
 			Label(temp_990);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2D))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2F))))));
 			Branch(temp_991);
 			Label(temp_991);
 			LightLabel temp_992 = DefineLabel(), temp_993 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2E)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_992, temp_993);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x30)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_992, temp_993);
 			Label(temp_992);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2E))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x30))))));
 			Branch(temp_993);
 			Label(temp_993);
 			LightLabel temp_994 = DefineLabel(), temp_995 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x2F)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_994, temp_995);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x31)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_994, temp_995);
 			Label(temp_994);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x2F))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x31))))));
 			Branch(temp_995);
 			Label(temp_995);
 			LightLabel temp_996 = DefineLabel(), temp_997 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x30)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_996, temp_997);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x32)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_996, temp_997);
 			Label(temp_996);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x30))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x32))))));
 			Branch(temp_997);
 			Label(temp_997);
 			LightLabel temp_998 = DefineLabel(), temp_999 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x31)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_998, temp_999);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x33)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_998, temp_999);
 			Label(temp_998);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x31))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x33))))));
 			Branch(temp_999);
 			Label(temp_999);
 			LightLabel temp_1000 = DefineLabel(), temp_1001 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x32)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1000, temp_1001);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x34)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1000, temp_1001);
 			Label(temp_1000);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x32))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x34))))));
 			Branch(temp_1001);
 			Label(temp_1001);
 			LightLabel temp_1002 = DefineLabel(), temp_1003 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x33)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1002, temp_1003);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x35)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1002, temp_1003);
 			Label(temp_1002);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x33))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x35))))));
 			Branch(temp_1003);
 			Label(temp_1003);
 			LightLabel temp_1004 = DefineLabel(), temp_1005 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x34)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1004, temp_1005);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x36)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1004, temp_1005);
 			Label(temp_1004);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x34))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x36))))));
 			Branch(temp_1005);
 			Label(temp_1005);
 			LightLabel temp_1006 = DefineLabel(), temp_1007 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x35)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1006, temp_1007);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x37)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1006, temp_1007);
 			Label(temp_1006);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x35))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x37))))));
 			Branch(temp_1007);
 			Label(temp_1007);
 			LightLabel temp_1008 = DefineLabel(), temp_1009 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x36)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1008, temp_1009);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x38)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1008, temp_1009);
 			Label(temp_1008);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x36))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x38))))));
 			Branch(temp_1009);
 			Label(temp_1009);
 			LightLabel temp_1010 = DefineLabel(), temp_1011 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x37)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1010, temp_1011);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x39)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1010, temp_1011);
 			Label(temp_1010);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x37))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x39))))));
 			Branch(temp_1011);
 			Label(temp_1011);
 			LightLabel temp_1012 = DefineLabel(), temp_1013 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x38)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1012, temp_1013);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3A)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1012, temp_1013);
 			Label(temp_1012);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x38))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3A))))));
 			Branch(temp_1013);
 			Label(temp_1013);
 			LightLabel temp_1014 = DefineLabel(), temp_1015 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x39)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1014, temp_1015);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3B)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1014, temp_1015);
 			Label(temp_1014);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x39))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3B))))));
 			Branch(temp_1015);
 			Label(temp_1015);
 			LightLabel temp_1016 = DefineLabel(), temp_1017 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3A)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1016, temp_1017);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3C)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1016, temp_1017);
 			Label(temp_1016);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3A))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3C))))));
 			Branch(temp_1017);
 			Label(temp_1017);
 			LightLabel temp_1018 = DefineLabel(), temp_1019 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3B)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1018, temp_1019);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3D)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1018, temp_1019);
 			Label(temp_1018);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3B))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3D))))));
 			Branch(temp_1019);
 			Label(temp_1019);
 			LightLabel temp_1020 = DefineLabel(), temp_1021 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3C)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1020, temp_1021);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3E)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1020, temp_1021);
 			Label(temp_1020);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3C))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3E))))));
 			Branch(temp_1021);
 			Label(temp_1021);
 			LightLabel temp_1022 = DefineLabel(), temp_1023 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3D)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1022, temp_1023);
+			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3F)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1022, temp_1023);
 			Label(temp_1022);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3D))))));
+			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3F))))));
 			Branch(temp_1023);
 			Label(temp_1023);
-			LightLabel temp_1024 = DefineLabel(), temp_1025 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3E)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1024, temp_1025);
-			Label(temp_1024);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3E))))));
-			Branch(temp_1025);
-			Label(temp_1025);
-			LightLabel temp_1026 = DefineLabel(), temp_1027 = DefineLabel();
-			BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(Q))) >> (0x3F)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1026, temp_1027);
-			Label(temp_1026);
-			result = (LightRuntimeValue<__uint128_t>) ((((LightRuntimeValue<__uint128_t>) (result)) ^ ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) (((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<__uint128_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Element<uint64_t>(Q))))) << (0x3F))))));
-			Branch(temp_1027);
-			Label(temp_1027);
 			VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) ((result).Bitcast<Vector128<float>>());
 		} else {
 			throw "Not implemented";
@@ -10514,6 +10588,17 @@ bool LightRecompiler::SBFM(uint inst, ulong pc) {
 		auto imms = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imms) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((immr) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if((size) != 0) {
+			if(!(N))
+				goto unimplemented;
+		} else {
+			if(!((bool) (((N) == (0x0)) ? 1U : 0U)))
+				goto unimplemented;
+		}
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto src = ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]()))).Store();
@@ -10635,7 +10720,7 @@ bool LightRecompiler::SCVTF_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1028) -> string { switch(temp_1028) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_1024) -> string { switch(temp_1024) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto n = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
@@ -10677,10 +10762,10 @@ bool LightRecompiler::SDIV(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto operand2 = ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))).Store();
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (Ternary<bool, uint32_t>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((operand2) == (0x0))), (uint32_t) ((uint32_t) (0x0)), (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<float>) (((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) ((LightRuntimeValue<float>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))))))) / ((LightRuntimeValue<float>) (LightRuntimeValue<float>) ((LightRuntimeValue<float>) ((LightRuntimeValue<float>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) (operand2))))))))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (Ternary<bool, uint32_t>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((operand2) == (0x0))), (uint32_t) ((uint32_t) (0x0)), (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) (LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))))) / ((LightRuntimeValue<int32_t>) (LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) (operand2))))))))));
 		} else {
 			auto operand2 = ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())).Store();
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (Ternary<bool, uint64_t>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((operand2) == (0x0))), (uint64_t) ((uint64_t) (0x0)), (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<double>) (((LightRuntimeValue<double>) (LightRuntimeValue<double>) ((LightRuntimeValue<double>) ((LightRuntimeValue<double>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))))))) / ((LightRuntimeValue<double>) (LightRuntimeValue<double>) ((LightRuntimeValue<double>) ((LightRuntimeValue<double>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) (operand2)))))))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (Ternary<bool, uint64_t>((LightRuntimeValue<bool>) ((LightRuntimeValue<bool>) ((operand2) == (0x0))), (uint64_t) ((uint64_t) (0x0)), (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) (LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))))) / ((LightRuntimeValue<int64_t>) (LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) (operand2)))))))));
 		}
 		return true;
 	}
@@ -10718,7 +10803,7 @@ bool LightRecompiler::SHL_vector(uint inst, ulong pc) {
 				} else {
 					T = (string) ((Q != 0) ? (string("2D")) : throw "Not implemented");
 					size = 0x8;
-					shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x20)));
+					shift = (uint64_t) (((uint64_t) (uint32_t) ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (immb)) << 0)) | ((uint8_t) (((uint8_t) (immh)) << 3)))))))) - ((uint64_t) (int64_t) (0x40)));
 				}
 			}
 		}
@@ -10727,7 +10812,7 @@ bool LightRecompiler::SHL_vector(uint inst, ulong pc) {
 		switch(size) {
 			case 0x1: {
 				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(0x0))) << (shift)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(0x0))) << (shift)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(0x1))) << (shift)));
 				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(0x2))) << (shift)));
 				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(0x3))) << (shift)));
 				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((sv).Element<uint8_t>(0x4))) << (shift)));
@@ -10748,7 +10833,7 @@ bool LightRecompiler::SHL_vector(uint inst, ulong pc) {
 			}
 			case 0x2: {
 				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((sv).Element<uint16_t>(0x0))) << (shift)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((sv).Element<uint16_t>(0x0))) << (shift)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((sv).Element<uint16_t>(0x1))) << (shift)));
 				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((sv).Element<uint16_t>(0x2))) << (shift)));
 				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((sv).Element<uint16_t>(0x3))) << (shift)));
 				if((Q) != 0) {
@@ -10877,7 +10962,7 @@ bool LightRecompiler::ST1_multi_no_offset_one_register(uint inst, ulong pc) {
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto T = (string) (([=](auto temp_1029) -> string { switch(temp_1029) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1025) -> string { switch(temp_1025) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -10961,10 +11046,10 @@ bool LightRecompiler::ST1_multi_postindex_immediate_one_register(uint inst, ulon
 		auto size = (inst >> 10) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
-		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x20) : (0x10))));
+		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x10) : (0x8))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1030) -> string { switch(temp_1030) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1026) -> string { switch(temp_1026) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -11054,7 +11139,7 @@ bool LightRecompiler::ST1_multi_postindex_register_one_register(uint inst, ulong
 		auto rt = (inst >> 0) & 0x1FU;
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1031) -> string { switch(temp_1031) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1027) -> string { switch(temp_1027) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -11142,7 +11227,7 @@ bool LightRecompiler::ST1_multi_no_offset_two_registers(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1032) -> string { switch(temp_1032) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1028) -> string { switch(temp_1028) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -11299,7 +11384,7 @@ bool LightRecompiler::ST1_multi_postindex_immediate_two_registers(uint inst, ulo
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1033) -> string { switch(temp_1033) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1029) -> string { switch(temp_1029) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -11459,7 +11544,7 @@ bool LightRecompiler::ST1_multi_postindex_register_two_registers(uint inst, ulon
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1034) -> string { switch(temp_1034) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1030) -> string { switch(temp_1030) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto oaddress = (address).Store();
 		auto v = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
@@ -11618,7 +11703,7 @@ bool LightRecompiler::ST1_multi_no_offset_three_registers(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1035) -> string { switch(temp_1035) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1031) -> string { switch(temp_1031) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -11845,7 +11930,7 @@ bool LightRecompiler::ST1_multi_postindex_immediate_three_registers(uint inst, u
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1036) -> string { switch(temp_1036) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1032) -> string { switch(temp_1032) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -12075,7 +12160,7 @@ bool LightRecompiler::ST1_multi_postindex_register_three_registers(uint inst, ul
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1037) -> string { switch(temp_1037) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1033) -> string { switch(temp_1033) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto oaddress = (address).Store();
 		auto v = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
@@ -12304,7 +12389,7 @@ bool LightRecompiler::ST1_multi_no_offset_four_registers(uint inst, ulong pc) {
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1038) -> string { switch(temp_1038) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1034) -> string { switch(temp_1034) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -12601,7 +12686,7 @@ bool LightRecompiler::ST1_multi_postindex_immediate_four_registers(uint inst, ul
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1039) -> string { switch(temp_1039) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1035) -> string { switch(temp_1035) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(size) {
@@ -12901,7 +12986,7 @@ bool LightRecompiler::ST1_multi_postindex_register_four_registers(uint inst, ulo
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1040) -> string { switch(temp_1040) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1036) -> string { switch(temp_1036) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto oaddress = (address).Store();
 		auto v = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
@@ -13201,7 +13286,7 @@ bool LightRecompiler::ST1_single_no_offset(uint inst, ulong pc) {
 		if(!((bool) (((opc) != (0x3)) ? 1U : 0U)))
 			goto unimplemented;
 		auto t = (string) (((bool) (((opc) == (0x0)) ? 1U : 0U) != 0) ? (string("B")) : ((string) (((bool) ((((bool) ((bool) (((opc) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U))))) != 0) ? (string("H")) : ((string) (((bool) (((opc) == (0x2)) ? 1U : 0U) != 0) ? ((string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("S")) : ((string) (((bool) ((((bool) ((bool) (((size) == (0x1)) ? 1U : 0U))) & ((bool) ((bool) (((S) == (0x0)) ? 1U : 0U))))) != 0) ? (string("D")) : throw "Not implemented")))) : throw "Not implemented")))));
-		auto index = (uint32_t) (([=](auto temp_1041) -> uint32_t { switch(temp_1041) { case 0x0: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3)))))); case 0x1: return (uint32_t) (((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint32_t) (((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (S)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
+		auto index = (uint32_t) (([=](auto temp_1037) -> uint32_t { switch(temp_1037) { case 0x0: return (uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3)))))); case 0x1: return (uint32_t) (((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (S)) << 2)))) | ((uint8_t) (((uint8_t) (Q)) << 3))))))) >> (uint) (0x1)); case 0x2: return (uint32_t) (((bool) ((((uint8_t) ((((uint64_t) (size)) & ((uint64_t) (0x1))))) == (0x0)) ? 1U : 0U) != 0) ? ((uint32_t) ((uint32_t) ((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (S)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 1))))))) : (Q)); default: throw "Not implemented"; } })(opc));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto v = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		switch(opc) {
@@ -13240,7 +13325,7 @@ bool LightRecompiler::ST2_multi_no_offset(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1042) -> string { switch(temp_1042) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1038) -> string { switch(temp_1038) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -13373,7 +13458,7 @@ bool LightRecompiler::ST2_multi_postindex_immediate(uint inst, ulong pc) {
 		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x20) : (0x10))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1043) -> string { switch(temp_1043) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1039) -> string { switch(temp_1039) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -13509,7 +13594,7 @@ bool LightRecompiler::ST2_multi_postindex_register(uint inst, ulong pc) {
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1044) -> string { switch(temp_1044) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1040) -> string { switch(temp_1040) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -13643,7 +13728,7 @@ bool LightRecompiler::ST3_multi_no_offset(uint inst, ulong pc) {
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1045) -> string { switch(temp_1045) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1041) -> string { switch(temp_1041) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -13822,7 +13907,7 @@ bool LightRecompiler::ST3_multi_postindex_immediate(uint inst, ulong pc) {
 		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x30) : (0x18))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1046) -> string { switch(temp_1046) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1042) -> string { switch(temp_1042) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -14004,7 +14089,7 @@ bool LightRecompiler::ST3_multi_postindex_register(uint inst, ulong pc) {
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1047) -> string { switch(temp_1047) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1043) -> string { switch(temp_1043) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -14184,7 +14269,7 @@ bool LightRecompiler::ST4_multi_no_offset(uint inst, ulong pc) {
 		auto rt2 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x1))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt3 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x2))))) % ((uint64_t) (int64_t) (0x20)));
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
-		auto T = (string) (([=](auto temp_1048) -> string { switch(temp_1048) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1044) -> string { switch(temp_1044) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -14409,7 +14494,7 @@ bool LightRecompiler::ST4_multi_postindex_immediate(uint inst, ulong pc) {
 		auto imm = (uint8_t) ((uint8_t) ((int64_t) ((Q != 0) ? (0x40) : (0x2B))));
 		if(!((bool) (((rm) == (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1049) -> string { switch(temp_1049) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1045) -> string { switch(temp_1045) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -14637,7 +14722,7 @@ bool LightRecompiler::ST4_multi_postindex_register(uint inst, ulong pc) {
 		auto rt4 = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (((uint64_t) (uint8_t) (rt)) + ((uint64_t) (int64_t) (0x3))))) % ((uint64_t) (int64_t) (0x20)));
 		if(!((bool) (((rm) != (0x1F)) ? 1U : 0U)))
 			goto unimplemented;
-		auto T = (string) (([=](auto temp_1050) -> string { switch(temp_1050) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1046) -> string { switch(temp_1046) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		auto a = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt)])).Store();
 		auto b = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rt2)])).Store();
@@ -15020,8 +15105,8 @@ bool LightRecompiler::STP_simd_postindex(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1051) -> string { switch(temp_1051) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1052) -> int64_t { switch(temp_1052) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_1047) -> string { switch(temp_1047) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1048) -> int64_t { switch(temp_1048) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rd) == 31 ? SPR() : XR[(int) rd]())).Store();
 		switch(opc) {
 			case 0x0: {
@@ -15062,8 +15147,8 @@ bool LightRecompiler::STP_simd_preindex(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1053) -> string { switch(temp_1053) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1054) -> int64_t { switch(temp_1054) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_1049) -> string { switch(temp_1049) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1050) -> int64_t { switch(temp_1050) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rd) == 31 ? SPR() : XR[(int) rd]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (simm)))).Store();
 		switch(opc) {
 			case 0x0: {
@@ -15104,8 +15189,8 @@ bool LightRecompiler::STP_simd_signed_offset(uint inst, ulong pc) {
 		auto rt2 = (inst >> 10) & 0x1FU;
 		auto rd = (inst >> 5) & 0x1FU;
 		auto rt1 = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1055) -> string { switch(temp_1055) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
-		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1056) -> int64_t { switch(temp_1056) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
+		auto r = (string) (([=](auto temp_1051) -> string { switch(temp_1051) { case 0x0: return string("S"); case 0x1: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(opc));
+		auto simm = (int64_t) (((int64_t) (SignExt<int64_t>(imm, 7))) << (uint) ((int64_t) (([=](auto temp_1052) -> int64_t { switch(temp_1052) { case 0x0: return 0x2; case 0x1: return 0x3; case 0x2: return 0x4; default: throw "Not implemented"; } })(opc))));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rd) == 31 ? SPR() : XR[(int) rd]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (simm)))).Store();
 		switch(opc) {
 			case 0x0: {
@@ -15216,7 +15301,7 @@ bool LightRecompiler::STR_register(uint inst, ulong pc) {
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
 		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((int64_t) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (0x2) : (0x3))));
-		auto extend = (string) (([=](auto temp_1057) -> string { switch(temp_1057) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto extend = (string) (([=](auto temp_1053) -> string { switch(temp_1053) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); case 0x3: return string("LSL"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LightRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			((LightRuntimePointer<uint32_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) (offset))))).value((LightRuntimeValue<uint32_t>) ((rt) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rt]())));
@@ -15238,7 +15323,7 @@ bool LightRecompiler::STR_simd_postindex(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
-		auto r = (string) (([=](auto temp_1058) -> string { switch(temp_1058) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_1054) -> string { switch(temp_1054) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		auto address = ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())).Store();
 		switch(rop) {
@@ -15286,7 +15371,7 @@ bool LightRecompiler::STR_simd_preindex(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
-		auto r = (string) (([=](auto temp_1059) -> string { switch(temp_1059) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_1055) -> string { switch(temp_1055) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto scale = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 2))));
 		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (simm)))).Store();
@@ -15335,7 +15420,7 @@ bool LightRecompiler::STR_simd_unsigned_offset(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
-		auto r = (string) (([=](auto temp_1060) -> string { switch(temp_1060) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_1056) -> string { switch(temp_1056) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto scale = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (size)) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 2))));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint16_t>) ((uint16_t) ((imm) << (uint) (scale)))))).Store();
 		switch(rop) {
@@ -15381,10 +15466,10 @@ bool LightRecompiler::STR_simd_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
-		auto r1 = (string) (([=](auto temp_1061) -> string { switch(temp_1061) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r1 = (string) (([=](auto temp_1057) -> string { switch(temp_1057) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto r2 = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((int64_t) (([=](auto temp_1062) -> int64_t { switch(temp_1062) { case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: return (int64_t) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (0x4) : (0x0)); } })(size))));
-		auto extend = (string) (([=](auto temp_1063) -> string { switch(temp_1063) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: return string("LSL"); } })(option));
+		auto amount = (int64_t) (((bool) (((scale) == (0x0)) ? 1U : 0U) != 0) ? (0x0) : ((int64_t) (([=](auto temp_1058) -> int64_t { switch(temp_1058) { case 0x1: return 0x1; case 0x2: return 0x2; case 0x3: return 0x3; default: return (int64_t) (((bool) (((opc) == (0x1)) ? 1U : 0U) != 0) ? (0x4) : (0x0)); } })(size))));
+		auto extend = (string) (([=](auto temp_1059) -> string { switch(temp_1059) { case 0x2: return string("UXTW"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); case 0x3: return (string) (((bool) (((rop) != (0x0)) ? 1U : 0U) != 0) ? (string("LSL")) : throw "Not implemented"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LightRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) (offset)))).Store();
 		switch(rop) {
@@ -15479,7 +15564,7 @@ bool LightRecompiler::STRB_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_1064) -> string { switch(temp_1064) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_1060) -> string { switch(temp_1060) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LightRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		((LightRuntimePointer<uint8_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) (offset))))).value((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint32_t>) ((rt) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rt]())))));
 		return true;
@@ -15549,7 +15634,7 @@ bool LightRecompiler::STRH_register(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto r = (string) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1)))) != 0) ? (string("X")) : (string("W")));
-		auto str = (string) (([=](auto temp_1065) -> string { switch(temp_1065) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
+		auto str = (string) (([=](auto temp_1061) -> string { switch(temp_1061) { case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x6: return string("SXTW"); case 0x7: return string("SXTX"); default: throw "Not implemented"; } })(option));
 		auto offset = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (((bool) (((option) == (0x6)) ? 1U : 0U)) != 0 ? ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]())), 32))))) : ((LightRuntimeValue<uint64_t>) (((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x1))))) != 0 ? ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) : ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))))))) << (amount))).Store();
 		((LightRuntimePointer<uint16_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) (offset))))).value((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint32_t>) ((rt) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rt]())))));
 		return true;
@@ -15587,7 +15672,7 @@ bool LightRecompiler::STUR_simd(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rt = (inst >> 0) & 0x1FU;
 		auto rop = (uint8_t) ((uint8_t) (((uint8_t) (uint8_t) (((uint8_t) (((uint8_t) ((bool) ((bool) (0x0)))) << 0)) | ((uint8_t) (((uint8_t) (opc)) << 1)))) | ((uint8_t) (((uint8_t) (size)) << 2))));
-		auto r = (string) (([=](auto temp_1066) -> string { switch(temp_1066) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
+		auto r = (string) (([=](auto temp_1062) -> string { switch(temp_1062) { case 0x0: return string("B"); case 0x4: return string("H"); case 0x8: return string("S"); case 0xC: return string("D"); case 0x2: return string("Q"); default: throw "Not implemented"; } })(rop));
 		auto simm = (int64_t) (SignExt<int64_t>(imm, 9));
 		auto address = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) + ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<int64_t>) (simm)))).Store();
 		switch(rop) {
@@ -15731,15 +15816,17 @@ bool LightRecompiler::SUB_extended_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x7U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= (0x4)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_1067) -> string { switch(temp_1067) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_1068) -> string { switch(temp_1068) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_1063) -> string { switch(temp_1063) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_1064) -> string { switch(temp_1064) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))).Store();
 			if(rd == 31)
-				SPR = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (([=](auto temp_1069) -> LightRuntimeValue<uint32_t> { switch(temp_1069) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
+				SPR = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (([=](auto temp_1065) -> LightRuntimeValue<uint32_t> { switch(temp_1065) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
 			else
-				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (([=](auto temp_1070) -> LightRuntimeValue<uint32_t> { switch(temp_1070) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
+				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (([=](auto temp_1066) -> LightRuntimeValue<uint32_t> { switch(temp_1066) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))));
 		} else {
 			if(((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U)) != 0) {
 				if(rd == 31)
@@ -15747,11 +15834,11 @@ bool LightRecompiler::SUB_extended_register(uint inst, ulong pc) {
 				else
 					XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << (imm)))));
 			} else {
-				auto m = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))).Store();
+				auto m = ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))).Store();
 				if(rd == 31)
-					SPR = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (([=](auto temp_1071) -> LightRuntimeValue<uint64_t> { switch(temp_1071) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 64))))); default: return m; } })(option))) << (imm)))));
+					SPR = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_1067) -> LightRuntimeValue<uint32_t> { switch(temp_1067) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))); case 0x6: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 32))); default: return m; } })(option))))) << (imm)))));
 				else
-					XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (([=](auto temp_1072) -> LightRuntimeValue<uint64_t> { switch(temp_1072) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 64))))); default: return m; } })(option))) << (imm)))));
+					XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]()))) - ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_1068) -> LightRuntimeValue<uint32_t> { switch(temp_1068) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))); case 0x6: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 32))); default: return m; } })(option))))) << (imm)))));
 			}
 		}
 		return true;
@@ -15769,12 +15856,16 @@ bool LightRecompiler::SUB_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((shift) != (0x3)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1073) -> string { switch(temp_1073) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1069) -> string { switch(temp_1069) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) - ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_1074) -> LightRuntimeValue<uint32_t> { switch(temp_1074) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]())))) - ((LightRuntimeValue<uint32_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_1070) -> LightRuntimeValue<uint32_t> { switch(temp_1070) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))));
 		} else {
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) - ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (([=](auto temp_1075) -> LightRuntimeValue<uint64_t> { switch(temp_1075) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]()))) - ((LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (([=](auto temp_1071) -> LightRuntimeValue<uint64_t> { switch(temp_1071) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift)))));
 		}
 		return true;
 	}
@@ -15791,14 +15882,16 @@ bool LightRecompiler::SUBS_extended_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x7U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= (0x4)) ? 1U : 0U)))
+			goto unimplemented;
 		auto r1 = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto r2 = (string) (((bool) ((((uint8_t) ((((uint64_t) (option)) & ((uint64_t) (0x3))))) == (0x3)) ? 1U : 0U) != 0) ? (string("X")) : (string("W")));
-		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_1076) -> string { switch(temp_1076) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_1077) -> string { switch(temp_1077) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
+		auto extend = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? ((string) (([=](auto temp_1072) -> string { switch(temp_1072) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("LSL"); case 0x3: return string("UXTX"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))) : ((string) (([=](auto temp_1073) -> string { switch(temp_1073) { case 0x0: return string("UXTB"); case 0x1: return string("UXTH"); case 0x2: return string("UXTW"); case 0x3: return string("LSL"); case 0x4: return string("SXTB"); case 0x5: return string("SXTH"); case 0x6: return string("SXTW"); default: return string("SXTX"); } })(option))));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto m = ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))).Store();
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=]() -> LightRuntimeValue<uint32_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (~((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (([=](auto temp_1078) -> LightRuntimeValue<uint32_t> { switch(temp_1078) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (~((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) (([=](auto temp_1074) -> LightRuntimeValue<uint32_t> { switch(temp_1074) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (SignExtRuntime<int32_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); default: return m; } })(option))) << (imm))))))).Store();
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint32_t) ((uint32_t) (0x1));
 					auto bits = (int32_t) (32);
 					auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
@@ -15827,10 +15920,10 @@ bool LightRecompiler::SUBS_extended_register(uint inst, ulong pc) {
 						return (usum).Store();
 					})());
 			} else {
-				auto m = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))).Store();
+				auto m = ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))).Store();
 				XR[(int) rd] = (LightRuntimeValue<uint64_t>) (([=]() -> LightRuntimeValue<uint64_t> {
 						auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? SPR() : XR[(int) rn]())))).Store();
-						auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (~((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) (([=](auto temp_1079) -> LightRuntimeValue<uint64_t> { switch(temp_1079) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))))); case 0x5: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))))); case 0x6: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 64))))); default: return m; } })(option))) << (imm))))))).Store();
+						auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (~((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_1075) -> LightRuntimeValue<uint32_t> { switch(temp_1075) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFF))))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFF))))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint64_t>) (m)) & ((LightRuntimeValue<uint64_t>) (0xFFFFFFFF))))); case 0x4: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (m)), 8))); case 0x5: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (m)), 16))); case 0x6: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int64_t>) (SignExtRuntime<int64_t>(m, 32))); default: return m; } })(option))))) << (imm))))))).Store();
 						auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint64_t) ((uint64_t) (0x1));
 						auto bits = (int32_t) (64);
 						auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
@@ -15859,13 +15952,17 @@ bool LightRecompiler::SUBS_shifted_register(uint inst, ulong pc) {
 		auto imm = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imm) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((shift) != (0x3)) ? 1U : 0U)))
+			goto unimplemented;
 		auto mode32 = (bool) (((size) == (0x0)) ? 1U : 0U);
 		auto r = (string) ((mode32 != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1080) -> string { switch(temp_1080) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1076) -> string { switch(temp_1076) { case 0x0: return string("LSL"); case 0x1: return string("LSR"); case 0x2: return string("ASR"); default: return string("ROR"); } })(shift));
 		if((mode32) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=]() -> LightRuntimeValue<uint32_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]()))))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (~((LightRuntimeValue<uint32_t>) (([=](auto temp_1081) -> LightRuntimeValue<uint32_t> { switch(temp_1081) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (~((LightRuntimeValue<uint32_t>) (([=](auto temp_1077) -> LightRuntimeValue<uint32_t> { switch(temp_1077) { case 0x0: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) << (imm))); case 0x1: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> (imm))); case 0x2: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<int32_t>) (((LightRuntimeValue<int32_t>) ((LightRuntimeValue<int32_t>) ((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))))) >> (imm))))); default: return (LightRuntimeValue<uint32_t>) ((((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) << ((LightRuntimeValue<uint>) (32 - (imm)))) | (((LightRuntimeValue<uint32_t>) ((rm) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rm]()))) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint32_t) ((uint32_t) (0x1));
 					auto bits = (int32_t) (32);
 					auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
@@ -15880,7 +15977,7 @@ bool LightRecompiler::SUBS_shifted_register(uint inst, ulong pc) {
 		} else {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (([=]() -> LightRuntimeValue<uint64_t> {
 					auto __macro_add_with_carry_set_nzcv_common_operand1 = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rn) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rn]())))).Store();
-					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (~((LightRuntimeValue<uint64_t>) (([=](auto temp_1082) -> LightRuntimeValue<uint64_t> { switch(temp_1082) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
+					auto __macro_add_with_carry_set_nzcv_common_operand2 = ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (~((LightRuntimeValue<uint64_t>) (([=](auto temp_1078) -> LightRuntimeValue<uint64_t> { switch(temp_1078) { case 0x0: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) << (imm))); case 0x1: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> (imm))); case 0x2: return (LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<int64_t>) (((LightRuntimeValue<int64_t>) ((LightRuntimeValue<int64_t>) ((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())))) >> (imm))))); default: return (LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) << ((LightRuntimeValue<uint>) (64 - (imm)))) | (((LightRuntimeValue<uint64_t>) ((rm) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rm]())) >> ((LightRuntimeValue<uint>) (imm)))); } })(shift))))))).Store();
 					auto __macro_add_with_carry_set_nzcv_common_carryIn = (uint64_t) ((uint64_t) (0x1));
 					auto bits = (int32_t) (64);
 					auto bits1 = (int64_t) (((int64_t) (int32_t) (bits)) - ((int64_t) (int64_t) (0x1)));
@@ -15908,7 +16005,7 @@ bool LightRecompiler::SUBS_immediate(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
-		auto shiftstr = (string) (([=](auto temp_1083) -> string { switch(temp_1083) { case 0x0: return string("LSL #0"); case 0x1: return string("LSL #12"); default: throw "Not implemented"; } })(shift));
+		auto shiftstr = (string) (([=](auto temp_1079) -> string { switch(temp_1079) { case 0x0: return string("LSL #0"); case 0x1: return string("LSL #12"); default: throw "Not implemented"; } })(shift));
 		auto rimm = (uint32_t) ((shift != 0) ? ((uint32_t) (((uint32_t) ((uint32_t) (imm))) << (uint) (0xC))) : (imm));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=]() -> LightRuntimeValue<uint32_t> {
@@ -15982,15 +16079,15 @@ bool LightRecompiler::TBZ(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((upper) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (uint32_t) ((((uint32_t) ((uint32_t) (((uint32_t) ((uint32_t) (upper))) << (uint) (0x5)))) | ((uint32_t) ((uint32_t) ((uint32_t) (bottom))))));
 		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint16_t) (((uint16_t) ((uint16_t) (offset))) << (uint) (0x2)), 16)))));
-		LightLabel temp_1084 = DefineLabel(), temp_1086 = DefineLabel(), temp_1085 = DefineLabel();
-		BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rt) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rt]())) >> (imm)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1084, temp_1086);
-		Label(temp_1084);
+		LightLabel temp_1080 = DefineLabel(), temp_1082 = DefineLabel(), temp_1081 = DefineLabel();
+		BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rt) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rt]())) >> (imm)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1080, temp_1082);
+		Label(temp_1080);
 		Branch(pc + 4);
-		Branch(temp_1085);
-		Label(temp_1086);
+		Branch(temp_1081);
+		Label(temp_1082);
 		Branch(addr);
-		Branch(temp_1085);
-		Label(temp_1085);
+		Branch(temp_1081);
+		Label(temp_1081);
 		return true;
 	}
 unimplemented:
@@ -16007,15 +16104,15 @@ bool LightRecompiler::TBNZ(uint inst, ulong pc) {
 		auto r = (string) (((bool) (((upper) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		auto imm = (uint32_t) ((((uint32_t) ((uint32_t) (((uint32_t) ((uint32_t) (upper))) << (uint) (0x5)))) | ((uint32_t) ((uint32_t) ((uint32_t) (bottom))))));
 		auto addr = (uint64_t) (((uint64_t) (uint64_t) ((uint64_t) (pc))) + ((uint64_t) (int64_t) ((int64_t) (SignExt<int64_t>((uint16_t) (((uint16_t) ((uint16_t) (offset))) << (uint) (0x2)), 16)))));
-		LightLabel temp_1087 = DefineLabel(), temp_1089 = DefineLabel(), temp_1088 = DefineLabel();
-		BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rt) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rt]())) >> (imm)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1087, temp_1089);
-		Label(temp_1087);
+		LightLabel temp_1083 = DefineLabel(), temp_1085 = DefineLabel(), temp_1084 = DefineLabel();
+		BranchIf((LightRuntimeValue<uint64_t>) ((((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((rt) == 31 ? (LightRuntimeValue<ulong>) 0UL : XR[(int) rt]())) >> (imm)))) & ((LightRuntimeValue<uint64_t>) (0x1)))), temp_1083, temp_1085);
+		Label(temp_1083);
 		Branch(addr);
-		Branch(temp_1088);
-		Label(temp_1089);
+		Branch(temp_1084);
+		Label(temp_1085);
 		Branch(pc + 4);
-		Branch(temp_1088);
-		Label(temp_1088);
+		Branch(temp_1084);
+		Label(temp_1084);
 		return true;
 	}
 unimplemented:
@@ -16029,21 +16126,21 @@ bool LightRecompiler::UADDLV(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto r = (string) (([=](auto temp_1090) -> string { switch(temp_1090) { case 0x0: return string("H"); case 0x1: return string("S"); case 0x2: return string("D"); default: throw "Not implemented"; } })(size));
-		auto t = (string) (([=](auto temp_1091) -> string { switch(temp_1091) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto r = (string) (([=](auto temp_1086) -> string { switch(temp_1086) { case 0x0: return string("H"); case 0x1: return string("S"); case 0x2: return string("D"); default: throw "Not implemented"; } })(size));
+		auto t = (string) (([=](auto temp_1087) -> string { switch(temp_1087) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x5: return string("4S"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto esize = (int64_t) ((0x8) << (uint) (size));
 		auto count = (int64_t) (((int64_t) (int64_t) ((int64_t) ((Q != 0) ? (0x80) : (0x40)))) / ((int64_t) (int64_t) (esize)));
 		switch(size) {
 			case 0x0: {
-				VHR[(int) (rd)] = (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint32_t>) (Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, (LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), esize, count))));
+				VHR[(int) (rd)] = (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint64_t>) (Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, (LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), esize, count))));
 				break;
 			}
 			case 0x1: {
-				VSR[(int) (rd)] = (LightRuntimeValue<float>) (((LightRuntimeValue<uint32_t>) (Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, (LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), esize, count))).Bitcast<float>());
+				VSR[(int) (rd)] = (LightRuntimeValue<float>) (((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint64_t>) (Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, (LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), esize, count))))).Bitcast<float>());
 				break;
 			}
 			case 0x2: {
-				VDR[(int) (rd)] = (LightRuntimeValue<double>) (((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint64_t>) ((LightRuntimeValue<uint32_t>) (Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, (LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), esize, count))))).Bitcast<double>());
+				VDR[(int) (rd)] = (LightRuntimeValue<double>) (((LightRuntimeValue<uint64_t>) (Call<ulong, Vector128<float>, long, long>(VectorSumUnsigned, (LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)]), esize, count))).Bitcast<double>());
 				break;
 			}
 			default: {
@@ -16150,6 +16247,17 @@ bool LightRecompiler::UBFM(uint inst, ulong pc) {
 		auto imms = (inst >> 10) & 0x3FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
+		if(!((bool) (((imms) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if(!((bool) (((immr) <= ((int64_t) ((size != 0) ? (0x3F) : (0x1F)))) ? 1U : 0U)))
+			goto unimplemented;
+		if((size) != 0) {
+			if(!(N))
+				goto unimplemented;
+		} else {
+			if(!((bool) (((N) == (0x0)) ? 1U : 0U)))
+				goto unimplemented;
+		}
 		auto r = (string) (((bool) (((size) == (0x0)) ? 1U : 0U) != 0) ? (string("W")) : (string("X")));
 		if(((bool) (((size) == (0x0)) ? 1U : 0U)) != 0) {
 			auto src = ((LightRuntimeValue<uint32_t>) ((rn) == 31 ? (LightRuntimeValue<uint>) 0U : (LightRuntimeValue<uint>) (XR[(int) rn]()))).Store();
@@ -16269,7 +16377,7 @@ bool LightRecompiler::UCVTF_vector(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x1U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1092) -> string { switch(temp_1092) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_1088) -> string { switch(temp_1088) { case 0x0: return string("2S"); case 0x1: return string("4S"); case 0x3: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto n = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
@@ -16346,7 +16454,8 @@ bool LightRecompiler::UMOV(uint inst, ulong pc) {
 		auto T = string("");
 		auto index = 0x0;
 		auto r = (string) ((Q != 0) ? (string("X")) : (string("W")));
-		auto size = (int64_t) ((Q != 0) ? (0x40) : ((int64_t) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x1))))) == (0x1)) ? 1U : 0U) != 0) ? (0x8) : ((int64_t) (((bool) ((((uint8_t) ((((uint64_t) (imm)) & ((uint64_t) (0x3))))) == (0x2)) ? 1U : 0U) != 0) ? (0x10) : (0x20))))));
+		auto comb = (uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (imm)) << 0)) | ((uint8_t) (((uint8_t) (Q)) << 5))));
+		auto size = (int64_t) (((bool) ((((int64_t) (((int64_t) (0x21)))) == (0x1)) ? 1U : 0U) != 0) ? (0x8) : ((int64_t) (((bool) ((((int64_t) (((int64_t) (0x23)))) == (0x2)) ? 1U : 0U) != 0) ? (0x10) : ((int64_t) (((bool) ((((int64_t) (((int64_t) (0x27)))) == (0x4)) ? 1U : 0U) != 0) ? (0x20) : ((int64_t) (((bool) ((((int64_t) (((int64_t) (0x2F)))) == (0x28)) ? 1U : 0U) != 0) ? (0x40) : throw "Not implemented")))))));
 		switch(size) {
 			case 0x8: {
 				T = string("B");
@@ -16373,7 +16482,7 @@ bool LightRecompiler::UMOV(uint inst, ulong pc) {
 		if((Q) != 0) {
 			XR[(int) rd] = (LightRuntimeValue<uint64_t>) ((v).Element<uint64_t>(index));
 		} else {
-			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_1093) -> LightRuntimeValue<uint32_t> { switch(temp_1093) { case 0x8: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint8_t>) ((v).Element<uint8_t>(index))))); case 0x10: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint8_t>) ((v).Element<uint8_t>(index))))); default: return (LightRuntimeValue<uint32_t>) ((v).Element<uint32_t>(index)); } })(size)));
+			XR[(int) rd] = (LightRuntimeValue<uint64_t>) (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (([=](auto temp_1089) -> LightRuntimeValue<uint32_t> { switch(temp_1089) { case 0x8: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint8_t>) ((v).Element<uint8_t>(index))))); case 0x10: return (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(index))))); default: return (LightRuntimeValue<uint32_t>) ((v).Element<uint32_t>(index)); } })(size)));
 		}
 		return true;
 	}
@@ -16402,74 +16511,74 @@ bool LightRecompiler::USHL_vector(uint inst, ulong pc) {
 		auto rm = (inst >> 16) & 0x1FU;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto t = (string) (([=](auto temp_1094) -> string { switch(temp_1094) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto t = (string) (([=](auto temp_1090) -> string { switch(temp_1090) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto n = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		auto m = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))) {
 			case 0x0: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x0))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x1))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x1)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x2))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x2)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x3))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x3)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x4))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x4)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x5))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x5)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x6))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x6)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x7))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x7)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x0))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x0)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x1))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x2))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x3))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x3)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x4))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x4)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x5))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x5)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x6))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x6)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x7))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x7)))))));
 				break;
 			}
 			case 0x1: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x0))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x1))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x1)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x2))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x2)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x3))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x3)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x4))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x4)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x5))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x5)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x6))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x6)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x7))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x7)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x8, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x8))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x8)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x9, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x9))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x9)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xA, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xA))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xA)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xB, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xB))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xB)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xC, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xC))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xC)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xD, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xD))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xD)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xE, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xE))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xE)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xF, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xF))) << ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xF)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x0))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x0)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x1))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x2))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x3))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x3)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x4))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x4)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x5))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x5)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x6))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x6)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x7))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x7)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x8, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x8))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x8)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x9, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0x9))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0x9)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xA, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xA))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xA)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xB, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xB))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xB)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xC, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xC))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xC)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xD, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xD))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xD)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xE, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xE))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xE)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xF, (LightRuntimeValue<uint8_t>) (((LightRuntimeValue<uint8_t>) ((n).Element<uint8_t>(0xF))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((m).Element<uint8_t>(0xF)))))));
 				break;
 			}
 			case 0x2: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x0))) << ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x1))) << ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x1)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x2))) << ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x2)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x3))) << ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x0))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x0)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x1))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x2))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x3))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x3)))))));
 				break;
 			}
 			case 0x3: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x0))) << ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x1))) << ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x1)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x2))) << ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x2)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x3))) << ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x3)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x4))) << ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x4)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x5))) << ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x5)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x6))) << ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x6)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x7))) << ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x7)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x0))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x0)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x1))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x2))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x3))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x3)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x4))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x4)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x5))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x5)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x6))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x6)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LightRuntimeValue<uint16_t>) (((LightRuntimeValue<uint16_t>) ((n).Element<uint16_t>(0x7))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((m).Element<uint16_t>(0x7)))))));
 				break;
 			}
 			case 0x4: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x0))) << ((LightRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x1))) << ((LightRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x0))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x0)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x1))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x1)))))));
 				break;
 			}
 			case 0x5: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x0))) << ((LightRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x1))) << ((LightRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x1)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x2))) << ((LightRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x2)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x3))) << ((LightRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x0))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x0)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x1))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x1)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x2))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x2)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<uint32_t>) (((LightRuntimeValue<uint32_t>) ((n).Element<uint32_t>(0x3))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint32_t>) ((m).Element<uint32_t>(0x3)))))));
 				break;
 			}
 			case 0x7: {
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((n).Element<uint64_t>(0x0))) << ((LightRuntimeValue<uint64_t>) ((m).Element<uint64_t>(0x0)))));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((n).Element<uint64_t>(0x1))) << ((LightRuntimeValue<uint64_t>) ((m).Element<uint64_t>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((n).Element<uint64_t>(0x0))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint64_t>) ((m).Element<uint64_t>(0x0)))))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint64_t>) (((LightRuntimeValue<uint64_t>) ((n).Element<uint64_t>(0x1))) << ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint64_t>) ((m).Element<uint64_t>(0x1)))))));
 				break;
 			}
 			default: {
@@ -16586,33 +16695,32 @@ bool LightRecompiler::XTN(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto tb = (string) (([=](auto temp_1095) -> string { switch(temp_1095) { case 0x0: return string("8B"); case 0x1: return string("4H"); case 0x2: return string("2S"); default: throw "Not implemented"; } })(size));
-		auto ta = (string) (([=](auto temp_1096) -> string { switch(temp_1096) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto tb = (string) (([=](auto temp_1091) -> string { switch(temp_1091) { case 0x0: return string("8B"); case 0x1: return string("4H"); case 0x2: return string("2S"); default: throw "Not implemented"; } })(size));
+		auto ta = (string) (([=](auto temp_1092) -> string { switch(temp_1092) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto v = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
+		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
 		switch(size) {
 			case 0x0: {
-				auto a = ((LightRuntimeValue<uint16_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x0))).Store();
-				auto b = ((LightRuntimeValue<uint16_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x1))).Store();
-				auto c = ((LightRuntimeValue<uint16_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x2))).Store();
-				auto d = ((LightRuntimeValue<uint16_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x3))).Store();
-				VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint64_t>) ((uint64_t) ((uint64_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (a)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (b)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (c)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x3, (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (d)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x0))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x1))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x2))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x3))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x4))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x4)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x5))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x5)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x6))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x6)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x7))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x7)))));
 				break;
 			}
 			case 0x1: {
-				auto a = ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint32_t>(0x0))).Store();
-				auto b = ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint32_t>(0x1))).Store();
-				VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint64_t>) ((uint64_t) ((uint64_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (a)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x1, (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (b)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x0))), (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x1))), (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x2))), (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x3))), (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x3)))));
 				break;
 			}
 			case 0x2: {
-				auto a = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(0x0))).Store();
-				VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint64_t>) ((uint64_t) ((uint64_t) (0x0)))).CreateVector());
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x0, (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (a)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x0))), (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint64_t>) ((v).Element<uint64_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x0)) + ((int64_t) (int32_t) (0x1))), (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint64_t>) ((v).Element<uint64_t>(0x1)))));
 				break;
 			}
 			default: {
@@ -16632,30 +16740,31 @@ bool LightRecompiler::XTN2(uint inst, ulong pc) {
 		auto size = (inst >> 22) & 0x3U;
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
-		auto tb = (string) (([=](auto temp_1097) -> string { switch(temp_1097) { case 0x0: return string("16B"); case 0x1: return string("8H"); case 0x2: return string("4S"); default: throw "Not implemented"; } })(size));
-		auto ta = (string) (([=](auto temp_1098) -> string { switch(temp_1098) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto tb = (string) (([=](auto temp_1093) -> string { switch(temp_1093) { case 0x0: return string("16B"); case 0x1: return string("8H"); case 0x2: return string("4S"); default: throw "Not implemented"; } })(size));
+		auto ta = (string) (([=](auto temp_1094) -> string { switch(temp_1094) { case 0x0: return string("8H"); case 0x1: return string("4S"); case 0x2: return string("2D"); default: throw "Not implemented"; } })(size));
+		auto v = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		switch(size) {
 			case 0x0: {
-				auto a = ((LightRuntimeValue<uint16_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x0))).Store();
-				auto b = ((LightRuntimeValue<uint16_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x1))).Store();
-				auto c = ((LightRuntimeValue<uint16_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x2))).Store();
-				auto d = ((LightRuntimeValue<uint16_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint16_t>(0x3))).Store();
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x8, (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (a)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x9, (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (b)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xA, (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (c)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0xB, (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) (d)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x0))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x1))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x2))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x3))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x3)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x4))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x4)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x5))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x5)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x6))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x6)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x8)) + ((int64_t) (int32_t) (0x7))), (LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint8_t>) ((LightRuntimeValue<uint16_t>) ((v).Element<uint16_t>(0x7)))));
 				break;
 			}
 			case 0x1: {
-				auto a = ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint32_t>(0x0))).Store();
-				auto b = ((LightRuntimeValue<uint32_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint32_t>(0x1))).Store();
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (a)));
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) (b)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x4)) + ((int64_t) (int32_t) (0x0))), (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x4)) + ((int64_t) (int32_t) (0x1))), (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x1)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x4)) + ((int64_t) (int32_t) (0x2))), (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x2)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x4)) + ((int64_t) (int32_t) (0x3))), (LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint16_t>) ((LightRuntimeValue<uint32_t>) ((v).Element<uint32_t>(0x3)))));
 				break;
 			}
 			case 0x2: {
-				auto a = ((LightRuntimeValue<uint64_t>) (((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Element<uint64_t>(0x0))).Store();
-				VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x2, (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) (a)));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x2)) + ((int64_t) (int32_t) (0x0))), (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint64_t>) ((v).Element<uint64_t>(0x0)))));
+				VR[(int) (rd)] = VR[(int) (rd)]().Insert((int64_t) (((int64_t) (int64_t) (0x2)) + ((int64_t) (int32_t) (0x1))), (LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint32_t>) ((LightRuntimeValue<uint64_t>) ((v).Element<uint64_t>(0x1)))));
 				break;
 			}
 			default: {
@@ -16688,7 +16797,7 @@ bool LightRecompiler::ZIP(uint inst, ulong pc) {
 		auto rn = (inst >> 5) & 0x1FU;
 		auto rd = (inst >> 0) & 0x1FU;
 		auto i = (uint8_t) ((uint8_t) ((uint64_t) (((uint64_t) (bool) (op)) + ((uint64_t) (int64_t) (0x1)))));
-		auto T = (string) (([=](auto temp_1099) -> string { switch(temp_1099) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
+		auto T = (string) (([=](auto temp_1095) -> string { switch(temp_1095) { case 0x0: return string("8B"); case 0x1: return string("16B"); case 0x2: return string("4H"); case 0x3: return string("8H"); case 0x4: return string("2S"); case 0x5: return string("4S"); case 0x7: return string("2D"); default: throw "Not implemented"; } })((uint8_t) ((uint8_t) (((uint8_t) (((uint8_t) (Q)) << 0)) | ((uint8_t) (((uint8_t) (size)) << 1))))));
 		auto av = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rn)])).Store();
 		auto bv = ((LightRuntimeValue<Vector128<float>>) (VR[(int) (rm)])).Store();
 		VR[(int) (rd)] = (LightRuntimeValue<Vector128<float>>) (((LightRuntimeValue<uint8_t>) ((uint8_t) ((uint8_t) (0x0)))).CreateVector());
@@ -16723,8 +16832,8 @@ bool LightRecompiler::ZIP(uint inst, ulong pc) {
 				if((Q) != 0) {
 					VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x4, (LightRuntimeValue<uint16_t>) ((av).Element<uint16_t>((uint64_t) (((uint64_t) (uint64_t) (base)) + ((uint64_t) (int64_t) (0x2))))));
 					VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x6, (LightRuntimeValue<uint16_t>) ((av).Element<uint16_t>((uint64_t) (((uint64_t) (uint64_t) (base)) + ((uint64_t) (int64_t) (0x3))))));
-					VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LightRuntimeValue<uint16_t>) ((bv).Element<uint16_t>((uint64_t) (((uint64_t) (uint64_t) (base)) + ((uint64_t) (int64_t) (0x4))))));
-					VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LightRuntimeValue<uint16_t>) ((bv).Element<uint16_t>((uint64_t) (((uint64_t) (uint64_t) (base)) + ((uint64_t) (int64_t) (0x5))))));
+					VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x5, (LightRuntimeValue<uint16_t>) ((bv).Element<uint16_t>((uint64_t) (((uint64_t) (uint64_t) (base)) + ((uint64_t) (int64_t) (0x2))))));
+					VR[(int) (rd)] = VR[(int) (rd)]().Insert(0x7, (LightRuntimeValue<uint16_t>) ((bv).Element<uint16_t>((uint64_t) (((uint64_t) (uint64_t) (base)) + ((uint64_t) (int64_t) (0x3))))));
 				}
 				break;
 			}

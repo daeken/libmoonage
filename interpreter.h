@@ -5,6 +5,15 @@
 #include "state.h"
 #include "interface.h"
 
+inline Vector128<float> LoadVector(ulong addr) {
+    if(addr & 0xF) {
+        Vector128<float> ret;
+        memcpy(&ret, (void*) addr, 16);
+        return ret;
+    }
+    return *(Vector128<float>*) addr;
+}
+
 inline void StoreVector(ulong addr, Vector128<float> vec) {
     if(addr & 0xF)
         memcpy((void*) addr, &vec, 16);
